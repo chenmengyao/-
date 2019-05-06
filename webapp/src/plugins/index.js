@@ -1,0 +1,5 @@
+import './axios'
+import './vant'
+import './moment'
+import './filters'
+import './clipboard'
