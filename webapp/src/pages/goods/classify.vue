@@ -5,13 +5,9 @@
     </div>
     <div class="suwis-classify-con">
       <div class="suwis-classify-btn">
-         <div>手机数码</div>
-         <div>照相机</div>
-         <div>苹果</div>
-         <div>手机数码</div>
-         <div>手机数码</div>
-         <div>手机数码</div>
-         <div>手机数码</div>
+         <div>
+          <div v-for="(item,index) in tabList" @click="classifyBtn(index)" :class="index==num?'d_active':''">{{item}}</div>
+         </div>
       </div>
       <div class="suwis-classify-list">
         <div v-if="classifyBan!=''"><img :src="classifyBan"></div>
@@ -38,7 +34,14 @@ export default {
   data(){
     return{
       keyWord:'',//搜索关键词
-      classifyBan:''
+      classifyBan:'',
+      tabList:['手机','相机','数码相机'],
+      num:0
+    }
+  },
+  methods:{
+    classifyBtn(index){
+     this.num=index
     }
   }
 }
@@ -73,5 +76,9 @@ export default {
   line-height: 40px;
   text-align: center;
   background: #EFEFEF
+}
+.d_active{
+  border-left: 2px solid red;
+  background: #fff !important;
 }
 </style>
