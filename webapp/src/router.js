@@ -132,6 +132,10 @@ export default new Router({
       path: '/uc/popularize/grant',
       name: 'uc_popularize_grant',
       component: () => import('./pages/uc/popularize/grant.vue')
+    },{
+      path: '/mine/feedback',
+      name: 'mine_feedback',
+      component: () => import('./pages/mine/feedback')
     }
   ]
 })

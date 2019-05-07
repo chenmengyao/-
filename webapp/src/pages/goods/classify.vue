@@ -12,14 +12,14 @@
       </div>
       <div class="suwis-classify-list">
         <div style="padding:15px;padding-bottom:0;width:280px;overflow:hidden">
-          <van-swipe :autoplay="3000" indicator-color="white" style="width:100%">
+          <!-- <van-swipe :autoplay="3000" indicator-color="white" style="width:100%">
             <van-swipe-item>
               <img src="./../../assets/test2.png" style="width:100%;">
             </van-swipe-item>
             <van-swipe-item>
               <img src="./../../assets/test2.png" style="width:100%;">
             </van-swipe-item>
-          </van-swipe>
+          </van-swipe> -->
         </div>
         <div>
            <div>

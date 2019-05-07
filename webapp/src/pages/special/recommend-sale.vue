@@ -6,7 +6,17 @@
               <span class="d-banntitle-left"><span style="background-image: linear-gradient(to right , #FAA537, #F06B25);">为您挑选人间好物</span></span>
               <span class="d-banntitle-right">共<span>1314</span>件商品</span>
             </div>
-            <div style="margin:0 10px;"><img src="./../../../public/test2.png" width="100%"></div>
+            <div style="margin:0 10px;">
+              <!-- <img src="./../../../public/test2.png" width="100%"> -->
+              <!-- <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;" :height="200">
+                <van-swipe-item>
+                  <img src="./../../assets/test.jpg" style="width:100%;">
+                </van-swipe-item>
+                <van-swipe-item>
+                  <img src="./../../assets/test.jpg" style="width:100%;">
+                </van-swipe-item>
+              </van-swipe> -->
+              </div>
         </div>
      </div>
      <div class="suwis-recom-list">
@@ -15,7 +25,18 @@
             <div style="flex:1;">
               <div class="d-recom-img"><img src="./../../../public/test3.png" width="100%"></div>
               <span class="suwis-recom-title">猫猫包袋女2019新款潮韩 版时尚水桶复古包猫猫包袋女2019新款潮韩 版时尚水桶复古包</span>
-              <span class="d-item-title">推荐指数:</span>
+              <span class="d-item-title">
+                <span>推荐指数:</span>
+                <van-rate
+                  v-model="recValue"
+                  :size="12"
+                  color="#F06B25"
+                  readonly
+                  style="display:inline"
+                  void-icon="star"
+                  void-color="#eee"
+                />
+              </span>
             </div>
          </div>
        </div>
@@ -25,6 +46,11 @@
 
 <script>
 export default {
+  data(){
+    return{
+      recValue:4
+    }
+  }
 }
 </script>
 
