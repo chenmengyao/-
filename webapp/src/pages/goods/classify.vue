@@ -6,20 +6,31 @@
     <div class="suwis-classify-con">
       <div class="suwis-classify-btn">
          <div>
-          <div v-for="(item,index) in tabList" @click="classifyBtn(index)" :class="index==num?'d_active':''">{{item}}</div>
+          <div class="suwis-classify-active" v-for="(item,index) in tabList" :class="index==num?'d_background':''" @click="classifyBtn(index)">
+            <span :class="index==num?'d_active':'d_active1'"></span>{{item}}</div>
          </div>
       </div>
       <div class="suwis-classify-list">
-        <div v-if="classifyBan!=''"><img :src="classifyBan"></div>
+        <div style="padding:15px;padding-bottom:0;width:280px;overflow:hidden">
+          <van-swipe :autoplay="3000" indicator-color="white" style="width:100%">
+            <van-swipe-item>
+              <img src="./../../assets/test2.png" style="width:100%;">
+            </van-swipe-item>
+            <van-swipe-item>
+              <img src="./../../assets/test2.png" style="width:100%;">
+            </van-swipe-item>
+          </van-swipe>
+        </div>
         <div>
            <div>
               <span class="d-title">常用分类</span>
               <div>
                   <span class="d-tips" v-for="item in 10">安卓</span>
+                  <span class="d-tips" v-for="item in 10">诺基亚</span>
               </div>
            </div>
            <div>
-              <span class="d-title">常用分类</span>
+              <span class="d-title">热门品牌</span>
               <div>
                   <span class="d-tips" v-for="item in 5">苹果</span>
               </div>
@@ -51,6 +62,8 @@ export default {
 .suwis-classify-con{
   display: flex;
   text-align: left;
+  font-size: 12px;
+  color: #333;
 }
 .suwis-classify-btn,.suwis-classify-list{
   flex: 1;
@@ -58,14 +71,18 @@ export default {
 .suwis-classify-btn{
   max-width: 100px;
   min-width: 100px;
+  margin-top:15px;
 }
 .d-tips{
   border: 1px solid #ccc;
   display: inline-block;
   margin-top:15px;
   margin-left: 15px;
-  padding:6px 10px;
-  border-radius: 15px;
+  line-height: 28px;
+  border-radius: 14px;
+  padding: 0 11px;
+  color: #666666;
+  font-size: 12px;
 }
 .d-title{
   padding-left:15px;
@@ -77,8 +94,26 @@ export default {
   text-align: center;
   background: #EFEFEF
 }
-.d_active{
-  border-left: 2px solid red;
+.d_active1{
+  color: #fff
+}
+.d_background{
   background: #fff !important;
+}
+.d_active{
+  border-left: 3px solid red;
+  position: absolute;
+  height: 14px;
+  top: 13px;
+  left: 0;
+  color:#fff;
+  display: block;
+}
+.suwis-classify-active{
+  position: relative;
+}
+.van-search{
+  padding: 15px;
+  padding-bottom: 0;
 }
 </style>
