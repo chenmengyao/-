@@ -1,24 +1,23 @@
 <template lang="html">
   <div>
-     <div class="suwis-recom-head">
-        <div class="suwis-recom-bann">
-            <div class="suwis-recom-banntitle">
-              <span class="d-banntitle-left"><span style="background-image: linear-gradient(to right , #FAA537, #F06B25);">为您挑选人间好物</span></span>
-              <span class="d-banntitle-right">共<span>1314</span>件商品</span>
-            </div>
-            <div style="margin:0 10px;">
-              <!-- <img src="./../../../public/test2.png" width="100%"> -->
-              <!-- <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;" :height="200">
-                <van-swipe-item>
-                  <img src="./../../assets/test.jpg" style="width:100%;">
-                </van-swipe-item>
-                <van-swipe-item>
-                  <img src="./../../assets/test.jpg" style="width:100%;">
-                </van-swipe-item>
-              </van-swipe> -->
-              </div>
-        </div>
-     </div>
+    <div>
+      <div class="suwis-recom-head">
+      <div style="background:#fff;display:flex;margin:0 15px;height:120px;border-radius: 4px;-webkit-border-radius:4px;">
+          <span class="d-banntitle-left"><span style="background-image: linear-gradient(to right , #FAA537, #F06B25);">为您挑选人间好物</span></span>
+          <!-- <span class="d-banntitle-right">共<span>1314</span>件商品</span> -->
+      </div>
+      </div>
+      <div class="suwis-news-ban">
+        <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
+          <van-swipe-item>
+            <img src="../../../public/test2.png" style="width:100%;">
+          </van-swipe-item>
+          <van-swipe-item>
+            <img src="../../../public/test2.png" style="width:100%;">
+          </van-swipe-item>
+        </van-swipe>
+      </div>
+    </div>
      <div class="suwis-recom-list">
        <div class="suwis-recom-item" v-for="(item,index) in 10">
          <div :class="index%2==0?'d-flex':'d-flex1'">
@@ -55,12 +54,27 @@ export default {
 </script>
 
 <style lang="css">
-.suwis-recom-head{
-  background: #F35A5A;
+.suwis-news-ban {
   display: flex;
+  padding:0 20px;
+  margin-top:-35px;
+  padding-bottom: 10px;
+}
+.suwis-news-ban img {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  -webkit-border-radius:4px;
+}
+.suwis-recom-head{
+  padding-top: 10px;
+  background: #F35A5A;
+  height: 85px;
+  /* display: flex;
   padding:15px;
   height: 100px;
-  border-bottom: 50px solid  #fff;
+  border-bottom: 50px solid  #fff; */
 }
 .suwis-recom-bann{
   height: 300px;
@@ -68,10 +82,7 @@ export default {
   border-radius: 5px;
   flex: 1;
 }
-.suwis-recom-banntitle::after{
-  content: '';
-  clear: both;
-}
+
 .d-banntitle-left{
   text-align: left;
   float: left;
@@ -88,6 +99,7 @@ export default {
 }
 .d-banntitle-right{
   text-align: right;
+  border:1px solid #333;
   float:right;
   padding: 15px;
   color: #999;
