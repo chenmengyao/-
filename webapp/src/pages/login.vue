@@ -2,14 +2,18 @@
   <div class="suwis-login" :class="{loaded:loaded}" @keyup.enter="loginBefore">
     <div class="bg" :style="{'background-image':`url(${bgurl})`}"></div>
     <div class="form">
-      <img src="@/assets/login/avatar@3x.png" alt="">
-
+      <img class="avatar" src="@/assets/login/avatar@3x.png" alt="">
       <div class="tabs">
         <van-tabs v-model="modalType">
           <van-tab title="手机验证码登陆">
             <van-field v-model="formData.phone" placeholder="请输入您的11位手机号" />
             <van-field v-model="formData.phone" placeholder="请输入验证码" />
-            <van-button type="warning">登录</van-button>
+            <van-button class="btn-submit" type="warning">登录</van-button>
+            <div class="footer-link">
+              <a href="#">忘记密码？</a>
+              <br>
+              登陆即代表已同意<em>用户服务协议</em>
+            </div>
           </van-tab>
           <van-tab title="账号登陆">账号登陆 2</van-tab>
         </van-tabs>
@@ -283,6 +287,56 @@ export default {
 
 <style lang="scss" scoped>
 .suwis-login {
+    background: linear-gradient(90deg,rgba(243,90,90,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
+    height: 100vh;
+    position: relative;
+    padding: 32vw 15px 15px;
+    box-sizing: border-box;
+    .form {
+        background: #fff;
+        border-radius: 4px;
+        position: absolute;
+        bottom: 15px;
+        top: 80px;
+        width: calc(100% - 30px);
+        box-sizing: border-box;
+        padding: 0 15px;
 
+        .avatar {
+            width: 80px;
+            border-radius: 100%;
+            margin-top: -40px;
+            margin-bottom: 6vw;
+        }
+
+        .btn-submit {
+            border-radius: 50px;
+            width: 100%;
+            margin: 5vw auto;
+        }
+
+        .van-tab__pane {
+            padding-top: 6vw;
+        }
+
+        .footer-link {
+            bottom: 60px;
+            position: fixed;
+            left: 0;
+            text-align: center;
+            width: 100%;
+            font-style: normal;
+            line-height: 26px;
+            font-size: 14px;
+
+            * {
+                font-style: normal;
+            }
+
+            a {
+                color: #000000;
+            }
+        }
+    }
 }
 </style>
