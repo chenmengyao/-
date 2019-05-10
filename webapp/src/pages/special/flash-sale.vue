@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-        <van-tabs background="#FAA537" title-inactive-color="red" line-height="0" title-active-color="#fff" v-model="active" swipeable>
+        <van-tabs background="#FAA537" title-inactive-color="red" :line-height="0" title-active-color="#fff" v-model="active" swipeable>
         <van-tab>
             <div slot="title">
               <div class="suwis-tab-title">14:00</div>
