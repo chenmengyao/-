@@ -60,6 +60,13 @@
       </van-row>
     </dd>
   </dl>
+  <!--  -->
+  <!--  -->
+  <h3 class="title">猜你喜欢</h3>
+  <good-list>
+    <good-item v-for="item in 10"></good-item>
+  </good-list>
+  <!--  -->
 </div>
 </template>
 
@@ -133,6 +140,17 @@ export default {
                 }
             }
         }
+    }
+
+    .title {
+        font-size: 16px;
+        text-align: left;
+        font-family: PingFang SC;
+        font-weight: 400;
+        line-height: 22px;
+        color: rgba(51,51,51,1);
+        padding-left: 12px;
+        margin-bottom: 5px;
     }
 }
 </style>
