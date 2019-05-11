@@ -6,13 +6,20 @@
       <div class="tabs">
         <van-tabs v-model="modalType">
           <van-tab title="手机验证码登陆">
-            <van-field v-model="formData.phone" placeholder="请输入您的11位手机号" />
-            <van-field v-model="formData.phone" placeholder="请输入验证码" />
+            <van-field v-model="formData.phone" placeholder="请输入您的11位手机号">
+              <img class="field-icon" slot="left-icon"  src="@/assets/login/phone@3x.png" alt="">
+            </van-field>
+            <van-field v-model="formData.code" placeholder="请输入验证码">
+              <img class="field-icon" style="margin-top:4.3px;" slot="left-icon"  src="@/assets/login/code@3x.png" alt="">
+               <van-button class="send-code" slot="button" size="small" type="primary">发送验证码</van-button>
+            </van-field>
             <van-button class="btn-submit" type="warning">登录</van-button>
             <div class="footer-link">
               <a href="#">忘记密码？</a>
               <br>
-              登陆即代表已同意<em>用户服务协议</em>
+              <span class="ua">
+                登陆即代表已同意<em>《用户服务协议》</em>
+              </span>
             </div>
           </van-tab>
           <van-tab title="账号登陆">账号登陆 2</van-tab>
@@ -309,6 +316,12 @@ export default {
             margin-bottom: 6vw;
         }
 
+        .field-icon {
+            width: 19px;
+            display: block;
+            margin-top: 1.6px;
+        }
+
         .btn-submit {
             border-radius: 50px;
             width: 100%;
@@ -317,6 +330,12 @@ export default {
 
         .van-tab__pane {
             padding-top: 6vw;
+        }
+
+        .send-code {
+            background: transparent;
+            color: #E83F44;
+            border: none;
         }
 
         .footer-link {
@@ -334,7 +353,17 @@ export default {
             }
 
             a {
-                color: #000000;
+                color: #333333;
+            }
+
+            .ua {
+                padding-top: 6vw;
+                display: inline-block;
+                color: #999999;
+
+                em {
+                    color: #F0914B;
+                }
             }
         }
     }
