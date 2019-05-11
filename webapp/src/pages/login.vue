@@ -14,16 +14,24 @@
                <van-button class="send-code" slot="button" size="small" type="primary">发送验证码</van-button>
             </van-field>
             <van-button class="btn-submit" type="warning">登录</van-button>
-            <div class="footer-link">
-              <a href="#">忘记密码？</a>
-              <br>
-              <span class="ua">
-                登陆即代表已同意<em>《用户服务协议》</em>
-              </span>
-            </div>
           </van-tab>
-          <van-tab title="账号登陆">账号登陆 2</van-tab>
+          <van-tab title="账号登陆">
+            <van-field v-model="formData.phone" placeholder="请输入您的11位手机号">
+              <img class="field-icon" slot="left-icon"  src="@/assets/login/phone@3x.png" alt="">
+            </van-field>
+            <van-field v-model="formData.code" placeholder="请输入验证码">
+              <img class="field-icon" slot="left-icon"  src="@/assets/login/paypwd@3x.png" alt="">
+            </van-field>
+            <van-button class="btn-submit" type="warning">登录</van-button>
+          </van-tab>
         </van-tabs>
+        <div class="footer-link">
+          <a href="#">忘记密码？</a>
+          <br>
+          <span class="ua">
+            登陆即代表已同意<em>《用户服务协议》</em>
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -314,6 +322,7 @@ export default {
             border-radius: 100%;
             margin-top: -40px;
             margin-bottom: 6vw;
+            border: 3px solid #DD0B11;
         }
 
         .field-icon {
