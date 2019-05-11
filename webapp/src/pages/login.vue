@@ -13,7 +13,7 @@
               <img class="field-icon" style="margin-top:2.2px;" slot="left-icon"  src="@/assets/login/code@3x.png" alt="">
                <van-button class="send-code" slot="button" size="small" type="primary">发送验证码</van-button>
             </van-field>
-            <van-button class="btn-submit" type="warning">登录</van-button>
+            <van-button class="btn-submit" type="primary">登录</van-button>
           </van-tab>
           <van-tab title="账号登陆">
             <van-field v-model="formData.phone" placeholder="请输入您的11位手机号">
@@ -22,7 +22,7 @@
             <van-field v-model="formData.code" placeholder="请输入验证码">
               <img class="field-icon" slot="left-icon"  src="@/assets/login/paypwd@3x.png" alt="">
             </van-field>
-            <van-button class="btn-submit" type="warning">登录</van-button>
+            <van-button class="btn-submit" type="primary">登录</van-button>
           </van-tab>
         </van-tabs>
         <div class="footer-link">
@@ -335,7 +335,6 @@ export default {
             border-radius: 50px;
             width: 100%;
             margin: 5vw auto;
-            background:linear-gradient(54deg,rgba(245,92,60,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
         }
 
         .van-tab__pane {
