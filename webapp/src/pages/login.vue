@@ -10,7 +10,7 @@
               <img class="field-icon" slot="left-icon"  src="@/assets/login/phone@3x.png" alt="">
             </van-field>
             <van-field v-model="formData.code" placeholder="请输入验证码">
-              <img class="field-icon" style="margin-top:4.3px;" slot="left-icon"  src="@/assets/login/code@3x.png" alt="">
+              <img class="field-icon" style="margin-top:2.2px;" slot="left-icon"  src="@/assets/login/code@3x.png" alt="">
                <van-button class="send-code" slot="button" size="small" type="primary">发送验证码</van-button>
             </van-field>
             <van-button class="btn-submit" type="warning">登录</van-button>
@@ -335,6 +335,7 @@ export default {
             border-radius: 50px;
             width: 100%;
             margin: 5vw auto;
+            background:linear-gradient(54deg,rgba(245,92,60,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
         }
 
         .van-tab__pane {
@@ -345,6 +346,7 @@ export default {
             background: transparent;
             color: #E83F44;
             border: none;
+            height: 20px;
         }
 
         .footer-link {
