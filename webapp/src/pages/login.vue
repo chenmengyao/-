@@ -1,152 +1,39 @@
 <template lang="html">
   <div class="suwis-login" :class="{loaded:loaded}" @keyup.enter="loginBefore">
     <div class="bg" :style="{'background-image':`url(${bgurl})`}"></div>
-    <div class="login-form">
-      <div class="logo">
-        <img src="images/logo_blue.png" alt="">
-        蜗拖智能车货匹配平台
-      </div>
-      <div v-if="modalType=='login'">
-        <Tabs v-model="loginType" :value="loginType">
-          <TabPane label="账号登陆" name="account">
-            <Form ref="loginForm" :model="formData" :rules="rules" label-position="top">
-              <FormItem label="用户名" prop="phone">
-                <Input v-model="formData.phone"></Input>
-              </FormItem>
-              <FormItem label="密码" prop="pwd">
-                <Input v-model="formData.pwd" type="password"></Input>
-              </FormItem>
-              <FormItem style="text-align:right;">
-                <Button style="width:100%;" :disabled="disabled" type="primary" @click="loginBefore">{{disabled?'登录中':'登录'}}</Button>
-              </FormItem>
-              <div style="display:flex;justify-content: space-between;width:100%;">
-                <span style="font-size:14px;">
-                  还没账号？<a href="javascript:;" @click="modalType='register'">立即注册</a>
-                </span>
-                <span>
-                  <a href="javascript:;" @click="modalType='reset'">忘记密码？</a>
-                </span>
-              </div>
-            </Form>
-          </TabPane>
-          <TabPane label="扫码登陆" name="qrcode">
-            <div class="qrcode">
-              <img :src="qrcodeurl" alt="">
-              <span class="tips">打开货主端APP扫一扫</span>
-              <a href="javascript:;" @click="modalType='appdownload'">下载蜗托APP</a>
-              <p class="tips gray">（如扫码登录无反应，请在APP重新登录后再试）</p>
-            </div>
-          </TabPane>
-          <TabPane label="短信登陆" name="mscode">
-            <Form ref="codeForm" :model="formData" :rules="rules" label-position="top">
-              <FormItem label="手机号" prop="phone">
-                <Input v-model="formData.phone"></Input>
-              </FormItem>
-              <FormItem label="短信验证码" prop="code">
-                <div style="display:flex;justify-content: space-between;width:100%;">
-                  <Input v-model="formData.code" type="text" style="width:180px;"></Input>
-                  <Button style="width:128px;" :disabled="codeDisabled" type="success" @click="sendCode">
-                    <span v-if="!codeDisabled">
-                      获取短信验证码
-                    </span>
-                    <span v-else>
-                      {{countDownText}}s后可重新发送
-                    </span>
-                  </Button>
-                </div>
-              </FormItem>
-              <FormItem style="text-align:right;">
-                <Button style="width:100%;" :disabled="disabled" type="primary" @click="loginBefore">{{disabled?'登录中':'登录'}}</Button>
-              </FormItem>
-            </Form>
-          </TabPane>
-        </Tabs>
-      </div>
-      <div v-if="modalType=='appdownload'">
-        <div class="qrcode">
-          <img src="images/qrcode.jpg" alt="">
-          <span class="tips">扫码下载货主版APP</span>
-          <a href="javascript:;" @click="modalType='login'">账号登陆</a>
+    <div class="form">
+      <img class="avatar" src="@/assets/login/avatar@3x.png" alt="">
+      <div class="tabs">
+        <van-tabs v-model="modalType">
+          <van-tab title="手机验证码登陆">
+            <van-field v-model="formData.phone" placeholder="请输入您的11位手机号">
+              <img class="field-icon" slot="left-icon"  src="@/assets/login/phone@3x.png" alt="">
+            </van-field>
+            <van-field v-model="formData.code" placeholder="请输入验证码">
+              <img class="field-icon" style="margin-top:2.2px;" slot="left-icon"  src="@/assets/login/code@3x.png" alt="">
+               <van-button class="send-code" slot="button" size="small" type="primary">发送验证码</van-button>
+            </van-field>
+            <van-button class="btn-submit" type="primary">登录</van-button>
+          </van-tab>
+          <van-tab title="账号登陆">
+            <van-field v-model="formData.phone" placeholder="请输入您的11位手机号">
+              <img class="field-icon" slot="left-icon"  src="@/assets/login/phone@3x.png" alt="">
+            </van-field>
+            <van-field v-model="formData.code" placeholder="请输入验证码">
+              <img class="field-icon" slot="left-icon"  src="@/assets/login/paypwd@3x.png" alt="">
+            </van-field>
+            <van-button class="btn-submit" type="primary">登录</van-button>
+          </van-tab>
+        </van-tabs>
+        <div class="footer-link">
+          <a href="#">忘记密码？</a>
+          <br>
+          <span class="ua">
+            登陆即代表已同意<em>《用户服务协议》</em>
+          </span>
         </div>
       </div>
-      <div v-if="modalType=='register'">
-        <Form ref="registerForm" :model="formData" :rules="rules" label-position="top">
-          <FormItem label="用户名" prop="phone">
-            <Input v-model="formData.phone"></Input>
-          </FormItem>
-          <FormItem label="短信验证码" prop="code">
-            <div style="display:flex;justify-content: space-between;width:100%;">
-              <Input v-model="formData.code" type="text" style="width:180px;"></Input>
-              <Button style="width:128px;" :disabled="codeDisabled" type="success" @click="sendCode">
-                <span v-if="!codeDisabled">
-                  获取短信验证码
-                </span>
-                <span v-else>
-                  {{countDownText}}s后可重新发送
-                </span>
-              </Button>
-            </div>
-          </FormItem>
-          <FormItem label="密码" prop="pwd">
-            <Input v-model="formData.pwd" type="password"></Input>
-          </FormItem>
-          <FormItem label="确认密码" prop="pwdConfirm">
-            <Input v-model="formData.pwdConfirm" type="password"></Input>
-          </FormItem>
-          <div style="margin-bottom:15px;">
-            <Checkbox v-model="agreed">
-              <span>注册即代表同意<a href="javascript:;" @click="loadAgreement">《蜗拖智能车货匹配平台服务协议》</a></span>
-            </Checkbox>
-          </div>
-          <FormItem style="text-align:right;">
-            <Button style="width:100%;" :disabled="disabled" type="primary" @click="registerBefore">{{disabled?'注册种':'注册成为蜗拖货主'}}</Button>
-          </FormItem>
-          <div style="display:flex;justify-content: flex-end;width:100%;">
-            <span>
-              <a href="javascript:;" @click="modalType='login'">已有账号,立即登陆</a>
-            </span>
-          </div>
-        </Form>
-      </div>
-      <div v-if="modalType=='reset'">
-        <Form ref="resetForm" :model="formData" :rules="rules" label-position="top">
-          <FormItem label="用户名" prop="phone">
-            <Input v-model="formData.phone"></Input>
-          </FormItem>
-          <FormItem label="短信验证码" prop="code">
-            <div style="display:flex;justify-content: space-between;width:100%;">
-              <Input v-model="formData.code" type="text" style="width:180px;"></Input>
-              <Button style="width:128px;" :disabled="codeDisabled" type="success" @click="sendCode">
-                <span v-if="!codeDisabled">
-                  获取短信验证码
-                </span>
-                <span v-else>
-                  {{countDownText}}s后可重新发送
-                </span>
-              </Button>
-            </div>
-          </FormItem>
-          <FormItem label="密码" prop="pwd">
-            <Input v-model="formData.pwd" type="password"></Input>
-          </FormItem>
-          <FormItem label="确认密码" prop="pwdConfirm">
-            <Input v-model="formData.pwdConfirm" type="password"></Input>
-          </FormItem>
-          <FormItem style="text-align:right;">
-            <Button style="width:100%;" :disabled="disabled" type="primary" @click="resetBefore">重置密码</Button>
-          </FormItem>
-          <div style="display:flex;justify-content: flex-end;width:100%;">
-            <span>
-              <a href="javascript:;" @click="modalType='login'">已有账号,立即登陆</a>
-            </span>
-          </div>
-        </Form>
-      </div>
     </div>
-    <!-- 注册协议 -->
-    <Drawer title="《蜗拖智能车货匹配平台服务协议》" :width="800" placement="right" :closable="true" v-model="agreement">
-      <div v-html="agreementText"></div>
-    </Drawer>
   </div>
 </template>
 
@@ -415,6 +302,80 @@ export default {
 
 <style lang="scss" scoped>
 .suwis-login {
+    background: linear-gradient(90deg,rgba(243,90,90,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
+    height: 100vh;
+    position: relative;
+    padding: 32vw 15px 15px;
+    box-sizing: border-box;
+    .form {
+        background: #fff;
+        border-radius: 4px;
+        position: absolute;
+        bottom: 15px;
+        top: 80px;
+        width: calc(100% - 30px);
+        box-sizing: border-box;
+        padding: 0 15px;
 
+        .avatar {
+            width: 80px;
+            border-radius: 100%;
+            margin-top: -40px;
+            margin-bottom: 6vw;
+            border: 3px solid #DD0B11;
+        }
+
+        .field-icon {
+            width: 19px;
+            display: block;
+            margin-top: 1.6px;
+        }
+
+        .btn-submit {
+            border-radius: 50px;
+            width: 100%;
+            margin: 5vw auto;
+        }
+
+        .van-tab__pane {
+            padding-top: 6vw;
+        }
+
+        .send-code {
+            background: transparent;
+            color: #E83F44;
+            border: none;
+            height: 20px;
+        }
+
+        .footer-link {
+            bottom: 60px;
+            position: fixed;
+            left: 0;
+            text-align: center;
+            width: 100%;
+            font-style: normal;
+            line-height: 26px;
+            font-size: 14px;
+
+            * {
+                font-style: normal;
+            }
+
+            a {
+                color: #333333;
+            }
+
+            .ua {
+                padding-top: 6vw;
+                display: inline-block;
+                color: #999999;
+
+                em {
+                    color: #F0914B;
+                }
+            }
+        }
+    }
 }
 </style>
