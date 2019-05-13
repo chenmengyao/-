@@ -1,18 +1,12 @@
 <template>
   <div>
-<<<<<<< HEAD
-<<<<<<< HEAD
     <div>
-        <van-tabs background="#FAA537" title-inactive-color="red" :line-height="0" title-active-color="#fff" v-model="active" swipeable>
-=======
-    <div style="background-image: linear-gradient(to right , #F35A5A, #DD0B11);">
-        <van-tabs background="none" line-height="0" animated title-inactive-color="red" title-active-color="#fff" v-model="active" swipeable>
->>>>>>> de9aecdffb60f61ddd51c4a3e2a12c84b5ede742
-=======
+        <!-- <van-tabs background="#FAA537" title-inactive-color="red" :line-height="0" title-active-color="#fff" v-model="active" swipeable> -->
+    <!-- <div style="background-image: linear-gradient(to right , #F35A5A, #DD0B11);">-->
+        <!-- <van-tabs background="none" line-height="0" animated title-inactive-color="red" title-active-color="#fff" v-model="active" swipeable>  -->
       <div class="d-bg"></div>
-      <div>
+      <!-- <div> -->
         <van-tabs background="none" animated :line-height='0' title-inactive-color="#ef7f7c" title-active-color="#fff" v-model="active" swipeable>
->>>>>>> 379a7cf7bb358c01fb983b02baafdff77710893d
         <van-tab>
             <div slot="title">
               <div class="suwis-tab-title">14:00</div>
@@ -287,6 +281,7 @@
       </van-tabs>
     </div>
   </div>
+   </div>
 </template>
 
 <script>
