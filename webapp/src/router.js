@@ -152,5 +152,9 @@ export default new Router({
     path: '/mine/commission',
     name: 'mine_commission',
     component: () => import('./pages/mine/commission')
+  }, {
+    path: '/mine/details',
+    name: 'mine_details',
+    component: () => import('./pages/mine/details')
   }]
 })
