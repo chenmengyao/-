@@ -1,7 +1,12 @@
 <template>
   <div>
+<<<<<<< HEAD
     <div>
         <van-tabs background="#FAA537" title-inactive-color="red" :line-height="0" title-active-color="#fff" v-model="active" swipeable>
+=======
+    <div style="background-image: linear-gradient(to right , #F35A5A, #DD0B11);">
+        <van-tabs background="none" line-height="0" animated title-inactive-color="red" title-active-color="#fff" v-model="active" swipeable>
+>>>>>>> de9aecdffb60f61ddd51c4a3e2a12c84b5ede742
         <van-tab>
             <div slot="title">
               <div class="suwis-tab-title">14:00</div>
@@ -9,7 +14,7 @@
             </div>
             <div>
                <div>
-                  <div style="position:absolute;width:100%;height:50px;background:#FAA537"></div>
+                  <div style="position:absolute;width:100%;height:50px;"></div>
                   <div style="display:flex;padding:15px">
                         <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
                           <van-swipe-item>

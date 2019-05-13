@@ -96,8 +96,8 @@ export default {
 }
 .suwis-news-right {
   max-width:140px;
-  min-width: 140px;
-  height: 140;
+  /* min-width: 140px; */
+  height: 140px;
   border-radius: 6px;
   overflow: hidden;
 }
