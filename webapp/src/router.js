@@ -17,6 +17,10 @@ export default new Router({
     name: 'register',
     component: () => import('./pages/register.vue')
   }, {
+    path: '/updatepwd',
+    name: 'updatepwd',
+    component: () => import('./pages/updatepwd.vue')
+  }, {
     path: '/news', //资讯头条列表
     name: 'news',
     component: () => import('./pages/news/index.vue')
@@ -144,5 +148,9 @@ export default new Router({
     path: '/mine/feedback',
     name: 'mine_feedback',
     component: () => import('./pages/mine/feedback')
+  }, {
+    path: '/mine/commission',
+    name: 'mine_commission',
+    component: () => import('./pages/mine/commission')
   }]
 })

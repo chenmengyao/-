@@ -2,17 +2,36 @@
   <div class="suwis-login" :class="{loaded:loaded}" @keyup.enter="loginBefore">
     <div class="bg" :style="{'background-image':`url(${bgurl})`}"></div>
     <div class="form">
-      <img src="@/assets/login/avatar@3x.png" alt="">
-
+      <img class="avatar" src="@/assets/login/avatar@3x.png" alt="">
       <div class="tabs">
         <van-tabs v-model="modalType">
           <van-tab title="手机验证码登陆">
-            <van-field v-model="formData.phone" placeholder="请输入您的11位手机号" />
-            <van-field v-model="formData.phone" placeholder="请输入验证码" />
-            <van-button type="warning">登录</van-button>
+            <van-field v-model="formData.phone" placeholder="请输入您的11位手机号">
+              <img class="field-icon" slot="left-icon"  src="@/assets/login/phone@3x.png" alt="">
+            </van-field>
+            <van-field v-model="formData.code" placeholder="请输入验证码">
+              <img class="field-icon" style="margin-top:2.2px;" slot="left-icon"  src="@/assets/login/code@3x.png" alt="">
+               <van-button class="send-code" slot="button" size="small" type="primary">发送验证码</van-button>
+            </van-field>
+            <van-button class="btn-submit" type="primary">登录</van-button>
           </van-tab>
-          <van-tab title="账号登陆">账号登陆 2</van-tab>
+          <van-tab title="账号登陆">
+            <van-field v-model="formData.phone" placeholder="请输入您的11位手机号">
+              <img class="field-icon" slot="left-icon"  src="@/assets/login/phone@3x.png" alt="">
+            </van-field>
+            <van-field v-model="formData.code" placeholder="请输入验证码">
+              <img class="field-icon" slot="left-icon"  src="@/assets/login/paypwd@3x.png" alt="">
+            </van-field>
+            <van-button class="btn-submit" type="primary">登录</van-button>
+          </van-tab>
         </van-tabs>
+        <div class="footer-link">
+          <a href="#">忘记密码？</a>
+          <br>
+          <span class="ua">
+            登陆即代表已同意<em>《用户服务协议》</em>
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -283,6 +302,80 @@ export default {
 
 <style lang="scss" scoped>
 .suwis-login {
+    background: linear-gradient(90deg,rgba(243,90,90,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
+    height: 100vh;
+    position: relative;
+    padding: 32vw 15px 15px;
+    box-sizing: border-box;
+    .form {
+        background: #fff;
+        border-radius: 4px;
+        position: absolute;
+        bottom: 15px;
+        top: 80px;
+        width: calc(100% - 30px);
+        box-sizing: border-box;
+        padding: 0 15px;
 
+        .avatar {
+            width: 80px;
+            border-radius: 100%;
+            margin-top: -40px;
+            margin-bottom: 6vw;
+            border: 3px solid #DD0B11;
+        }
+
+        .field-icon {
+            width: 19px;
+            display: block;
+            margin-top: 1.6px;
+        }
+
+        .btn-submit {
+            border-radius: 50px;
+            width: 100%;
+            margin: 5vw auto;
+        }
+
+        .van-tab__pane {
+            padding-top: 6vw;
+        }
+
+        .send-code {
+            background: transparent;
+            color: #E83F44;
+            border: none;
+            height: 20px;
+        }
+
+        .footer-link {
+            bottom: 60px;
+            position: fixed;
+            left: 0;
+            text-align: center;
+            width: 100%;
+            font-style: normal;
+            line-height: 26px;
+            font-size: 14px;
+
+            * {
+                font-style: normal;
+            }
+
+            a {
+                color: #333333;
+            }
+
+            .ua {
+                padding-top: 6vw;
+                display: inline-block;
+                color: #999999;
+
+                em {
+                    color: #F0914B;
+                }
+            }
+        }
+    }
 }
 </style>

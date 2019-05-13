@@ -6,6 +6,8 @@ import store from './store'
 import '@/components'
 // 注册插件
 import '@/plugins'
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
 
