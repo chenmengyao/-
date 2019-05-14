@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="suwis-good-details">
-    <van-row justify="center" class="nav">
-      <van-col span="8">商品</van-col>
+    <van-row justify="center" align="center" class="nav">
+      <van-col span="8" class="active">商品</van-col>
       <van-col span="8">评价</van-col>
       <van-col span="8">详情</van-col>
     </van-row>
@@ -36,6 +36,8 @@
         领取
       </van-col>
     </van-row>
+    <van-cell title="型号" is-link value="请先选择您要购买的商品型号" />
+    <!--  -->
     <van-goods-action>
       <van-goods-action-mini-btn
         icon="chat-o"
@@ -68,6 +70,32 @@ export default {}
 .suwis-good-details {
     position: relative;
 
+    .nav {
+        height: 50px;
+        align-items: center;
+        display: flex;
+        font-size: 16px;
 
+        .van-col {
+            position: relative;
+        }
+
+        .active::before {
+            content: '';
+            position: absolute;
+            width: 32px;
+            margin-left: -16px;
+            left: 50%;
+            bottom: -8px;
+            border-bottom: 2px solid $red;
+        }
+    }
+
+    .van-cell {
+        white-space: nowrap;
+        .van-cell__title {
+            text-align: left;
+        }
+    }
 }
 </style>
