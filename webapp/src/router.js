@@ -147,6 +147,18 @@ export default new Router({
   }, {
     path: '/mine/feedback',
     name: 'mine_feedback',
-    component: () => import('./pages/mine/feedback')
+    component: () => import('./pages/mine/feedback.vue')
+  }, {
+    path: '/mine/commission',
+    name: 'mine_commission',
+    component: () => import('./pages/mine/commission.vue')
+  }, {
+    path: '/mine/information',
+    name: 'mine_commission',
+    component: () => import('./pages/mine/information.vue')
+  }, {
+    path: '/mine/message/system',
+    name: 'mine_system',
+    component: () => import('./pages/mine/message/system.vue')
   }]
 })

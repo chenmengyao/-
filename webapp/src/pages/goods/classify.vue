@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <van-search placeholder="请输入搜索关键词" v-model="keyWord" />
+      <van-search placeholder="请输入搜索关键词" v-model="keyWord" style="text-align:center"/>
     </div>
     <div class="suwis-classify-con">
       <div class="suwis-classify-btn">
@@ -11,16 +11,16 @@
          </div>
       </div>
       <div class="suwis-classify-list">
-        <div style="padding:15px;padding-bottom:0;width:280px;overflow:hidden">
-          <!-- <van-swipe :autoplay="3000" indicator-color="white" style="width:100%">
-            <van-swipe-item>
-              <img src="./../../assets/test2.png" style="width:100%;">
-            </van-swipe-item>
-            <van-swipe-item>
-              <img src="./../../assets/test2.png" style="width:100%;">
-            </van-swipe-item>
-          </van-swipe> -->
-        </div>
+        <div style="width:calc(100vw - 114px);padding:15px 13px 0 13px">
+        <van-swipe :autoplay="3000" indicator-color="white">
+          <van-swipe-item>
+             <img src="../../../public/test2.png" width="100%">
+          </van-swipe-item>
+          <van-swipe-item>
+             <img src="../../../public/test2.png" width="100%">
+          </van-swipe-item>
+        </van-swipe>
+      </div>
         <div>
            <div>
               <span class="d-title">常用分类</span>
@@ -61,6 +61,8 @@ export default {
 <style lang="css">
 .suwis-classify-con{
   display: flex;
+  display: -webkit-flex;
+  width: 100%;
   text-align: left;
   font-size: 12px;
   color: #333;
@@ -69,8 +71,8 @@ export default {
   flex: 1;
 }
 .suwis-classify-btn{
-  max-width: 100px;
-  min-width: 100px;
+  max-width: 88px;
+  min-width: 88px;
   margin-top:15px;
 }
 .d-tips{
@@ -78,8 +80,8 @@ export default {
   display: inline-block;
   margin-top:15px;
   margin-left: 15px;
-  line-height: 28px;
-  border-radius: 14px;
+  line-height: 26px;
+  border-radius: 13px;
   padding: 0 11px;
   color: #666666;
   font-size: 12px;
@@ -95,16 +97,20 @@ export default {
   background: #EFEFEF
 }
 .d_active1{
-  color: #fff
+  color: #fff;
+  font-size: 14px;
+  color: #333;
 }
 .d_background{
   background: #fff !important;
+  font-size: 14px;
 }
 .d_active{
   border-left: 3px solid red;
   position: absolute;
   height: 14px;
   top: 13px;
+  font-size: 12px;
   left: 0;
   color:#fff;
   display: block;
