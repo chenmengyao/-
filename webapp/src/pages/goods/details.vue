@@ -48,7 +48,8 @@
     </van-cell>
     <!--  -->
     <comment-list>
-      <comment-item v-for="item in 5" name="橘猫****到我家" date="2019-03-01 12:01" avatar="touiocn.png"></comment-item>
+      <comment-item v-for="item in 5" name="橘猫****到我家" date="2019-03-01 12:01" avatar="touiocn.png" content="拿到手了，拿着不错，蛮透明，贴合度也高，摄像头的
+位置刚刚好。"></comment-item>
     </comment-list>
     <!--  -->
     <van-goods-action>
@@ -82,7 +83,7 @@ export default {}
 <style lang="scss" scoped>
 .suwis-good-details {
     position: relative;
-
+    padding-bottom: 50px;
     .nav {
         height: 50px;
         align-items: center;

@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="suwis-comment-item">
-    <van-row>
+    <van-row class="info">
       <van-col span="16">
         <slot name="avatar">
           <img class="avatar" :src="avatar" alt="">
@@ -18,12 +18,19 @@
       </van-col>
       <van-col class="date" span="8"><slot name="date">{{date}}</slot></van-col>
     </van-row>
+    <van-row class="content">
+      <van-col span="24">
+        <slot>
+          {{content}}
+        </slot>
+      </van-col>
+    </van-row>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['name', 'date', 'avatar']
+  props: ['name', 'date', 'avatar', 'content']
 }
 </script>
 
@@ -50,6 +57,12 @@ export default {
     }
     .date {
         justify-content: flex-end;
+    }
+    .info {
+        padding-bottom: 0;
+    }
+    .content {
+        padding-top: 0;
     }
 }
 </style>
