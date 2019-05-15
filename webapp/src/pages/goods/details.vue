@@ -37,6 +37,19 @@
       </van-col>
     </van-row>
     <van-cell title="型号" is-link value="请先选择您要购买的商品型号" />
+    <van-cell title="地址" is-link value="湖北省武汉市洪山区光谷大道光谷世贸中心E栋11…" />
+    <van-cell title="运费"  value="0元" />
+    <van-cell>
+      <span slot="title"><img class="security" src="@/assets/details/security@3x.png" alt="">该商品支持7天无理由退款</span>
+    </van-cell>
+    <van-cell>
+      <span slot="title">评价（43579）</span>
+      <span>好评率<em>97%</em></span>
+    </van-cell>
+    <!--  -->
+    <comment-list>
+      <comment-item v-for="item in 5" name="橘猫****到我家" date="2019-03-01 12:01" avatar="touiocn.png"></comment-item>
+    </comment-list>
     <!--  -->
     <van-goods-action>
       <van-goods-action-mini-btn
@@ -96,6 +109,13 @@ export default {}
         .van-cell__title {
             text-align: left;
         }
+    }
+    .security {
+        max-width: 15px;
+        vertical-align: middle;
+        display: inline-block;
+        margin-right: 5px;
+        margin-top: -2px;
     }
 }
 </style>
