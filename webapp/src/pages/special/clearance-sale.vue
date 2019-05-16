@@ -21,10 +21,13 @@
               <span class='suwis-news-date'>
                 <span class="d-yuan-price">￥59.9</span>
                 <span class="d-basis-price">￥59.9</span>
-                <span class="d-tags">清仓</span>
+                <!-- <span class="">清仓</span> -->
+                <img src="../../assets/clear.png" class="d-tags">
               </span>
               <span class='suwis-news-num'>
-                <span class="d-sale-btn">立即购买</span>
+                <span class="d-sale-btn">
+                   <img src="../../assets/gm.png">
+                </span>
               </span>
             </div>
          </div>
@@ -40,10 +43,12 @@
               <span class='suwis-news-date'>
                 <span class="d-yuan-price">￥59.9</span>
                 <span class="d-basis-price">￥59.9</span>
-                <span class="d-tags">清仓</span>
+                <img src="../../assets/clear.png" class="d-tags">
               </span>
               <span class='suwis-news-num'>
-                <span class="d-sale-btn">立即购买</span>
+                <span class="d-sale-btn">
+                   <img src="../../assets/gm.png">
+                </span>
               </span>
             </div>
          </div>
@@ -129,17 +134,23 @@ export default {
   color: #E83F44;
   padding:0 5px 0 3px;
 }
-.d-sale-btn{
-  padding: 0 5px;
+.d-sale-btn img{
+  /* padding: 0 4px;
   height: 30px;
   line-height: 30px;
   font-size: 14px;
   display: block;
   border: 1px solid #E83F44;
   border-radius:15px; 
-  color: #E83F44
+  color: #E83F44 */
+  width: 66px;
+  margin-top: 1px;
 }
 .d-tags{
-  color:#F0914B;border:1px solid #F0914B;font-size:6px;padding:2px 3px;border-top-right-radius:6px;border-bottom-left-radius:6px;
+  /* color:#F0914B;border:1px solid #F0914B;font-size:6px;padding:2px 3px;border-top-right-radius:6px;border-bottom-left-radius:6px; */
+  width:26px;
+  vertical-align: middle;
+  margin-top: -2px;
+  margin-left: 2px;
 }
 </style>

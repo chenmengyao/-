@@ -2,9 +2,9 @@
   <div>
     <div>
       <div class="suwis-recom-head">
-      <div style="background:#fff;display:flex;margin:0 15px;height:120px;border-radius: 4px;-webkit-border-radius:4px;">
-          <span class="d-banntitle-left"><span style="background-image: linear-gradient(to right , #FAA537, #F06B25);">为您挑选人间好物</span></span>
-          <!-- <span class="d-banntitle-right">共<span>1314</span>件商品</span> -->
+      <div style="background:#fff;display:flex; border:1px solid red;margin:0 15px;height:120px;border-radius: 4px;-webkit-border-radius:4px;">
+          <span class="d-banntitle-left"><span><img src="../../assets/hIcon.png">为您挑选人间好物</span></span>
+          <span class="d-banntitle-right">共<span>1314</span>件商品</span>
       </div>
       </div>
       <div class="suwis-news-ban">
@@ -85,23 +85,31 @@ export default {
 
 .d-banntitle-left{
   text-align: left;
-  float: left;
+  /* float: left; */
+  flex:1;
   color: #fff;
 }
 .d-banntitle-left span{
   margin: 10px 0;
-  padding: 0 15px;
+  padding: 0 10px;
   font-size: 16px;
+  background-image: linear-gradient(to right , #FAA537, #F06B25);
   line-height: 31px;
-  display: block;
+  display: inline-block;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
 }
+.d-banntitle-left span img{
+  width: 18px;
+  vertical-align: middle;
+  margin-top:-5px;
+  margin-right: 6px;
+}
 .d-banntitle-right{
   text-align: right;
-  border:1px solid #333;
-  float:right;
-  padding: 15px;
+  flex:1;
+  max-width:100px;
+  padding: 10px 14px 10px 0;
   color: #999;
   font-size: 12px;
   line-height: 31px;
