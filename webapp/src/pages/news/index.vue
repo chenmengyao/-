@@ -45,8 +45,18 @@
 export default {
   data() {
     return {
+      
     }
-  }
+  },
+   methods: {
+     //获取资讯列表
+      getNewsList(){
+    
+      }
+    },
+    created(){
+      this.getNewsList()
+    }
 }
 </script>
 

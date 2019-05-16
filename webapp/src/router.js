@@ -160,5 +160,9 @@ export default new Router({
     path: '/mine/message/system',
     name: 'mine_system',
     component: () => import('./pages/mine/message/system.vue')
+  }, {
+    path: '/mine/message/logistics',
+    name: 'mine_logistics',
+    component: () => import('./pages/mine/message/logistics.vue')
   }]
 })
