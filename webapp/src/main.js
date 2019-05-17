@@ -11,8 +11,11 @@ Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+// 挂载到app变量上
+window.app = {
+  $vm: new Vue({
+    router,
+    store,
+    render: h => h(App)
+  }).$mount('#app')
+}
