@@ -41,9 +41,9 @@
     <van-cell>
       <span slot="title"><img class="security" src="@/assets/details/security@3x.png" alt="">该商品支持7天无理由退款</span>
     </van-cell>
-    <van-cell class="interval">
+    <van-cell class="interval comment">
       <span slot="title">评价（43579）</span>
-      <span>好评率<em>97%</em></span>
+      <span>好评率&nbsp;<em>97%</em></span>
     </van-cell>
     <!--  -->
     <comment-list>
@@ -160,6 +160,13 @@ export default {}
     }
     .interval {
         border-top: 6px solid $border;
+    }
+    .comment {
+        em {
+            color: $red;
+            font-style: normal;
+            font-size: 14px;
+        }
     }
 }
 </style>
