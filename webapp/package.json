@@ -19,6 +19,7 @@
     "moment": "^2.24.0",
     "qs": "^6.7.0",
     "style-resources-loader": "^1.2.1",
+    "suwis-vuex-sync": "^1.0.1",
     "vant": "^1.6.17",
     "vue": "^2.6.10",
     "vue-echarts-v3": "^2.0.1",

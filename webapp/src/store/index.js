@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import sync from './sync'
+import sync from 'suwis-vuex-sync'
 import core from './core'
 
 Vue.use(Vuex)
