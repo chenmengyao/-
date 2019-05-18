@@ -52,9 +52,7 @@ export default {
      //获取资讯列表
       getNewsList(){
      
-      // this.$axios.post('/app/user/reset').then(res => {
 
-      // })
       }
     },
     created(){
