@@ -2,41 +2,28 @@
   <div> 
     <div class="suwis-news-ban">
       <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;" :height="200">
-        <van-swipe-item>
-          <img src="./../../assets/test.jpg" style="width:100%;">
-        </van-swipe-item>
-        <van-swipe-item>
-          <img src="./../../assets/test.jpg" style="width:100%;">
+        <van-swipe-item v-for="item in banner">
+          <img :src="item.img" style="width:100%;">
         </van-swipe-item>
       </van-swipe>
     </div>
     <div>
-      <div class="suwis-news-list">
-         <div class="suwis-news-left">
-            <span>只需这四款长款，让你告别老气穿 出高级感</span>
-            <p class='suwis-news-tips'>
-              <span class='suwis-news-date'>2019-02-28 10:18</span>
-              <span class='suwis-news-num'><img src="../../assets/slices.png" style="width:15px;"> 500</span>
-            </p>
-         </div>
-         <div class="suwis-news-right">
-           <img src="./../../assets/test1.png" width="100%">
-         </div>
-      </div>
-      <div class="suwis-news-list">
-         <div class="suwis-news-left">
-            <span>我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题</span>
-            <p class='suwis-news-tips'>
-              <span class='suwis-news-date'>2019-02-28 10:18</span>
-              <span class='suwis-news-num'><img src="../../assets/slices.png" style="width:15px;"> 500</span>
-            </p>
-         </div>
-         <div class="suwis-news-right">
-           <img src="./../../assets/test1.png" width="100%">
-         </div>
-      </div>
-      
-      
+        <div class="suwis-news-list" v-for="item in newsList">
+          <div class="suwis-news-left">
+              <router-link tag="li" :to="{path: '/news/details', query: {id: item.id}}">
+                <span>{{item.title}}</span>
+              </router-link>
+              <p class='suwis-news-tips'>
+                <span class='suwis-news-date'>{{item.time|dateFmt}}</span>
+                <span class='suwis-news-num'><img src="../../assets/slices.png" style="width:15px;"> {{item.clicks}}</span>
+              </p>
+          </div>
+          <div class="suwis-news-right">
+            <router-link tag="li" to="{path: '/news/details', query: {id: item.id}}">
+              <img :src="item.content.good[0].img" width="100%">
+            </router-link>
+          </div>
+        </div>
     </div>
   </div>
 </template>
@@ -45,25 +32,37 @@
 export default {
   data() {
     return {
-      
+      newsList:[],
+      banner:[]
     }
   },
    methods: {
      //获取资讯列表
-      getNewsList(){
-     
-      // this.$axios.post('/app/user/reset').then(res => {
-
-      // })
+      getNewsList(page,num){     
+        this.$axios.post('news/index',{
+          page:page,
+          num:num
+        }).then(res => {
+          this.banner=res.data.data.banner
+          delete res.data.data.banner
+          var list=[]
+          for(let i in res.data.data){
+            list.push(res.data.data[i])
+          }
+          this.newsList=list
+      })
       }
     },
     created(){
-      this.getNewsList()
+      this.getNewsList(1,10)
     }
 }
 </script>
 
 <style lang="css">
+ul,li{
+  list-style: none;
+}
 .suwis-news-ban {
   display: flex;
   padding: 15px;

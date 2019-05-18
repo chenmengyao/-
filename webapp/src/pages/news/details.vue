@@ -1,11 +1,30 @@
 <template lang="html">
   <div>
-    资讯详情
+     
   </div>
 </template>
 
 <script>
 export default {
+  data(){
+    return{
+        
+    }
+  },
+  methods: {
+    //获取资讯详情
+    getDetail(id){     
+      this.$axios.post('news/find',{
+        id:id
+      }).then(res => {
+        
+    })
+    }
+  },
+  created(){
+    var id=this.$route.query.id
+    this.getDetail(id)
+  }
 }
 </script>
 
