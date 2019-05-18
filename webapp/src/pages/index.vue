@@ -2,13 +2,12 @@
 <div class="suwis-index">
   <van-swipe :autoplay="3000"
     indicator-color="#E83F44">
-    <van-swipe-item>
-      <img src="images/index/banner_01.jpg"
-        alt="">
-    </van-swipe-item>
-    <van-swipe-item>
-      <img src="images/index/banner_01.jpg"
-        alt="">
+    <van-swipe-item v-for="item in banners">
+      <router-link :to="{ path: '/goods/details', query: {id: item.goods_id} }">
+        <!-- <img :src="item.img"> -->
+        <!-- 临时占位 -->
+        <img src="images/index/banner_01.jpg">
+      </router-link>
     </van-swipe-item>
   </van-swipe>
   <!--  -->
@@ -72,12 +71,23 @@
 
 <script>
 export default {
+  data() {
+    return {
+      banners: []
+    }
+  },
   components: {},
   created() {
-    
+    this.getBanner()
   },
   methods: {
-
+    // 获取banner
+    async getBanner() {
+      let res = await this.$axios.get('index/index')
+      console.log(res, 'res')
+      res = res.data.data || {}
+      this.banners = res.banner || []
+    }
   }
 }
 </script>

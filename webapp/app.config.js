@@ -4,5 +4,9 @@ export default {
   // 请求超时
   timeout: 10000,
   // 免登录地址
-  licenseExemptUrls: ['/register']
+  licenseExemptUrls: [
+    '/',
+    '/goods/details',
+    '/register'
+  ]
 }
