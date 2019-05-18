@@ -71,10 +71,14 @@
 </template>
 
 <script>
-// @ is an alias to /src
-
 export default {
-  components: {}
+  components: {},
+  created() {
+    
+  },
+  methods: {
+
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -93,6 +97,7 @@ export default {
             flex: 1;
             font-size: 12px;
             color: $primary;
+            text-align: center;
             &:active {
                 opacity: 0.8;
             }
