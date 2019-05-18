@@ -7030,6 +7030,10 @@ supports-color@^6.1.0:
   dependencies:
     has-flag "^3.0.0"
 
+suwis-vuex-sync@^1.0.1:
+  version "1.0.1"
+  resolved "https://npm.suwis.com:443/suwis-vuex-sync/-/suwis-vuex-sync-1.0.1.tgz#4a5b380b43effe6036a449de60e3bfb830169398"
+
 svg-tags@^1.0.0:
   version "1.0.0"
   resolved "https://npm.suwis.com:443/svg-tags/-/svg-tags-1.0.0.tgz#58f71cee3bd519b59d4b2a843b6c7de64ac04764"
