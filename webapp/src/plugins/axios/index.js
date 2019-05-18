@@ -16,8 +16,12 @@ var instance = axios.create({
 instance.interceptors.request.use(request => {
     let token = app.$vm.$store.getters['core/token']
     if (token) {
-      // 判断是否存在token，如果存在的话，则每个http header都加上sessionkey
-      request.url.indexOf('?') > 0 ? request.url += `&token=${token}` : request.url += `?token=${token}`
+        if (request.method === 'get') {
+            // 判断是否存在token，如果存在的话，则每个http header都加上sessionkey
+            request.url.indexOf('?') > 0 ? request.url += `&token=${token}` : request.url += `?token=${token}`
+        } else {
+            request.data ? request.data.token = token : request.data = { token }
+        }
     }
     // 记录操作日志
     log.loging(instance, request)
