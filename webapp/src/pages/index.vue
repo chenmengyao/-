@@ -12,31 +12,31 @@
   </van-swipe>
   <!--  -->
   <div class="menus">
-    <div class="col">
+    <router-link to="/special/flash" class="col">
       <img src="@/assets/index/flash@3x.png"
         alt="">
       <span>限时抢购</span>
-    </div>
-    <div class="col">
+    </router-link>
+    <router-link to="/special/clearance" class="col">
       <img src="@/assets/index/clearance@3x.png"
         alt="">
       <span>低价清仓</span>
-    </div>
-    <div class="col">
+    </router-link>
+    <router-link to="/special/auction" class="col">
       <img src="@/assets/index/auction@3x.png"
         alt="">
       <span>竞拍捡漏</span>
-    </div>
-    <div class="col">
+    </router-link>
+    <router-link to="/special/recommend" class="col">
       <img src="@/assets/index/recommend@3x.png"
         alt="">
       <span>好物推荐</span>
-    </div>
-    <div class="col">
+    </router-link>
+    <router-link to="/service/index" class="col">
       <img src="@/assets/index/service@3x.png"
         alt="">
       <span>便民服务</span>
-    </div>
+    </router-link>
   </div>
   <!--  -->
   <dl class="news">
