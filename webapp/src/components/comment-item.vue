@@ -8,7 +8,8 @@
         <span>
           <slot name="name">{{name}}</slot><br>
           <van-rate
-            v-model="value"
+            v-model="star"
+            disabled
             :size="12"
             color="#f44"
             void-icon="star"
@@ -25,12 +26,34 @@
         </slot>
       </van-col>
     </van-row>
+    <van-row class="medias">
+      <van-col v-for="(url,idx) in medias">
+        <img :src="url" @click="preview(idx)" alt="">
+      </van-col>
+    </van-row>
   </div>
 </template>
 
 <script>
+import {
+  ImagePreview
+} from 'vant'
 export default {
-  props: ['name', 'date', 'avatar', 'content']
+  props: ['name', 'date', 'avatar', 'content', 'medias', 'star'],
+  watch: {
+    medias(val) {}
+  },
+  methods: {
+    preview(idx) {
+      ImagePreview({
+        images: this.medias || [],
+        startPosition: idx,
+        onClose() {
+          // do something
+        }
+      })
+    }
+  }
 }
 </script>
 
@@ -57,12 +80,28 @@ export default {
     }
     .date {
         justify-content: flex-end;
+        color: $gray;
     }
     .info {
         padding-bottom: 0;
     }
     .content {
         padding-top: 0;
+    }
+    .medias {
+        display: flex;
+        justify-content: flex-start;
+        padding-top: 0;
+        .van-col {
+            margin-right: 10px;
+            &:last-child {
+                margin-right: 0;
+            }
+            img {
+                border-radius: 4px;
+                width: 60px;
+            }
+        }
     }
 }
 </style>

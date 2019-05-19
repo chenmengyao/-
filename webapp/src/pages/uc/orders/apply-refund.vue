@@ -130,7 +130,7 @@
     .suwis-apply-refund {
         min-height: 100vh;
         padding-top: 50px;
-        background-color: rgb(245, 245, 245);
+        background-color: #f5f5f5;
         box-sizing: border-box;
         .content {
             background-color: #fff;
