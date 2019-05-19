@@ -192,6 +192,7 @@
     }, 
      mounted(){
         this.myChart() //函数调用
+        this.getCommission()//获取我的佣金
      },
      methods:{
         // 左上角柱状图
@@ -290,6 +291,11 @@
             }]
           })
         },
+        getCommission(){
+            this.$axios.post('mine/userincome').then(res => {
+                
+            })
+        }
        }
   }
 </script>

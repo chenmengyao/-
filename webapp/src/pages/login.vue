@@ -1,28 +1,27 @@
 <template lang="html">
   <div class="suwis-login" :class="{loaded:loaded}" @keyup.enter="loginBefore">
-    <div class="bg" :style="{'background-image':`url(${bgurl})`}"></div>
     <div class="form">
       <img class="avatar" src="@/assets/login/avatar@3x.png" alt="">
       <div class="tabs">
         <van-tabs v-model="modalType">
           <van-tab title="手机验证码登陆">
-            <van-field v-model="formData.phone" placeholder="请输入您的11位手机号">
+            <van-field v-model="formData.tel" :error-message="formMsg.tel"  type="tel" placeholder="请输入您的11位手机号">
               <img class="field-icon" slot="left-icon"  src="@/assets/login/phone@3x.png" alt="">
             </van-field>
-            <van-field v-model="formData.code" placeholder="请输入验证码">
+            <van-field v-model="formData.code" :error-message="formMsg.code" placeholder="请输入验证码">
               <img class="field-icon" style="margin-top:2.2px;" slot="left-icon"  src="@/assets/login/code@3x.png" alt="">
-               <van-button class="send-code" slot="button" size="small" type="primary">发送验证码</van-button>
+               <van-button class="send-code" slot="button" size="small" type="primary" @click="sendCode">发送验证码</van-button>
             </van-field>
-            <van-button class="btn-submit" type="primary">登录</van-button>
+            <van-button class="btn-submit" type="primary" @click="loginBefore">登录</van-button>
           </van-tab>
           <van-tab title="账号登陆">
-            <van-field v-model="formData.phone" placeholder="请输入您的11位手机号">
+            <van-field v-model="formData.nickname" :error-message="formMsg.nickname" placeholder="请输入登录名">
               <img class="field-icon" slot="left-icon"  src="@/assets/login/phone@3x.png" alt="">
             </van-field>
-            <van-field v-model="formData.code" placeholder="请输入验证码">
+            <van-field v-model="formData.password" :error-message="formMsg.password" type="password" placeholder="请输入验证码">
               <img class="field-icon" slot="left-icon"  src="@/assets/login/paypwd@3x.png" alt="">
             </van-field>
-            <van-button class="btn-submit" type="primary">登录</van-button>
+            <van-button class="btn-submit" type="primary" @click="loginBefore">登录</van-button>
           </van-tab>
         </van-tabs>
         <div class="footer-link">
@@ -45,13 +44,20 @@ export default {
     return {
       // 登陆方式
       loginType: 'account',
-      modalType: 'login',
+      modalType: 1,
       formData: {
+        tel: '18687512006',
         code: '',
-        phone: '18687512006',
-        pwd: '123456',
+        nickname: 'Ivorzk',
+        password: '123456',
         pwdConfirm: '',
         type: 1
+      },
+      formMsg: {
+        tel: '',
+        code: '',
+        nickname: '',
+        password: '',
       },
       rules: {
         phone: [{
@@ -87,7 +93,6 @@ export default {
           trigger: 'blur'
         }]
       },
-      bglist: ['images/login/00002.jpg', 'images/login/00003.jpg', 'images/login/00004.jpg'],
       loaded: false,
       disabled: false,
       codeDisabled: false,
@@ -95,23 +100,18 @@ export default {
       agreed: true,
       agreement: false,
       agreementText: '',
-      token: 0,
-      qrcodeurl: ''
+      token: 0
     }
   },
-  computed: {
-    bgurl() {
-      return this.bglist[Math.round(Math.random() * (this.bglist.length - 1))]
-    }
-  },
+  computed: {},
   created() {
-    var img = new Image()
-    img.src = this.bgurl
-    img.onload = () => {
-      this.loaded = true
-    }
     // 清理状态
     this.$store.commit('core/exit', true)
+  },
+  mounted() {
+    setTimeout(() => {
+      this.loaded = true
+    }, 150)
   },
   watch: {
     countDownText() {
@@ -164,8 +164,10 @@ export default {
     },
     // 登陆前校验
     loginBefore() {
-      if (this.loginType == 'account') {
-        this.$refs.loginForm.validate((valid) => {
+      this.login()
+      return
+      if (this.loginType == 0) {
+        this.$refs.codeForm.validate((valid) => {
           if (valid) {
             this.login()
           } else {
@@ -173,8 +175,8 @@ export default {
           }
         })
       }
-      if (this.loginType == 'code') {
-        this.$refs.codeForm.validate((valid) => {
+      if (this.loginType == 1) {
+        this.$refs.loginForm.validate((valid) => {
           if (valid) {
             this.login()
           } else {
@@ -188,17 +190,19 @@ export default {
       let params = {
         ...this.formData
       }
-      params.pwd = md5(params.pwd)
+      // params.password = md5(params.password)
       this.disabled = true
-      this.$axios.post('/app/user/login', params).then(res => {
+      this.$axios.post('login/acclogin', params).then(res => {
         setTimeout(() => {
           this.disabled = false
-          this.$router.push('/orders')
+          this.$router.push('/')
         }, 600)
         let data = res.data
-        if (data.code == 200) {
+        if (data.code == 1) {
           // 储存用户信息
-          this.$store.commit('core/login', data.data)
+          this.$store.commit('core/login', {
+            token: data.data
+          })
         } else {
           this.$Message.warning(data.msg)
         }
@@ -264,14 +268,6 @@ export default {
         }
       })
     },
-    // async getQrcode() {
-    //   let res = await this.$axios.get(`/app/user/get_qrcode/${this.token}`)
-    //   this.token = res.data.data.token
-    //   setTimeout(() => {
-    //     // this.getQrcode()
-    //   }, 2000)
-    //   console.log(res)
-    // },
     async getQrcode() {
       let res = await this.$axios.get(`/app/user/get_qrcode/${this.token}`)
       // 首次
@@ -307,6 +303,11 @@ export default {
     position: relative;
     padding: 32vw 15px 15px;
     box-sizing: border-box;
+    opacity: 0;
+    transition: all 0.3s;
+    &.loaded {
+        opacity: 1;
+    }
     .form {
         background: #fff;
         border-radius: 4px;
@@ -320,9 +321,9 @@ export default {
         .avatar {
             width: 80px;
             border-radius: 100%;
-            margin-top: -40px;
-            margin-bottom: 6vw;
+            margin: -40px auto 6vw;
             border: 3px solid #DD0B11;
+            display: block;
         }
 
         .field-icon {

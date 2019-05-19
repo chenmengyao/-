@@ -2,7 +2,7 @@
   <div>
     <div>
       <div class="suwis-recom-head">
-      <div style="background:#fff;display:flex; border:1px solid red;margin:0 15px;height:120px;border-radius: 4px;-webkit-border-radius:4px;">
+      <div style="background:#fff;display:flex;margin:0 15px;height:120px;border-radius: 4px;-webkit-border-radius:4px;">
           <span class="d-banntitle-left"><span><img src="../../assets/hIcon.png">为您挑选人间好物</span></span>
           <span class="d-banntitle-right">共<span>1314</span>件商品</span>
       </div>
@@ -19,15 +19,15 @@
       </div>
     </div>
      <div class="suwis-recom-list">
-       <div class="suwis-recom-item" v-for="(item,index) in 10">
+       <div class="suwis-recom-item" v-for="(item,index) in reomList">
          <div :class="index%2==0?'d-flex':'d-flex1'">
             <div style="flex:1;">
-              <div class="d-recom-img"><img src="./../../../public/test3.png" width="100%"></div>
-              <span class="suwis-recom-title">猫猫包袋女2019新款潮韩 版时尚水桶复古包猫猫包袋女2019新款潮韩 版时尚水桶复古包</span>
+              <div class="d-recom-img"><img :src="item.img" width="100%"></div>
+              <span class="suwis-recom-title">{{item.title}}</span>
               <span class="d-item-title">
                 <span>推荐指数:</span>
                 <van-rate
-                  v-model="recValue"
+                  v-model="item.star"
                   :size="12"
                   color="#F06B25"
                   readonly
@@ -47,8 +47,23 @@
 export default {
   data(){
     return{
-      recValue:4
+      recValue:4,
+      reomList:[]
     }
+  },
+  methods:{
+    getReomList(){
+      this.$axios.post('goods/lists',{
+        type:3,
+        page:1,
+        num:10
+      }).then(res => {
+          this.reomList=res.data.data
+      })
+    }
+  },
+  created(){
+    this.getReomList()
   }
 }
 </script>
@@ -148,6 +163,7 @@ export default {
   -webkit-line-clamp: 2;
   overflow: hidden;
   margin: 5px 0;
+  height: 40px;
 }
 .d-flex1{
   display:flex;padding:0 15px 0 7.5px

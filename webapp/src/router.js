@@ -53,19 +53,19 @@ export default new Router({
     name: 'service',
     component: () => import('./pages/service/index.vue')
   }, {
-    path: '/special/auction',
+    path: '/special/auction', //竞拍捡漏
     name: 'special_auction',
     component: () => import('./pages/special/auction-sale.vue')
   }, {
-    path: '/special/clearance',
+    path: '/special/clearance', //低价清仓
     name: 'special_clearance',
     component: () => import('./pages/special/clearance-sale.vue')
   }, {
-    path: '/special/flash',
+    path: '/special/flash', //限时抢购
     name: 'special_flash',
     component: () => import('./pages/special/flash-sale.vue')
   }, {
-    path: '/special/recommend',
+    path: '/special/recommend',//限时抢购
     name: 'special_recommend',
     component: () => import('./pages/special/recommend-sale.vue')
   }, {
@@ -149,7 +149,7 @@ export default new Router({
     name: 'mine_feedback',
     component: () => import('./pages/mine/feedback.vue')
   }, {
-    path: '/mine/commission',
+    path: '/mine/commission', //我的佣金
     name: 'mine_commission',
     component: () => import('./pages/mine/commission.vue')
   }, {

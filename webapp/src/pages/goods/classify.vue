@@ -3,39 +3,34 @@
     <div>
       <van-search placeholder="请输入搜索关键词" v-model="keyWord" style="text-align:center"/>
     </div>
-    <div class="suwis-classify-con">
+    <div v-for="(items,index) in tabList">
+      <div class="suwis-classify-con">
       <div class="suwis-classify-btn">
-         <div>
-          <div class="suwis-classify-active" v-for="(item,index) in tabList" :class="index==num?'d_background':''" @click="classifyBtn(index)">
-            <span :class="index==num?'d_active':'d_active1'"></span>{{item}}</div>
+         <div v-for="(item,idxs) in items">
+          <div class="suwis-classify-active" :class="idxs==num?'d_background':''" @click="classifyBtn(idxs)">
+            <span :class="idxs==num?'d_active':'d_active1'"></span>{{item.title}}</div>
          </div>
       </div>
       <div class="suwis-classify-list">
-        <div style="width:calc(100vw - 114px);padding:15px 13px 0 13px">
+        <div v-if="banner.length" style="width:calc(100vw - 114px);padding:15px 13px 0 13px">
         <van-swipe :autoplay="3000" indicator-color="white">
-          <van-swipe-item>
-             <img src="../../../public/test2.png" width="100%">
-          </van-swipe-item>
-          <van-swipe-item>
-             <img src="../../../public/test2.png" width="100%">
+          <van-swipe-item v-for="item in banner">
+             <img :src="item.img" width="100%">
           </van-swipe-item>
         </van-swipe>
       </div>
-        <div>
+      
+        <div v-for="(itm,id) in tabList[0][num].children" style="margin-top:15px;">
            <div>
-              <span class="d-title">常用分类</span>
-              <div>
-                  <span class="d-tips" v-for="item in 10">安卓</span>
-                  <span class="d-tips" v-for="item in 10">诺基亚</span>
-              </div>
-           </div>
-           <div>
-              <span class="d-title">热门品牌</span>
-              <div>
-                  <span class="d-tips" v-for="item in 5">苹果</span>
+              <span style="padding-left:15px;">{{itm.title}}</span>
+              <div class="d-title">
+                  <span class="d-tips" v-for="(it,ids) in itm.children">
+                    {{it.title}}
+                  </span>
               </div>
            </div>
         </div>
+      </div>
       </div>
     </div>
   </div>
@@ -46,14 +41,25 @@ export default {
     return{
       keyWord:'',//搜索关键词
       classifyBan:'',
-      tabList:['手机','相机','数码相机'],
-      num:0
+      tabList:[],
+      num:0,
+      banner:[]
     }
   },
   methods:{
     classifyBtn(index){
      this.num=index
+    },
+    getClassify(){
+      this.$axios.post('category/list').then(res => {
+        this.banner=res.data.data.banner
+        delete res.data.data.banner
+        this.tabList.push(res.data.data)
+    })
     }
+  },
+  created(){
+    this.getClassify()
   }
 }
 </script>
@@ -87,9 +93,9 @@ export default {
   font-size: 12px;
 }
 .d-title{
-  padding-left:15px;
-  margin-top:15px;
-  display: inline-block
+  padding:0 15px 15px 0 ;
+  /* margin-top:15px; */
+  display:block
 }
 .suwis-classify-btn div{
   line-height: 40px;
@@ -121,5 +127,11 @@ export default {
 .van-search{
   padding: 15px;
   padding-bottom: 0;
+}
+.show{
+  display: block
+}
+.hide{
+  display: none
 }
 </style>

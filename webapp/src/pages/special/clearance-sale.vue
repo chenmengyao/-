@@ -11,38 +11,17 @@
       </van-swipe>
     </div>
     <div>
-      <div class="suwis-news-list">
+      <div class="suwis-news-list" v-for="(item,index) in clearList">
          <div class="suwis-news-right">
-           <img src="./../../assets/test1.png" width="100%">
+           <img :src="item.img" width="100%">
          </div>
          <div class="suwis-news-left">
-            <span>猫猫包袋女2019新款潮韩版时尚水桶复 古包ins风网红同款猫猫包袋女2019新款潮韩版时尚水桶复</span>
+            <span>{{item.title}}</span>
             <div class='suwis-news-tips'>
               <span class='suwis-news-date'>
                 <span class="d-yuan-price">￥59.9</span>
                 <span class="d-basis-price">￥59.9</span>
                 <!-- <span class="">清仓</span> -->
-                <img src="../../assets/clear.png" class="d-tags">
-              </span>
-              <span class='suwis-news-num'>
-                <span class="d-sale-btn">
-                   <img src="../../assets/gm.png">
-                </span>
-              </span>
-            </div>
-         </div>
-        
-      </div>
-      <div class="suwis-news-list">
-         <div class="suwis-news-right">
-           <img src="./../../assets/test1.png" width="100%">
-         </div>
-         <div class="suwis-news-left">
-            <span>猫猫包袋女2019新款潮韩版时尚水桶复 古包ins风网红同款猫猫包袋女2019新款潮韩版时尚水桶复</span>
-            <div class='suwis-news-tips'>
-              <span class='suwis-news-date'>
-                <span class="d-yuan-price">￥59.9</span>
-                <span class="d-basis-price">￥59.9</span>
                 <img src="../../assets/clear.png" class="d-tags">
               </span>
               <span class='suwis-news-num'>
@@ -64,7 +43,22 @@
 export default {
   data() {
     return {
+      clearList:[]
     }
+  },
+  methods:{
+    getClearList(){
+      this.$axios.post('goods/lists',{
+        type:4,
+        page:1,
+        num:10
+      }).then(res => {
+       this.clearList=res.data.data
+      })
+    }
+  },
+  created(){
+    this.getClearList() 
   }
 }
 </script>
@@ -103,6 +97,7 @@ export default {
 .suwis-news-left > span {
   font-size: 14px;
   line-height: 20px;
+  height:40px;
   color: #333;
   display: -webkit-box;
   -webkit-box-orient: vertical;

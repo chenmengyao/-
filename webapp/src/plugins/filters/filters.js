@@ -4,14 +4,14 @@ const vfilter = {
     if (time == '' || time == null) {
       return ''
     } else {
-      return moment(time).format('YYYY-MM-DD hh:mm:ss')
+      return moment(time*1000).format('YYYY-MM-DD hh:mm')
     }
   },
   dateFmt1: (time) => {
     if (time == '' || time == null) {
       return ''
     } else {
-      return moment(time).format('YYYY-MM-DD')
+      return moment(time*1000).format('YYYY-MM-DD')
     }
   },
   // 标准计数法

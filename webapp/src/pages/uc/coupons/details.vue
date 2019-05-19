@@ -5,15 +5,17 @@
     </div>
     <div style="display: flex;position:relative;align-items: center;justify-content: center;padding:0 6px;">
         <img src="../../../assets/couponBg.png">
-        <div class="d-stutas d-stutas1">待使用</div>
+        <div class="d-stutas d-stutas1" v-if="$route.query.type==1">待使用</div>
+        <div class="d-stutas d-stutas1 d-status2" v-if="$route.query.type==2">已使用</div>
+        <div class="d-stutas d-stutas1 d-status2" v-if="$route.query.type==3">已过期</div>
          <div style="position:absolute;width:100%">
            <div style="display:flex;width:100%">
               <div style="flex:1;font-size:40px;text-align:left;">
-                <div style="padding-left:56px;">¥100</div>
+                <div style="padding-left:56px;">¥{{detailContent.sum}}</div>
               </div>
               <div style="flex:1;text-align:left;border-left:1px dashed #B4B4B4;">
                  <div style="padding-left:19px;color:#333;font-size:16px;font-weight:600;margin-bottom:11px;">新人优惠券</div>
-                 <div style="padding-left:19px;color:#333;font-size:12px;">满1000元即可使用</div>
+                 <div style="padding-left:19px;color:#333;font-size:12px;">{{detailContent.total}}</div>
               </div>
            </div>
          </div>
@@ -27,7 +29,7 @@
                 </div>
                 <div class="suwis-conditions-right">
                   <div>使用条件</div>
-                  <div>购物满1000减100</div>
+                  <div>{{detailContent.total}}</div>
                 </div>
                 <div style="clear:both"></div>
             </div>
@@ -43,7 +45,7 @@
                 </div>
                 <div class="suwis-conditions-right">
                   <div>有效期限</div>
-                  <div>2018-09-21至2018-09-21</div>
+                  <div>{{detailContent.start_time|dateFmt1}}至{{detailContent.end_time|dateFmt1}}</div>
                 </div>
                 <div style="clear:both"></div>
             </div>
@@ -58,17 +60,22 @@
                 <div class="suwis-conditions-right">
                   <div>使用说明</div>
                   <div>
-                     <div>卷类型：新人优惠券</div>
+                     <div>卷类型：{{detailContent.title}}</div>
                      <div>使用平台：全平台使用</div>
-                     <div>详细说明：详细说明详细说明详细说明详细说明详细说</div>
+                     <div>详细说明：{{detailContent.remark}}</div>
                   </div>
                 </div>
                 <div style="clear:both"></div>
             </div>
             </div>
     </div>
-    <div class="suwis-btn">
+    <div class="suwis-btn" v-if="$route.query.type==1">
        <div>
+         <div style="flex:1">立即使用</div>
+       </div>
+    </div>
+    <div class="suwis-btn" v-else>
+       <div style="background:#B4B4B4">
          <div style="flex:1">立即使用</div>
        </div>
     </div>
@@ -77,8 +84,28 @@
 
 <script>
 export default {
+  data(){
+    return{
+      detailContent:{
+        start_time:'1558252637',
+        end_time:'1558252637',
+        title:'端午节优惠券',
+        remark:'优惠券仅端午节三天使用',
+        sum:'100',
+        total:'满1000减100'
+      }
+    }
+  },
+  methods:{
+
+  },
    mounted() {
-     
+     var id =this.$route.query.id
+     this.$axios.post('coupon/detail',{
+       id:id
+     }).then(res => {
+        //  this.detailContent=res.data.data
+      })
   }
 }
 </script>
@@ -166,5 +193,9 @@ export default {
  .suwis-conditions1>div:nth-child(2){
    flex: 1;
    line-height: 24px;
+ }
+ .d-status2{
+   color: #999;
+   border:1px solid #999 !important;
  }
 </style>

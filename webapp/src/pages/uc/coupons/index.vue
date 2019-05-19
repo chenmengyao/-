@@ -2,8 +2,9 @@
   <div>
     <div>
        <van-tabs v-model="couponsValue" :line-height="2" animated color="#E83F44" swipeable title-active-color="#333" title-inactive-color="#333">
-          <van-tab title="待使用">
-             <div class="suwis-coupons-con">
+          <van-tab title="待使用" @click="getTobeusedList()">
+             <div class="suwis-coupons-con" v-if="tobeused.length" v-for="item in tobeused">
+               <router-link tag="div" :to="{path: '/uc/coupons/details', query: {id: 0,type:1}}">
                 <div>
                    <div class="suwis-coupons-list">
                        <div class="suwis-coupons-listtop">
@@ -13,51 +14,28 @@
                                    <img class="d-icon" src="../../../assets/coupons.png">
                                 </div>
                                  <div class="d-title" style="float:left">
-                                    <div>新人优惠券</div>
-                                    <div>满1000元即可使用</div>
+                                    <div>{{item.title}}</div>
+                                    <div>{{item.total}}</div>
                                 </div>
                                 <div style="clear:both"></div>
                              </div>
-                              <div class="suwis-listtop-right">100</div>
+                              <div class="suwis-listtop-right">{{item.sum}}</div>
                               <div style="clear:both"></div>
                               </div>
                        </div>
                    </div>
                    <div class="suwis-coupons-listbtm">
-                       <div><img class="d-icon" src="../../../assets/coupons-date.png"><span></span>有效期至：2019-02-01 17:05</div>
+                       <div><img class="d-icon" src="../../../assets/coupons-date.png"><span></span>有效期至：{{item.end_time|dateFmt}}</div>
                        <div>待使用</div>
                    </div>
                 </div>
+                </router-link>
              </div>
-             <div class="suwis-coupons-con">
-                <div>
-                   <div class="suwis-coupons-list">
-                       <div class="suwis-coupons-listtop">
-                           <div>
-                             <div class="suwis-listtop-left">
-                                <div style="float:left">
-                                   <img class="d-icon" src="../../../assets/coupons.png">
-                                </div>
-                                 <div class="d-title" style="float:left">
-                                    <div>新人优惠券</div>
-                                    <div>满1000元即可使用</div>
-                                </div>
-                                <div style="clear:both"></div>
-                             </div>
-                              <div class="suwis-listtop-right">100</div>
-                              <div style="clear:both"></div>
-                              </div>
-                       </div>
-                   </div>
-                   <div class="suwis-coupons-listbtm">
-                       <div><img class="d-icon" src="../../../assets/coupons-date.png"><span></span>有效期至：2019-02-01 17:05</div>
-                       <div>待使用</div>
-                   </div>
-                </div>
-             </div>
+             <div v-if="!tobeused.length" style="text-align:center;line-height:40px;">暂无数据</div>
           </van-tab>
-          <van-tab title="已使用">
-             <div class="suwis-coupons-con">
+          <van-tab title="已使用" @click="getUsedList()">
+             <div class="suwis-coupons-con" v-if="used.length" v-for="item in used">
+               <router-link tag="div" :to="{path: '/uc/coupons/details', query: {id: 0,type:2}}">
                 <div>
                    <div class="suwis-coupons-list d-bgcolor">
                        <div class="suwis-coupons-listtop">
@@ -67,25 +45,28 @@
                                    <img class="d-icon" src="../../../assets/coupons.png">
                                 </div>
                                  <div class="d-title" style="float:left">
-                                    <div>新人优惠券</div>
-                                    <div>满1000元即可使用</div>
+                                    <div>{{item.title}}</div>
+                                    <div>{{item.total}}</div>
                                 </div>
                                 <div style="clear:both"></div>
                              </div>
-                              <div class="suwis-listtop-right">100</div>
+                              <div class="suwis-listtop-right">{{item.sum}}</div>
                               <div style="clear:both"></div>
                               </div>
                        </div>
                    </div>
                    <div class="suwis-coupons-listbtm">
-                       <div><img class="d-icon" src="../../../assets/coupons-date.png"><span></span>有效期至：2019-02-01 17:05</div>
+                       <div><img class="d-icon" src="../../../assets/coupons-date.png"><span></span>有效期至：{{item.end_time|dateFmt}}</div>
                        <div style="color:#999">已使用</div>
                    </div>
                 </div>
+                </router-link>
              </div>
+             <div v-if="!used.length" style="text-align:center;line-height:40px;">暂无数据</div>
           </van-tab>
-          <van-tab title="已过期">
-            <div class="suwis-coupons-con">
+          <van-tab title="已过期"  @click="getPassList()">
+            <div class="suwis-coupons-con" v-if="pass.length" v-for="item in pass">
+              <router-link tag="div" :to="{path: '/uc/coupons/details', query: {id: 0,type:3}}">
                 <div>
                    <div class="suwis-coupons-list d-bgcolor">
                        <div class="suwis-coupons-listtop">
@@ -95,22 +76,24 @@
                                    <img class="d-icon" src="../../../assets/coupons.png">
                                 </div>
                                  <div class="d-title" style="float:left">
-                                    <div>新人优惠券</div>
-                                    <div>满1000元即可使用</div>
+                                    <div>{{item.title}}</div>
+                                    <div>{{item.total}}</div>
                                 </div>
                                 <div style="clear:both"></div>
                              </div>
-                              <div class="suwis-listtop-right">100</div>
+                              <div class="suwis-listtop-right">{{item.sum}}</div>
                               <div style="clear:both"></div>
                               </div>
                        </div>
                    </div>
                    <div class="suwis-coupons-listbtm">
-                       <div><img class="d-icon" src="../../../assets/coupons-date.png"><span></span>有效期至：2019-02-01 17:05</div>
+                       <div><img class="d-icon" src="../../../assets/coupons-date.png"><span></span>有效期至：{{item.end_time|dateFmt}}</div>
                        <div style="color:#999">已过期</div>
                    </div>
                 </div>
+                </router-link>
              </div>
+             <div v-if="!pass.length" style="text-align:center;line-height:40px;">暂无数据</div>
           </van-tab>
         </van-tabs>
     </div>
@@ -121,8 +104,66 @@
 export default {
   data(){
     return{
-      couponsValue:''
+      couponsValue:'',
+      tobeused:[{
+        title:'新人优惠券1',
+        total:'满100减50',
+        sum:'500',
+        end_time:'1558252637'
+      },{
+        title:'新人优惠券1',
+        total:'满100减50',
+        sum:'500',
+        end_time:'1558252637'
+      }],
+      used:[{
+        title:'新人优惠券1',
+        total:'满100减50',
+        sum:'500',
+        end_time:'1558252637'
+      }],
+      pass:[{
+        title:'新人优惠券1',
+        total:'满100减50',
+        sum:'500',
+        end_time:'1558252637'
+      }]
     }
+  },
+  methods:{
+    getTobeusedList(){
+      this.$axios.post('coupon/tobeused').then(res => {
+        //  待使用优惠券
+        //  if(!res.data.data){
+        //    this.tobeused=[]
+        //  }else{
+        //    this.tobeused=res.data.data
+        //  }
+      })
+    },
+    getUsedList(){
+      this.$axios.post('coupon/used').then(res => {
+         //已使用优惠券
+         if(!res.data.data){
+           this.used=[]
+         }else{
+           this.used=res.data.data
+         }
+      })
+    },
+    getPassList(){
+      this.$axios.post('coupon/pass').then(res => {
+         //已过期优惠券
+         if(!res.data.data){
+           this.pass=[]
+         }else{
+           this.pass=res.data.data
+         }
+      })
+    }
+  },
+  created(){
+    this.getTobeusedList()
   }
 }
 </script>

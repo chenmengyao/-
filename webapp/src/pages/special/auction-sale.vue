@@ -11,28 +11,7 @@
       </van-swipe>
     </div>
     <div>
-      <div class="suwis-news-list">
-         <div class="suwis-news-right">
-           <img src="./../../assets/test3.png" width="100%">
-         </div>
-         <div class="suwis-news-left">
-            <span>猫猫包袋女2019新款潮韩版时尚水桶复 古包ins风网红同款猫猫包袋女2019新款潮韩版时尚水桶复</span>
-            <div class='suwis-news-tips'>
-               <div><span class="suwis-current-price">当前价 : </span><span class="suwis-current-pri">16666.00</span></div>
-               <div>
-                  <span class="suwis-current-price">距离结束仅剩下 </span>
-                  <span>
-                    <span class="suwis-auction-date">0</span> 
-                    <span class="suwis-auction-date">0</span> :
-                    <span class="suwis-auction-date">0</span> 
-                    <span class="suwis-auction-date">0</span> 
-                  </span>
-                </div>
-               <div style="text-align:right;font-size:12px"><span style="color:#E83F44 ">16</span><span class="suwis-current-price">次出价</span></div>
-            </div>
-         </div>
-      </div>
-      <div class="suwis-news-list">
+      <div class="suwis-news-list" v-for="(item,index) in flashList">
          <div class="suwis-news-right">
            <img src="./../../assets/test3.png" width="100%">
          </div>
@@ -64,7 +43,22 @@
 export default {
   data() {
     return {
+      flashList:[]
     }
+  },
+  methods:{
+    getAuctionList(){
+      this.$axios.post('goods/lists',{
+        type:1,
+        page:1,
+        num:10
+      }).then(res => {
+          this.flashList=res.data.data
+      })
+    }
+  },
+  created(){
+    this.getAuctionList()
   }
 }
 </script>

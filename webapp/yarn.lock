@@ -6042,6 +6042,10 @@ qs@6.5.2, qs@~6.5.2:
   version "6.5.2"
   resolved "https://npm.suwis.com:443/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
 
+qs@^6.7.0:
+  version "6.7.0"
+  resolved "https://npm.suwis.com:443/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
+
 query-string@^5.0.1:
   version "5.1.1"
   resolved "https://npm.suwis.com:443/query-string/-/query-string-5.1.1.tgz#a78c012b71c17e05f2e3fa2319dd330682efb3cb"
@@ -7025,6 +7029,10 @@ supports-color@^6.1.0:
   resolved "https://npm.suwis.com:443/supports-color/-/supports-color-6.1.0.tgz#0764abc69c63d5ac842dd4867e8d025e880df8f3"
   dependencies:
     has-flag "^3.0.0"
+
+suwis-vuex-sync@^1.0.1:
+  version "1.0.1"
+  resolved "https://npm.suwis.com:443/suwis-vuex-sync/-/suwis-vuex-sync-1.0.1.tgz#4a5b380b43effe6036a449de60e3bfb830169398"
 
 svg-tags@^1.0.0:
   version "1.0.0"

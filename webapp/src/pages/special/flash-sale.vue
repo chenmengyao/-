@@ -281,7 +281,7 @@
       </van-tabs>
     </div>
   </div>
-   </div>
+   <!-- </div> -->
 </template>
 
 <script>
@@ -289,7 +289,22 @@ export default {
   data(){
     return{
       active:'',
+      flashList:[]
     }
+  },
+  methods:{
+    getFlashList(){
+      this.$axios.post('goods/lists',{
+        type:1,
+        page:1,
+        num:10
+      }).then(res => {
+          this.flashList=res.data.data
+      })
+    }
+  },
+  created(){
+    this.getFlashList()
   }
 }
 </script>

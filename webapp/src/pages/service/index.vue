@@ -93,13 +93,13 @@ import area from '../../assets/area.json'
 import { Cell, CellGroup, Popup, Field,  Area, Picker } from 'vant'
 export default {
   components: {
-            VanCell: Cell,
-            VanCellGroup: CellGroup,
-            VanPopup: Popup,
-            VanField: Field,
-            VanArea: Area,
-            VanPicker: Picker
-        },
+      VanCell: Cell,
+      VanCellGroup: CellGroup,
+      VanPopup: Popup,
+      VanField: Field,
+      VanArea: Area,
+      VanPicker: Picker
+  },
   data(){
     return{
       areaList:area,
