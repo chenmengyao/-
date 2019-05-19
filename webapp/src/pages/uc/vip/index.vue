@@ -52,7 +52,30 @@
 
 <script>
     export default {
-        name: "index"
+        data() {
+            return {
+
+            }
+        },
+        methods: {
+            getVip() {
+                this.$axios
+                    .post('mine/myvip')
+                    .then(({ data }) => {
+                        if (data.code === 1) {
+                            if (data.data) {
+                                console.log(data.data)
+                                // Object.assign(this, data.data)
+                            }
+                        } else {
+                            this.$toast(data.msg);
+                        }
+                    })
+            }
+        },
+        created() {
+            this.getVip()
+        }
     }
 </script>
 
