@@ -50,6 +50,26 @@
       <comment-item v-for="item in 5" name="橘猫****到我家" date="2019-03-01 12:01" avatar="touiocn.png" content="拿到手了，拿着不错，蛮透明，贴合度也高，摄像头的
 位置刚刚好。"></comment-item>
     </comment-list>
+    <!-- 店铺信息 -->
+    <van-row class="interval shop">
+      <van-col>
+        <dl>
+          <dt>
+            <img src="test3.png" alt="">
+          </dt>
+          <dd>
+            <h6>京桥鞋靴专营店铺</h6>
+            <span>在售商品<em>112</em>件</span>
+          </dd>
+        </dl>
+      </van-col>
+      <van-col class="link">
+        <router-link :to="{ path: '/', params: {} }">
+          <img class="btn" src="@/assets/details/look@3x.png" alt="">
+        </router-link>
+      </van-col>
+    </van-row>
+    <!-- 店铺信息 //-->
     <!--  -->
     <van-goods-action>
       <van-goods-action-mini-btn
@@ -82,7 +102,7 @@ export default {}
 <style lang="scss" scoped>
 .suwis-good-details {
     position: relative;
-    padding-bottom: 50px;
+    padding-bottom: calc(50px + 86px);
     font-size: 12px;
     .nav {
         height: 50px;
@@ -161,6 +181,63 @@ export default {}
     .interval {
         border-top: 6px solid $border;
     }
+    .shop {
+        position: fixed;
+        bottom: 50px;
+        width: 100vw;
+        height: 86px;
+        left: 0;
+        background: #fff;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 2px solid #EFEFEF;
+        margin-bottom: -2px;
+
+        .van-col {
+            display: flex;
+            align-items: center;
+        }
+
+        dl {
+            display: flex;
+            align-items: center;
+
+            dd,
+            dt {
+                margin: 0;
+            }
+            dd {
+                padding-left: 10px;
+            }
+
+            img {
+                max-width: 44px;
+                border-radius: 4px;
+                display: block;
+            }
+
+            h6 {
+                color: $primary;
+                margin: 0;
+                padding-bottom: 5px;
+            }
+
+            span {
+                color: $gray;
+            }
+
+            em {
+                font-style: normal;
+                color: $red;
+            }
+        }
+        .link {
+            justify-content: center;
+            .btn {
+                max-width: 68px;
+            }
+        }
+    }
     .comment {
         em {
             color: $red;
@@ -168,5 +245,29 @@ export default {}
             font-size: 14px;
         }
     }
+    .van-goods-action {
+        background: transparent;
+        .van-goods-action-mini-btn {
+            background: transparent;
+        }
+        .van-button--warning {
+            background: linear-gradient(54deg,rgba(250, 165, 55, 1) 0%,rgba(247, 149, 50, 1) 17%,rgba(240, 107, 37, 1) 100%);
+            border: none;
+        }
+        .van-button--danger {
+            background: linear-gradient(54deg,rgba(245,92,60,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
+            border: none;
+        }
+        &::before {
+            content: '';
+            width: 100vw;
+            background: #fff;
+            position: absolute;
+            height: 100%;
+            left: 0;
+            top: 2px;
+        }
+    }
+
 }
 </style>
