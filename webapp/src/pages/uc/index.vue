@@ -136,11 +136,11 @@
         methods: {
             getUserInfo() {
                 this.$axios.post('/mine/index')
-                .then(res => {
-                    if (res.data.code == 1) {
-                        Object.assign(this, res.data.data)
+                .then(({ data }) => {
+                    if (data.code === 1) {
+                        data && Object.assign(this, data.data)
                     } else {
-                        this.$toast(res.data.msg);
+                        this.$toast(data.msg);
                     }
                 })
             }

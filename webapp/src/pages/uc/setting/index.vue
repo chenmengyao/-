@@ -66,24 +66,24 @@
             getUserInfo() {
                 this.$axios
                     .post('/mine/index')
-                    .then(res => {
-                        if (res.data.code == 1) {
-                            Object.assign(this.user, res.data.data.user)
+                    .then(({ data }) => {
+                        if (data.code === 1) {
+                            data && Object.assign(this, data.data)
                         } else {
-                            this.$toast(res.data.msg);
+                            this.$toast(data.msg);
                         }
                     })
             },
             logout() {
                 this.$axios
                     .post('/login/outlogin')
-                    .then(res => {
-                        if (res.data.code == 1) {
+                    .then(({ data }) => {
+                        if (data.code === 1) {
                             this.$toast('退出成功');
                             this.$store.commit('core/exit')
                             this.$router.push('/login')
                         } else {
-                            this.$toast(res.data.msg);
+                            this.$toast(data.msg);
                         }
                     })
             }

@@ -141,6 +141,10 @@ export default new Router({
     name: 'uc_orders_servicetype',
     component: () => import('./pages/uc/orders/servicetype.vue')
   }, {
+      path: '/uc/score',
+      name: 'uc_score',
+      component: () => import('./pages/uc/score/index.vue')
+  }, {
     path: '/uc/vip',
     name: 'uc_vip',
     component: () => import('./pages/uc/vip/index.vue')
