@@ -1,9 +1,7 @@
 <template lang="html">
-  <div class="suwis-good-details">
+  <div ref="good" class="suwis-good-details">
     <van-row justify="center" align="center" class="nav">
-      <van-col span="8" class="active">商品</van-col>
-      <van-col span="8">评价</van-col>
-      <van-col span="8">详情</van-col>
+      <van-col v-for="nav in navlist" span="8" :class="{active:nav.selected}" @click.native="skip(nav)">{{nav.name}}</van-col>
     </van-row>
     <!--  -->
     <van-swipe :autoplay="3000" indicator-color="white">
@@ -41,15 +39,56 @@
     <van-cell>
       <span slot="title"><img class="security" src="@/assets/details/security@3x.png" alt="">该商品支持7天无理由退款</span>
     </van-cell>
-    <van-cell class="interval comment">
+    <!-- 评论 -->
+    <van-cell ref="comment" class="interval comment">
       <span slot="title">评价（43579）</span>
       <span>好评率&nbsp;<em>97%</em></span>
     </van-cell>
-    <!--  -->
     <comment-list>
-      <comment-item v-for="item in 5" name="橘猫****到我家" date="2019-03-01 12:01" avatar="touiocn.png" content="拿到手了，拿着不错，蛮透明，贴合度也高，摄像头的
-位置刚刚好。"></comment-item>
+      <comment-item v-for="item in 2"
+        name="橘猫****到我家"
+        date="2019-03-01 12:01"
+        avatar="touiocn.png"
+        content="拿到手了，拿着不错，蛮透明，贴合度也高，摄像头的位置刚刚好。"
+        :medias="['images/details/media.jpg','images/details/media.jpg','images/details/media.jpg','images/details/media.jpg','images/details/media.jpg']">
+      </comment-item>
     </comment-list>
+    <!-- 评论 //-->
+    <router-link class="comment-more" :to="{ path: '/', params: {} }">查看更多评价<img src="@/assets/details/more@3x.png" alt=""></router-link>
+    <!-- 店铺详情 -->
+    <van-tabs class="good-tabs" v-model="goodTabIdx">
+      <van-tab title="商品介绍">
+        <div ref="goodInfo" class="good-info interval">
+          <img src="images/details/good_info_01.jpg" alt="">
+          <img src="images/details/good_info_02.jpg" alt="">
+          <span class="no-data">已经没有更多啦～</span>
+        </div>
+      </van-tab>
+      <van-tab title="规格参数">
+        <div class="specification">
+          <table>
+            <tbody>
+              <tr>
+                <td>商品编号</td>
+                <td>SDF45646</td>
+              </tr>
+              <tr v-for="o in 10">
+                <td>鞋帮高度</td>
+                <td>低帮</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </van-tab>
+      <van-tab title="售后保障">
+        <div class="guarantee">
+          ①.这里展示的是后台发布商品的时候编辑的售后保障售后保障售后保障展示的是后台发布商品的时候编辑的售后保障售后;<br>
+          ②.保障售后保障展示的是后台发布商品的时候编辑的后保障售后保障售后保障展示的是后台发布商品的时候编辑的售后保障售后;<br>
+          ③.保障售后保障展示的是后台发布商品的时候编辑的售后保障售后保障售后保障展示的是后台发布商品的时候编辑的售后保障售后保障售后保障。
+        </div>
+      </van-tab>
+    </van-tabs>
+    <!-- 店铺详情 //-->
     <!-- 店铺信息 -->
     <van-row class="interval shop">
       <van-col>
@@ -75,40 +114,122 @@
       <van-goods-action-mini-btn
         icon="chat-o"
         text="客服"
-        @click="onClickMiniBtn"
       />
       <van-goods-action-mini-btn
         icon="cart-o"
         text="购物车"
-        @click="onClickMiniBtn"
       />
       <van-goods-action-big-btn
         text="加入购物车"
-        @click="onClickBigBtn"
       />
       <van-goods-action-big-btn
         primary
         text="立即购买"
-        @click="onClickBigBtn"
       />
     </van-goods-action>
   </div>
 </template>
 
 <script>
-export default {}
+const $raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
+  window.setTimeout(callback, 1000 / 60)
+}
+export default {
+  data() {
+    return {
+      navlist: [{
+        name: '商品',
+        key: 'good',
+        selected: true
+      }, {
+        name: '评论',
+        key: 'comment',
+        selected: false
+      }, {
+        name: '详情',
+        key: 'goodInfo',
+        selected: false
+      }],
+      timer: {},
+      goodTabIdx: 0
+    }
+  },
+  mounted() {
+    window.addEventListener('scroll', this.checkScroll, this)
+  },
+  methods: {
+    // 跳转
+    skip(nav) {
+      this.scrollTo(this.$refs[nav.key])
+    },
+    // 滚动到相应位置
+    scrollTo(el) {
+      window.cancelAnimationFrame(this.timer)
+      let ot = el.offsetTop - 50
+      let sy = window.scrollY
+      let speed = 30
+      let distance = sy > ot ? sy - speed : sy + speed
+      if (distance > ot - speed * 2 && distance < ot) distance = ot
+      if (distance < ot + speed * 2 && distance > ot) distance = ot
+      window.scrollTo(0, distance)
+      if (sy != ot) {
+        this.timer = $raf(() => {
+          this.scrollTo(el)
+        })
+      }
+    },
+    // 检查滚动
+    checkScroll() {
+      let sy = window.scrollY
+      let offsetTops = []
+      let idx = 0
+      for (let nav of this.navlist) {
+        nav.selected = false
+        offsetTops.push(this.$refs[nav.key].offsetTop - 51)
+      }
+      if (sy < offsetTops[1]) idx = 0
+      if (sy > offsetTops[1] && sy < offsetTops[2]) idx = 1
+      if (sy > offsetTops[2]) idx = 2
+      if (idx == 0) {
+        setTimeout(() => {
+          window.cancelAnimationFrame(this.timer)
+        }, 680)
+      }
+      this.navlist[idx].selected = true
+    }
+  }
+}
 </script>
-
+<style lang="scss">
+.good-tabs {
+    .van-tabs__line {
+        display: none;
+    }
+    .van-tab {
+        color: $gray;
+    }
+    .van-tab--active {
+        color: $red;
+    }
+}
+</style>
 <style lang="scss" scoped>
 .suwis-good-details {
     position: relative;
     padding-bottom: calc(50px + 86px);
+    padding-top: 50px;
     font-size: 12px;
     .nav {
         height: 50px;
         align-items: center;
         display: flex;
         font-size: 16px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        background: #fff;
+        z-index: 100;
 
         .van-col {
             position: relative;
@@ -192,6 +313,7 @@ export default {}
         justify-content: space-between;
         border-bottom: 2px solid #EFEFEF;
         margin-bottom: -2px;
+        z-index: 399;
 
         .van-col {
             display: flex;
@@ -245,8 +367,57 @@ export default {}
             font-size: 14px;
         }
     }
+    .comment-more {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 20px;
+        color: $gray;
+        img {
+            max-width: 15px;
+            margin-left: 5px;
+        }
+    }
+    //
+    .good-info {
+        padding: $interval;
+
+        .no-data {
+            color: $gray;
+            text-align: center;
+            display: block;
+            padding: $interval;
+        }
+    }
+    //
+    .specification {
+        padding: $interval;
+        line-height: 26px;
+        padding-bottom: 20px;
+        min-height: calc(100vh - 239px);
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: $gray;
+            td {
+                border: 1px solid $border;
+                padding: 0 8px;
+
+                &:first-child {
+                    width: 99px;
+                }
+            }
+        }
+    }
+    .guarantee {
+        padding: $interval;
+        line-height: 26px;
+        min-height: calc(100vh - 239px);
+    }
+    //
     .van-goods-action {
         background: transparent;
+        z-index: 399;
         .van-goods-action-mini-btn {
             background: transparent;
         }
