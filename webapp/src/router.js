@@ -65,7 +65,7 @@ export default new Router({
     name: 'special_flash',
     component: () => import('./pages/special/flash-sale.vue')
   }, {
-    path: '/special/recommend',//限时抢购
+    path: '/special/recommend', //限时抢购
     name: 'special_recommend',
     component: () => import('./pages/special/recommend-sale.vue')
   }, {
@@ -73,13 +73,13 @@ export default new Router({
     name: 'uc',
     component: () => import('./pages/uc/index.vue')
   }, {
-      path: '/uc/setting',
-      name: 'uc_setting',
-      component: () => import('./pages/uc/setting/index.vue')
+    path: '/uc/setting',
+    name: 'uc_setting',
+    component: () => import('./pages/uc/setting/index.vue')
   }, {
-      path: '/uc/setting/address',
-      name: 'uc_setting_address',
-      component: () => import('./pages/uc/setting/address.vue')
+    path: '/uc/setting/address',
+    name: 'uc_setting_address',
+    component: () => import('./pages/uc/setting/address.vue')
   }, {
     path: '/uc/coupons',
     name: 'uc_coupons',
@@ -141,9 +141,9 @@ export default new Router({
     name: 'uc_orders_servicetype',
     component: () => import('./pages/uc/orders/servicetype.vue')
   }, {
-      path: '/uc/score',
-      name: 'uc_score',
-      component: () => import('./pages/uc/score/index.vue')
+    path: '/uc/score',
+    name: 'uc_score',
+    component: () => import('./pages/uc/score/index.vue')
   }, {
     path: '/uc/vip',
     name: 'uc_vip',
