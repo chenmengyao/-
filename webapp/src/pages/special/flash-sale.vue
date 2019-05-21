@@ -27,12 +27,12 @@
                   </div>
                </div>
                <div>
-                  <div class="suwis-con">
+                  <div class="suwis-con" v-for="(item,index) in flashList[0]">
                     <div class="suwis-con-left">
-                        <img src="../../../public/test4.png" width="100%">
+                        <img :src="item.img" width="100%">
                     </div>
                       <div class="suwis-con-right">
-                        <div>钟点工保洁清洗开锁换锁管道疏通钟点工保洁清洗</div>
+                        <div>{{item.title}}</div>
                         <div style="margin-top:5px;">
                             <div class="suwis-right-con">
                               <div style="padding:7px 0;">
@@ -40,12 +40,12 @@
                                   <van-progress
                                     :show-pivot="false"
                                     color="linear-gradient(270deg,rgba(247,174,79,1) 0%,rgba(247,146,49,1) 33%,rgba(240,107,37,1) 100%)"
-                                    :percentage="90"
+                                    :percentage="(item.percentage)"
                                   />
                               </div>
                               <div style="">
-                                  <span class="d-yuan-price">￥59.9</span>
-                                  <span class="d-basis-price">￥59.9</span>
+                                  <span class="d-yuan-price">￥{{item.price_max}}</span>
+                                  <span class="d-basis-price">￥{{item.price_min}}</span>
                                   <span class="d-tags"><img src="../../assets/qg.png" style="width:25px;margin-top:-3px;vertical-align: middle;"></span>
                               </div>
                             </div>
@@ -55,34 +55,7 @@
                         </div>
                     </div>
                   </div>
-                  <div class="suwis-con">
-                    <div class="suwis-con-left">
-                        <img src="../../../public/test4.png" width="100%">
-                    </div>
-                      <div class="suwis-con-right">
-                        <div>钟点工保洁清洗开锁换锁管道疏通钟点工保洁清洗开锁换锁管道疏钟点工保洁清洗开锁换锁管道疏通钟点工保洁清洗开锁换锁管道疏</div>
-                        <div style="margin-top:5px;">
-                            <div class="suwis-right-con">
-                              <div style="padding:7px 0;">
-                                  <!-- 100件好货等您来抢～ -->
-                                  <van-progress
-                                    :show-pivot="false"
-                                    color="linear-gradient(270deg,rgba(247,174,79,1) 0%,rgba(247,146,49,1) 33%,rgba(240,107,37,1) 100%)"
-                                    :percentage="20"
-                                  />
-                              </div>
-                              <div style="">
-                                  <span class="d-yuan-price">￥59.9</span>
-                                  <span class="d-basis-price">￥59.9</span>
-                                  <span class="d-tags"><img src="../../assets/qg.png" style="width:25px;margin-top:-3px;vertical-align: middle;"></span>
-                              </div>
-                            </div>
-                            <div style="float:right">
-                              <img src="../../assets/yqg.png" style="width:66px;">
-                            </div>
-                        </div>
-                    </div>
-                  </div>
+                  
                </div>
             </div>
         </van-tab>
@@ -109,12 +82,12 @@
                </div>
             </div>
              <div>
-                  <div class="suwis-con">
+                  <div class="suwis-con" v-for="(item,index) in flashList[1]">
                     <div class="suwis-con-left">
-                        <img src="../../../public/test4.png" width="100%">
+                        <img :src="item.img" width="100%">
                     </div>
                       <div class="suwis-con-right">
-                        <div>钟点工保洁清洗开锁换锁管道疏通钟点工保洁清洗开锁换锁管道疏钟点工保洁清洗开锁换锁管道疏通钟点工保洁清洗开锁换锁管道疏</div>
+                        <div>{{item.title}}</div>
                         <div style="margin-top:5px;">
                             <div class="suwis-right-con">
                               <div style="padding-top:5px;font-size:10px;">
@@ -289,18 +262,21 @@ export default {
   data(){
     return{
       active:'',
-      flashList:[]
+      flashList:{
+        0:[{id: 21, title: "11111", number: "1558409901", store_id: 1, sta: 0, leader: 20}],
+        1:[{id: 21, title: "11111", number: "1558409901", store_id: 1, sta: 0, leader: 20}]
+      }
     }
   },
   methods:{
     getFlashList(){
-      this.$axios.post('goods/lists',{
-        type:1,
-        page:1,
-        num:10
-      }).then(res => {
-          this.flashList=res.data.data
-      })
+      // this.$axios.post('goods/lists',{
+      //   type:1,
+      //   page:1,
+      //   num:10
+      // }).then(res => {
+      //   this.flashList=res.data.data
+      // })
     }
   },
   created(){
