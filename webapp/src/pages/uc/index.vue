@@ -69,37 +69,37 @@
         </div>
 
         <div class="option-list">
-            <router-link to="/uc/orders" class="option-item link">
+            <router-link to="/uc/coupons" class="option-item link">
                 <img src="@/assets/uc/my-coupon@2x.png" alt="" class="option-image">
                 <span class="option-name">我的卡券</span>
             </router-link>
 
-            <router-link to="/uc/orders" class="option-item link">
+            <router-link to="/uc/footprint" class="option-item link">
                 <img src="@/assets/uc/foot.png" alt="" class="option-image">
                 <span class="option-name">我的足迹</span>
             </router-link>
 
-            <router-link to="/uc/orders" class="option-item link">
+            <router-link to="/uc/vip" class="option-item link">
                 <img src="@/assets/uc/my-vip@2x.png" alt="" class="option-image">
                 <span class="option-name">我的VIP</span>
             </router-link>
 
-            <router-link to="/uc/orders" class="option-item link">
+            <router-link to="/uc/score" class="option-item link">
                 <img src="@/assets/uc/my-score@2x.png" alt="" class="option-image">
                 <span class="option-name">我的积分</span>
             </router-link>
 
-            <router-link to="/uc/orders" class="option-item link">
+            <router-link to="/uc/popularize" class="option-item link">
                 <img src="@/assets/uc/my-extend@2x.png" alt="" class="option-image">
                 <span class="option-name">我的推广</span>
             </router-link>
 
-            <router-link to="/uc/orders" class="option-item link">
+            <router-link to="/mine/commission" class="option-item link">
                 <img src="@/assets/uc/my-charge@2x.png" alt="" class="option-image">
                 <span class="option-name">我的佣金</span>
             </router-link>
 
-            <router-link to="/uc/orders" class="option-item link">
+            <router-link to="/uc/messages" class="option-item link">
                 <img src="@/assets/uc/my-message@2x.png" alt="" class="option-image">
                 <span class="option-name">我的消息</span>
             </router-link>
