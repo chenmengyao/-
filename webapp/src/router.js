@@ -81,6 +81,10 @@ export default new Router({
     name: 'uc_setting_address',
     component: () => import('./pages/uc/setting/address.vue')
   }, {
+      path: '/uc/setting/handleAddress',
+      name: 'uc_setting_handleAddress',
+      component: () => import('./pages/uc/setting/handleAddress.vue')
+  }, {
     path: '/uc/coupons',
     name: 'uc_coupons',
     component: () => import('./pages/uc/coupons/index.vue')
@@ -140,6 +144,10 @@ export default new Router({
     path: '/uc/orders/servicetype',
     name: 'uc_orders_servicetype',
     component: () => import('./pages/uc/orders/servicetype.vue')
+  },{
+      path: '/uc/footprint',
+      name: 'uc_footprint',
+      component: () => import('./pages/uc/footprint/index.vue')
   }, {
     path: '/uc/score',
     name: 'uc_score',
