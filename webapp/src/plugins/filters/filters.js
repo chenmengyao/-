@@ -11,7 +11,7 @@ const vfilter = {
     if (time == '' || time == null) {
       return ''
     } else {
-      return moment(time*1000).format('YYYY-MM-DD')
+      return moment(time*1000).format('YYYY-MM-DD hh:mm:ss')
     }
   },
   // 标准计数法
