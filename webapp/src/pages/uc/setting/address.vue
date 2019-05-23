@@ -1,22 +1,22 @@
 <template>
     <div class="suwis-address">
         <div class="button-line">
-            <span class="button">新增地址</span>
+            <router-link class="link" to="/uc/setting/handleAddress">新增地址</router-link>
         </div>
         <ul class="address-list">
-            <li class="address-item">
+            <li class="address-item" v-for="item in list" :key="item.id">
                 <img src="@/assets/uc/address@2x.png" alt="地址" class="address-icon">
                 <div class="info">
                     <div class="info-title">
                         <div class="title-left">
-                            <span class="name">周红娇</span>
-                            <span class="tel">18062439108</span>
-                            <span class="default">默认</span>
+                            <span class="name">{{item.name}}</span>
+                            <span class="tel">{{item.tel}}</span>
+                            <span class="default" v-if="item.sta === 1">默认</span>
                         </div>
-                        <div class="edit">编辑</div>
+                        <div class="edit" @click="edit(item.id)">编辑</div>
                     </div>
                     <div class="info-address">
-                        湖北省武汉市洪山区东湖风景区街道鲁磨路宝迪通汽修服务中心3楼308
+                        {{item | address}}
                     </div>
                 </div>
             </li>
@@ -26,19 +26,30 @@
 
 <script>
     export default {
+        filters: {
+            address(v) {
+                return v.province + v.city + v.area + v.address
+            }
+        },
         data() {
             return {
-
+                list: []
             }
         },
         methods: {
+            edit(id) {
+                this.$router.push({
+                    path: '/uc/setting/handleAddress',
+                    query: { id }
+                })
+            },
             getAddresses() {
                 this.$axios
                     .post('/user/alladdress')
                     .then(({ data }) => {
                         if (data.code === 1) {
                             if (data.data) {
-
+                                this.list = data.data
                             }
                         } else {
                             this.$toast(data.msg);
@@ -48,7 +59,7 @@
         },
         created() {
             this.getAddresses()
-        }
+        },
     }
 </script>
 
@@ -64,6 +75,9 @@
             border-bottom: 1px solid #f5f5f5;
             font-size: 14px;
             line-height: 24px;
+            .link {
+                color: inherit;
+            }
         }
         .address-item {
             display: flex;
@@ -109,6 +123,8 @@
                 .edit {
                     color: #999;
                     font-size: 12px;
+                    line-height: 22px;
+                    padding: 0 5px;
                 }
             }
             .info-address {

@@ -122,17 +122,14 @@ export default {
         sum:'500',
         end_time:'1558252637'
       }],
-      pass:[{
-        title:'新人优惠券1',
-        total:'满100减50',
-        sum:'500',
-        end_time:'1558252637'
-      }]
+      pass:[]
     }
   },
   methods:{
     getTobeusedList(){
-      this.$axios.post('coupon/tobeused').then(res => {
+      this.$axios.post('coupon/tobeused',{
+        
+      }).then(res => {
         //  待使用优惠券
         //  if(!res.data.data){
         //    this.tobeused=[]

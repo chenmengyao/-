@@ -65,7 +65,7 @@ export default new Router({
     name: 'special_flash',
     component: () => import('./pages/special/flash-sale.vue')
   }, {
-    path: '/special/recommend',//限时抢购
+    path: '/special/recommend', //限时抢购
     name: 'special_recommend',
     component: () => import('./pages/special/recommend-sale.vue')
   }, {
@@ -73,13 +73,17 @@ export default new Router({
     name: 'uc',
     component: () => import('./pages/uc/index.vue')
   }, {
-      path: '/uc/setting',
-      name: 'uc_setting',
-      component: () => import('./pages/uc/setting/index.vue')
+    path: '/uc/setting',
+    name: 'uc_setting',
+    component: () => import('./pages/uc/setting/index.vue')
   }, {
-      path: '/uc/setting/address',
-      name: 'uc_setting_address',
-      component: () => import('./pages/uc/setting/address.vue')
+    path: '/uc/setting/address',
+    name: 'uc_setting_address',
+    component: () => import('./pages/uc/setting/address.vue')
+  }, {
+      path: '/uc/setting/handleAddress',
+      name: 'uc_setting_handleAddress',
+      component: () => import('./pages/uc/setting/handleAddress.vue')
   }, {
     path: '/uc/coupons',
     name: 'uc_coupons',
@@ -117,7 +121,11 @@ export default new Router({
     name: 'uc_orders_comment',
     component: () => import('./pages/uc/orders/comment.vue')
   }, {
-    path: '/uc/orders/details',
+      path: '/uc/orders/confirm-order',   // 确认订单
+      name: 'uc_orders_confirm_order',
+      component: () => import('./pages/uc/orders/confirm-order.vue')
+  }, {
+    path: '/uc/orders/details',     // 订单详情
     name: 'uc_orders_details',
     component: () => import('./pages/uc/orders/details.vue')
   }, {
@@ -140,10 +148,14 @@ export default new Router({
     path: '/uc/orders/servicetype',
     name: 'uc_orders_servicetype',
     component: () => import('./pages/uc/orders/servicetype.vue')
+  },{
+      path: '/uc/footprint',
+      name: 'uc_footprint',
+      component: () => import('./pages/uc/footprint/index.vue')
   }, {
-      path: '/uc/score',
-      name: 'uc_score',
-      component: () => import('./pages/uc/score/index.vue')
+    path: '/uc/score',
+    name: 'uc_score',
+    component: () => import('./pages/uc/score/index.vue')
   }, {
     path: '/uc/vip',
     name: 'uc_vip',

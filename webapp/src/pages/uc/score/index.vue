@@ -27,8 +27,8 @@
                         :key="item.id"
                         :title="item.time | date"
                         :label="item.type"
-                        :value-class="[item.sta === 1 ? 'color-red' : 'color-green']"
-                        :value="item.score"/>
+                        :value-class="[item.sta === 1 ? 'color-green' : 'color-red']"
+                        :value="item | score"/>
                 </van-list>
             </ul>
             <div class="bottom-bar"></div>
@@ -49,7 +49,11 @@
 
     export default {
         filters: {
-            date: v => moment(v).format('YYYY-MM-DD hh:mm:ss')
+            date: v => moment(v).format('YYYY-MM-DD hh:mm:ss'),
+            score: v => {
+                const symbol = v.sta === 1 ? '+' : '-'
+                return symbol + v.score
+            }
         },
         data() {
             return {
@@ -70,15 +74,29 @@
                     .then(({ data }) => {
                         if (data.code === 1) {
                             this.finished = true
-                            this.loading = false
                             if (data.data) {
                                 Object.assign(this, data.data)
                             }
                         } else {
                             this.$toast(data.msg);
                         }
+                        this.loading = false
+                    })
+                    .catch(() => {
+                        this.error = true
                     })
             }
+        },
+        created() {
+            this.$axios
+                .post('/mine/score_rule')
+                .then(({ data }) => {
+                    if (data.code === 1) {
+                        console.log(data)
+                    } else {
+                        this.$toast(data.msg);
+                    }
+                })
         }
     }
 </script>
