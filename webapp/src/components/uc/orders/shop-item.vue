@@ -9,11 +9,12 @@
             <span class="shop-status">{{ shopData.sta | status }}</span>
         </div>
         <van-card
-            num="2"
-            price="2.00"
-            title="商品标题"
-            thumb="http://img.alicdn.com/imgextra/i3/2931078658/O1CN01jMcIpD2DpPddKec4R-2931078658.jpg_260x260.jpg"
-            origin-price="10.00">
+            v-for="goods in goodsList"
+            :key="goods.goods_id"
+            :num="goods.num"
+            :price="goods.goods_price"
+            :title="goods.goods_name"
+            :thumb="goods.goods_img">
             <template v-if="shopData.desc && shopData.desc.length" #desc>
                 <div class="card-desc">
                     <span v-for="desc in shopData.desc" :key="desc">{{desc}}</span>
@@ -25,7 +26,7 @@
                 </div>
             </template>
         </van-card>
-        <div class="total-price" v-if="showPrice">共{{shopData.num}}件商品 合计: ￥{{shopData.goods_price}}</div>
+        <div class="total-price" v-if="showPrice">共{{totalNum}}件商品 合计: ￥{{shopData.sum}}</div>
         <slot name="footer"></slot>
     </div>
 </template>
@@ -33,15 +34,19 @@
 <script>
     // 店铺状态映射
     const statusMap = {
-        toPay: '等待买家付款',
-        toSend: '等待卖家发货',
-        toReceive: '卖家已发货',
-        toEvaluate: '买家已确认收货',
-        afterSale: '等待卖家处理'
+        0: '等待买家付款',
+        1: '等待卖家发货',
+        2: '卖家已发货',
+        4: '买家已确认收货',
+        3: '等待卖家处理'
     }
 
     export default {
         props: {
+            goodsList: {
+                type: Array,
+                default: []
+            },
             shopData: {
                 type: Object,
                 required: true,
@@ -53,6 +58,11 @@
         },
         filters: {
             status: v => statusMap[v]
+        },
+        computed: {
+            totalNum() {
+                return this.goodsList.reduce((result, goods) => result + goods.num, 0)
+            }
         },
         data() {
             return {

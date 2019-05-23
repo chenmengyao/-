@@ -121,7 +121,11 @@ export default new Router({
     name: 'uc_orders_comment',
     component: () => import('./pages/uc/orders/comment.vue')
   }, {
-    path: '/uc/orders/details',
+      path: '/uc/orders/confirm-order',   // 确认订单
+      name: 'uc_orders_confirm_order',
+      component: () => import('./pages/uc/orders/confirm-order.vue')
+  }, {
+    path: '/uc/orders/details',     // 订单详情
     name: 'uc_orders_details',
     component: () => import('./pages/uc/orders/details.vue')
   }, {

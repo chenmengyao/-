@@ -86,7 +86,7 @@
 <style scoped lang="scss">
 .suwis-setting {
     min-height: 100vh;
-    background-color: rgb(245, 245, 245);
+    background: #f5f5f5;
     box-sizing: border-box;
     font-size: 14px;
     .content {

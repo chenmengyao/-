@@ -74,13 +74,16 @@
                     .then(({ data }) => {
                         if (data.code === 1) {
                             this.finished = true
-                            this.loading = false
                             if (data.data) {
                                 Object.assign(this, data.data)
                             }
                         } else {
                             this.$toast(data.msg);
                         }
+                        this.loading = false
+                    })
+                    .catch(() => {
+                        this.error = true
                     })
             }
         },

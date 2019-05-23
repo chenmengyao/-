@@ -6,7 +6,9 @@
             size="small"
             v-for="button in buttonList"
             :key="button.key"
-            :type="button.type" >{{button.name}}
+            :type="button.type"
+            @click="onClick(button.key)"
+            >{{button.name}}
         </van-button>
     </div>
 </template>
@@ -15,7 +17,12 @@
     export default {
         props: {
             buttonList: Array,
-            default: []
+            orderId: Number
+        },
+        methods: {
+            onClick(key) {
+                this.$emit('on-click', key, this.orderId)
+            }
         }
     }
 </script>
