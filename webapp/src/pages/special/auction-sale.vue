@@ -10,22 +10,26 @@
         </van-swipe-item>
       </van-swipe>
     </div>
+
+
+
     <div>
-      <div class="suwis-news-list" v-for="(item,index) in flashList">
+      <div class="suwis-news-list" v-for="(item,index) in list">
          <div class="suwis-news-right">
            <img src="./../../assets/test3.png" width="100%">
          </div>
          <div class="suwis-news-left">
-            <span>猫猫包袋女2019新款潮韩版时尚水桶复 古包ins风网红同款猫猫包袋女2019新款潮韩版时尚水桶复</span>
+            <div>{{item.title}}</div>
             <div class='suwis-news-tips'>
                <div><span class="suwis-current-price">当前价 : </span><span class="suwis-current-pri">16666.00</span></div>
                <div>
                   <span class="suwis-current-price">距离结束仅剩下 </span>
                   <span>
-                    <span class="suwis-auction-date">0</span> 
-                    <span class="suwis-auction-date">0</span> :
-                    <span class="suwis-auction-date">0</span> 
-                    <span class="suwis-auction-date">0</span> 
+                   
+                    <span class="suwis-auction-date"> {{item.endTime[0]}}</span> 
+                    <span class="suwis-auction-date"> {{item.endTime[1]}}</span> :
+                    <span class="suwis-auction-date"> {{item.endTime[2]}}</span> 
+                    <span class="suwis-auction-date"> {{item.endTime[3]}}</span> 
                   </span>
                 </div>
                <div style="text-align:right;font-size:12px"><span style="color:#E83F44 ">16</span><span class="suwis-current-price">次出价</span></div>
@@ -40,26 +44,89 @@
 </template>
 
 <script>
+
+function InitTime(endtime){
+    var dd,hh,mm,ss = null;
+    var time = parseInt(endtime) - new Date().getTime();
+    if(time<=0){
+        return '结束'
+    }else{
+        dd = Math.floor(time / 60 / 60 / 24);
+        hh = Math.floor((time / 60 / 60) % 24);
+        mm = Math.floor((time / 60) % 60);
+        ss = Math.floor(time  % 60);
+        if(mm<10&&ss<10){
+          var str ='0'+mm+'0'+ss;
+        }else if(mm<10){
+          var str ='0'+mm+ss;
+        }else if(ss<10){
+          var str =mm+'0'+ss;
+        }else{
+          var str=mm+''+ss
+        }
+        
+        return str;
+    }
+}
 export default {
   data() {
     return {
-      flashList:[]
+      flashList:[],
+      active: 'tab-container1',
+      pinkFont:true,
+      // 上拉刷新、下拉加载
+      allLoaded: false, //如果为true,禁止上拉刷新
+      autoFill: false, //取消自动填充，
+      list: [],
     }
   },
   methods:{
-    getAuctionList(){
+  },
+  created() {
       this.$axios.post('goods/lists',{
-        type:1,
+        type:2,
         page:1,
         num:10
       }).then(res => {
-          this.flashList=res.data.data
+        var list=res.data.data
+        //测试数据
+        list[0].activity_end_time='1558626652000'
+          // this.flashList=list 
+          list.map( (obj,index)=>{
+            this.$set(
+                obj,"endTime",InitTime(obj.activity_end_time)
+            );
+        })
+        this.list = list;
       })
+        
+    },
+    mounted() {
+        setInterval( ()=> {
+            for (var key in this.list) {
+                var aaa = parseInt( this.list[key]["activity_end_time"] );
+                var bbb = new Date().getTime();
+                var rightTime = aaa - bbb;
+                if (rightTime > 0) {
+                    var dd = Math.floor(rightTime / 1000 / 60 / 60 / 24);
+                    var hh = Math.floor((rightTime / 1000 / 60 / 60) % 24);
+                    var mm = Math.floor((rightTime / 1000 / 60) % 60);
+                    var ss = Math.floor((rightTime / 1000) % 60);
+                }
+                if(mm<10&&ss<10){
+                  this.list[key]["endTime"] ='0'+mm+'0'+ss;
+                }else if(mm<10){
+                  this.list[key]["endTime"]='0'+mm+ss;
+                }else if(ss<10){
+                  this.list[key]["endTime"] =mm+'0'+ss;
+                }else{
+                  this.list[key]["endTime"]=mm+''+ss
+                }
+               
+            }
+        }, 1000);
+ 
     }
-  },
-  created(){
-    this.getAuctionList()
-  }
 }
 </script>
 
