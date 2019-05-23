@@ -2,11 +2,8 @@
   <div> 
     <div class="suwis-news-ban">
       <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
-        <van-swipe-item>
-          <img src="../../../public/test2.png" style="width:100%;">
-        </van-swipe-item>
-        <van-swipe-item>
-          <img src="../../../public/test2.png" style="width:100%;">
+        <van-swipe-item v-for="item in banner">
+          <img :src="item.img" style="width:100%;">
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -24,8 +21,8 @@
                <div><span class="suwis-current-price">当前价 : </span><span class="suwis-current-pri">16666.00</span></div>
                <div>
                   <span class="suwis-current-price">距离结束仅剩下 </span>
-                  <span>
-                   
+                  <span v-if="item.endTime=='结束'">{{item.endTime}}</span>
+                  <span v-else> 
                     <span class="suwis-auction-date"> {{item.endTime[0]}}</span> 
                     <span class="suwis-auction-date"> {{item.endTime[1]}}</span> :
                     <span class="suwis-auction-date"> {{item.endTime[2]}}</span> 
@@ -48,8 +45,10 @@
 function InitTime(endtime){
     var dd,hh,mm,ss = null;
     var time = parseInt(endtime) - new Date().getTime();
-    if(time<=0){
+   
+    if(Number(time)<=0){
         return '结束'
+       
     }else{
         dd = Math.floor(time / 60 / 60 / 24);
         hh = Math.floor((time / 60 / 60) % 24);
@@ -78,25 +77,35 @@ export default {
       allLoaded: false, //如果为true,禁止上拉刷新
       autoFill: false, //取消自动填充，
       list: [],
+      banner:[]
     }
   },
   methods:{
+     getBanner(){
+      this.$axios.post('goods/goodsbanner',{
+        type:2,
+      }).then(res => {
+        this.banner=res.data.data
+      })
+    }
   },
   created() {
+    this.getBanner()
       this.$axios.post('goods/lists',{
         type:2,
         page:1,
         num:10
       }).then(res => {
-        var list=res.data.data
+        var list=res.data.data.goods
         //测试数据
-        list[0].activity_end_time='1558626652000'
+        // list[0].activity_end_time='1558626652000'
           // this.flashList=list 
           list.map( (obj,index)=>{
             this.$set(
                 obj,"endTime",InitTime(obj.activity_end_time)
             );
         })
+        console.log(list )
         this.list = list;
       })
         
@@ -112,7 +121,6 @@ export default {
                     var hh = Math.floor((rightTime / 1000 / 60 / 60) % 24);
                     var mm = Math.floor((rightTime / 1000 / 60) % 60);
                     var ss = Math.floor((rightTime / 1000) % 60);
-                }
                 if(mm<10&&ss<10){
                   this.list[key]["endTime"] ='0'+mm+'0'+ss;
                 }else if(mm<10){
@@ -122,7 +130,9 @@ export default {
                 }else{
                   this.list[key]["endTime"]=mm+''+ss
                 }
-               
+                }else{
+                  this.list[key]["endTime"]='结束'
+                }
             }
         }, 1000);
  

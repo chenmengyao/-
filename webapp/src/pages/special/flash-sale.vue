@@ -16,19 +16,16 @@
                <div>
                   <div style="display:flex;padding:15px 10px;padding-top:0;margin-top:15px;">
                         <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
-                          <van-swipe-item>
-                            <img src="../../../public/test2.png" style="width:100%;border-radius:4px;">
-                          </van-swipe-item>
-                          <van-swipe-item>
-                            <img src="../../../public/test2.png" style="width:100%;border-radius:4px;">
+                          <van-swipe-item v-for="item in banner">
+                            <img :src="item.img" style="width:100%;border-radius:4px;">
                           </van-swipe-item>
                         </van-swipe>
                     
                   </div>
                </div>
                <div>
-                  <div v-if="!flashList[0].length" class="d-more">暂无数据</div>
-                  <div class="suwis-con" v-if="flashList[0].length" v-for="(item,index) in flashList[0]">
+                  <div class="d-more" v-if="flashList[0].goods.length==0">暂无数据</div>
+                  <div class="suwis-con" v-else v-for="(item,index) in flashList[0].goods">
                     <div class="suwis-con-left">
                         <img :src="item.img" width="100%">
                     </div>
@@ -71,11 +68,8 @@
                <div>
                   <div style="display:flex;padding:15px 10px;padding-top:0">
                         <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
-                          <van-swipe-item>
-                            <img src="../../../public/test2.png" style="width:100%;">
-                          </van-swipe-item>
-                          <van-swipe-item>
-                            <img src="../../../public/test2.png" style="width:100%;">
+                           <van-swipe-item v-for="item in banner">
+                            <img :src="item.img" style="width:100%;border-radius:4px;">
                           </van-swipe-item>
                         </van-swipe>
                     
@@ -83,8 +77,8 @@
                </div>
             </div>
              <div>
-                  <div v-if="!flashList[1].length" class="d-more">暂无数据</div>
-                  <div class="suwis-con" v-if="flashList[1].length" v-for="(item,index) in flashList[1]">
+                  <div v-if="flashList[1].goods.length==0" class="d-more">暂无数据</div>
+                  <div class="suwis-con" v-else v-for="(item,index) in flashList[1].goods">
                     <div class="suwis-con-left">
                         <img :src="item.img" width="100%">
                     </div>
@@ -120,11 +114,8 @@
                <div>
                   <div style="display:flex;padding:15px 10px;padding-top:0">
                         <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
-                          <van-swipe-item>
-                            <img src="../../../public/test2.png" style="width:100%;">
-                          </van-swipe-item>
-                          <van-swipe-item>
-                            <img src="../../../public/test2.png" style="width:100%;">
+                           <van-swipe-item v-for="item in banner">
+                            <img :src="item.img" style="width:100%;border-radius:4px;">
                           </van-swipe-item>
                         </van-swipe>
                     
@@ -132,8 +123,8 @@
                </div>
             </div>
              <div>
-               <div v-if="!flashList[2].length" class="d-more">暂无数据</div>
-                  <div class="suwis-con" v-if="flashList[2].length" v-for="(item,index) in flashList[2]">
+               <div v-if="flashList[2].goods.length==0" class="d-more">暂无数据</div>
+                  <div class="suwis-con" v-else v-for="(item,index) in flashList[2].goods">
                     <div class="suwis-con-left">
                         <img :src="item.img" width="100%">
                     </div>
@@ -169,11 +160,8 @@
                <div>
                   <div style="display:flex;padding:15px 10px;padding-top:0">
                         <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
-                          <van-swipe-item>
-                            <img src="../../../public/test2.png" style="width:100%;">
-                          </van-swipe-item>
-                          <van-swipe-item>
-                            <img src="../../../public/test2.png" style="width:100%;">
+                           <van-swipe-item v-for="item in banner">
+                            <img :src="item.img" style="width:100%;border-radius:4px;">
                           </van-swipe-item>
                         </van-swipe>
                     
@@ -181,8 +169,8 @@
                </div>
             </div>
              <div>
-               <div v-if="!flashList[3].length" class="d-more">暂无数据</div>
-                  <div class="suwis-con" v-if="flashList[3].length"  v-for="(item,index) in flashList[3]">
+               <div v-if="flashList[3].goods.length==0" class="d-more">暂无数据</div>
+                  <div class="suwis-con" v-else  v-for="(item,index) in flashList[3].goods">
                     <div class="suwis-con-left">
                         <img :src="item.img" width="100%">
                     </div>
@@ -218,11 +206,8 @@
                <div>
                   <div style="display:flex;padding:15px 10px;padding-top:0">
                         <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
-                          <van-swipe-item>
-                            <img src="../../../public/test2.png" style="width:100%;">
-                          </van-swipe-item>
-                          <van-swipe-item>
-                            <img src="../../../public/test2.png" style="width:100%;">
+                           <van-swipe-item v-for="item in banner">
+                            <img :src="item.img" style="width:100%;border-radius:4px;">
                           </van-swipe-item>
                         </van-swipe>
                     
@@ -230,8 +215,8 @@
                </div>
             </div>
              <div>
-               <div v-if="!flashList[4].length" class="d-more">暂无数据</div>
-                  <div class="suwis-con" v-if="flashList[4].length" v-for="(item,index) in flashList[4]">
+               <div v-if="flashList[4].goods.length==0" class="d-more">暂无数据</div>
+                  <div class="suwis-con" v-else v-for="(item,index) in flashList[4].goods">
                     <div class="suwis-con-left">
                         <img :src="item.img" width="100%">
                     </div>
@@ -267,13 +252,14 @@ export default {
   data(){
     return{
       active:'',
-      flashList:{
-        0:[],
-        1:[],
-        2:[],
-        3:[],
-        4:[]
-      }
+      flashList:[
+        {goods:[]},
+        {goods:[]},
+        {goods:[]},
+        {goods:[]},
+        {goods:[]}
+      ],
+      banner:[]
     }
   },
   methods:{
@@ -283,15 +269,20 @@ export default {
         page:1,
         num:10
       }).then(res => {
-        console.log()
-        for(let i in res.data.data){
-          this.flashList[i]=res.data.data[i]
-        }
+          this.flashList=res.data.data
+      })
+    },
+    getBanner(){
+      this.$axios.post('goods/goodsbanner',{
+        type:1,
+      }).then(res => {
+        this.banner=res.data.data
       })
     }
   },
   created(){
     this.getFlashList()
+    this.getBanner()
   }
 }
 </script>

@@ -65,7 +65,7 @@ export default new Router({
     name: 'special_flash',
     component: () => import('./pages/special/flash-sale.vue')
   }, {
-    path: '/special/recommend', //限时抢购
+    path: '/special/recommend', //好物推荐
     name: 'special_recommend',
     component: () => import('./pages/special/recommend-sale.vue')
   }, {
