@@ -53,7 +53,7 @@ export default {
         tel: '18687512006',
         code: '',
         nickname: 'Ivorzk',
-        password: '123456',
+        password: 'a123456',
         pwdConfirm: '',
         type: 1
       },
@@ -62,40 +62,6 @@ export default {
         code: '',
         nickname: '',
         password: '',
-      },
-      rules: {
-        phone: [{
-          required: true,
-          message: '请输入手机号',
-          trigger: 'blur'
-        }, {
-          required: true,
-          pattern: /^1(3|4|5|7|8)\d{9}$/,
-          message: '请输入正确的手机号',
-          trigger: 'blur'
-        }],
-        pwd: [{
-          required: true,
-          message: '请输入密码',
-          trigger: 'blur'
-        }],
-        pwdConfirm: [{
-          required: true,
-          message: '两次输入的密码不一致',
-          trigger: 'blur',
-          validator: (rule, value, callback) => {
-            if (value !== this.formData.pwd) {
-              callback(new Error('两次输入的密码不一致'))
-            } else {
-              callback()
-            }
-          }
-        }],
-        code: [{
-          required: true,
-          message: '请输入验证码',
-          trigger: 'blur'
-        }]
       },
       loaded: false,
       disabled: false,
