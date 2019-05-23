@@ -2,12 +2,10 @@
   <div> 
     <div class="suwis-news-ban">
       <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
-        <van-swipe-item>
-          <img src="./../../assets/test2.png" style="width:100%;">
+        <van-swipe-item v-for="item in banner">
+          <img :src="item.img" style="width:100%;">
         </van-swipe-item>
-        <van-swipe-item>
-          <img src="./../../assets/test2.png" style="width:100%;">
-        </van-swipe-item>
+        
       </van-swipe>
     </div>
     <div>
@@ -43,7 +41,8 @@
 export default {
   data() {
     return {
-      clearList:[]
+      clearList:[],
+      banner:[]
     }
   },
   methods:{
@@ -53,12 +52,20 @@ export default {
         page:1,
         num:10
       }).then(res => {
-       this.clearList=res.data.data
+       this.clearList=res.data.data.goods
+      })
+    },
+     getBanner(){
+      this.$axios.post('goods/goodsbanner',{
+        type:4,
+      }).then(res => {
+        this.banner=res.data.data
       })
     }
   },
   created(){
     this.getClearList() 
+    this.getBanner()
   }
 }
 </script>

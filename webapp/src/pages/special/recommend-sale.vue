@@ -4,16 +4,13 @@
       <div class="suwis-recom-head">
       <div style="background:#fff;display:flex;margin:0 15px;height:120px;border-radius: 4px;-webkit-border-radius:4px;">
           <span class="d-banntitle-left"><span><img src="../../assets/hIcon.png">为您挑选人间好物</span></span>
-          <span class="d-banntitle-right">共<span>1314</span>件商品</span>
+          <span class="d-banntitle-right">共<span>{{total}}</span>件商品</span>
       </div>
       </div>
       <div class="suwis-news-ban">
         <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
-          <van-swipe-item>
-            <img src="../../../public/test2.png" style="width:100%;">
-          </van-swipe-item>
-          <van-swipe-item>
-            <img src="../../../public/test2.png" style="width:100%;">
+          <van-swipe-item v-for="item in banner">
+            <img :src="item.img" style="width:100%;">
           </van-swipe-item>
         </van-swipe>
       </div>
@@ -48,7 +45,9 @@ export default {
   data(){
     return{
       recValue:4,
-      reomList:[]
+      reomList:[],
+      total:null,
+      banner:[]
     }
   },
   methods:{
@@ -58,12 +57,21 @@ export default {
         page:1,
         num:10
       }).then(res => {
-          this.reomList=res.data.data
+          this.reomList=res.data.data.goods
+          this.total=res.data.data.total
+      })
+    },
+     getBanner(){
+      this.$axios.post('goods/goodsbanner',{
+        type:3,
+      }).then(res => {
+        this.banner=res.data.data
       })
     }
   },
   created(){
     this.getReomList()
+    this.getBanner()
   }
 }
 </script>
