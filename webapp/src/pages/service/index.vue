@@ -130,6 +130,17 @@ export default {
       }
       this.carmodel = areaName
     }
+  },
+  created(){
+    this.$axios.post('goods/convenient',{
+        category:'钟点工',
+        page:1,
+        num:10,
+        pointx:'',
+        pointy:''
+      }).then(res => {
+        this.banner=res.data.data
+      })
   }
 }
 </script>
