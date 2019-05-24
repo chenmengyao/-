@@ -14,7 +14,8 @@
                             v-for="shop in list"
                             :key="shop[0].id"
                             :shop-data="shop[0]"
-                            :goods-list="shop">
+                            :goods-list="shop"
+                            @on-click-item="onClickOrder">
                             <template #footer>
                                 <ButtonLine
                                     :button-list="shop[0].sta | buttonList"
@@ -175,6 +176,12 @@
                 this.page = 1
                 this.list = []
                 this.getList()
+            },
+            onClickOrder(goods) {
+                this.$router.push({
+                    path: '/uc/orders/confirm-order',
+                    query: {id: goods.id}
+                })
             },
             onButtonClick(key, orderId) {
                 switch (key) {

@@ -129,6 +129,10 @@ export default new Router({
     name: 'uc_orders_confirm_order',
     component: () => import('./pages/uc/orders/confirm-order.vue')
   }, {
+      path: '/uc/orders/score-discount', // 积分折扣
+      name: 'uc_orders_score_discount',
+      component: () => import('./pages/uc/orders/score-discount.vue')
+  }, {
     path: '/uc/orders/details', // 订单详情
     name: 'uc_orders_details',
     component: () => import('./pages/uc/orders/details.vue')
