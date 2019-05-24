@@ -45,13 +45,13 @@
                 autosize
             />
             <div class="upload-line">
-                <van-uploader :after-read="onRead">
+                <van-uploader :after-read="onRead" accept="image/gif, image/jpeg" :max-size="maxSize" @oversize="oversize">
                     <div class="icon-line">
                         <van-icon name="photograph" size="24px" color="rgb(180, 180, 180)"/>
                     </div>
                     <div class="upload-text">添加图片</div>
                 </van-uploader>
-                <van-uploader :after-read="onRead">
+                <van-uploader>
                     <div class="icon-line">
                         <van-icon name="live" size="24px" color="rgb(180, 180, 180)"/>
                     </div>
@@ -81,7 +81,28 @@
                 evaluate: '',
                 evaluate_quality: 2.5,
                 evaluate_serve: 3.5,
-                evaluate_express: 4
+                evaluate_express: 4,
+                maxSize: 500 * 1024
+            }
+        },
+        methods: {
+            onRead(file) {
+                const formData = new FormData()
+                formData.append('file', file.file)
+                console.log(file)
+                this.$axios
+                    .post('/index/upload', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                    .then(({ data }) => {
+                        console.log(data)
+                    })
+            },
+            oversize() {
+                const maxSize = Math.floor(this.maxSize / 1024)
+                this.$toast(`上传图片最大不能超过${maxSize}KB`)
             }
         }
     }
@@ -140,6 +161,7 @@
             position: fixed;
             width: 100%;
             bottom: 25px;
+            text-align: center;
             .deploy {
                 width:323px;
                 height:45px;

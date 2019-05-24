@@ -27,12 +27,14 @@
                 </van-list>
             </van-tab>
         </van-tabs>
+        <ScorePay :show="payTypeShow"></ScorePay>
     </div>
 </template>
 
 <script>
     import ShopItem from '@/components/uc/orders/shop-item'
     import ButtonLine from '@/components/uc/orders/button-line'
+    import ScorePay from '@/components/uc/orders/pay-type'
 
     // 按钮类型映射
     const buttonMap = {
@@ -80,7 +82,8 @@
         name: "OrderList",
         components: {
             ButtonLine,
-            ShopItem
+            ShopItem,
+            ScorePay
         },
         filters: {
             buttonList: v => buttonMap[v]
@@ -95,6 +98,7 @@
                 num: 20,            // 每页的数量
                 page: 1,            // 页码
                 sta: undefined,     // 不传sta为全部订单 0 待付款 1 待发货 2 待收货 3 退款/售后 4 待评价 5 已完成 6 已关闭
+                payTypeShow: true,
                 shopList: [
                     {
                         store_name: '小锅米线',
@@ -223,7 +227,7 @@
                 })
             },
             payOrder(orderId) {
-
+                this.payTypeShow = true
             },
             // 确认收货收货
             confirmReceive(orderId) {

@@ -20,12 +20,16 @@ instance.interceptors.request.use(request => {
             // 判断是否存在token，如果存在的话，则每个http header都加上sessionkey
             request.url.indexOf('?') > 0 ? request.url += `&token=${token}` : request.url += `?token=${token}`
         } else {
-            request.data ? request.data.token = token : request.data = { token }
+            if (request.data instanceof FormData) {
+                request.data.append('token', token)
+            } else {
+                request.data ? request.data.token = token : request.data = { token }
+            }
         }
     }
     // 记录操作日志
-    log.loging(instance, request)
-    request.data = qs.stringify(request.data)
+    log.loging(instance, request);
+    if (!request.data instanceof FormData) request.data = qs.stringify(request.data)
     return request
   },
   err => {
