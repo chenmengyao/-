@@ -29,7 +29,9 @@ instance.interceptors.request.use(request => {
     }
     // 记录操作日志
     log.loging(instance, request);
-    if (!request.data instanceof FormData) request.data = qs.stringify(request.data)
+    if (!(request.data instanceof FormData)) {
+        request.data = qs.stringify(request.data)
+    }
     return request
   },
   err => {
