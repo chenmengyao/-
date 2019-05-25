@@ -2,35 +2,49 @@
     <div class="suwis-apply-refund">
         <main class="content">
             <SimpleGood
-                :name="goodInfo.name"
+                :name="goodInfo.goods_name"
                 :desc="goodInfo.desc"
+                :store-logo="goodInfo.goods_img"
             ></SimpleGood>
             <ul class="list">
-                <li class="item">
+                <li class="item" @click="showStatus" v-if="type === 'refund'">
                     <div class="name">货物状态</div>
-                    <div class="value" @click="showStatus">
-                        请选择
+                    <div class="value">
+                        {{status | goodsStatus}}
                         <van-icon name="arrow" size="10px" color="rgb(180, 180, 180)"/>
                     </div>
                 </li>
-                <li class="item">
-                    <div class="name">退款原因</div>
-                    <div class="value" @click="showReason">
-                        请选择
+                <li class="item" @click="showReason">
+                    <div class="name">{{type === 'exchange' ? '换货' : '退款'}}原因：</div>
+                    <div class="value">
+                        {{reason | reason}}
                         <van-icon name="arrow" size="10px" color="rgb(180, 180, 180)"/>
                     </div>
                 </li>
-                <li class="item">
+                <li class="item" v-if="type === 'refund' || type === 'return'">
                     <div class="name">退款金额</div>
                     <div class="value">
-                        <span class="color-red price">￥135</span>
+                        <span class="color-red price">￥{{goodInfo.sum}}</span>
+                    </div>
+                </li>
+                <li class="item address" @click="showStatus" v-if="type === 'exchange'">
+                    <div class="name">换货地址</div>
+                    <div class="address-box">
+                        <div class="address-top">
+                            <span class="address-name">{{goodInfo.express_name}}</span>
+                            <span class="address-tel">{{goodInfo.express_tel}}</span>
+                        </div>
+                        <div class="address">{{goodInfo.express_address}}</div>
+                    </div>
+                    <div class="value">
+                        <van-icon name="arrow" size="10px" color="rgb(180, 180, 180)"/>
                     </div>
                 </li>
                 <li class="item remark">
-                    <div class="name">退款说明：</div>
+                    <div class="name">{{type === 'exchange' ? '换货' : '退款'}}说明：</div>
                     <van-field
                         v-model="remark"
-                        placeholder="请输入退款说明（选填）"/>
+                        :placeholder="type === 'exchange' ? '请输入换货说明（选填）' : '请输入退款说明（选填）'"/>
                 </li>
             </ul>
 
@@ -40,7 +54,8 @@
                     <span class="subtitle">（最多3张）</span>
                 </div>
                 <div class="upload-line">
-                    <van-uploader :after-read="onRead">
+                    <img v-for="(img, index) in imgList" :src="img" :key="img" class="image-item" @click="removeImg(index)">
+                    <van-uploader :after-read="onRead" v-show="imgList.length < 3" accept="image/gif, image/jpeg" :max-size="maxSize" @oversize="oversize">
                         <div class="icon-line">
                             <van-icon name="photograph" size="24px" color="rgb(180, 180, 180)"/>
                         </div>
@@ -58,11 +73,11 @@
         <van-actionsheet v-model="statusShow" title="货物状态">
             <van-radio-group v-model="status">
                 <van-cell-group>
-                    <van-cell title="已收到货" clickable @click="changeStatus('1')">
-                        <van-radio name="1" />
+                    <van-cell title="已收到货" clickable @click.native="changeStatus('1')">
+                        <van-radio name="1"  @click.native="changeStatus('1')"/>
                     </van-cell>
-                    <van-cell title="未收到货" clickable @click="changeStatus('2')">
-                        <van-radio name="2" />
+                    <van-cell title="未收到货" clickable @click.native="changeStatus('2')">
+                        <van-radio name="2"  @click.native="changeStatus('2')"/>
                     </van-cell>
                 </van-cell-group>
             </van-radio-group>
@@ -71,17 +86,17 @@
         <van-actionsheet v-model="reasonShow" title="退款原因">
             <van-radio-group v-model="reason">
                 <van-cell-group>
-                    <van-cell title="7天无理由退款" clickable @click="changeReason('1')">
-                        <van-radio name="1" />
+                    <van-cell title="7天无理由退款" clickable @click.native="changeReason('1')">
+                        <van-radio name="1" @click.native="changeReason('1')"/>
                     </van-cell>
-                    <van-cell title="地址、商品信息填写错误" clickable @click="changeReason('2')">
-                        <van-radio name="2" />
+                    <van-cell title="地址、商品信息填写错误" clickable @click.native="changeReason('2')">
+                        <van-radio name="2" @click.native="changeReason('2')"/>
                     </van-cell>
-                    <van-cell title="商家缺货" clickable @click="changeReason('3')">
-                        <van-radio name="3" />
+                    <van-cell title="商家缺货" clickable @click.native="changeReason('3')">
+                        <van-radio name="3" @click.native="changeReason('3')"/>
                     </van-cell>
-                    <van-cell title="其他" clickable @click="changeReason('4')">
-                        <van-radio name="4" />
+                    <van-cell title="其他" clickable @click.native="changeReason('4')">
+                        <van-radio name="4" @click.native="changeReason('4')"/>
                     </van-cell>
                 </van-cell-group>
             </van-radio-group>
@@ -96,15 +111,34 @@
         components: {
             SimpleGood
         },
+        filters: {
+            goodsStatus(v) {
+                const goodsStatus = {
+                    1: '已收到货',
+                    2: '未收到货'
+                }
+                return v ? goodsStatus[v] : '请选择'
+            },
+            reason(v) {
+                const reason = {
+                    1: '7天无理由退款',
+                    2: '地址、商品信息填写错误',
+                    3: '商家缺货',
+                    4: '其他'
+                }
+                return v ? reason[v] : '请选择'
+            }
+        },
         data() {
             return {
-                goodInfo: {
-                    name: '猫猫包袋女2019新款潮韩版时尚水桶复',
-                    desc: ['黑色', '时尚款']
-                },
+                goodInfo: {},
+                id: '',
+                maxSize: 500 * 1024,    // 上传图片的最大kb
+                imgList: [],
                 remark: '',
                 reason: '',
                 status: '',
+                type: '',               // 售后类型
                 reasonShow: false,
                 statusShow: false
             }
@@ -112,16 +146,69 @@
         methods: {
             changeReason(reason) {
                 this.reason =reason
+                this.reasonShow = false
             },
             changeStatus(status) {
                 this.status = status
+                this.statusShow = false
             },
             showReason() {
                 this.reasonShow = true
             },
             showStatus() {
                 this.statusShow = true
-            }
+            },
+            onRead(file) {
+                if (this.imgList >= 5) {
+                    this.$toast('最多只能上传5张图片')
+                    return
+                }
+                const formData = new FormData()
+                formData.append('file', file.file)
+                this.$axios
+                    .post('/index/upload', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                    .then(({ data }) => {
+                        if (data.code === 1) {
+                            if (data.data) this.imgList.push(data.data)
+                        } else {
+                            this.$toast(data.msg);
+                        }
+                    })
+            },
+            oversize() {
+                const maxSize = Math.floor(this.maxSize / 1024)
+                this.$toast(`上传图片最大不能超过${maxSize}KB`)
+            },
+            removeImg(index) {
+                this.$dialog
+                    .confirm({
+                        message: '确定移除该图片吗'
+                    })
+                    .then(() => {
+                        this.imgList.splice(index, 1)
+                    })
+            },
+        },
+        created() {
+            this.id = this.$route.query.id
+            this.type = this.$route.query.type
+            this.$axios
+                .post('/order/detail', {
+                    id: this.id
+                })
+                .then(({ data }) => {
+                    if (data.code === 1) {
+                        if (data.data) {
+                            this.goodInfo = data.data
+                        }
+                    } else {
+                        this.$toast(data.msg);
+                    }
+                })
         }
     }
 </script>
@@ -156,6 +243,19 @@
                 flex: 1;
                 padding: 0;
             }
+            &.address {
+                align-items: inherit;
+            }
+            .address-box {
+                flex: 1;
+                margin: 0 14px;
+                color: #666;
+                font-size: 12px;
+                .address-top {
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
         }
 
         .card {
@@ -171,13 +271,15 @@
         }
 
         .upload-line {
+            padding: 0 16px 12px;
             text-align: left;
             display: flex;
             flex-wrap: wrap;
-            .van-uploader {
+            .image-item, .van-uploader {
                 width: 64px;
                 height: 64px;
                 margin-right: 10px;
+                margin-bottom: 10px;
                 border: 1px dashed rgb(136, 136, 136);
                 text-align: center;
                 color: rgb(180, 180, 180);
@@ -203,6 +305,7 @@
                 cursor: pointer;
                 font-size: 16px;
                 line-height: 45px;
+                text-align: center;
             }
         }
 

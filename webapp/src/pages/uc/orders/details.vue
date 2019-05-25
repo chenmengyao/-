@@ -3,6 +3,7 @@
         <!-- 商品卡片 -->
         <ShopItem
             :shop-data="shopData"
+            :goods-list="goodsList"
             :show-price="false"
         ></ShopItem>
         <!-- 商品卡片 //-->
@@ -12,10 +13,10 @@
             <img src="@/assets/orders/address@2x.png" alt="地址" class="image-address">
             <div class="info">
                 <div class="user">
-                    <span class="name">{{name}}</span>
-                    <span class="tel">{{tel}}</span>
+                    <span class="name">{{shopData.express_name}}</span>
+                    <span class="tel">{{shopData.express_tel}}</span>
                 </div>
-                <div class="address">{{address}}</div>
+                <div class="address">{{shopData.express_address}}</div>
             </div>
         </div>
         <!-- 地址卡片 //-->
@@ -53,25 +54,25 @@
             </div>
             <div class="card-row">
                 <span class="row-key">交易编号</span>
-                <span class="row-value">2019030122001176611018461640</span>
+                <span class="row-value">{{shopData.number}}</span>
             </div>
             <div class="card-row">
                 <span class="row-key">获得积分</span>
-                <span class="row-value">192</span>
+                <span class="row-value">{{shopData.get_score}}</span>
             </div>
             <div class="card-row">
                 <span class="row-key">下单时间</span>
                 <span class="row-value">2019-03-05 12:09</span>
             </div>
-            <div class="card-row">
+            <div class="card-row" v-if="shopData.sta > 0">
                 <span class="row-key">付款时间</span>
                 <span class="row-value">2019-03-05 12:09</span>
             </div>
-            <div class="card-row">
+            <div class="card-row" v-if="shopData.sta > 1">
                 <span class="row-key">发货时间</span>
                 <span class="row-value">2019-03-05 12:09</span>
             </div>
-            <div class="card-row">
+            <div class="card-row" v-if="shopData.sta > 4">
                 <span class="row-key">成交时间</span>
                 <span class="row-value">2019-03-05 12:09</span>
             </div>
@@ -90,7 +91,10 @@
 
         <!-- 按钮卡片 -->
         <div class="card card-button">
-            <ButtonLine :button-list="buttonList"></ButtonLine>
+            <ButtonLine
+                :button-list="shopData.sta | buttonList"
+                :order-id="shopData.id"
+                @on-click="onButtonClick"></ButtonLine>
         </div>
         <!-- 按钮卡片 //-->
     </div>
@@ -99,36 +103,111 @@
 <script>
     import ShopItem from '@/components/uc/orders/shop-item'
     import ButtonLine from '@/components/uc/orders/button-line'
+    import ButtonMap from '@/constants/order/button-map'
 
     export default {
         components: {
             ShopItem,
             ButtonLine
         },
+        filters: {
+            buttonList: v => ButtonMap[v]
+        },
         data() {
             return {
-                address: '湖北省武汉市洪山区东湖风景区街道鲁磨路宝迪通 汽修服务中心3楼308',
-                buttonList: [
-                    {
-                        key: 'viewLogistics',
-                        name: '查看物流',
-                        type: 'default'
-                    },
-                    {
-                        key: 'evaluate',
-                        name: '评价',
-                        type: 'warning'
-                    }
-                ],
-                name: '齐天大圣',
-                shopData: {
-                    store_name: '小锅米线',
-                    sta: 'toPay',
-                    num: 7,
-                    goods_price: 793
-                },
-                tel: 13712341234
+                goodsList: [],
+                shopData: {}
             }
+        },
+        methods: {
+            onButtonClick(key, orderId) {
+                switch (key) {
+                    case 'cancel':
+                        this.cancelOrder(orderId)
+                        break
+                    case 'pay':
+                        this.payOrder(orderId)
+                        break
+                    case 'viewLogistics':
+
+                        break
+                    case 'receive':
+                        this.confirmReceive(orderId)
+                        break
+
+                    case 'evaluate':
+                        this.evaluateOrder(orderId)
+                        break
+                }
+            },
+            cancelOrder(orderId) {
+                this.$dialog.confirm({
+                    message: '确认取消此订单吗？'
+                }).then(() => {
+                    this.$axios
+                        .post('/order/cancel', {
+                            number: orderId
+                        })
+                        .then(({ data }) => {
+                            if (data.code === 1) {
+                                this.page = 1
+                                this.$toast('取消订单成功');
+                                this.getList()
+                            } else {
+                                this.$toast(data.msg);
+                            }
+                        })
+                })
+            },
+            payOrder(orderId) {
+                this.payTypeShow = true
+            },
+            // 确认收货收货
+            confirmReceive(orderId) {
+                this.$dialog.confirm({
+                    message: '确认收到此商品吗？'
+                }).then(() => {
+                    this.$axios
+                        .post('/order/receiving', {
+                            order_id: orderId
+                        })
+                        .then(({ data }) => {
+                            if (data.code === 1) {
+                                this.page = 1
+                                this.$toast('确认收货成功');
+                                this.getList()
+                            } else {
+                                this.$toast(data.msg);
+                            }
+                        })
+                })
+
+            },
+            evaluateOrder(orderId) {
+                this.$router.push({
+                    path: '/uc/orders/comment',
+                    query: {
+                        id: orderId
+                    }
+                })
+            }
+        },
+        created() {
+            this.id = this.$route.query.id
+            this.$axios
+                .post('/order/detail', {
+                    id: this.id
+                })
+                .then(({ data }) => {
+                    if (data.code === 1) {
+                        if (data.data) {
+                            this.shopData = Array.isArray(data.data) ? data.data[0] : data.data
+                            this.goodsList = Array.isArray(data.data) ? data.data : [data.data]
+                        }
+                    } else {
+                        this.$toast(data.msg);
+                    }
+                })
         }
     }
 </script>
