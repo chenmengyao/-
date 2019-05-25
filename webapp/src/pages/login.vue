@@ -53,7 +53,7 @@ export default {
         tel: '18687512006',
         code: '',
         nickname: 'Ivorzk',
-        password: 'a123456',
+        password: '123456',
         pwdConfirm: '',
         type: 1
       },
@@ -74,10 +74,7 @@ export default {
     }
   },
   computed: {},
-  created() {
-    // 清理状态
-    this.$store.commit('core/exit', true)
-  },
+  created() {},
   mounted() {
     setTimeout(() => {
       this.loaded = true
@@ -150,29 +147,37 @@ export default {
       this.login()
     },
     // 登陆
-    login() {
+    async login() {
       let params = {
         ...this.formData
       }
       // params.password = md5(params.password)
       this.disabled = true
-      this.$axios.post(this.loginType == 0 ? 'login/tellogin' : 'login/acclogin', params).then(res => {
+      let res = await this.$axios.post(this.loginType == 0 ? 'login/tellogin' : 'login/acclogin', params)
+      setTimeout(() => {
+        this.disabled = false
+      }, 600)
+      let data = res.data
+      if (data.code == 1) {
+        let user = await this.getUserInfo(data.data)
+        // 储存用户信息
+        this.$store.commit('core/login', {
+          token: data.data,
+          user
+        })
         setTimeout(() => {
-          this.disabled = false
+          this.$router.push('/')
         }, 600)
-        let data = res.data
-        if (data.code == 1) {
-          // 储存用户信息
-          this.$store.commit('core/login', {
-            token: data.data
-          })
-          setTimeout(() => {
-            this.$router.push('/')
-          }, 600)
-        } else {
-          Toast(data.msg)
-        }
+      } else {
+        Toast(data.msg)
+      }
+    },
+    // getuser
+    async getUserInfo(token) {
+      let res = await this.$axios.post('mine/index', {
+        token
       })
+      return res.data.data.user
     },
     registerBefore() {
       this.$refs.registerForm.validate((valid) => {
@@ -197,36 +202,6 @@ export default {
         let data = res.data
         if (data.code == 200) {
           this.$Message.success('注册成功')
-          // 储存用户信息
-          this.modalType = 'login'
-        } else {
-          this.$Message.warning(data.msg)
-        }
-      })
-    },
-    resetBefore() {
-      this.$refs.resetForm.validate((valid) => {
-        if (valid) {
-          this.reset()
-        } else {
-          // TODO:
-        }
-      })
-    },
-    reset() {
-      let params = {
-        ...this.formData
-      }
-      delete params.pwdConfirm
-      params.pwd = md5(params.pwd)
-      this.disabled = true
-      this.$axios.post('/app/user/reset', params).then(res => {
-        setTimeout(() => {
-          this.disabled = false
-        }, 600)
-        let data = res.data
-        if (data.code == 200) {
-          this.$Message.success('密码重置成功')
           // 储存用户信息
           this.modalType = 'login'
         } else {

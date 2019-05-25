@@ -54,7 +54,7 @@
         <van-col span="24"
           v-for="(item,idx) in news"
           v-if="idx<2">
-          <router-link :to="{ name: '', params: {} }">
+          <router-link :to="{ path: '/news/details', query: {id: item.id} }">
             <img src="@/assets/index/now@3x.png">{{item.title}}
           </router-link>
         </van-col>
@@ -81,7 +81,8 @@ export default {
   data() {
     return {
       banners: [],
-      goods: []
+      goods: [],
+      news: []
     }
   },
   components: {},
