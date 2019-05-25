@@ -9,6 +9,8 @@ export default {
     '/goods/details',
     '/register',
     '/updatepwd',
-    '/user-agreement'
+    '/user-agreement',
+    '/news',
+    '/news/details'
   ]
 }
