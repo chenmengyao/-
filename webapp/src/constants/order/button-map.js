@@ -35,6 +35,13 @@ export default {
             type: 'warning'
         }
     ],
+    3: [
+        {
+            key: 'viewProgress',
+            name: '查看进度',
+            type: 'warning'
+        }
+    ],
     4: [
         {
             key: 'viewLogistics',

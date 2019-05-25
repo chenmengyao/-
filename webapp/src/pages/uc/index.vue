@@ -40,27 +40,27 @@
             </div>
 
             <div class="order-list">
-                <router-link to="/uc/orders" class="order-item">
+                <router-link to="/uc/orders?activeTabIndex=1" class="order-item">
                     <img src="@/assets/uc/pay@2x.png" alt="代付款" class="order-image">
                     <span class="item-name">待付款</span>
                     <span class="item-num">{{ sta_0 }}</span>
                 </router-link>
-                <router-link to="/uc/orders" class="order-item">
+                <router-link to="/uc/orders?activeTabIndex=2" class="order-item">
                     <img src="@/assets/uc/send@2x.png" alt="代发货" class="order-image">
                     <span class="item-name">待发货</span>
                     <span class="item-num">{{ sta_1 }}</span>
                 </router-link>
-                <router-link to="/uc/orders" class="order-item">
+                <router-link to="/uc/orders?activeTabIndex=3" class="order-item">
                     <img src="@/assets/uc/receive@2x.png" alt="代收货" class="order-image">
                     <span class="item-name">待收货</span>
                     <span class="item-num">{{ sta_2 }}</span>
                 </router-link>
-                <router-link to="/uc/orders" class="order-item">
+                <router-link to="/uc/orders?activeTabIndex=4" class="order-item">
                     <img src="@/assets/uc/evaluate@2x.png" alt="代评价" class="order-image">
                     <span class="item-name">待评价</span>
                     <span class="item-num">{{ sta_4 }}</span>
                 </router-link>
-                <router-link to="/uc/orders" class="order-item">
+                <router-link to="/uc/orders/refund-list" class="order-item">
                     <img src="@/assets/uc/refund@2x.png" alt="售后中" class="order-image">
                     <span class="item-name">售后中</span>
                     <span class="item-num">{{ sta_3 }}</span>

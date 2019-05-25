@@ -226,6 +226,9 @@
                         })
                 })
             }
+        },
+        created() {
+            this.activeTabIndex = this.$route.query.activeTabIndex || 0
         }
     }
 </script>
