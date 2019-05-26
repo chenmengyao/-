@@ -31,7 +31,7 @@
           <router-link to="/updatepwd">忘记密码？</router-link>
           <br>
           <span class="ua">
-            登陆即代表已同意<em>《用户服务协议》</em>
+            登陆即代表已同意<router-link to="/user-agreement"><em>《用户服务协议》</em></router-link>
           </span>
         </div>
       </div>
