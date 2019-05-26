@@ -21,9 +21,13 @@ export default new Router({
     name: 'user_agreement',
     component: () => import('./pages/user-agreement.vue')
   }, {
-    path: '/updatepwd',
-    name: 'updatepwd',
-    component: () => import('./pages/updatepwd.vue')
+    path: '/resetpwd',
+    name: 'resetpwd',
+    component: () => import('./pages/resetpwd.vue')
+  }, {
+    path: '/resetpaypwd',
+    name: 'resetpaypwd',
+    component: () => import('./pages/resetpaypwd.vue')
   }, {
     path: '/news', //资讯头条列表
     name: 'news',
@@ -129,9 +133,9 @@ export default new Router({
     name: 'uc_orders_confirm_order',
     component: () => import('./pages/uc/orders/confirm-order.vue')
   }, {
-      path: '/uc/orders/score-discount', // 积分折扣
-      name: 'uc_orders_score_discount',
-      component: () => import('./pages/uc/orders/score-discount.vue')
+    path: '/uc/orders/score-discount', // 积分折扣
+    name: 'uc_orders_score_discount',
+    component: () => import('./pages/uc/orders/score-discount.vue')
   }, {
     path: '/uc/orders/details', // 订单详情
     name: 'uc_orders_details',
@@ -149,13 +153,13 @@ export default new Router({
     name: 'uc_orders_refund',
     component: () => import('./pages/uc/orders/refund.vue')
   }, {
-      path: '/uc/orders/refund-list',
-      name: 'uc_orders_refund_list',
-      component: () => import('./pages/uc/orders/refund-list.vue')
+    path: '/uc/orders/refund-list',
+    name: 'uc_orders_refund_list',
+    component: () => import('./pages/uc/orders/refund-list.vue')
   }, {
-      path: '/uc/orders/refund-details',
-      name: 'uc_orders_refund_details',
-      component: () => import('./pages/uc/orders/refund-details.vue')
+    path: '/uc/orders/refund-details',
+    name: 'uc_orders_refund_details',
+    component: () => import('./pages/uc/orders/refund-details.vue')
   }, {
     path: '/uc/orders/servicetype',
     name: 'uc_orders_servicetype',

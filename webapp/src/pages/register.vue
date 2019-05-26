@@ -28,7 +28,7 @@
         </van-field>
         <van-button :disabled="disabled" @click="registerBefore" class="btn-submit" type="primary">注册</van-button>
         <div class="footer-link">
-          <router-link to="/updatepwd">忘记密码？</router-link>
+          <router-link to="/resetpwd">忘记密码？</router-link>
           <br>
           <span class="ua">
             登陆即代表已同意<router-link to="/user-agreement"><em>《用户服务协议》</em></router-link>

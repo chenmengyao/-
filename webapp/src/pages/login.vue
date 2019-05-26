@@ -25,7 +25,7 @@
           </van-tab>
         </van-tabs>
         <div class="footer-link">
-          <router-link to="/updatepwd">
+          <router-link to="/resetpwd">
             忘记密码？
           </router-link>
           <br>
