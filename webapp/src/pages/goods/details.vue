@@ -32,7 +32,7 @@
       </van-col>
     </van-row>
     <van-cell class="interval" title="型号" is-link value="请先选择您要购买的商品型号" />
-    <van-cell class="interval" title="地址" is-link :value="details.store.site" />
+    <van-cell class="interval" title="地址" is-link :value="details.store&&details.store.site" />
     <van-cell title="运费"  :value="details.postage==0?'免邮':details.postage+'元'" />
     <van-cell>
       <span slot="title"><img class="security" src="@/assets/details/security@3x.png" alt="">该商品支持7天无理由退款</span>
@@ -57,8 +57,9 @@
     <van-tabs class="good-tabs" v-model="goodTabIdx">
       <van-tab title="商品介绍">
         <div ref="goodInfo" class="good-info interval">
-          <img src="images/details/good_info_01.jpg" alt="">
-          <img src="images/details/good_info_02.jpg" alt="">
+          <template v-for="item in details.details">
+            <div v-html="item.content.editor"></div>
+          </template>
           <span class="no-data">已经没有更多啦～</span>
         </div>
       </van-tab>
