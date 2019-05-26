@@ -60,7 +60,7 @@
                     <span class="item-name">待评价</span>
                     <span class="item-num">{{ sta_4 }}</span>
                 </router-link>
-                <router-link to="/uc/orders/refund-list" class="order-item">
+                <router-link to="/uc/orders/refund" class="order-item">
                     <img src="@/assets/uc/refund@2x.png" alt="售后中" class="order-image">
                     <span class="item-name">售后中</span>
                     <span class="item-num">{{ sta_3 }}</span>
