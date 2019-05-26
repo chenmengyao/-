@@ -2,8 +2,8 @@
     <div class="suwis-comment">
         <main class="content">
             <SimpleGood
-                    :name="goodInfo.name"
-                    :desc="goodInfo.desc"
+                :name="detail.goods_name"
+                :store-logo="detail.store_logo"
             ></SimpleGood>
             <ul class="comment-list">
                 <li class="comment-item">
@@ -38,28 +38,29 @@
                 </li>
             </ul>
             <van-field
-                v-model="evaluate"
+                v-model.trim="evaluate"
                 type="textarea"
                 placeholder="商品满足您的期待吗？说说你的使用心得，分享给想买的他们吧～"
                 rows="3"
                 autosize
             />
             <div class="upload-line">
-                <van-uploader :after-read="onRead" accept="image/gif, image/jpeg" :max-size="maxSize" @oversize="oversize">
+                <img v-for="(img, index) in imgList" :src="img" :key="img" class="image-item" @click="removeImg(index)">
+                <van-uploader :after-read="onRead" v-show="imgList.length < 5" accept="image/gif, image/jpeg" :max-size="maxSize" @oversize="oversize">
                     <div class="icon-line">
                         <van-icon name="photograph" size="24px" color="rgb(180, 180, 180)"/>
                     </div>
                     <div class="upload-text">添加图片</div>
                 </van-uploader>
-                <van-uploader>
-                    <div class="icon-line">
-                        <van-icon name="live" size="24px" color="rgb(180, 180, 180)"/>
-                    </div>
-                    <div class="upload-text">添加视频</div>
-                </van-uploader>
+                <!--<van-uploader>-->
+                    <!--<div class="icon-line">-->
+                        <!--<van-icon name="live" size="24px" color="rgb(180, 180, 180)"/>-->
+                    <!--</div>-->
+                    <!--<div class="upload-text">添加视频</div>-->
+                <!--</van-uploader>-->
             </div>
             <div class="button-line">
-                <div class="deploy">发布</div>
+                <div class="deploy" @click="submit">发布</div>
             </div>
         </main>
     </div>
@@ -74,22 +75,24 @@
         },
         data() {
             return {
-                goodInfo: {
-                    name: '猫猫包袋女2019新款潮韩版时尚水桶复',
-                    desc: ['黑色', '时尚款']
-                },
+                detail: {},
                 evaluate: '',
-                evaluate_quality: 2.5,
-                evaluate_serve: 3.5,
-                evaluate_express: 4,
-                maxSize: 500 * 1024
+                evaluate_quality: 5,
+                evaluate_serve: 5,
+                evaluate_express: 5,
+                maxSize: 500 * 1024,    // 上传图片的最大kb
+                imgList: [],
+                orderId: ''
             }
         },
         methods: {
             onRead(file) {
+                if (this.imgList >= 5) {
+                    this.$toast('最多只能上传5张图片')
+                    return
+                }
                 const formData = new FormData()
                 formData.append('file', file.file)
-                console.log(file)
                 this.$axios
                     .post('/index/upload', formData, {
                         headers: {
@@ -97,13 +100,61 @@
                         }
                     })
                     .then(({ data }) => {
-                        console.log(data)
+                        if (data.code === 1) {
+                            if (data.data) this.imgList.push(data.data)
+                        } else {
+                            this.$toast(data.msg);
+                        }
                     })
             },
             oversize() {
                 const maxSize = Math.floor(this.maxSize / 1024)
                 this.$toast(`上传图片最大不能超过${maxSize}KB`)
+            },
+            removeImg(index) {
+                this.$dialog
+                    .confirm({
+                        message: '确定移除该图片吗'
+                    })
+                    .then(() => {
+                        this.imgList.splice(index, 1)
+                    })
+            },
+            submit() {
+                const { orderId, evaluate, evaluate_quality, evaluate_serve, evaluate_express, imgList } = this
+                this.$axios
+                    .post('/order/evaluate', {
+                        order_id: orderId,
+                        evaluate,
+                        evaluate_quality,
+                        evaluate_serve,
+                        evaluate_express,
+                        evaluate_img: imgList
+                    })
+                    .then(({ data }) => {
+                        if (data.code === 1) {
+                            this.$toast('发布成功')
+                            this.$router.push('/uc/orders')
+                        } else {
+                            this.$toast(data.msg);
+                        }
+                    })
             }
+        },
+        created() {
+            this.orderId = this.$route.query.id
+            this.$axios
+                .post('/order/detail', {
+                    id: this.orderId
+                })
+                .then(({ data }) => {
+                    if (data.code === 1) {
+                        if (data.data)
+                            this.detail = data.data
+                    } else {
+                        this.$toast(data.msg);
+                    }
+                })
         }
     }
 </script>
@@ -142,10 +193,11 @@
             text-align: left;
             display: flex;
             flex-wrap: wrap;
-            .van-uploader {
+            .image-item, .van-uploader {
                 width: 64px;
                 height: 64px;
                 margin-right: 10px;
+                margin-bottom: 10px;
                 border: 1px dashed rgb(136, 136, 136);
                 text-align: center;
                 color: rgb(180, 180, 180);

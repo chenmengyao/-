@@ -145,13 +145,17 @@ export default new Router({
     name: 'uc_orders_logistics_query',
     component: () => import('./pages/uc/orders/logistics-query.vue')
   }, {
-    path: '/uc/orders/refund-details',
-    name: 'uc_orders_refund_details',
-    component: () => import('./pages/uc/orders/refund-details.vue')
-  }, {
     path: '/uc/orders/refund',
     name: 'uc_orders_refund',
     component: () => import('./pages/uc/orders/refund.vue')
+  }, {
+      path: '/uc/orders/refund-list',
+      name: 'uc_orders_refund_list',
+      component: () => import('./pages/uc/orders/refund-list.vue')
+  }, {
+      path: '/uc/orders/refund-details',
+      name: 'uc_orders_refund_details',
+      component: () => import('./pages/uc/orders/refund-details.vue')
   }, {
     path: '/uc/orders/servicetype',
     name: 'uc_orders_servicetype',

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-    import areaList from '@/assets/address/address'
+    import areaList from '@/constants/uc/address'
 
     export default {
         data() {
