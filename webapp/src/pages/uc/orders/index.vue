@@ -12,13 +12,14 @@
                     <template v-if="list && list.length">
                         <ShopItem
                             v-for="shop in list"
-                            :key="shop[0].id"
-                            :shop-data="shop[0]"
-                            :goods-list="shop">
+                            :key="Array.isArray(shop) ? shop[0].id : shop.id"
+                            :shop-data="Array.isArray(shop) ? shop[0] : shop"
+                            :goods-list="Array.isArray(shop) ? shop : [shop]"
+                            @on-click-item="onClickOrder">
                             <template #footer>
                                 <ButtonLine
-                                    :button-list="shop[0].sta | buttonList"
-                                    :order-id="shop[0].id"
+                                    :button-list="(Array.isArray(shop) ? shop[0].sta : shop.sta) | buttonList"
+                                    :order-id="Array.isArray(shop) ? shop[0].id : shop.id"
                                     @on-click="onButtonClick"></ButtonLine>
                             </template>
                         </ShopItem>
@@ -26,63 +27,40 @@
                 </van-list>
             </van-tab>
         </van-tabs>
+        <ScorePay :show="payTypeShow"></ScorePay>
+        <van-actionsheet
+            title="请输入支付密码"
+            v-model="passwordModalShow"
+            :close-on-click-overlay="false"
+            @cancel="closePasswordModal">
+            <van-password-input :value="password"/>
+            <div class="link-line">
+                <router-link to="/resetpaypwd" class="forget-password">忘记支付密码？</router-link>
+            </div>
+            <van-number-keyboard
+                :show="true"
+                @input="onPasswordInput"
+                @delete="onPasswordDelete"
+            />
+        </van-actionsheet>
     </div>
 </template>
 
 <script>
     import ShopItem from '@/components/uc/orders/shop-item'
     import ButtonLine from '@/components/uc/orders/button-line'
-
-    // 按钮类型映射
-    const buttonMap = {
-        0: [
-            {
-                key: 'cancel',
-                name: '取消订单',
-                type: 'default'
-            },
-            {
-                key: 'pay',
-                name: '付款',
-                type: 'warning'
-            }
-        ],
-        1: [],
-        2: [
-            {
-                key: 'viewLogistics',
-                name: '查看物流',
-                type: 'default'
-
-            },
-            {
-                key: 'receive',
-                name: '确认收货',
-                type: 'warning'
-            }
-        ],
-        4: [
-            {
-                key: 'viewLogistics',
-                name: '查看物流',
-                type: 'default'
-            },
-            {
-                key: 'evaluate',
-                name: '评价',
-                type: 'warning'
-            }
-        ]
-    }
+    import ScorePay from '@/components/uc/orders/pay-type'
+    import ButtonMap from '@/constants/order/button-map'
 
     export default {
         name: "OrderList",
         components: {
             ButtonLine,
-            ShopItem
+            ShopItem,
+            ScorePay
         },
         filters: {
-            buttonList: v => buttonMap[v]
+            buttonList: v => ButtonMap.filter(item => item.sta.includes(v))
         },
         data() {
             return {
@@ -94,28 +72,9 @@
                 num: 20,            // 每页的数量
                 page: 1,            // 页码
                 sta: undefined,     // 不传sta为全部订单 0 待付款 1 待发货 2 待收货 3 退款/售后 4 待评价 5 已完成 6 已关闭
-                shopList: [
-                    {
-                        store_name: '小锅米线',
-                        sta: 'toPay',
-                        num: 7,
-                        goods_price: 793,
-                        desc: ['超好吃', '肉质鲜嫩'],
-                        tags: ['物美价廉', '实惠']
-                    },
-                    {
-                        store_name: '土鸡米线',
-                        sta: 'toEvaluate',
-                        num: 3,
-                        goods_price: 256
-                    },
-                    {
-                        store_name: '汆肉米线',
-                        sta: 'toReceive',
-                        num: 4,
-                        goods_price: 199
-                    }
-                ],
+                payTypeShow: false,
+                password: '',               // 支付密码
+                passwordModalShow: false,   // 输入弹框显示
                 tabList: [
                     {
                         key: 'all',
@@ -146,6 +105,9 @@
             }
         },
         methods: {
+            closePasswordModal() {
+                this.password = ''
+            },
             getList() {
                 const { num, page, sta } = this
                 this.$axios
@@ -161,6 +123,7 @@
                                 if (page * num > data.data.total) this.finished = true
                             }
                         } else {
+                            this.error = true
                             this.$toast(data.msg);
                         }
                         this.page++
@@ -176,6 +139,12 @@
                 this.list = []
                 this.getList()
             },
+            onClickOrder(goods) {
+                this.$router.push({
+                    path: '/uc/orders/details',
+                    query: {id: goods.id}
+                })
+            },
             onButtonClick(key, orderId) {
                 switch (key) {
                     case 'cancel':
@@ -184,21 +153,32 @@
                     case 'pay':
                         this.payOrder(orderId)
                         break
-                    case 'viewLogistics':
-
+                    case 'logistics':
+                        this.checkLogistics(orderId)
+                        break
+                    case 'return':
+                        this.returnOrder(orderId)
                         break
                     case 'receive':
-                        this.confirmReceive()
+                        this.confirmReceive(orderId)
                         break
-
                     case 'evaluate':
-                        this.evaluateOrder()
+                        this.evaluateOrder(orderId)
+                        break
+                    case 'delete':
+                        this.deleteOrder(orderId)
                         break
                 }
             },
+            onPasswordInput(key) {
+                this.password = (this.password + key).slice(0, 6);
+            },
+            onPasswordDelete() {
+                this.password = this.password.slice(0, this.password.length - 1);
+            },
             cancelOrder(orderId) {
                 this.$dialog.confirm({
-                    message: '确认取消此订单吗？'
+                    message: '该订单还未付款，您确定要取消吗？？'
                 }).then(() => {
                     this.$axios
                         .post('/order/cancel', {
@@ -215,33 +195,78 @@
                         })
                 })
             },
-            payOrder(orderId) {
 
+            checkLogistics(orderId) {
+                this.$router.push({
+                    path: '/uc/orders/logistics-details',
+                    query: {
+                        id: orderId
+                    }
+                })
             },
-            // 确认收货收货
+            payOrder(orderId) {
+                this.payTypeShow = true
+            },
+            returnOrder(orderId) {
+                this.$router.push({
+                    path: '/uc/orders/servicetype',
+                    query: {
+                        id: orderId
+                    }
+                })
+            },
             confirmReceive(orderId) {
+                this.passwordModalShow = true
+
+                // this.$dialog.confirm({
+                //     message: '确认收到此商品吗？'
+                // }).then(() => {
+                //     this.$axios
+                //         .post('/order/receiving', {
+                //             order_id: orderId
+                //         })
+                //         .then(({ data }) => {
+                //             if (data.code === 1) {
+                //                 this.page = 1
+                //                 this.$toast('确认收货成功');
+                //                 this.getList()
+                //             } else {
+                //                 this.$toast(data.msg);
+                //             }
+                //         })
+                // })
+            },
+            evaluateOrder(orderId) {
+                this.$router.push({
+                    path: '/uc/orders/comment',
+                    query: {
+                        id: orderId
+                    }
+                })
+            },
+            deleteOrder(orderId) {
                 this.$dialog.confirm({
-                    message: '确认收到此商品吗？'
+                    message: '该订单已关闭／完成，您确定要删除吗？'
                 }).then(() => {
                     this.$axios
-                        .post('/order/receiving', {
-                            order_id: orderId
+                        .post('/order/cancel', {
+                            number: orderId
                         })
                         .then(({ data }) => {
                             if (data.code === 1) {
                                 this.page = 1
-                                this.$toast('确认收货成功');
+                                this.$toast('取消订单成功');
                                 this.getList()
                             } else {
                                 this.$toast(data.msg);
                             }
                         })
                 })
-
-            },
-            evaluateOrder() {
-
             }
+        },
+        created() {
+            this.activeTabIndex = this.$route.query.activeTabIndex || 0
+            this.sta = this.tabList[this.activeTabIndex].sta
         }
     }
 </script>
@@ -250,5 +275,15 @@
     .suwis-order-list {
         min-height: 100vh;
         background-color: rgb(245, 245, 245);
+        .van-password-input {
+            margin: 16px 20px;
+        }
+        .forget-password {
+            color: #f0914b;
+        }
+        .link-line {
+            margin: 0 20px 250px;
+            text-align: right;
+        }
     }
 </style>

@@ -6,16 +6,13 @@
     <!--  -->
     <van-swipe :autoplay="3000" indicator-color="white">
       <van-swipe-item>
-        <img src="images/index/good_02.jpg" alt="">
-      </van-swipe-item>
-      <van-swipe-item>
-        <img src="images/index/good_02.jpg" alt="">
+        <img :src="details.img" alt="">
       </van-swipe-item>
     </van-swipe>
     <!--  -->
     <van-row>
       <van-col span="24" class="title">
-        猫猫潮女女2019新款潮韩版时尚水桶帆布鞋猫猫潮女女2019新款潮韩版时尚经典帆布鞋
+        {{details.title}}
       </van-col>
     </van-row>
     <van-row class="price">
@@ -24,7 +21,7 @@
       </van-col>
       <van-col>
         <span>
-          29人已付款
+          {{details.sell}}人已付款
         </span>
       </van-col>
     </van-row>
@@ -35,13 +32,13 @@
     </van-row>
     <van-cell class="interval" title="型号" is-link value="请先选择您要购买的商品型号" />
     <van-cell class="interval" title="地址" is-link value="湖北省武汉市洪山区光谷大道光谷世贸中心E栋11…" />
-    <van-cell title="运费"  value="0元" />
+    <van-cell title="运费"  :value="details.postage==0?'免邮':details.postage+'元'" />
     <van-cell>
       <span slot="title"><img class="security" src="@/assets/details/security@3x.png" alt="">该商品支持7天无理由退款</span>
     </van-cell>
     <!-- 评论 -->
     <van-cell ref="comment" class="interval comment">
-      <span slot="title">评价（43579）</span>
+      <span slot="title">评价（{{details.evaluate_count}}）</span>
       <span>好评率&nbsp;<em>97%</em></span>
     </van-cell>
     <comment-list>
@@ -90,15 +87,15 @@
     </van-tabs>
     <!-- 店铺详情 //-->
     <!-- 店铺信息 -->
-    <van-row class="interval shop">
+    <van-row class="interval shop" v-if="details.store">
       <van-col>
         <dl>
           <dt>
-            <img src="test3.png" alt="">
+            <img :src="details.store.logo" alt="">
           </dt>
           <dd>
-            <h6>京桥鞋靴专营店铺</h6>
-            <span>在售商品<em>112</em>件</span>
+            <h6>{{details.store.name}}</h6>
+            <span>在售商品<em>{{details.store_count}}</em>件</span>
           </dd>
         </dl>
       </van-col>
@@ -151,8 +148,13 @@ export default {
         selected: false
       }],
       timer: {},
-      goodTabIdx: 0
+      goodTabIdx: 0,
+      // 商品详情
+      details: {}
     }
+  },
+  created() {
+    this.getDetails()
   },
   mounted() {
     window.addEventListener('scroll', this.checkScroll, this)
@@ -196,6 +198,13 @@ export default {
         }, 680)
       }
       this.navlist[idx].selected = true
+    },
+    // 获取详情
+    async getDetails() {
+      let res = await this.$axios.post('goods/find', {
+        id: this.$route.query.id
+      })
+      this.details = res.data.data || {}
     }
   }
 }
