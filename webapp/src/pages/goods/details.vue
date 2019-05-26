@@ -27,11 +27,12 @@
     </van-row>
     <van-row class="coupon">
       <van-col span="24">
-        优惠券&nbsp;&nbsp;<span>满50减5</span><span>满20减3</span>
+        优惠券&nbsp;&nbsp;<span v-for="item in coupons" v-if="item.number_can>0&&item.sta==1">{{item.title}}</span>
+        <i v-if="coupons.length==0">暂无可用优惠券</i>
       </van-col>
     </van-row>
     <van-cell class="interval" title="型号" is-link value="请先选择您要购买的商品型号" />
-    <van-cell class="interval" title="地址" is-link value="湖北省武汉市洪山区光谷大道光谷世贸中心E栋11…" />
+    <van-cell class="interval" title="地址" is-link :value="details.store.site" />
     <van-cell title="运费"  :value="details.postage==0?'免邮':details.postage+'元'" />
     <van-cell>
       <span slot="title"><img class="security" src="@/assets/details/security@3x.png" alt="">该商品支持7天无理由退款</span>
@@ -150,11 +151,14 @@ export default {
       timer: {},
       goodTabIdx: 0,
       // 商品详情
-      details: {}
+      details: {},
+      // 优惠券信息
+      coupons: []
     }
   },
   created() {
     this.getDetails()
+    this.getCoupons()
   },
   mounted() {
     window.addEventListener('scroll', this.checkScroll, this)
@@ -205,6 +209,13 @@ export default {
         id: this.$route.query.id
       })
       this.details = res.data.data || {}
+    },
+    // 获取优惠券详情
+    async getCoupons() {
+      let res = await this.$axios.post('goods/coupons', {
+        goods_id: this.$route.query.id
+      })
+      this.coupons = res.data.data || []
     }
   }
 }
@@ -299,6 +310,14 @@ export default {
             display: inline-block;
             color: $red;
             background: url("./../../assets/details/coupon@3x.png") no-repeat center/auto 100%;
+        }
+        i {
+            font-size: 12px;
+            font-style: normal;
+            transform: scale(0.89);
+            transform-origin: left;
+            display: inline-block;
+            color: $gray;
         }
     }
     .security {
