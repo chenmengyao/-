@@ -3,31 +3,32 @@
     <div class="bg" :style="{'background-image':`url(${bgurl})`}"></div>
     <div class="form">
       <div class="tabs">
-        <van-field v-model="formData.phone" placeholder="请输入您的11位手机号">
+        <van-field v-model="formData.tel" @focus="formMsg.tel=''" :error-message="formMsg.tel" placeholder="请输入您的11位手机号">
           <img class="field-icon" slot="left-icon"  src="@/assets/login/phone@3x.png" alt="">
         </van-field>
-        <van-field v-model="formData.code" placeholder="请输入验证码">
+        <van-field v-model="formData.code" @focus="formMsg.code=''" :error-message="formMsg.code" placeholder="请输入验证码">
           <img class="field-icon" style="margin-top:2.2px;" slot="left-icon"  src="@/assets/login/code@3x.png" alt="">
-           <van-button class="send-code" slot="button" size="small" type="primary">发送验证码</van-button>
+          <van-button class="send-code" slot="button" size="small" type="primary" :disabled="countDownText>0" @click="sendCode">{{countDownText>0?`${countDownText}s后可重新发送`:'发送验证码'}}</van-button>
+       </van-field>
         </van-field>
-        <van-field v-model="formData.phone" placeholder="请输入登录名">
+        <van-field v-model="formData.nickname" @focus="formMsg.nickname=''" :error-message="formMsg.nickname" placeholder="请输入登录名">
           <img class="field-icon" slot="left-icon"  src="@/assets/login/user@3x.png" alt="">
         </van-field>
-        <van-field v-model="formData.phone" placeholder="请输入8-16位登录密码">
+        <van-field type="password" v-model="formData.password" @focus="formMsg.password=''" :error-message="formMsg.password" placeholder="请输入8-16位登录密码">
           <img class="field-icon" slot="left-icon"  src="@/assets/login/pwd@3x.png" alt="">
         </van-field>
-        <van-field v-model="formData.phone" placeholder="请再次确认您的登录密码">
+        <van-field type="password" v-model="formData.passwordConfirm" @focus="formMsg.passwordConfirm=''" :error-message="formMsg.passwordConfirm" placeholder="请再次确认您的登录密码">
           <img class="field-icon" slot="left-icon"  src="@/assets/login/pwd@3x.png" alt="">
         </van-field>
-        <van-field v-model="formData.phone" placeholder="请输入6位支付密码">
+        <van-field type="password" v-model="formData.paypass" @focus="formMsg.paypass=''" :error-message="formMsg.paypass" placeholder="请输入6位支付密码">
           <img class="field-icon" slot="left-icon"  src="@/assets/login/paypwd@3x.png" alt="">
         </van-field>
-        <van-field v-model="formData.phone" placeholder="请再次确认支付密码">
+        <van-field type="password" v-model="formData.paypassConfirm" @focus="formMsg.paypassConfirm=''" :error-message="formMsg.paypassConfirm" placeholder="请再次确认支付密码">
           <img class="field-icon" slot="left-icon"  src="@/assets/login/paypwd@3x.png" alt="">
         </van-field>
-        <van-button class="btn-submit" type="primary">注册</van-button>
+        <van-button :disabled="disabled" @click="registerBefore" class="btn-submit" type="primary">注册</van-button>
         <div class="footer-link">
-          <a href="#">忘记密码？</a>
+          <router-link to="/updatepwd">忘记密码？</router-link>
           <br>
           <span class="ua">
             登陆即代表已同意<em>《用户服务协议》</em>
@@ -39,80 +40,38 @@
 </template>
 
 <script>
+import {
+  Toast
+} from 'vant'
 import md5 from 'md5'
 export default {
   components: {},
   data() {
     return {
-      // 登陆方式
-      loginType: 'account',
-      modalType: 'login',
       formData: {
+        tel: '',
         code: '',
-        phone: '',
-        pwd: '',
-        pwdConfirm: '',
-        type: 1
+        nickname: '',
+        password: '',
+        passwordConfirm: '',
+        paypass: '',
+        paypassConfirm: ''
       },
-      rules: {
-        phone: [{
-          required: true,
-          message: '请输入手机号',
-          trigger: 'blur'
-        }, {
-          required: true,
-          pattern: /^1(3|4|5|7|8)\d{9}$/,
-          message: '请输入正确的手机号',
-          trigger: 'blur'
-        }],
-        pwd: [{
-          required: true,
-          message: '请输入密码',
-          trigger: 'blur'
-        }],
-        pwdConfirm: [{
-          required: true,
-          message: '两次输入的密码不一致',
-          trigger: 'blur',
-          validator: (rule, value, callback) => {
-            if (value !== this.formData.pwd) {
-              callback(new Error('两次输入的密码不一致'))
-            } else {
-              callback()
-            }
-          }
-        }],
-        code: [{
-          required: true,
-          message: '请输入验证码',
-          trigger: 'blur'
-        }]
+      formMsg: {
+        tel: '',
+        code: '',
+        nickname: '',
+        password: '',
+        passwordConfirm: '',
+        paypass: '',
+        paypassConfirm: ''
       },
-      bglist: ['images/login/00002.jpg', 'images/login/00003.jpg', 'images/login/00004.jpg'],
-      loaded: false,
-      disabled: false,
-      codeDisabled: false,
       countDownText: 0,
-      agreed: true,
-      agreement: false,
-      agreementText: '',
-      token: 0,
-      qrcodeurl: ''
-    }
-  },
-  computed: {
-    bgurl() {
-      return this.bglist[Math.round(Math.random() * (this.bglist.length - 1))]
+      disabled: false
     }
   },
   created() {
-    var img = new Image()
-    img.src = this.bgurl
-    img.onload = () => {
-      this.loaded = true
-    }
-    // 清理状态
-    this.$store.commit('core/exit', true)
+
   },
   watch: {
     countDownText() {
@@ -121,181 +80,81 @@ export default {
         setTimeout(() => {
           this.countDownText--
         }, 1000)
-      } else {
-        this.codeDisabled = false
       }
-    },
-    loginType(val) {
-      // 重置token
-      this.token = 0
-      // 获取二维码
-      this.getQrcode()
     }
   },
   methods: {
-    async loadAgreement() {
-      this.agreement = true
-      let result = await this.$axios.get('/system/get_service_agreement')
-      this.agreementText = result.data.data
-    },
     // 发送验证码
     sendCode() {
-      let form
-      if (this.modalType == 'login') form = 'codeForm'
-      if (this.modalType == 'register') form = 'registerForm'
-      if (this.modalType == 'reset') form = 'resetForm'
-      this.$refs[form].validateField('phone', (msg) => {
-        if (msg) {
-          this.$Message.warning(msg)
+      if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
+        this.formMsg.tel = '请输入正确的号码'
+        return
+      }
+      this.countDownText = 60
+      this.$axios.post('login/getcode', {
+        tel: this.formData.tel
+      }).then(res => {
+        if (res.data.code == 1) {
+          Toast('验证码已发送，请注意查收')
         } else {
-          this.countDownText = 60
-          this.$axios.post('/system/send_code', {
-            phone: this.formData.phone,
-            type: this.modalType
-          }).then(res => {
-            if (res.data.code == 200) {
-              this.$Message.success('验证码已发送，请注意查收')
-            } else {
-              this.$Message.warning(res.data.msg)
-              this.countDownText = 0
-            }
-          })
-        }
-      })
-    },
-    // 登陆前校验
-    loginBefore() {
-      if (this.loginType == 'account') {
-        this.$refs.loginForm.validate((valid) => {
-          if (valid) {
-            this.login()
-          } else {
-            // TODO:
-          }
-        })
-      }
-      if (this.loginType == 'code') {
-        this.$refs.codeForm.validate((valid) => {
-          if (valid) {
-            this.login()
-          } else {
-            // TODO:
-          }
-        })
-      }
-    },
-    // 登陆
-    login() {
-      let params = {
-        ...this.formData
-      }
-      params.pwd = md5(params.pwd)
-      this.disabled = true
-      this.$axios.post('/app/user/login', params).then(res => {
-        setTimeout(() => {
-          this.disabled = false
-          this.$router.push('/orders')
-        }, 600)
-        let data = res.data
-        if (data.code == 200) {
-          // 储存用户信息
-          this.$store.commit('core/login', data.data)
-        } else {
-          this.$Message.warning(data.msg)
+          Toast(res.data.msg)
+          this.countDownText = 0
         }
       })
     },
     registerBefore() {
-      this.$refs.registerForm.validate((valid) => {
-        if (valid) {
-          this.register()
-        } else {
-          // TODO:
-        }
-      })
+      if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
+        this.formMsg.tel = '请输入正确的手机号'
+        return
+      }
+      if (!/^\d{6}$/.test(this.formData.code)) {
+        this.formMsg.code = '请输入6位数的验证码'
+        return
+      }
+      if (!this.formData.nickname) {
+        this.formMsg.nickname = '请输入登录名'
+        return
+      }
+      if (!/^[a-zA-Z0-9]\w{5,17}$/.test(this.formData.password)) {
+        this.formMsg.password = '请输入6-18位字母+数字的密码'
+        return
+      }
+      if (this.formData.passwordConfirm !== this.formData.password) {
+        this.formMsg.passwordConfirm = '两次输入的密码不一致'
+        return
+      }
+      if (!/^[a-zA-Z0-9]\w{5,17}$/.test(this.formData.paypass)) {
+        this.formMsg.paypass = '请输入6-18位字母+数字的支付密码'
+        return
+      }
+      if (this.formData.paypassConfirm !== this.formData.paypassConfirm) {
+        this.formMsg.paypassConfirm = '两次输入的支付密码不一致'
+        return
+      }
+      this.register()
     },
     register() {
       let params = {
         ...this.formData
       }
       delete params.pwdConfirm
-      params.pwd = md5(params.pwd)
+      delete params.passwordConfirm
+      // params.pwd = md5(params.pwd)
       this.disabled = true
-      this.$axios.post('/app/user/register', params).then(res => {
+      this.$axios.post('login/registered', params).then(res => {
         setTimeout(() => {
           this.disabled = false
         }, 600)
         let data = res.data
-        if (data.code == 200) {
-          this.$Message.success('注册成功')
-          // 储存用户信息
-          this.modalType = 'login'
+        if (data.code == 1) {
+          Toast('注册成功')
+          setTimeout(() => {
+            this.$router.push('/login')
+          }, 600)
         } else {
-          this.$Message.warning(data.msg)
+          Toast(data.msg)
         }
       })
-    },
-    resetBefore() {
-      this.$refs.resetForm.validate((valid) => {
-        if (valid) {
-          this.reset()
-        } else {
-          // TODO:
-        }
-      })
-    },
-    reset() {
-      let params = {
-        ...this.formData
-      }
-      delete params.pwdConfirm
-      params.pwd = md5(params.pwd)
-      this.disabled = true
-      this.$axios.post('/app/user/reset', params).then(res => {
-        setTimeout(() => {
-          this.disabled = false
-        }, 600)
-        let data = res.data
-        if (data.code == 200) {
-          this.$Message.success('密码重置成功')
-          // 储存用户信息
-          this.modalType = 'login'
-        } else {
-          this.$Message.warning(data.msg)
-        }
-      })
-    },
-    // async getQrcode() {
-    //   let res = await this.$axios.get(`/app/user/get_qrcode/${this.token}`)
-    //   this.token = res.data.data.token
-    //   setTimeout(() => {
-    //     // this.getQrcode()
-    //   }, 2000)
-    //   console.log(res)
-    // },
-    async getQrcode() {
-      let res = await this.$axios.get(`/app/user/get_qrcode/${this.token}`)
-      // 首次
-      if (res.data.code == 200 && !res.data.data.user) {
-        this.token = res.data.data.token
-        this.qrcodeurl = `//qr.topscan.com/api.php?text=${this.token}`
-      }
-      // 登陆成功
-      if (res.data.code == 200 && res.data.data.user) {
-        // 储存用户信息
-        this.$store.commit('core/login', res.data.data)
-        setTimeout(() => {
-          this.$router.push('/orders')
-        }, 600)
-        return true
-      }
-      // 二维码过期
-      if (res.data.code == 650) {
-        this.token = 0
-      }
-      setTimeout(() => {
-        if (this.loginType == 'qrcode') this.getQrcode()
-      }, 2000)
     }
   }
 }

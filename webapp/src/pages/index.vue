@@ -69,7 +69,8 @@
       :img="item.img"
       :title="item.title"
       :price="item.sell"
-      :sell="item.sell">
+      :sell="item.sell"
+      @click.native="$router.push({path:'/goods/details', query: {id: item.id}})">
     </good-item>
   </good-list>
   <!--  -->

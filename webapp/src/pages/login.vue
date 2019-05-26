@@ -21,7 +21,7 @@
             <van-field v-model="formData.password" @focus="formMsg.password=''" :error-message="formMsg.password" type="password" placeholder="请输入验证码">
               <img class="field-icon" slot="left-icon"  src="@/assets/login/paypwd@3x.png" alt="">
             </van-field>
-            <van-button class="btn-submit" type="primary" @click="loginBefore">登录</van-button>
+            <van-button :disabled="disabled" class="btn-submit" type="primary" @click="loginBefore">登录</van-button>
           </van-tab>
         </van-tabs>
         <div class="footer-link">
@@ -65,16 +65,9 @@ export default {
       },
       loaded: false,
       disabled: false,
-      codeDisabled: false,
-      countDownText: 0,
-      agreed: true,
-      agreement: false,
-      agreementText: '',
-      token: 0
+      countDownText: 0
     }
   },
-  computed: {},
-  created() {},
   mounted() {
     setTimeout(() => {
       this.loaded = true
@@ -83,25 +76,13 @@ export default {
   watch: {
     countDownText() {
       if (this.countDownText > 0) {
-        this.codeDisabled = true
         setTimeout(() => {
           this.countDownText--
         }, 1000)
-      } else {
-        this.codeDisabled = false
       }
-    },
-    loginType(val) {
-      // 重置token
-      this.token = 0
     }
   },
   methods: {
-    async loadAgreement() {
-      this.agreement = true
-      let result = await this.$axios.get('/system/get_service_agreement')
-      this.agreementText = result.data.data
-    },
     // 发送验证码
     sendCode() {
       if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
@@ -178,36 +159,6 @@ export default {
         token
       })
       return res.data.data.user
-    },
-    registerBefore() {
-      this.$refs.registerForm.validate((valid) => {
-        if (valid) {
-          this.register()
-        } else {
-          // TODO:
-        }
-      })
-    },
-    register() {
-      let params = {
-        ...this.formData
-      }
-      delete params.pwdConfirm
-      params.pwd = md5(params.pwd)
-      this.disabled = true
-      this.$axios.post('/app/user/register', params).then(res => {
-        setTimeout(() => {
-          this.disabled = false
-        }, 600)
-        let data = res.data
-        if (data.code == 200) {
-          this.$Message.success('注册成功')
-          // 储存用户信息
-          this.modalType = 'login'
-        } else {
-          this.$Message.warning(data.msg)
-        }
-      })
     }
   }
 }

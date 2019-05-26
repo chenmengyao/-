@@ -15,7 +15,7 @@
         <img class="field-icon" slot="left-icon"  src="@/assets/login/pwd@3x.png" alt="">
       </van-field>
     </van-cell-group>
-    <van-button class="btn-submit" type="primary" @click="updateBefore">确认修改</van-button>
+    <van-button :disabled="disabled" class="btn-submit" type="primary" @click="updateBefore">确认修改</van-button>
   </div>
 </template>
 
@@ -38,18 +38,16 @@ export default {
         password: '',
         passwordConfirm: ''
       },
-      countDownText: 0
+      countDownText: 0,
+      disabled: false
     }
   },
   watch: {
     countDownText() {
       if (this.countDownText > 0) {
-        this.codeDisabled = true
         setTimeout(() => {
           this.countDownText--
         }, 1000)
-      } else {
-        this.codeDisabled = false
       }
     }
   },
@@ -94,7 +92,11 @@ export default {
     },
     // 更新
     async update() {
+      this.disabled = true
       let res = await this.$axios.post('login/resetpsd', this.formData)
+      setTimeout(() => {
+        this.disabled = false
+      }, 600)
       if (res.data.code == 1) {
         Toast('修改成功')
         setTimeout(() => {
