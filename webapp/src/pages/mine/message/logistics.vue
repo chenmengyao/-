@@ -1,42 +1,41 @@
 <template lang="html">
   <div>
-     <div class="suwis-logistics">
+     <div class="suwis-logistics" v-for="(item,index) in list">
          <div class="suwis-logistics-title">
-             <div>订单已发货</div>
-             <div>昨天</div>
+             <div>{{item.title}}</div>
+             <div>{{item.time|dateFmt3}}</div>
          </div>
         <div class="suwis-logistics-title">
              <div class="suwis-logistics-img">
-                 <img src="../../../assets/test1.png">
+                 <img :src="item.goods_img">
              </div>
              <div class="suwis-logistics-con">
-                 <div>猫猫包袋女2019新款潮韩版时尚水猫猫包袋女2019新款潮韩版时尚水</div>
-                 <div>物流单号：圆通 804581314226872370</div>
+                 <div>{{item.goods_name}}</div>
+                 <div>物流单号：{{item.express}} {{item.express_number}}</div>
              </div>
          </div>
      </div>
-     <div class="suwis-logistics">
-         <div class="suwis-logistics-title">
-             <div>订单已发货</div>
-             <div>昨天</div>
-         </div>
-        <div class="suwis-logistics-title">
-             <div class="suwis-logistics-img">
-                 <img src="../../../assets/test1.png">
-             </div>
-             <div class="suwis-logistics-con">
-                 <div>猫猫包袋女2019新款潮韩版时尚水猫猫包袋女2019新款潮韩版时尚水</div>
-                 <div>物流单号：圆通 804581314226872370</div>
-             </div>
-         </div>
-     </div>
+     
   </div>
 </template>
 
 <script>
 export default {
+    data(){
+      return{
+          list:[]
+      }
+    },
   mounted() {
      document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5')
+     this.getData()
+  },
+  methods:{
+      getData(){
+        this.$axios.post('message/logistics').then(res => {
+          this.list=res.data.data
+        })
+      }
   }
 }
 </script>

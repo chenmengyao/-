@@ -53,15 +53,14 @@
  export default {
     data(){
       return {
-          comList:[
-              {sum:100,user_nickname:'曾小姐',time:'1558626652'}
-          ],
+          comList:[],
           sum:0,//总佣金
       }
     }, 
      mounted(){
          var that=this
         that.getCommission().then(function(data){
+          that.comList=data.list
             that.sum=data.sum
             // that.comList=data.list
             that.myChart(data.sum_m)

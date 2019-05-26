@@ -181,16 +181,24 @@ export default new Router({
     name: 'mine_commission',
     component: () => import('./pages/mine/commission.vue')
   }, {
-    path: '/mine/information',
+    path: '/mine/information',  //消息列表
     name: 'mine_commission',
     component: () => import('./pages/mine/information.vue')
   }, {
-    path: '/mine/message/system',
+    path: '/mine/message/system', //系统消息
     name: 'mine_system',
     component: () => import('./pages/mine/message/system.vue')
   }, {
-    path: '/mine/message/logistics',
+    path: '/mine/message/logistics', //交易物流
     name: 'mine_logistics',
     component: () => import('./pages/mine/message/logistics.vue')
+  }, {
+    path: '/mine/message/kefu', //消息列表
+    name: 'mine_kefu',
+    component: () => import('./pages/mine/message/kefu.vue')
+  }, {
+    path: '/mine/message/getsm',  //客服聊天
+    name: 'mine_getsm',
+    component: () => import('./pages/mine/message/getsm.vue')
   }]
 })

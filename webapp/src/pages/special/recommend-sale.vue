@@ -15,28 +15,37 @@
         </van-swipe>
       </div>
     </div>
-     <div class="suwis-recom-list">
-       <div class="suwis-recom-item" v-for="(item,index) in reomList">
-         <div :class="index%2==0?'d-flex':'d-flex1'">
-            <div style="flex:1;">
-              <div class="d-recom-img"><img :src="item.img" width="100%"></div>
-              <span class="suwis-recom-title">{{item.title}}</span>
-              <span class="d-item-title">
-                <span>推荐指数:</span>
-                <van-rate
-                  v-model="item.star"
-                  :size="12"
-                  color="#F06B25"
-                  readonly
-                  style="display:inline"
-                  void-icon="star"
-                  void-color="#eee"
-                />
-              </span>
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        error-text="请求失败，点击重新加载"
+        :error.sync="error"
+        @load="loadlist"
+      >
+      <div class="suwis-recom-list">
+            <div class="suwis-recom-item" v-for="(item,index) in reomList">
+              <div :class="index%2==0?'d-flex':'d-flex1'">
+                  <div style="flex:1;">
+                    <div class="d-recom-img"><img :src="item.img" width="100%"></div>
+                    <span class="suwis-recom-title">{{item.title}}</span>
+                    <span class="d-item-title">
+                      <span>推荐指数:</span>
+                      <van-rate
+                        v-model="item.star"
+                        :size="12"
+                        color="#F06B25"
+                        readonly
+                        style="display:inline"
+                        void-icon="star"
+                        void-color="#eee"
+                      />
+                    </span>
+                  </div>
+              </div>
             </div>
-         </div>
-       </div>
-     </div>
+          </div>
+      </van-list>
   </div>
 </template>
 
@@ -47,19 +56,45 @@ export default {
       recValue:4,
       reomList:[],
       total:null,
-      banner:[]
+      banner:[],
+      page:1,
+      loading: false,
+      finished: false,
+      error: false,
     }
   },
   methods:{
-    getReomList(){
-      this.$axios.post('goods/lists',{
-        type:3,
-        page:1,
-        num:10
-      }).then(res => {
-          this.reomList=res.data.data.goods
-          this.total=res.data.data.total
-      })
+    // getReomList(){
+    //   this.$axios.post('goods/lists',{
+    //     type:3,
+    //     page:1,
+    //     num:10
+    //   }).then(res => {
+    //       this.reomList=res.data.data.goods
+    //       this.total=res.data.data.total
+    //   })
+    // },
+     loadlist() {
+         this.$axios.post('goods/lists',{
+            type:3,
+            page:this.page,
+            num:10
+          }).then(res => {
+            if (res.data.code === 1) {
+            
+              if(res.data.data&&res.data.data.goods){
+                 this.reomList=this.reomList.concat(res.data.data.goods)
+                 this.total=res.data.data.total
+                if (this.page * 10 > res.data.data.total) this.finished = true
+              }
+            } else {
+                this.$toast(res.data.msg);
+            }
+            this.page++
+            this.loading = false
+          }).catch(() => {
+              this.error = true
+          })
     },
      getBanner(){
       this.$axios.post('goods/goodsbanner',{
@@ -70,7 +105,6 @@ export default {
     }
   },
   created(){
-    this.getReomList()
     this.getBanner()
   }
 }
