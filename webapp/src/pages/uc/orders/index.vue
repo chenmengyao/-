@@ -28,6 +28,21 @@
             </van-tab>
         </van-tabs>
         <ScorePay :show="payTypeShow"></ScorePay>
+        <van-actionsheet
+            title="请输入支付密码"
+            v-model="passwordModalShow"
+            :close-on-click-overlay="false"
+            @cancel="closePasswordModal">
+            <van-password-input :value="password"/>
+            <div class="link-line">
+                <router-link to="/resetpaypwd" class="forget-password">忘记支付密码？</router-link>
+            </div>
+            <van-number-keyboard
+                :show="true"
+                @input="onPasswordInput"
+                @delete="onPasswordDelete"
+            />
+        </van-actionsheet>
     </div>
 </template>
 
@@ -45,7 +60,7 @@
             ScorePay
         },
         filters: {
-            buttonList: v => ButtonMap[v]
+            buttonList: v => ButtonMap.filter(item => item.sta.includes(v))
         },
         data() {
             return {
@@ -58,6 +73,8 @@
                 page: 1,            // 页码
                 sta: undefined,     // 不传sta为全部订单 0 待付款 1 待发货 2 待收货 3 退款/售后 4 待评价 5 已完成 6 已关闭
                 payTypeShow: false,
+                password: '',               // 支付密码
+                passwordModalShow: false,   // 输入弹框显示
                 tabList: [
                     {
                         key: 'all',
@@ -88,6 +105,9 @@
             }
         },
         methods: {
+            closePasswordModal() {
+                this.password = ''
+            },
             getList() {
                 const { num, page, sta } = this
                 this.$axios
@@ -133,7 +153,8 @@
                     case 'pay':
                         this.payOrder(orderId)
                         break
-                    case 'viewLogistics':
+                    case 'logistics':
+                        this.checkLogistics(orderId)
                         break
                     case 'return':
                         this.returnOrder(orderId)
@@ -148,6 +169,12 @@
                         this.deleteOrder(orderId)
                         break
                 }
+            },
+            onPasswordInput(key) {
+                this.password = (this.password + key).slice(0, 6);
+            },
+            onPasswordDelete() {
+                this.password = this.password.slice(0, this.password.length - 1);
             },
             cancelOrder(orderId) {
                 this.$dialog.confirm({
@@ -168,6 +195,15 @@
                         })
                 })
             },
+
+            checkLogistics(orderId) {
+                this.$router.push({
+                    path: '/uc/orders/logistics-details',
+                    query: {
+                        id: orderId
+                    }
+                })
+            },
             payOrder(orderId) {
                 this.payTypeShow = true
             },
@@ -180,24 +216,25 @@
                 })
             },
             confirmReceive(orderId) {
-                this.$dialog.confirm({
-                    message: '确认收到此商品吗？'
-                }).then(() => {
-                    this.$axios
-                        .post('/order/receiving', {
-                            order_id: orderId
-                        })
-                        .then(({ data }) => {
-                            if (data.code === 1) {
-                                this.page = 1
-                                this.$toast('确认收货成功');
-                                this.getList()
-                            } else {
-                                this.$toast(data.msg);
-                            }
-                        })
-                })
+                this.passwordModalShow = true
 
+                // this.$dialog.confirm({
+                //     message: '确认收到此商品吗？'
+                // }).then(() => {
+                //     this.$axios
+                //         .post('/order/receiving', {
+                //             order_id: orderId
+                //         })
+                //         .then(({ data }) => {
+                //             if (data.code === 1) {
+                //                 this.page = 1
+                //                 this.$toast('确认收货成功');
+                //                 this.getList()
+                //             } else {
+                //                 this.$toast(data.msg);
+                //             }
+                //         })
+                // })
             },
             evaluateOrder(orderId) {
                 this.$router.push({
@@ -229,6 +266,7 @@
         },
         created() {
             this.activeTabIndex = this.$route.query.activeTabIndex || 0
+            this.sta = this.tabList[this.activeTabIndex].sta
         }
     }
 </script>
@@ -237,5 +275,15 @@
     .suwis-order-list {
         min-height: 100vh;
         background-color: rgb(245, 245, 245);
+        .van-password-input {
+            margin: 16px 20px;
+        }
+        .forget-password {
+            color: #f0914b;
+        }
+        .link-line {
+            margin: 0 20px 250px;
+            text-align: right;
+        }
     }
 </style>

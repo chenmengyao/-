@@ -1,5 +1,7 @@
 <template lang="html">
   <div>
+    <el-amap vid="amap" :plugin="plugin" class="amap-demo" :center="center">
+      </el-amap>
     <div class="suwis-service-search">
       <!-- 便民服务搜索 -->
       <div >
@@ -20,69 +22,47 @@
         </van-cell-group>
       </div>
       <div>
-         <img src="../../assets/ser.png" style="width:50px">
+        <input type="text" v-model="keyword" placeholder="请输入关键字" class="d-keyword">
+         <img src="../../assets/ser.png" @click="goSearch()" style="width:50px;vertical-align:middle">
       </div>
       <!-- 便民服务搜索 -->
     </div>
+     
     <div>
        <div class="suwis-service-btn">
           <ul>
-             <li @click="switchTab('0')" :class="switchTabId==0?'d-btn-active':''">钟点工</li>
-             <li @click="switchTab('1')" :class="switchTabId==1?'d-btn-active':''">保洁清洗</li>
-             <li @click="switchTab('2')" :class="switchTabId==2?'d-btn-active':''">开锁换锁</li>
-             <li @click="switchTab('3')" :class="switchTabId==3?'d-btn-active':''">管道疏通</li>
+             <li v-for="(item,index) in cagetory" @click="switchTab(item.id)" :class="switchTabId==item.id?'d-btn-active':''">{{item.title}}</li>
           </ul>
           <div style="clear:both"></div>
        </div>
     </div>
     <div>
-      <div class="suwis-con">
+      <div class="suwis-con" v-for="(item,index) in convenient">
        <div class="suwis-con-left">
-          <img src="../../../public/test4.png" width="100%">
+          <img :src="item.img" width="100%">
        </div>
         <div class="suwis-con-right">
-           <div>钟点工保洁清洗开锁换锁管道疏通钟点工保洁清洗开锁换锁管道疏钟点工保洁清洗开锁换锁管道疏通钟点工保洁清洗开锁换锁管道疏</div>
+           <div style="height:40px">{{item.title}}</div>
            <div style="margin-top:10px">
               <div class="suwis-right-con">
                  <div style="padding-top:7px">
                     <img src="../../assets/mie.png" class="suwis-con-icon">
-                    谢春花
-                    <img src="../../assets/tags.png" class="suwis-con-icon1">
+                    {{item.name}}
+                    <img v-if="item.type==0" src="../../assets/tags.png" class="suwis-con-icon1">
+                    <img v-else src="../../assets/gs.png" class="suwis-con-icon1">
                  </div>
                  <div style="margin-top:10px;">
                     <img src="../../assets/dis.png" class="suwis-con-icon">
-                    距离您12km
+                    距离您{{item.distance}}km
                  </div>
               </div>
               <div style="float:right">
-                 <img src="../../assets/mobble.png" style="width:40px;height:40px">
+                 <img src="../../assets/mobble.png" @click="callPhone(item.tel)" style="width:40px;height:40px">
               </div>
            </div>
        </div>
     </div>
-    <div class="suwis-con">
-       <div class="suwis-con-left">
-          <img src="../../../public/test4.png" width="100%">
-       </div>
-        <div class="suwis-con-right">
-           <div>钟点工保洁清洗开锁换锁管道疏通钟点钟点工保洁清锁管道疏</div>
-           <div style="margin-top:10px">
-              <div class="suwis-right-con">
-                 <div style="padding-top:7px">
-                    <img src="../../assets/mie.png" class="suwis-con-icon">
-                    谢春花
-                    <img src="../../assets/gs.png" class="suwis-con-icon1">
-                 </div>
-                 <div style="margin-top:10px;">
-                    <img src="../../assets/dis.png" class="suwis-con-icon">
-                    距离您12km
-                 </div>
-              </div>
-              <div style="float:right">
-                 <img src="../../assets/mobble.png" style="width:40px;height:40px">
-              </div>
-           </div>
-       </div>
+    
     </div>
     </div>
   </div>
@@ -101,19 +81,48 @@ export default {
       VanPicker: Picker
   },
   data(){
+    let self = this;
     return{
+       center: [121.59996, 31.197646],
+          lng:'',
+          lat: '',
+          loaded: false,
+          plugin: [{
+            pName: 'Geolocation',
+            events: {
+              init(o) {
+                // o 是高德地图定位插件实例
+                o.getCurrentPosition((status, result) => {
+                  if (result && result.position) {
+                    self.lng = result.position.lng;
+                    self.lat = result.position.lat;
+                  }
+                });
+              }
+            }
+          }],
       areaList:area,
-      switchTabId:0,
+      switchTabId:null,
       isArea:true,
       areaValue:'',
       carmodel:'',
       show:false,
+      cagetory:[],
+      convenient:[],
+      page:1,
+      keyword:''
     }
   },
   methods:{
+    //拨打电话
+    callPhone(tel){
+      window.location.href = 'tel://'+tel
+    },
     //切换按钮
     switchTab(id){
       this.switchTabId=id
+      this.keyword=''
+      this.getData()
     },
     //关闭地址选择框
     closeArea(){
@@ -129,23 +138,37 @@ export default {
         areaName = areaName + value[i].name + ' '
       }
       this.carmodel = areaName
-    }
+    },
+    goSearch(){
+      this.getData()
+    },
+      getData(){
+        this.$axios.post('goods/convenient',{
+          category:this.switchTabId,
+          search:this.keyword,
+          page:this.page,
+          num:10,
+          pointx:this.lat,
+          pointy:this.lng
+        }).then(res => {
+          this.cagetory=res.data.data.cagetory
+          this.convenient=res.data.data.convenient
+        })
+      }
   },
   created(){
-    this.$axios.post('goods/convenient',{
-        category:'钟点工',
-        page:1,
-        num:10,
-        pointx:'',
-        pointy:''
-      }).then(res => {
-        this.banner=res.data.data
-      })
+    // this.getMap()
+    this.getData()
   }
 }
 </script>
 
 <style lang="css">
+.d-keyword{
+  height: 22px;
+  border: none;
+  font-size: 12px;
+}
 .suwis-service-search{
   line-height: 40px;
   height: 40px;
@@ -161,7 +184,7 @@ export default {
 }
 .suwis-service-search>div:nth-child(2){
   float: right;
-  padding-top:7px;
+  /* padding-top:7px; */
 }
 .suwis-right-con{
   float:left;font-size:12px;color:#666;text-align:left

@@ -111,7 +111,7 @@
             ButtonLine
         },
         filters: {
-            buttonList: v => ButtonMap[v]
+            buttonList: v => ButtonMap.filter(item => item.sta.includes(v))
         },
         data() {
             return {

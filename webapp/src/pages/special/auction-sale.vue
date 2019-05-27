@@ -10,7 +10,7 @@
 
 
 
-    <div>
+    <!-- <div>
       <div class="suwis-news-list" v-for="(item,index) in list">
          <div class="suwis-news-right">
            <img src="./../../assets/test3.png" width="100%">
@@ -33,10 +33,41 @@
             </div>
          </div>
       </div>
-     
+      -->
      
       
-    </div>
+    <!-- </div> -->
+     <van-list
+  v-model="loading"
+  :finished="finished"
+  finished-text="没有更多了"
+  error-text="请求失败，点击重新加载"
+  :error.sync="error"
+  @load="loadlist"
+>
+   <div class="suwis-news-list" v-for="(item,index) in list">
+         <div class="suwis-news-right">
+           <img src="./../../assets/test3.png" width="100%">
+         </div>
+         <div class="suwis-news-left">
+            <div>{{item.title}}</div>
+            <div class='suwis-news-tips'>
+               <div><span class="suwis-current-price">当前价 : </span><span class="suwis-current-pri">16666.00</span></div>
+               <div>
+                  <span class="suwis-current-price">距离结束仅剩下 </span>
+                  <span v-if="item.endTime=='结束'">{{item.endTime}}</span>
+                  <span v-else> 
+                    <span class="suwis-auction-date"> {{item.endTime[0]}}</span> 
+                    <span class="suwis-auction-date"> {{item.endTime[1]}}</span> :
+                    <span class="suwis-auction-date"> {{item.endTime[2]}}</span> 
+                    <span class="suwis-auction-date"> {{item.endTime[3]}}</span> 
+                  </span>
+                </div>
+               <div style="text-align:right;font-size:12px"><span style="color:#E83F44 ">16</span><span class="suwis-current-price">次出价</span></div>
+            </div>
+         </div>
+      </div>
+</van-list>
   </div>
 </template>
 
@@ -77,10 +108,41 @@ export default {
       allLoaded: false, //如果为true,禁止上拉刷新
       autoFill: false, //取消自动填充，
       list: [],
-      banner:[]
+      banner:[],
+      page:1,
+      loading: false,
+      finished: false,
+      error: false,
     }
   },
   methods:{
+    loadlist() {
+         this.$axios.post('goods/lists',{
+           type:2,
+           page:1,
+           num:10
+          }).then(res => {
+            if (res.data.code === 1) {
+              if(res.data.data&&res.data.data.goods){
+                var list=res.data.data.goods
+                 list.map( (obj,index)=>{
+                    this.$set(
+                        obj,"endTime",InitTime(obj.activity_end_time)
+                    );
+                })
+                this.list=this.list.concat(list);
+                //  this.flashList=this.flashList.concat(res.data.data.goods)
+                if (this.page * 10 > res.data.data.total) this.finished = true
+              }
+            } else {
+                this.$toast(res.data.msg);
+            }
+            this.page++
+            this.loading = false
+          }).catch(() => {
+              this.error = true
+          })
+    },
      getBanner(){
       this.$axios.post('goods/goodsbanner',{
         type:2,
@@ -91,23 +153,20 @@ export default {
   },
   created() {
     this.getBanner()
-      this.$axios.post('goods/lists',{
-        type:2,
-        page:1,
-        num:10
-      }).then(res => {
-        var list=res.data.data.goods
-        //测试数据
-        // list[0].activity_end_time='1558626652000'
-          // this.flashList=list 
-          list.map( (obj,index)=>{
-            this.$set(
-                obj,"endTime",InitTime(obj.activity_end_time)
-            );
-        })
-        console.log(list )
-        this.list = list;
-      })
+    // this.$axios.post('goods/lists',{
+    //     type:2,
+    //     page:1,
+    //     num:10
+    //   }).then(res => {
+    //     var list=res.data.data.goods
+    //       list.map( (obj,index)=>{
+    //         this.$set(
+    //             obj,"endTime",InitTime(obj.activity_end_time)
+    //         );
+    //     })
+    //     console.log(list )
+    //     this.list = list;
+    //   })
         
     },
     mounted() {

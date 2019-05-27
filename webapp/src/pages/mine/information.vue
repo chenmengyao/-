@@ -23,6 +23,7 @@
            </div>
         </div>
         </router-link>
+        <router-link :to="{path:'/mine/message/kefu'}">
         <div class="suwis-infor-list">
            <div>
              <img src="../../assets/infor3.png" style="width:26px">
@@ -32,6 +33,7 @@
              <span class="suwis-infor-tags">12</span>
            </div>
         </div>
+        </router-link>
     </div>
   </div>
 </template>

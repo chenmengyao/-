@@ -7,7 +7,16 @@
         </van-swipe-item>
       </van-swipe>
     </div>
-    <div>
+    
+     <van-list
+  v-model="loading"
+  :finished="finished"
+  finished-text="没有更多了"
+  error-text="请求失败，点击重新加载"
+  :error.sync="error"
+  @load="loadlist"
+>
+  <div>
         <div class="suwis-news-list" v-for="item in newsList">
           <div class="suwis-news-left">
               <router-link tag="li" :to="{path: '/news/details', query: {id: item.id}}">
@@ -25,6 +34,7 @@
           </div>
         </div>
     </div>
+</van-list>
   </div>
 </template>
 
@@ -33,28 +43,60 @@ export default {
   data() {
     return {
       newsList:[],
-      banner:[]
+      banner:[],
+      loading: false,
+      finished: false,
+      error: false,
+      page:1,
+      total:null
     }
   },
    methods: {
+     loadlist() {
+         this.$axios.post('news/index',{
+            page:this.page,
+            num:10
+          }).then(res => {
+            if (res.data.code === 1) {
+              if(res.data&&res.data.data){
+                this.banner=res.data.data.banner
+                this.total=res.data.data.total
+                delete res.data.data.total
+                  delete res.data.data.banner
+                  var arr=[]
+                  for(let i in res.data.data){
+                    arr.push(res.data.data[i])
+                  }
+                  this.newsList=this.newsList.concat(arr)
+                if (this.page * 10 > this.total) this.finished = true
+              }
+            } else {
+                this.$toast(res.data.msg);
+            }
+            this.page++
+            this.loading = false
+          }).catch(() => {
+              this.error = true
+          })
+    },
      //获取资讯列表
-      getNewsList(page,num){     
-        this.$axios.post('news/index',{
-          page:page,
-          num:num
-        }).then(res => {
-          this.banner=res.data.data.banner
-          delete res.data.data.banner
-          var list=[]
-          for(let i in res.data.data){
-            list.push(res.data.data[i])
-          }
-          this.newsList=list
-      })
-      }
+      // getNewsList(page,num){     
+      //   this.$axios.post('news/index',{
+      //     page:page,
+      //     num:num
+      //   }).then(res => {
+      //     this.banner=res.data.data.banner
+      //     delete res.data.data.banner
+      //     var list=[]
+      //     for(let i in res.data.data){
+      //       list.push(res.data.data[i])
+      //     }
+      //     this.newsList=list
+      // })
+      // }
     },
     created(){
-      this.getNewsList(1,10)
+      // this.getNewsList(1,10)
     }
 }
 </script>
