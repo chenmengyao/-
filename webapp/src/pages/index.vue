@@ -68,7 +68,7 @@
     <good-item v-for="item in goods"
       :img="item.img"
       :title="item.title"
-      :price="item.sell"
+      :price="item.price_min"
       :sell="item.sell"
       @click.native="$router.push({path:'/goods/details', query: {id: item.id}})">
     </good-item>
