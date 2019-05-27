@@ -109,6 +109,43 @@
     </van-row>
     <!-- 店铺信息 //-->
     <!--  -->
+    <van-sku
+      v-model="skuVisible"
+      stepper-title="我要买"
+      :sku="sku"
+      :goods="details"
+      :goods-id="details.id"
+      :hide-stock="sku.hide_stock"
+      :quota="0"
+      :quota-used="0"
+      reset-stepper-on-hide
+      :initial-sku="initialSku"
+      @buy-clicked="buyBefore"
+    >
+      <!-- 自定义 sku-header-price -->
+      <template slot="sku-header-price" slot-scope="props">
+        <div class="van-sku__goods-price">
+          <span class="van-sku__price-symbol">￥</span><span class="van-sku__price-num">{{ props.price }}</span>
+        </div>
+      </template>
+
+      <!-- 自定义 sku actions -->
+      <template slot="sku-actions" slot-scope="props">
+        <div class="van-sku-actions">
+          <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
+          <van-button
+            square
+            size="large"
+            type="danger"
+            @click="props.skuEventBus.$emit('sku:buy')"
+          >
+            买买买
+          </van-button>
+        </div>
+      </template>
+    </van-sku>
+    <!--  -->
+    <!--  -->
     <van-goods-action>
       <van-goods-action-mini-btn
         icon="chat-o"
@@ -154,7 +191,12 @@ export default {
       // 商品详情
       details: {},
       // 优惠券信息
-      coupons: []
+      coupons: [],
+      // 规格弹窗
+      skuVisible: false,
+      // 默认选中的sku，具体参考高级用法
+      initialSku: {},
+      sku: {}
     }
   },
   created() {
@@ -217,7 +259,12 @@ export default {
         goods_id: this.$route.query.id
       })
       this.coupons = res.data.data || []
-    }
+    },
+    // 购买前
+    async buyBefore() {
+
+    },
+
   }
 }
 </script>
