@@ -1,20 +1,22 @@
 <template lang="html">
   <dl class="suwis-good-item">
     <dt>
-      <img src="images/index/good_01.jpg" alt="">
+      <img :src="img" alt="">
     </dt>
     <dd class="title">
-      猫猫包袋女2019新款潮韩版时尚水桶复古包
+      {{title||''}}
     </dd>
     <dd>
-      <em>¥49.9</em>
-      <span class="bought">29人已付款</span>
+      <em>¥{{price||0.0}}</em>
+      <span class="bought">{{sell||0}}人已付款</span>
     </dd>
   </dl>
 </template>
 
 <script>
-export default {}
+export default {
+  props: ['title', 'img', 'price', 'sell']
+}
 </script>
 
 <style lang="scss">

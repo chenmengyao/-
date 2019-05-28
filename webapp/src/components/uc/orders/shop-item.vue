@@ -2,7 +2,7 @@
     <div class="suwis-order-shop">
         <div class="header">
             <div class="shop-info">
-                <img class="shop-logo" src="@/assets/index/clearance@3x.png" alt="店铺头像" width="20" height="20">
+                <img class="shop-logo" src="@/assets/orders/shop-logo.png" alt="店铺头像" width="20" height="20">
                 <span class="shop-name">{{shopData.store_name}}</span>
                 <van-icon name="arrow"/>
             </div>
@@ -14,7 +14,8 @@
             :num="goods.num"
             :price="goods.goods_price"
             :title="goods.goods_name"
-            :thumb="goods.goods_img">
+            :thumb="goods.goods_img"
+            @click="onClick(goods)">
             <template v-if="shopData.desc && shopData.desc.length" #desc>
                 <div class="card-desc">
                     <span v-for="desc in shopData.desc" :key="desc">{{desc}}</span>
@@ -37,8 +38,10 @@
         0: '等待买家付款',
         1: '等待卖家发货',
         2: '卖家已发货',
+        3: '等待卖家处理',
         4: '买家已确认收货',
-        3: '等待卖家处理'
+        5: '交易成功',
+        6: '交易关闭'
     }
 
     export default {
@@ -67,6 +70,11 @@
         data() {
             return {
 
+            }
+        },
+        methods: {
+            onClick(goods) {
+                this.$emit('on-click-item', goods)
             }
         }
     }
@@ -102,6 +110,7 @@
             }
         }
         .van-card {
+            padding: 0;
             background-color: #fff;
         }
         .van-card__content {

@@ -2,7 +2,7 @@
     <div class="suwis-simple-good">
         <ul class="list">
             <li class="item" @click="toggleCheck">
-                <img class="image" src="@/assets/index/clearance@3x.png" alt="商品">
+                <img class="image" :src="storeLogo" alt="商品">
                 <div class="info" :style="infoStyle">
                     <div class="name">{{name}}</div>
                     <template v-if="desc && desc.length">
@@ -22,15 +22,14 @@
 
 <script>
     export default {
-        name: "simple-good",
         props: {
-            name: {
-                type: String,
-                required: true
-            },
+            name,
             desc: {
                 type: Array,
-                default: [],
+                default: _ => [''],
+            },
+            storeLogo: {
+                type: String,
             },
             hasCheckbox: {
                 type: Boolean,
@@ -84,6 +83,7 @@
             white-space: nowrap;
         }
         .desc {
+            min-height: 16px;
             margin-right: 8px;
             color: rgb(153, 153, 153);
             font-size: 12px;

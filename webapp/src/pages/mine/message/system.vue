@@ -1,45 +1,41 @@
 <template lang="html">
   <div>
-    <div class="suwis-system-list">
+    <div v-if="!stsyemList.length" style="line-height:40px;text-align:center">暂无系统消息</div>
+    <div v-else class="suwis-system-list" v-for="item in stsyemList">
       <div>
         <div class="suwis-system-titie">
             <img src="../../../assets/infor1.png">系统消息
         </div>
-        <div class="suwis-system-date">2019-02-28 14：01</div>
+        <div class="suwis-system-date">{{item.time|dateFmt}}</div>
         <div class="suwis-system-con">
-           <span>版本更新：XX商城APPv1.2版本已上线。</span>
+           <span>{{item.content}}</span>
         </div>
         </div>
       </div>
-      <div class="suwis-system-list">
-      <div>
-        <div class="suwis-system-titie">
-            <img src="../../../assets/infor1.png">系统消息
-        </div>
-        <div class="suwis-system-date">2019-02-28 14：01</div>
-        <div class="suwis-system-con">
-           <span>新VIP提醒：您有新注册VIP消息，请前往推广页面查看。</span>
-        </div>
-        </div>
-      </div>
-      <div class="suwis-system-list">
-      <div>
-        <div class="suwis-system-titie">
-            <img src="../../../assets/infor1.png">系统消息
-        </div>
-        <div class="suwis-system-date">2019-02-28 14：01</div>
-        <div class="suwis-system-con">
-           <span>版本更新：XX商城APPv1.2版本已上线。</span>
-        </div>
-        </div>
-      </div>
+      
   </div>
 </template>
 
 <script>
 export default {
+  data(){
+    return{
+     stsyemList:[]
+    }
+  },
+  methods:{
+    getStsyem(){
+      this.$axios.post('message/system').then(res => {
+        if(res.data.data){
+          this.stsyemList=res.data.data
+        }
+      })
+    }
+  },
   mounted() {
+    this.getStsyem()
      document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5')
+
   }
 }
 </script>

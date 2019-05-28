@@ -17,9 +17,17 @@ export default new Router({
     name: 'register',
     component: () => import('./pages/register.vue')
   }, {
-    path: '/updatepwd',
-    name: 'updatepwd',
-    component: () => import('./pages/updatepwd.vue')
+    path: '/user-agreement',
+    name: 'user_agreement',
+    component: () => import('./pages/user-agreement.vue')
+  }, {
+    path: '/resetpwd',
+    name: 'resetpwd',
+    component: () => import('./pages/resetpwd.vue')
+  }, {
+    path: '/resetpaypwd',
+    name: 'resetpaypwd',
+    component: () => import('./pages/resetpaypwd.vue')
   }, {
     path: '/news', //资讯头条列表
     name: 'news',
@@ -65,25 +73,25 @@ export default new Router({
     name: 'special_flash',
     component: () => import('./pages/special/flash-sale.vue')
   }, {
-    path: '/special/recommend', //限时抢购
+    path: '/special/recommend', //好物推荐
     name: 'special_recommend',
     component: () => import('./pages/special/recommend-sale.vue')
   }, {
-    path: '/uc',
+    path: '/uc',    // 我的（个人中心）
     name: 'uc',
     component: () => import('./pages/uc/index.vue')
   }, {
-    path: '/uc/setting',
+    path: '/uc/setting',    // 设置
     name: 'uc_setting',
     component: () => import('./pages/uc/setting/index.vue')
   }, {
-    path: '/uc/setting/address',
+    path: '/uc/setting/address',    // 设置-地址列表
     name: 'uc_setting_address',
     component: () => import('./pages/uc/setting/address.vue')
   }, {
-      path: '/uc/setting/handleAddress',
-      name: 'uc_setting_handleAddress',
-      component: () => import('./pages/uc/setting/handleAddress.vue')
+    path: '/uc/setting/handleAddress',  // 设置-新增/编辑地址
+    name: 'uc_setting_handleAddress',
+    component: () => import('./pages/uc/setting/handleAddress.vue')
   }, {
     path: '/uc/coupons',
     name: 'uc_coupons',
@@ -109,67 +117,71 @@ export default new Router({
     name: 'uc_messages_system',
     component: () => import('./pages/uc/messages/system.vue')
   }, {
-    path: '/uc/orders',
+    path: '/uc/orders',     // 订单列表
     name: 'uc_orders',
     component: () => import('./pages/uc/orders/index.vue')
   }, {
-    path: '/uc/orders/apply',
+    path: '/uc/orders/apply',   // 订单-申请退款/退换货
     name: 'uc_orders_apply',
     component: () => import('./pages/uc/orders/apply-refund.vue')
   }, {
-    path: '/uc/orders/comment',
+    path: '/uc/orders/comment',     // 订单-评价
     name: 'uc_orders_comment',
     component: () => import('./pages/uc/orders/comment.vue')
   }, {
-      path: '/uc/orders/confirm-order',   // 确认订单
-      name: 'uc_orders_confirm_order',
-      component: () => import('./pages/uc/orders/confirm-order.vue')
+    path: '/uc/orders/confirm-order', // 订单-提交订单
+    name: 'uc_orders_confirm_order',
+    component: () => import('./pages/uc/orders/confirm-order.vue')
   }, {
-    path: '/uc/orders/details',     // 订单详情
+    path: '/uc/orders/score-discount', // 订单-积分折扣
+    name: 'uc_orders_score_discount',
+    component: () => import('./pages/uc/orders/score-discount.vue')
+  }, {
+    path: '/uc/orders/details', // 订单-订单详情
     name: 'uc_orders_details',
     component: () => import('./pages/uc/orders/details.vue')
   }, {
-    path: '/uc/orders/logistics-details',
+    path: '/uc/orders/logistics-details',   // 订单-物流详情
     name: 'uc_orders_logistics_details',
     component: () => import('./pages/uc/orders/logistics-details.vue')
   }, {
-    path: '/uc/orders/logistics-query',
+    path: '/uc/orders/logistics-query',     // 订单-查询物流
     name: 'uc_orders_logistics_query',
     component: () => import('./pages/uc/orders/logistics-query.vue')
   }, {
-    path: '/uc/orders/refund-details',
-    name: 'uc_orders_refund_details',
-    component: () => import('./pages/uc/orders/refund-details.vue')
-  }, {
-    path: '/uc/orders/refund',
+    path: '/uc/orders/refund',      // 订单-售后订单列表
     name: 'uc_orders_refund',
     component: () => import('./pages/uc/orders/refund.vue')
   }, {
-    path: '/uc/orders/servicetype',
+    path: '/uc/orders/refund-details',      // 订单-售后订单详情
+    name: 'uc_orders_refund_details',
+    component: () => import('./pages/uc/orders/refund-details.vue')
+  }, {
+    path: '/uc/orders/servicetype',         // 订单-售后类型选择
     name: 'uc_orders_servicetype',
     component: () => import('./pages/uc/orders/servicetype.vue')
-  },{
-      path: '/uc/footprint',
-      name: 'uc_footprint',
-      component: () => import('./pages/uc/footprint/index.vue')
   }, {
-    path: '/uc/score',
+    path: '/uc/footprint',          // 个人-足迹
+    name: 'uc_footprint',
+    component: () => import('./pages/uc/footprint/index.vue')
+  }, {
+    path: '/uc/score',              // 个人-积分
     name: 'uc_score',
     component: () => import('./pages/uc/score/index.vue')
   }, {
-    path: '/uc/vip',
+    path: '/uc/vip',                // 个人-我的VIP
     name: 'uc_vip',
     component: () => import('./pages/uc/vip/index.vue')
   }, {
-    path: '/uc/popularize',
+    path: '/uc/popularize',         // 个人-我的推广
     name: 'uc_popularize',
     component: () => import('./pages/uc/popularize/index.vue')
   }, {
-    path: '/uc/popularize/details',
+    path: '/uc/popularize/details',     // 个人-推广详情
     name: 'uc_popularize_details',
     component: () => import('./pages/uc/popularize/details.vue')
   }, {
-    path: '/uc/popularize/grant',
+    path: '/uc/popularize/grant',       // 个人-推广-发放额度
     name: 'uc_popularize_grant',
     component: () => import('./pages/uc/popularize/grant.vue')
   }, {
@@ -181,16 +193,24 @@ export default new Router({
     name: 'mine_commission',
     component: () => import('./pages/mine/commission.vue')
   }, {
-    path: '/mine/information',
+    path: '/mine/information',  //消息列表
     name: 'mine_commission',
     component: () => import('./pages/mine/information.vue')
   }, {
-    path: '/mine/message/system',
+    path: '/mine/message/system', //系统消息
     name: 'mine_system',
     component: () => import('./pages/mine/message/system.vue')
   }, {
-    path: '/mine/message/logistics',
+    path: '/mine/message/logistics', //交易物流
     name: 'mine_logistics',
     component: () => import('./pages/mine/message/logistics.vue')
+  }, {
+    path: '/mine/message/kefu', //消息列表
+    name: 'mine_kefu',
+    component: () => import('./pages/mine/message/kefu.vue')
+  }, {
+    path: '/mine/message/getsm',  //客服聊天
+    name: 'mine_getsm',
+    component: () => import('./pages/mine/message/getsm.vue')
   }]
 })

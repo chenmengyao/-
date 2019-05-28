@@ -3,32 +3,34 @@
     <div class="form">
       <img class="avatar" src="@/assets/login/avatar@3x.png" alt="">
       <div class="tabs">
-        <van-tabs v-model="modalType">
+        <van-tabs v-model="loginType">
           <van-tab title="手机验证码登陆">
-            <van-field v-model="formData.tel" :error-message="formMsg.tel"  type="tel" placeholder="请输入您的11位手机号">
+            <van-field v-model="formData.tel" @focus="formMsg.tel=''" :error-message="formMsg.tel"  type="tel" placeholder="请输入您的11位手机号">
               <img class="field-icon" slot="left-icon"  src="@/assets/login/phone@3x.png" alt="">
             </van-field>
-            <van-field v-model="formData.code" :error-message="formMsg.code" placeholder="请输入验证码">
+            <van-field v-model="formData.code" @focus="formMsg.code=''" :error-message="formMsg.code" placeholder="请输入验证码">
               <img class="field-icon" style="margin-top:2.2px;" slot="left-icon"  src="@/assets/login/code@3x.png" alt="">
-               <van-button class="send-code" slot="button" size="small" type="primary" @click="sendCode">发送验证码</van-button>
+               <van-button class="send-code" slot="button" size="small" type="primary" :disabled="countDownText>0" @click="sendCode">{{countDownText>0?`${countDownText}s后可重新发送`:'发送验证码'}}</van-button>
             </van-field>
             <van-button class="btn-submit" type="primary" @click="loginBefore">登录</van-button>
           </van-tab>
           <van-tab title="账号登陆">
-            <van-field v-model="formData.nickname" :error-message="formMsg.nickname" placeholder="请输入登录名">
+            <van-field v-model="formData.nickname" @focus="formMsg.nickname=''" :error-message="formMsg.nickname" placeholder="请输入登录名">
               <img class="field-icon" slot="left-icon"  src="@/assets/login/phone@3x.png" alt="">
             </van-field>
-            <van-field v-model="formData.password" :error-message="formMsg.password" type="password" placeholder="请输入验证码">
+            <van-field v-model="formData.password" @focus="formMsg.password=''" :error-message="formMsg.password" type="password" placeholder="请输入验证码">
               <img class="field-icon" slot="left-icon"  src="@/assets/login/paypwd@3x.png" alt="">
             </van-field>
-            <van-button class="btn-submit" type="primary" @click="loginBefore">登录</van-button>
+            <van-button :disabled="disabled" class="btn-submit" type="primary" @click="loginBefore">登录</van-button>
           </van-tab>
         </van-tabs>
         <div class="footer-link">
-          <a href="#">忘记密码？</a>
+          <router-link to="/resetpwd">
+            忘记密码？
+          </router-link>
           <br>
           <span class="ua">
-            登陆即代表已同意<em>《用户服务协议》</em>
+            登陆即代表已同意<router-link to="/user-agreement"><em>《用户服务协议》</em></router-link>
           </span>
         </div>
       </div>
@@ -37,14 +39,16 @@
 </template>
 
 <script>
+import {
+  Toast
+} from 'vant'
 import md5 from 'md5'
 export default {
   components: {},
   data() {
     return {
       // 登陆方式
-      loginType: 'account',
-      modalType: 1,
+      loginType: 1,
       formData: {
         tel: '18687512006',
         code: '',
@@ -59,54 +63,10 @@ export default {
         nickname: '',
         password: '',
       },
-      rules: {
-        phone: [{
-          required: true,
-          message: '请输入手机号',
-          trigger: 'blur'
-        }, {
-          required: true,
-          pattern: /^1(3|4|5|7|8)\d{9}$/,
-          message: '请输入正确的手机号',
-          trigger: 'blur'
-        }],
-        pwd: [{
-          required: true,
-          message: '请输入密码',
-          trigger: 'blur'
-        }],
-        pwdConfirm: [{
-          required: true,
-          message: '两次输入的密码不一致',
-          trigger: 'blur',
-          validator: (rule, value, callback) => {
-            if (value !== this.formData.pwd) {
-              callback(new Error('两次输入的密码不一致'))
-            } else {
-              callback()
-            }
-          }
-        }],
-        code: [{
-          required: true,
-          message: '请输入验证码',
-          trigger: 'blur'
-        }]
-      },
       loaded: false,
       disabled: false,
-      codeDisabled: false,
-      countDownText: 0,
-      agreed: true,
-      agreement: false,
-      agreementText: '',
-      token: 0
+      countDownText: 0
     }
-  },
-  computed: {},
-  created() {
-    // 清理状态
-    this.$store.commit('core/exit', true)
   },
   mounted() {
     setTimeout(() => {
@@ -116,181 +76,89 @@ export default {
   watch: {
     countDownText() {
       if (this.countDownText > 0) {
-        this.codeDisabled = true
         setTimeout(() => {
           this.countDownText--
         }, 1000)
-      } else {
-        this.codeDisabled = false
       }
-    },
-    loginType(val) {
-      // 重置token
-      this.token = 0
-      // 获取二维码
-      this.getQrcode()
     }
   },
   methods: {
-    async loadAgreement() {
-      this.agreement = true
-      let result = await this.$axios.get('/system/get_service_agreement')
-      this.agreementText = result.data.data
-    },
     // 发送验证码
     sendCode() {
-      let form
-      if (this.modalType == 'login') form = 'codeForm'
-      if (this.modalType == 'register') form = 'registerForm'
-      if (this.modalType == 'reset') form = 'resetForm'
-      this.$refs[form].validateField('phone', (msg) => {
-        if (msg) {
-          this.$Message.warning(msg)
+      if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
+        this.formMsg.tel = '请输入正确的号码'
+        return
+      }
+      this.countDownText = 60
+      this.$axios.post('login/getcode', {
+        tel: this.formData.tel
+      }).then(res => {
+        if (res.data.code == 1) {
+          Toast('验证码已发送，请注意查收')
         } else {
-          this.countDownText = 60
-          this.$axios.post('/system/send_code', {
-            phone: this.formData.phone,
-            type: this.modalType
-          }).then(res => {
-            if (res.data.code == 200) {
-              this.$Message.success('验证码已发送，请注意查收')
-            } else {
-              this.$Message.warning(res.data.msg)
-              this.countDownText = 0
-            }
-          })
+          Toast(res.data.msg)
+          this.countDownText = 0
         }
       })
     },
     // 登陆前校验
     loginBefore() {
-      this.login()
-      return
+      // 验证码登陆
       if (this.loginType == 0) {
-        this.$refs.codeForm.validate((valid) => {
-          if (valid) {
-            this.login()
-          } else {
-            // TODO:
-          }
-        })
+        if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
+          this.formMsg.tel = '请输入正确的号码'
+          return
+        }
+        if (!/^\d{6}$/.test(this.formData.code)) {
+          this.formMsg.code = '请输入6位数的验证码'
+          return
+        }
       }
+      // 账号登陆
       if (this.loginType == 1) {
-        this.$refs.loginForm.validate((valid) => {
-          if (valid) {
-            this.login()
-          } else {
-            // TODO:
-          }
-        })
+        if (!this.formData.nickname) {
+          this.formMsg.nickname = '请输入用户名'
+          return
+        }
+        if (!this.formData.password) {
+          this.formMsg.password = '请输入密码'
+          return
+        }
       }
+      this.login()
     },
     // 登陆
-    login() {
+    async login() {
       let params = {
         ...this.formData
       }
       // params.password = md5(params.password)
       this.disabled = true
-      this.$axios.post('login/acclogin', params).then(res => {
+      let res = await this.$axios.post(this.loginType == 0 ? 'login/tellogin' : 'login/acclogin', params)
+      setTimeout(() => {
+        this.disabled = false
+      }, 600)
+      let data = res.data
+      if (data.code == 1) {
+        let user = await this.getUserInfo(data.data)
+        // 储存用户信息
+        this.$store.commit('core/login', {
+          token: data.data,
+          user
+        })
         setTimeout(() => {
-          this.disabled = false
           this.$router.push('/')
         }, 600)
-        let data = res.data
-        if (data.code == 1) {
-          // 储存用户信息
-          this.$store.commit('core/login', {
-            token: data.data
-          })
-        } else {
-          this.$Message.warning(data.msg)
-        }
-      })
-    },
-    registerBefore() {
-      this.$refs.registerForm.validate((valid) => {
-        if (valid) {
-          this.register()
-        } else {
-          // TODO:
-        }
-      })
-    },
-    register() {
-      let params = {
-        ...this.formData
+      } else {
+        Toast(data.msg)
       }
-      delete params.pwdConfirm
-      params.pwd = md5(params.pwd)
-      this.disabled = true
-      this.$axios.post('/app/user/register', params).then(res => {
-        setTimeout(() => {
-          this.disabled = false
-        }, 600)
-        let data = res.data
-        if (data.code == 200) {
-          this.$Message.success('注册成功')
-          // 储存用户信息
-          this.modalType = 'login'
-        } else {
-          this.$Message.warning(data.msg)
-        }
-      })
     },
-    resetBefore() {
-      this.$refs.resetForm.validate((valid) => {
-        if (valid) {
-          this.reset()
-        } else {
-          // TODO:
-        }
+    // getuser
+    async getUserInfo(token) {
+      let res = await this.$axios.post('mine/index', {
+        token
       })
-    },
-    reset() {
-      let params = {
-        ...this.formData
-      }
-      delete params.pwdConfirm
-      params.pwd = md5(params.pwd)
-      this.disabled = true
-      this.$axios.post('/app/user/reset', params).then(res => {
-        setTimeout(() => {
-          this.disabled = false
-        }, 600)
-        let data = res.data
-        if (data.code == 200) {
-          this.$Message.success('密码重置成功')
-          // 储存用户信息
-          this.modalType = 'login'
-        } else {
-          this.$Message.warning(data.msg)
-        }
-      })
-    },
-    async getQrcode() {
-      let res = await this.$axios.get(`/app/user/get_qrcode/${this.token}`)
-      // 首次
-      if (res.data.code == 200 && !res.data.data.user) {
-        this.token = res.data.data.token
-        this.qrcodeurl = `//qr.topscan.com/api.php?text=${this.token}`
-      }
-      // 登陆成功
-      if (res.data.code == 200 && res.data.data.user) {
-        // 储存用户信息
-        this.$store.commit('core/login', res.data.data)
-        setTimeout(() => {
-          this.$router.push('/orders')
-        }, 600)
-        return true
-      }
-      // 二维码过期
-      if (res.data.code == 650) {
-        this.token = 0
-      }
-      setTimeout(() => {
-        if (this.loginType == 'qrcode') this.getQrcode()
-      }, 2000)
+      return res.data.data.user
     }
   }
 }
@@ -347,6 +215,7 @@ export default {
             color: #E83F44;
             border: none;
             height: 20px;
+            line-height: 20px;
         }
 
         .footer-link {

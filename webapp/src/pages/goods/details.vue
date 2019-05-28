@@ -6,16 +6,13 @@
     <!--  -->
     <van-swipe :autoplay="3000" indicator-color="white">
       <van-swipe-item>
-        <img src="images/index/good_02.jpg" alt="">
-      </van-swipe-item>
-      <van-swipe-item>
-        <img src="images/index/good_02.jpg" alt="">
+        <img :src="details.img" alt="">
       </van-swipe-item>
     </van-swipe>
     <!--  -->
     <van-row>
       <van-col span="24" class="title">
-        猫猫潮女女2019新款潮韩版时尚水桶帆布鞋猫猫潮女女2019新款潮韩版时尚经典帆布鞋
+        {{details.title}}
       </van-col>
     </van-row>
     <van-row class="price">
@@ -24,24 +21,25 @@
       </van-col>
       <van-col>
         <span>
-          29人已付款
+          {{details.sell}}人已付款
         </span>
       </van-col>
     </van-row>
     <van-row class="coupon">
       <van-col span="24">
-        优惠券&nbsp;&nbsp;<span>满50减5</span><span>满20减3</span>
+        优惠券&nbsp;&nbsp;<span v-for="item in coupons" v-if="item.number_can>0&&item.sta==1">{{item.title}}</span>
+        <i v-if="coupons.length==0">暂无可用优惠券</i>
       </van-col>
     </van-row>
     <van-cell class="interval" title="型号" is-link value="请先选择您要购买的商品型号" />
-    <van-cell class="interval" title="地址" is-link value="湖北省武汉市洪山区光谷大道光谷世贸中心E栋11…" />
-    <van-cell title="运费"  value="0元" />
+    <van-cell class="interval" title="地址" is-link :value="details.store&&details.store.site" />
+    <van-cell title="运费"  :value="details.postage==0?'免邮':details.postage+'元'" />
     <van-cell>
       <span slot="title"><img class="security" src="@/assets/details/security@3x.png" alt="">该商品支持7天无理由退款</span>
     </van-cell>
     <!-- 评论 -->
     <van-cell ref="comment" class="interval comment">
-      <span slot="title">评价（43579）</span>
+      <span slot="title">评价（{{details.evaluate_count}}）</span>
       <span>好评率&nbsp;<em>97%</em></span>
     </van-cell>
     <comment-list>
@@ -59,8 +57,9 @@
     <van-tabs class="good-tabs" v-model="goodTabIdx">
       <van-tab title="商品介绍">
         <div ref="goodInfo" class="good-info interval">
-          <img src="images/details/good_info_01.jpg" alt="">
-          <img src="images/details/good_info_02.jpg" alt="">
+          <template v-for="item in details.details">
+            <div v-html="item.content.editor"></div>
+          </template>
           <span class="no-data">已经没有更多啦～</span>
         </div>
       </van-tab>
@@ -90,15 +89,15 @@
     </van-tabs>
     <!-- 店铺详情 //-->
     <!-- 店铺信息 -->
-    <van-row class="interval shop">
+    <van-row class="interval shop" v-if="details.store">
       <van-col>
         <dl>
           <dt>
-            <img src="test3.png" alt="">
+            <img :src="details.store.logo" alt="">
           </dt>
           <dd>
-            <h6>京桥鞋靴专营店铺</h6>
-            <span>在售商品<em>112</em>件</span>
+            <h6>{{details.store.name}}</h6>
+            <span>在售商品<em>{{details.store_count}}</em>件</span>
           </dd>
         </dl>
       </van-col>
@@ -109,6 +108,43 @@
       </van-col>
     </van-row>
     <!-- 店铺信息 //-->
+    <!--  -->
+    <van-sku
+      v-model="skuVisible"
+      stepper-title="我要买"
+      :sku="sku"
+      :goods="details"
+      :goods-id="details.id"
+      :hide-stock="sku.hide_stock"
+      :quota="0"
+      :quota-used="0"
+      reset-stepper-on-hide
+      :initial-sku="initialSku"
+      @buy-clicked="buyBefore"
+    >
+      <!-- 自定义 sku-header-price -->
+      <template slot="sku-header-price" slot-scope="props">
+        <div class="van-sku__goods-price">
+          <span class="van-sku__price-symbol">￥</span><span class="van-sku__price-num">{{ props.price }}</span>
+        </div>
+      </template>
+
+      <!-- 自定义 sku actions -->
+      <template slot="sku-actions" slot-scope="props">
+        <div class="van-sku-actions">
+          <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
+          <van-button
+            square
+            size="large"
+            type="danger"
+            @click="props.skuEventBus.$emit('sku:buy')"
+          >
+            买买买
+          </van-button>
+        </div>
+      </template>
+    </van-sku>
+    <!--  -->
     <!--  -->
     <van-goods-action>
       <van-goods-action-mini-btn
@@ -151,8 +187,21 @@ export default {
         selected: false
       }],
       timer: {},
-      goodTabIdx: 0
+      goodTabIdx: 0,
+      // 商品详情
+      details: {},
+      // 优惠券信息
+      coupons: [],
+      // 规格弹窗
+      skuVisible: false,
+      // 默认选中的sku，具体参考高级用法
+      initialSku: {},
+      sku: {}
     }
+  },
+  created() {
+    this.getDetails()
+    this.getCoupons()
   },
   mounted() {
     window.addEventListener('scroll', this.checkScroll, this)
@@ -196,7 +245,26 @@ export default {
         }, 680)
       }
       this.navlist[idx].selected = true
-    }
+    },
+    // 获取详情
+    async getDetails() {
+      let res = await this.$axios.post('goods/find', {
+        id: this.$route.query.id
+      })
+      this.details = res.data.data || {}
+    },
+    // 获取优惠券详情
+    async getCoupons() {
+      let res = await this.$axios.post('goods/coupons', {
+        goods_id: this.$route.query.id
+      })
+      this.coupons = res.data.data || []
+    },
+    // 购买前
+    async buyBefore() {
+
+    },
+
   }
 }
 </script>
@@ -290,6 +358,14 @@ export default {
             display: inline-block;
             color: $red;
             background: url("./../../assets/details/coupon@3x.png") no-repeat center/auto 100%;
+        }
+        i {
+            font-size: 12px;
+            font-style: normal;
+            transform: scale(0.89);
+            transform-origin: left;
+            display: inline-block;
+            color: $gray;
         }
     }
     .security {

@@ -2,16 +2,14 @@
   <div> 
     <div class="suwis-news-ban">
       <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
-        <van-swipe-item>
-          <img src="./../../assets/test2.png" style="width:100%;">
+        <van-swipe-item v-for="item in banner">
+          <img :src="item.img" style="width:100%;">
         </van-swipe-item>
-        <van-swipe-item>
-          <img src="./../../assets/test2.png" style="width:100%;">
-        </van-swipe-item>
+        
       </van-swipe>
     </div>
     <div>
-      <div class="suwis-news-list" v-for="(item,index) in clearList">
+      <!-- <div class="suwis-news-list" v-for="(item,index) in clearList">
          <div class="suwis-news-right">
            <img :src="item.img" width="100%">
          </div>
@@ -21,7 +19,6 @@
               <span class='suwis-news-date'>
                 <span class="d-yuan-price">￥59.9</span>
                 <span class="d-basis-price">￥59.9</span>
-                <!-- <span class="">清仓</span> -->
                 <img src="../../assets/clear.png" class="d-tags">
               </span>
               <span class='suwis-news-num'>
@@ -32,10 +29,66 @@
             </div>
          </div>
         
-      </div>
+      </div> -->
      
       
     </div>
+    <!-- <van-list
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+    >
+    <div class="suwis-news-list" v-for="(item,index) in clearList">
+         <div class="suwis-news-right">
+           <img :src="item.img" width="100%">
+         </div>
+         <div class="suwis-news-left">
+            <span>{{item.title}}</span>
+            <div class='suwis-news-tips'>
+              <span class='suwis-news-date'>
+                <span class="d-yuan-price">￥59.9</span>
+                <span class="d-basis-price">￥59.9</span>
+                <img src="../../assets/clear.png" class="d-tags">
+              </span> -->
+              <!-- <span class='suwis-news-num'>
+                <span class="d-sale-btn">
+                   <img src="../../assets/gm.png">
+                </span>
+              </span>
+            </div>
+         </div>
+      </div>
+    </van-list> -->
+    <van-list
+  v-model="loading"
+  :finished="finished"
+  finished-text="没有更多了"
+  error-text="请求失败，点击重新加载"
+  :error.sync="error"
+  @load="loadlist"
+>
+  <div class="suwis-news-list" v-for="(item,index) in clearList">
+         <div class="suwis-news-right">
+           <img :src="item.img" width="100%">
+         </div>
+         <div class="suwis-news-left">
+            <span>{{item.title}}</span>
+            <div class='suwis-news-tips'>
+              <span class='suwis-news-date'>
+                <span class="d-yuan-price">￥59.9</span>
+                <span class="d-basis-price">￥59.9</span>
+                <img src="../../assets/clear.png" class="d-tags">
+              </span>
+              <span class='suwis-news-num'>
+                <span class="d-sale-btn">
+                   <img src="../../assets/gm.png">
+                </span>
+              </span>
+            </div>
+         </div>
+      </div>
+</van-list>
   </div>
 </template>
 
@@ -43,22 +96,71 @@
 export default {
   data() {
     return {
-      clearList:[]
+      clearList:[],
+      banner:[],
+      page:1,
+      list: [],
+      loading: false,
+      finished: false,
+      error: false,
     }
   },
   methods:{
-    getClearList(){
-      this.$axios.post('goods/lists',{
+    // onLoad(){
+    //  if(this.page<this.total){
+    //     this.page++
+    //     this.getClearList()
+    //  }
+    
+    // },
+    // getClearList(){
+    //   this.$axios.post('goods/lists',{
+    //     type:4,
+    //     page:this.page,
+    //     num:10
+    //   }).then(res => {
+    //    this.clearList=res.data.data.goods;
+    //    this.total=Math.ceil(res.data.data.total/10)
+    //    if(this.page<this.total){
+    //         this.finished=true
+    //     }else{
+    //        this.finished=false
+    //     }
+        
+    //   })
+    // },
+     loadlist() {
+         this.$axios.post('goods/lists',{
+            type:4,
+            page:this.page,
+            num:10
+          }).then(res => {
+            if (res.data.code === 1) {
+            
+              if(res.data.data&&res.data.data.goods){
+                 this.clearList=this.clearList.concat(res.data.data.goods)
+                if (this.page * 10 > res.data.data.total) this.finished = true
+              }
+            } else {
+                this.$toast(res.data.msg);
+            }
+            this.page++
+            this.loading = false
+          }).catch(() => {
+              this.error = true
+          })
+    },
+     getBanner(){
+      this.$axios.post('goods/goodsbanner',{
         type:4,
-        page:1,
-        num:10
       }).then(res => {
-       this.clearList=res.data.data
+        this.banner=res.data.data
       })
     }
   },
   created(){
-    this.getClearList() 
+    // this.getClearList() 
+    this.getBanner()
   }
 }
 </script>

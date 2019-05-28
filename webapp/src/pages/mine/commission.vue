@@ -5,7 +5,7 @@
         <div>
             <div style="text-align:left;font-size:12px;margin:20px 0 5px 20px"><img src="../../assets/pri.png" style="width:13px; vertical-align: middle;margin-top:-2px;margin-right:8px">当前佣金</div>
             <div>
-                <div style="float:left;margin-left:23px;line-height:62px;color:#E83F44;font-size:24px;">123456.0</div>
+                <div style="float:left;margin-left:23px;line-height:62px;color:#E83F44;font-size:24px;">{{sum}}</div>
                  <div style="float:right;margin-right:23px;">
                      <img src="../../assets/yong.png" style="width:130px;">
                  </div>
@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-    <div class="suwis-com">
+    <div class="suwis-com" v-for="item in comList">
        <div>
            <div style="border-bottom:1px solid #EFEFEF;padding: 15px 15px 8px 15px;">
             <div style="font-size:14px;">
@@ -28,158 +28,22 @@
                     </div>
                     <div style="float:left;text-align:left;margin-left:6px;">
                         <div>
-                            橘猫说它不会长胖<img src="../../assets/myvip.png" style="width:18px; vertical-align: middle;margin:0 5px;margin-top:-2px;">
+                            {{item.user_nickname}}<img src="../../assets/myvip.png" style="width:18px; vertical-align: middle;margin:0 5px;margin-top:-2px;">
                             <span style="font-size:12px;font-weight:bold;color:#E3B156">LV.1</span>
                         </div>
-                        <div style="padding-top:8px;font-size:12px">2018-09-28 15:43</div>
+                        <div style="padding-top:8px;font-size:12px">{{item.time|dateFmt}}</div>
                     </div>
                 </div>
                 <div style="float:right;line-height:45px;">
-                    100.0
+                    {{item.sum}}
                 </div>
                 <div style="clear:both"></div>
             </div>
         </div>
-        <div style="border-bottom:1px solid #EFEFEF;padding: 15px 15px 8px 15px;">
-            <div style="font-size:14px;">
-                <div style="float:left;">
-                    <div style="float:left">
-                        <img src="../../../public/touiocn.png" style="width:20px;height:20px;;margin-top:-2px;">
-                    </div>
-                    <div style="float:left;text-align:left;margin-left:6px;">
-                        <div>
-                            橘猫说它不会长胖<img src="../../assets/myvip.png" style="width:18px; vertical-align: middle;margin:0 5px;margin-top:-2px;">
-                            <span style="font-size:12px;font-weight:bold;color:#E3B156">LV.1</span>
-                        </div>
-                        <div style="padding-top:8px;font-size:12px">2018-09-28 15:43</div>
-                    </div>
-                </div>
-                <div style="float:right;line-height:45px;">
-                    100.0
-                </div>
-                <div style="clear:both"></div>
-            </div>
-         </div>
-         <div style="border-bottom:1px solid #EFEFEF;padding: 15px 15px 8px 15px;">
-            <div style="font-size:14px;">
-                <div style="float:left;">
-                    <div style="float:left">
-                        <img src="../../../public/touiocn.png" style="width:20px;height:20px;;margin-top:-2px;">
-                    </div>
-                    <div style="float:left;text-align:left;margin-left:6px;">
-                        <div>
-                            橘猫说它不会长胖<img src="../../assets/myvip.png" style="width:18px; vertical-align: middle;margin:0 5px;margin-top:-2px;">
-                            <span style="font-size:12px;font-weight:bold;color:#E3B156">LV.1</span>
-                        </div>
-                        <div style="padding-top:8px;font-size:12px">2018-09-28 15:43</div>
-                    </div>
-                </div>
-                <div style="float:right;line-height:45px;">
-                    100.0
-                </div>
-                <div style="clear:both"></div>
-            </div>
-         </div>
-         <div style="border-bottom:1px solid #EFEFEF;padding: 15px 15px 8px 15px;">
-            <div style="font-size:14px;">
-                <div style="float:left;">
-                    <div style="float:left">
-                        <img src="../../../public/touiocn.png" style="width:20px;height:20px;;margin-top:-2px;">
-                    </div>
-                    <div style="float:left;text-align:left;margin-left:6px;">
-                        <div>
-                            橘猫说它不会长胖<img src="../../assets/myvip.png" style="width:18px; vertical-align: middle;margin:0 5px;margin-top:-2px;">
-                            <span style="font-size:12px;font-weight:bold;color:#E3B156">LV.1</span>
-                        </div>
-                        <div style="padding-top:8px;font-size:12px">2018-09-28 15:43</div>
-                    </div>
-                </div>
-                <div style="float:right;line-height:45px;">
-                    100.0
-                </div>
-                <div style="clear:both"></div>
-            </div>
-         </div>
-         <div style="border-bottom:1px solid #EFEFEF;padding: 15px 15px 8px 15px;">
-            <div style="font-size:14px;">
-                <div style="float:left;">
-                    <div style="float:left">
-                        <img src="../../../public/touiocn.png" style="width:20px;height:20px;;margin-top:-2px;">
-                    </div>
-                    <div style="float:left;text-align:left;margin-left:6px;">
-                        <div>
-                            橘猫说它不会长胖<img src="../../assets/myvip.png" style="width:18px; vertical-align: middle;margin:0 5px;margin-top:-2px;">
-                            <span style="font-size:12px;font-weight:bold;color:#E3B156">LV.1</span>
-                        </div>
-                        <div style="padding-top:8px;font-size:12px">2018-09-28 15:43</div>
-                    </div>
-                </div>
-                <div style="float:right;line-height:45px;">
-                    100.0
-                </div>
-                <div style="clear:both"></div>
-            </div>
-         </div>
-         <div style="border-bottom:1px solid #EFEFEF;padding: 15px 15px 8px 15px;">
-            <div style="font-size:14px;">
-                <div style="float:left;">
-                    <div style="float:left">
-                        <img src="../../../public/touiocn.png" style="width:20px;height:20px;;margin-top:-2px;">
-                    </div>
-                    <div style="float:left;text-align:left;margin-left:6px;">
-                        <div>
-                            橘猫说它不会长胖<img src="../../assets/myvip.png" style="width:18px; vertical-align: middle;margin:0 5px;margin-top:-2px;">
-                            <span style="font-size:12px;font-weight:bold;color:#E3B156">LV.1</span>
-                        </div>
-                        <div style="padding-top:8px;font-size:12px">2018-09-28 15:43</div>
-                    </div>
-                </div>
-                <div style="float:right;line-height:45px;">
-                    100.0
-                </div>
-                <div style="clear:both"></div>
-            </div>
-         </div>
-         <div style="border-bottom:1px solid #EFEFEF;padding: 15px 15px 8px 15px;">
-            <div style="font-size:14px;">
-                <div style="float:left;">
-                    <div style="float:left">
-                        <img src="../../../public/touiocn.png" style="width:20px;height:20px;;margin-top:-2px;">
-                    </div>
-                    <div style="float:left;text-align:left;margin-left:6px;">
-                        <div>
-                            橘猫说它不会长胖<img src="../../assets/myvip.png" style="width:18px; vertical-align: middle;margin:0 5px;margin-top:-2px;">
-                            <span style="font-size:12px;font-weight:bold;color:#E3B156">LV.1</span>
-                        </div>
-                        <div style="padding-top:8px;font-size:12px">2018-09-28 15:43</div>
-                    </div>
-                </div>
-                <div style="float:right;line-height:45px;">
-                    100.0
-                </div>
-                <div style="clear:both"></div>
-            </div>
-         </div>
-         <div style="border-bottom:1px solid #EFEFEF;padding: 15px 15px 8px 15px;">
-            <div style="font-size:14px;">
-                <div style="float:left;">
-                    <div style="float:left">
-                        <img src="../../../public/touiocn.png" style="width:20px;height:20px;;margin-top:-2px;">
-                    </div>
-                    <div style="float:left;text-align:left;margin-left:6px;">
-                        <div>
-                            橘猫说它不会长胖<img src="../../assets/myvip.png" style="width:18px; vertical-align: middle;margin:0 5px;margin-top:-2px;">
-                            <span style="font-size:12px;font-weight:bold;color:#E3B156">LV.1</span>
-                        </div>
-                        <div style="padding-top:8px;font-size:12px">2018-09-28 15:43</div>
-                    </div>
-                </div>
-                <div style="float:right;line-height:45px;">
-                    100.0
-                </div>
-                <div style="clear:both"></div>
-            </div>
-         </div>
+      
+    
+       
+         
        </div>
     </div>
   </div>
@@ -188,15 +52,24 @@
 <script>
  export default {
     data(){
-      return {}
+      return {
+          comList:[],
+          sum:0,//总佣金
+      }
     }, 
      mounted(){
-        this.myChart() //函数调用
-        this.getCommission()//获取我的佣金
+         var that=this
+        that.getCommission().then(function(data){
+          that.comList=data.list
+            that.sum=data.sum
+            // that.comList=data.list
+            that.myChart(data.sum_m)
+        })
      },
      methods:{
         // 左上角柱状图
-        myChart(){
+        myChart(data){
+            console.log(data)
           let myChart= this.$echarts.init(document.getElementById('myChart'));
           myChart.setOption({
             // backgroundColor:'#050d19',
@@ -231,7 +104,7 @@
                   },
                 },
                 axisTick: { show: true,},//刻度点数轴
-                data: ['01', '02', '03', '04','05','06','07','08','09','10','11','12'],
+                data:data.x,
             }],
             yAxis: [{//y轴的相关设置
               type: 'value',//y轴数据类型为连续的数据
@@ -287,14 +160,21 @@
               opacity: 0.5,
               // origin: "start"
             },
-               data: [4000, 2000, 4000, 4000, 6000, 4000,4000, 2000, 6000, 1000, 2000, 4000]
+               data:data.y
             }]
           })
         },
         getCommission(){
-            this.$axios.post('mine/userincome').then(res => {
-                
-            })
+            var that=this
+            var p = new Promise(function(resolve, reject){
+                //做一些异步操作
+                setTimeout(function(){
+                   that.$axios.post('mine/userincome').then(res => {
+                       resolve(res.data.data);
+                  }) 
+                }, 2000);
+            });
+          return p;
         }
        }
   }

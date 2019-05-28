@@ -27,13 +27,13 @@
         <van-cell title="我的收货地址" :center="true" value-class="content" to="/uc/setting/address">
             <van-icon name="arrow" size="10px" color="#b4b4b4"/>
         </van-cell>
-        <van-cell title="登录密码" :center="true" value-class="content" to="/updatepwd">
+        <van-cell title="登录密码" :center="true" value-class="content" to="/resetpwd">
             <template>
                 修改
                 <van-icon name="arrow" size="10px" color="#b4b4b4"/>
             </template>
         </van-cell>
-        <van-cell title="支付密码" :center="true" value-class="content" to="/updatepwd">
+        <van-cell title="支付密码" :center="true" value-class="content" to="/resetpwd">
             <template>
                 修改
                 <van-icon name="arrow" size="10px" color="#b4b4b4"/>

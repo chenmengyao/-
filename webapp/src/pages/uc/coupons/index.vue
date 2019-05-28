@@ -1,8 +1,8 @@
 <template lang="html">
   <div>
     <div>
-       <van-tabs v-model="couponsValue" :line-height="2" animated color="#E83F44" swipeable title-active-color="#333" title-inactive-color="#333">
-          <van-tab title="待使用" @click="getTobeusedList()">
+       <van-tabs  @change="getTobeusedList" v-model="couponsValue" :line-height="2" animated color="#E83F44" swipeable title-active-color="#333" title-inactive-color="#333">
+          <van-tab title="待使用">
              <div class="suwis-coupons-con" v-if="tobeused.length" v-for="item in tobeused">
                <router-link tag="div" :to="{path: '/uc/coupons/details', query: {id: 0,type:1}}">
                 <div>
@@ -33,8 +33,8 @@
              </div>
              <div v-if="!tobeused.length" style="text-align:center;line-height:40px;">暂无数据</div>
           </van-tab>
-          <van-tab title="已使用" @click="getUsedList()">
-             <div class="suwis-coupons-con" v-if="used.length" v-for="item in used">
+          <van-tab title="已使用">
+             <div class="suwis-coupons-con" v-if="tobeused.length" v-for="item in tobeused">
                <router-link tag="div" :to="{path: '/uc/coupons/details', query: {id: 0,type:2}}">
                 <div>
                    <div class="suwis-coupons-list d-bgcolor">
@@ -62,10 +62,10 @@
                 </div>
                 </router-link>
              </div>
-             <div v-if="!used.length" style="text-align:center;line-height:40px;">暂无数据</div>
+             <div v-if="!tobeused.length" style="text-align:center;line-height:40px;">暂无数据</div>
           </van-tab>
-          <van-tab title="已过期"  @click="getPassList()">
-            <div class="suwis-coupons-con" v-if="pass.length" v-for="item in pass">
+          <van-tab title="已过期">
+            <div class="suwis-coupons-con" v-if="tobeused.length" v-for="item in tobeused">
               <router-link tag="div" :to="{path: '/uc/coupons/details', query: {id: 0,type:3}}">
                 <div>
                    <div class="suwis-coupons-list d-bgcolor">
@@ -93,7 +93,7 @@
                 </div>
                 </router-link>
              </div>
-             <div v-if="!pass.length" style="text-align:center;line-height:40px;">暂无数据</div>
+             <div v-if="!tobeused.length" style="text-align:center;line-height:40px;">暂无数据</div>
           </van-tab>
         </van-tabs>
     </div>
@@ -126,41 +126,28 @@ export default {
     }
   },
   methods:{
-    getTobeusedList(){
-      this.$axios.post('coupon/tobeused',{
-        
+    getTobeusedList(index){
+      var url=''
+      if(index=='0'){
+        url='coupon/tobeused'
+      }else if(index=='1'){
+        url='coupon/used'
+      }else if(index=='2'){
+        url="coupon/pass"
+      }
+      this.$axios.post(url,{
       }).then(res => {
         //  待使用优惠券
-        //  if(!res.data.data){
-        //    this.tobeused=[]
-        //  }else{
-        //    this.tobeused=res.data.data
-        //  }
-      })
-    },
-    getUsedList(){
-      this.$axios.post('coupon/used').then(res => {
-         //已使用优惠券
          if(!res.data.data){
-           this.used=[]
+           this.tobeused=[]
          }else{
-           this.used=res.data.data
-         }
-      })
-    },
-    getPassList(){
-      this.$axios.post('coupon/pass').then(res => {
-         //已过期优惠券
-         if(!res.data.data){
-           this.pass=[]
-         }else{
-           this.pass=res.data.data
+           this.tobeused=res.data.data
          }
       })
     }
   },
   created(){
-    this.getTobeusedList()
+    this.getTobeusedList('0')
   }
 }
 </script>
