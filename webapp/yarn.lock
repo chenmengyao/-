@@ -7510,6 +7510,7 @@ vm-browserify@0.0.4:
 vue-amap@^0.5.9:
   version "0.5.9"
   resolved "https://npm.suwis.com:443/vue-amap/-/vue-amap-0.5.9.tgz#148efe58d9e8e7668bd9b2f6c68ef1ba52f8780a"
+  integrity sha1-FI7+WNno52aL2bL2xo7xulL4eAo=
   dependencies:
     uppercamelcase "^1.1.0"
 

@@ -8,6 +8,9 @@
       <van-swipe-item>
         <img :src="details.img" alt="">
       </van-swipe-item>
+      <van-swipe-item v-for="item in details.stand">
+        <img :src="item.img" alt="">
+      </van-swipe-item>
     </van-swipe>
     <!--  -->
     <van-row>
@@ -17,7 +20,7 @@
     </van-row>
     <van-row class="price">
       <van-col>
-        <em>¥49.9</em>
+        <em>¥{{details.price_min}}</em>
       </van-col>
       <van-col>
         <span>
@@ -57,33 +60,22 @@
     <van-tabs class="good-tabs" v-model="goodTabIdx">
       <van-tab title="商品介绍">
         <div ref="goodInfo" class="good-info interval">
-          <template v-for="item in details.details">
-            <div v-html="item.content.editor"></div>
-          </template>
+          <video v-if="details.details[0].content.video" :src="details.details[0].content.video" autoplay controls></video>
+          <img :src="details.details[0].content.img" alt="">
+          <div v-html="details.details[0].content.editor"></div>
           <span class="no-data">已经没有更多啦～</span>
         </div>
       </van-tab>
       <van-tab title="规格参数">
         <div class="specification">
-          <table>
-            <tbody>
-              <tr>
-                <td>商品编号</td>
-                <td>SDF45646</td>
-              </tr>
-              <tr v-for="o in 10">
-                <td>鞋帮高度</td>
-                <td>低帮</td>
-              </tr>
-            </tbody>
-          </table>
+          <img :src="details.details[1].content.img" alt="">
+          <div v-html="details.details[1].content.editor"></div>
         </div>
       </van-tab>
       <van-tab title="售后保障">
         <div class="guarantee">
-          ①.这里展示的是后台发布商品的时候编辑的售后保障售后保障售后保障展示的是后台发布商品的时候编辑的售后保障售后;<br>
-          ②.保障售后保障展示的是后台发布商品的时候编辑的后保障售后保障售后保障展示的是后台发布商品的时候编辑的售后保障售后;<br>
-          ③.保障售后保障展示的是后台发布商品的时候编辑的售后保障售后保障售后保障展示的是后台发布商品的时候编辑的售后保障售后保障售后保障。
+          <img :src="details.details[2].content.img" alt="">
+          <div v-html="details.details[2].content.editor"></div>
         </div>
       </van-tab>
     </van-tabs>
@@ -168,104 +160,104 @@
 
 <script>
 const $raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
-  window.setTimeout(callback, 1000 / 60)
+	window.setTimeout(callback, 1000 / 60)
 }
 export default {
-  data() {
-    return {
-      navlist: [{
-        name: '商品',
-        key: 'good',
-        selected: true
-      }, {
-        name: '评论',
-        key: 'comment',
-        selected: false
-      }, {
-        name: '详情',
-        key: 'goodInfo',
-        selected: false
-      }],
-      timer: {},
-      goodTabIdx: 0,
-      // 商品详情
-      details: {},
-      // 优惠券信息
-      coupons: [],
-      // 规格弹窗
-      skuVisible: false,
-      // 默认选中的sku，具体参考高级用法
-      initialSku: {},
-      sku: {}
-    }
-  },
-  created() {
-    this.getDetails()
-    this.getCoupons()
-  },
-  mounted() {
-    window.addEventListener('scroll', this.checkScroll, this)
-  },
-  methods: {
-    // 跳转
-    skip(nav) {
-      this.scrollTo(this.$refs[nav.key])
-    },
-    // 滚动到相应位置
-    scrollTo(el) {
-      window.cancelAnimationFrame(this.timer)
-      let ot = el.offsetTop - 50
-      let sy = window.scrollY
-      let speed = 30
-      let distance = sy > ot ? sy - speed : sy + speed
-      if (distance > ot - speed * 2 && distance < ot) distance = ot
-      if (distance < ot + speed * 2 && distance > ot) distance = ot
-      window.scrollTo(0, distance)
-      if (sy != ot) {
-        this.timer = $raf(() => {
-          this.scrollTo(el)
-        })
-      }
-    },
-    // 检查滚动
-    checkScroll() {
-      let sy = window.scrollY
-      let offsetTops = []
-      let idx = 0
-      for (let nav of this.navlist) {
-        nav.selected = false
-        offsetTops.push(this.$refs[nav.key].offsetTop - 51)
-      }
-      if (sy < offsetTops[1]) idx = 0
-      if (sy > offsetTops[1] && sy < offsetTops[2]) idx = 1
-      if (sy > offsetTops[2]) idx = 2
-      if (idx == 0) {
-        setTimeout(() => {
-          window.cancelAnimationFrame(this.timer)
-        }, 680)
-      }
-      this.navlist[idx].selected = true
-    },
-    // 获取详情
-    async getDetails() {
-      let res = await this.$axios.post('goods/find', {
-        id: this.$route.query.id
-      })
-      this.details = res.data.data || {}
-    },
-    // 获取优惠券详情
-    async getCoupons() {
-      let res = await this.$axios.post('goods/coupons', {
-        goods_id: this.$route.query.id
-      })
-      this.coupons = res.data.data || []
-    },
-    // 购买前
-    async buyBefore() {
+	data() {
+		return {
+			navlist: [{
+				name: '商品',
+				key: 'good',
+				selected: true
+			}, {
+				name: '评论',
+				key: 'comment',
+				selected: false
+			}, {
+				name: '详情',
+				key: 'goodInfo',
+				selected: false
+			}],
+			timer: {},
+			goodTabIdx: 0,
+			// 商品详情
+			details: {},
+			// 优惠券信息
+			coupons: [],
+			// 规格弹窗
+			skuVisible: false,
+			// 默认选中的sku，具体参考高级用法
+			initialSku: {},
+			sku: {}
+		}
+	},
+	created() {
+		this.getDetails()
+		this.getCoupons()
+	},
+	mounted() {
+		window.addEventListener('scroll', this.checkScroll, this)
+	},
+	methods: {
+		// 跳转
+		skip(nav) {
+			this.scrollTo(this.$refs[nav.key])
+		},
+		// 滚动到相应位置
+		scrollTo(el) {
+			window.cancelAnimationFrame(this.timer)
+			let ot = el.offsetTop - 50
+			let sy = window.scrollY
+			let speed = 30
+			let distance = sy > ot ? sy - speed : sy + speed
+			if (distance > ot - speed * 2 && distance < ot) distance = ot
+			if (distance < ot + speed * 2 && distance > ot) distance = ot
+			window.scrollTo(0, distance)
+			if (sy != ot) {
+				this.timer = $raf(() => {
+					this.scrollTo(el)
+				})
+			}
+		},
+		// 检查滚动
+		checkScroll() {
+			let sy = window.scrollY
+			let offsetTops = []
+			let idx = 0
+			for (let nav of this.navlist) {
+				nav.selected = false
+				offsetTops.push(this.$refs[nav.key].offsetTop - 51)
+			}
+			if (sy < offsetTops[1]) idx = 0
+			if (sy > offsetTops[1] && sy < offsetTops[2]) idx = 1
+			if (sy > offsetTops[2]) idx = 2
+			if (idx == 0) {
+				setTimeout(() => {
+					window.cancelAnimationFrame(this.timer)
+				}, 680)
+			}
+			this.navlist[idx].selected = true
+		},
+		// 获取详情
+		async getDetails() {
+			let res = await this.$axios.post('goods/find', {
+				id: this.$route.query.id
+			})
+			this.details = res.data.data || {}
+		},
+		// 获取优惠券详情
+		async getCoupons() {
+			let res = await this.$axios.post('goods/coupons', {
+				goods_id: this.$route.query.id
+			})
+			this.coupons = res.data.data || []
+		},
+		// 购买前
+		async buyBefore() {
 
-    },
+		},
 
-  }
+	}
 }
 </script>
 <style lang="scss">
@@ -457,7 +449,10 @@ export default {
     //
     .good-info {
         padding: $interval;
-
+        video {
+            width: 100%;
+            margin-bottom: 2.8vw;
+        }
         .no-data {
             color: $gray;
             text-align: center;
