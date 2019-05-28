@@ -60,7 +60,7 @@
     <van-tabs class="good-tabs" v-model="goodTabIdx">
       <van-tab title="商品介绍">
         <div v-if="details.details" ref="goodInfo" class="good-info interval">
-          <video v-if="details.details[0].content.video" :src="details.details[0].content.video" autoplay controls></video>
+          <video x5-video-player-type="h5" x5-video-player-fullscreen="true" x-webkit-airplay="allow" webkit-playsinline playsinline v-if="details.details[0].content.video" :src="details.details[0].content.video" autoplay controls></video>
           <img :src="details.details[0].content.img" alt="">
           <div v-html="details.details[0].content.editor"></div>
           <span class="no-data">已经没有更多啦～</span>
@@ -103,9 +103,9 @@
     <!--  -->
     <van-sku
       v-model="skuVisible"
-      stepper-title="我要买"
+      stepper-title="数量"
       :sku="sku"
-      :goods="details"
+      :goods="skugoods"
       :goods-id="details.id"
       :hide-stock="sku.hide_stock"
       :quota="0"
@@ -162,167 +162,170 @@
 
 <script>
 const $raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
-	window.setTimeout(callback, 1000 / 60)
+  window.setTimeout(callback, 1000 / 60)
 }
 export default {
-	data() {
-		return {
-			navlist: [{
-				name: '商品',
-				key: 'good',
-				selected: true
-			}, {
-				name: '评论',
-				key: 'comment',
-				selected: false
-			}, {
-				name: '详情',
-				key: 'goodInfo',
-				selected: false
-			}],
-			timer: {},
-			goodTabIdx: 0,
-			// 商品详情
-			details: {},
-			// 优惠券信息
-			coupons: [],
-			// 规格弹窗
-			skuVisible: false,
-			// 默认选中的sku，具体参考高级用法
-			initialSku: {
-				// 键：skuKeyStr（sku 组合列表中当前类目对应的 key 值）
-				// 值：skuValueId（规格值 id）
-				s1: '30349',
-				s2: '1193',
-				// 初始选中数量
-				selectedNum: 1
-			},
-			// 规格对象
-			sku: {
-				// 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
-				// 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
-				tree: [],
-				// 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
-				list: [{
-					id: 2259, // skuId，下单时后端需要
-					price: 100, // 价格（单位分）
-					s1: '1215', // 规格类目 k_s 为 s1 的对应规格值 id
-					s2: '1193', // 规格类目 k_s 为 s2 的对应规格值 id
-					s3: '0', // 最多包含3个规格值，为0表示不存在该规格
-					stock_num: 110 // 当前 sku 组合对应的库存
-				}, {
-					id: 2259, // skuId，下单时后端需要
-					price: 100, // 价格（单位分）
-					s1: '1215', // 规格类目 k_s 为 s1 的对应规格值 id
-					s2: '1193', // 规格类目 k_s 为 s2 的对应规格值 id
-					s3: '0', // 最多包含3个规格值，为0表示不存在该规格
-					stock_num: 110 // 当前 sku 组合对应的库存
-				}],
-				price: '1.00', // 默认价格（单位元）
-				stock_num: 227, // 商品总库存
-				collection_id: 2261, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
-				none_sku: false, // 是否无规格商品
-				messages: [],
-				hide_stock: false // 是否隐藏剩余库存
-			}
-		}
-	},
-	created() {
-		this.getDetails()
-		this.getCoupons()
-	},
-	mounted() {
-		window.addEventListener('scroll', this.checkScroll, this)
-	},
-	watch: {
-		// 监听详情变化
-		details(val) {
-			let keys = ['header_one_label', 'header_two_label', 'header_three_label']
-			for (let key of keys) {
-				if (val.stand.length == 0) break
-				if (val.stand[0][key] != '空' && val.stand[0][key]) {
-					this.sku.tree.push({
-						k: val.stand[0][key],
-						v: [],
-						k_s: ''
-					})
-				}
-			}
-			for (let item of val.stand) {
-				for (let idx in this.sku.tree) {
-					this.sku.tree[idx].v.push({
-						id: item.id,
-						name: item[keys[idx].replace('_label', '')],
-						imgUrl: item.img
-					})
-				}
-			}
-		}
-	},
-	methods: {
-		// 跳转
-		skip(nav) {
-			this.scrollTo(this.$refs[nav.key])
-		},
-		// 滚动到相应位置
-		scrollTo(el) {
-			window.cancelAnimationFrame(this.timer)
-			let ot = el.offsetTop - 50
-			let sy = window.scrollY
-			let speed = 30
-			let distance = sy > ot ? sy - speed : sy + speed
-			if (distance > ot - speed * 2 && distance < ot) distance = ot
-			if (distance < ot + speed * 2 && distance > ot) distance = ot
-			window.scrollTo(0, distance)
-			if (sy != ot) {
-				this.timer = $raf(() => {
-					this.scrollTo(el)
-				})
-			}
-		},
-		// 检查滚动
-		checkScroll() {
-			let sy = window.scrollY
-			let offsetTops = []
-			let idx = 0
-			for (let nav of this.navlist) {
-				nav.selected = false
-				offsetTops.push(this.$refs[nav.key].offsetTop - 51)
-			}
-			if (sy < offsetTops[1]) idx = 0
-			if (sy > offsetTops[1] && sy < offsetTops[2]) idx = 1
-			if (sy > offsetTops[2]) idx = 2
-			if (idx == 0) {
-				setTimeout(() => {
-					window.cancelAnimationFrame(this.timer)
-				}, 680)
-			}
-			this.navlist[idx].selected = true
-		},
-		// 获取详情
-		async getDetails() {
-			let res = await this.$axios.post('goods/find', {
-				id: this.$route.query.id
-			})
-			this.details = res.data.data || {}
-		},
-		// 获取优惠券详情
-		async getCoupons() {
-			let res = await this.$axios.post('goods/coupons', {
-				goods_id: this.$route.query.id
-			})
-			this.coupons = res.data.data || []
-		},
-		// 显示商品规格
-		showSku() {
-			console.log('sku')
-			this.skuVisible = true
-		},
-		// 购买前
-		async buyBefore() {
+  data() {
+    return {
+      navlist: [{
+        name: '商品',
+        key: 'good',
+        selected: true
+      }, {
+        name: '评论',
+        key: 'comment',
+        selected: false
+      }, {
+        name: '详情',
+        key: 'goodInfo',
+        selected: false
+      }],
+      timer: {},
+      goodTabIdx: 0,
+      // 商品详情
+      details: {},
+      // 优惠券信息
+      coupons: [],
+      // 规格弹窗
+      skuVisible: false,
+      // 默认选中的sku，具体参考高级用法
+      initialSku: {
+        // 键：skuKeyStr（sku 组合列表中当前类目对应的 key 值）
+        // 值：skuValueId（规格值 id）
+        s1: '30349',
+        s2: '1193',
+        // 初始选中数量
+        selectedNum: 1
+      },
+      // 规格弹窗图片
+      skugoods: {
+        title: '',
+        picture: ''
+      },
+      // 规格对象
+      sku: {
+        // 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
+        // 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
+        tree: [],
+        // 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
+        list: [],
+        price: 0, // 默认价格（单位元）
+        stock_num: 0, // 商品总库存
+        collection_id: 2261, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
+        none_sku: false, // 是否无规格商品
+        messages: [],
+        hide_stock: false // 是否隐藏剩余库存
+      }
+    }
+  },
+  created() {
+    this.getDetails()
+    this.getCoupons()
+  },
+  mounted() {
+    window.addEventListener('scroll', this.checkScroll, this)
+  },
+  watch: {
+    // 监听详情变化
+    details(val) {
+      // 'header_two_label', 'header_three_label'
+      let keys = ['header_one_label', ]
+      for (let key of keys) {
+        if (val.stand.length == 0) break
+        if (val.stand[0][key] != '空' && val.stand[0][key]) {
+          this.sku.tree.push({
+            k: val.stand[0][key],
+            v: [],
+            k_s: 's1'
+          })
+        }
+      }
+      for (let item of val.stand) {
+        for (let idx in this.sku.tree) {
+          this.sku.tree[idx].v.push({
+            id: item.id,
+            name: item[keys[idx].replace('_label', '')],
+            imgUrl: item.img
+          })
+          this.sku.list.push({
+            id: this.details.id,
+            price: item.price * 100,
+            s1: item.id,
+            stock_num: item.count
+          })
+        }
+      }
+      // 设置价格
+      this.sku.price = this.details.price_min
+      this.sku.stock_num = this.details.inventory
+      this.skugoods.title = this.details.title
+      this.skugoods.picture = this.details.img
+    }
+  },
+  methods: {
+    // 跳转
+    skip(nav) {
+      this.scrollTo(this.$refs[nav.key])
+    },
+    // 滚动到相应位置
+    scrollTo(el) {
+      window.cancelAnimationFrame(this.timer)
+      let ot = el.offsetTop - 50
+      let sy = window.scrollY
+      let speed = 30
+      let distance = sy > ot ? sy - speed : sy + speed
+      if (distance > ot - speed * 2 && distance < ot) distance = ot
+      if (distance < ot + speed * 2 && distance > ot) distance = ot
+      window.scrollTo(0, distance)
+      if (sy != ot) {
+        this.timer = $raf(() => {
+          this.scrollTo(el)
+        })
+      }
+    },
+    // 检查滚动
+    checkScroll() {
+      let sy = window.scrollY
+      let offsetTops = []
+      let idx = 0
+      for (let nav of this.navlist) {
+        nav.selected = false
+        offsetTops.push(this.$refs[nav.key].offsetTop - 51)
+      }
+      if (sy < offsetTops[1]) idx = 0
+      if (sy > offsetTops[1] && sy < offsetTops[2]) idx = 1
+      if (sy > offsetTops[2]) idx = 2
+      if (idx == 0) {
+        setTimeout(() => {
+          window.cancelAnimationFrame(this.timer)
+        }, 680)
+      }
+      this.navlist[idx].selected = true
+    },
+    // 获取详情
+    async getDetails() {
+      let res = await this.$axios.post('goods/find', {
+        id: this.$route.query.id
+      })
+      this.details = res.data.data || {}
+    },
+    // 获取优惠券详情
+    async getCoupons() {
+      let res = await this.$axios.post('goods/coupons', {
+        goods_id: this.$route.query.id
+      })
+      this.coupons = res.data.data || []
+    },
+    // 显示商品规格
+    showSku() {
+      console.log('sku')
+      this.skuVisible = true
+    },
+    // 购买前
+    async buyBefore() {
 
-		}
-	}
+    }
+  }
 }
 </script>
 <style lang="scss">
