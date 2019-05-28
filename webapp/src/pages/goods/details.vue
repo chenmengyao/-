@@ -201,17 +201,16 @@ export default {
 			sku: {
 				// 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
 				// 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
-				tree: [{
-					k: '颜色', // skuKeyName：规格类目名称
-					v: [],
-					k_s: 's1' // skuKeyStr：sku 组合列表（下方 list）中当前类目对应的 key 值，value 值会是从属于当前类目的一个规格值 id
-				}, {
-					k: '尺码', // skuKeyName：规格类目名称
-					v: [],
-					k_s: 's1' // skuKeyStr：sku 组合列表（下方 list）中当前类目对应的 key 值，value 值会是从属于当前类目的一个规格值 id
-				}],
+				tree: [],
 				// 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
 				list: [{
+					id: 2259, // skuId，下单时后端需要
+					price: 100, // 价格（单位分）
+					s1: '1215', // 规格类目 k_s 为 s1 的对应规格值 id
+					s2: '1193', // 规格类目 k_s 为 s2 的对应规格值 id
+					s3: '0', // 最多包含3个规格值，为0表示不存在该规格
+					stock_num: 110 // 当前 sku 组合对应的库存
+				}, {
 					id: 2259, // skuId，下单时后端需要
 					price: 100, // 价格（单位分）
 					s1: '1215', // 规格类目 k_s 为 s1 的对应规格值 id
@@ -238,17 +237,25 @@ export default {
 	watch: {
 		// 监听详情变化
 		details(val) {
+			let keys = ['header_one_label', 'header_two_label', 'header_three_label']
+			for (let key of keys) {
+				if (val.stand.length == 0) break
+				if (val.stand[0][key] != '空' && val.stand[0][key]) {
+					this.sku.tree.push({
+						k: val.stand[0][key],
+						v: [],
+						k_s: ''
+					})
+				}
+			}
 			for (let item of val.stand) {
-				this.sku.tree = [0].v.push({
-					id: item.id,
-					name: item.id,
-					imgUrl: item.img
-				})
-				this.sku.tree = [1].v.push({
-					id: item.id,
-					name: item.id,
-					imgUrl: item.img
-				})
+				for (let idx in this.sku.tree) {
+					this.sku.tree[idx].v.push({
+						id: item.id,
+						name: item[keys[idx].replace('_label', '')],
+						imgUrl: item.img
+					})
+				}
 			}
 		}
 	},
@@ -419,6 +426,10 @@ export default {
             display: inline-block;
             color: $red;
             background: url("./../../assets/details/coupon@3x.png") no-repeat center/auto 100%;
+            border: 1px solid rgba(232,63,68,0.39);
+            border-radius: 2px;
+            border-top: none;
+            border-bottom: none;
         }
         i {
             font-size: 12px;
