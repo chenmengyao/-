@@ -54,7 +54,6 @@ export default {
         code: '',
         nickname: 'Ivorzk',
         password: '123456',
-        pwdConfirm: '',
         type: 1
       },
       formMsg: {
@@ -132,7 +131,7 @@ export default {
       let params = {
         ...this.formData
       }
-      // params.password = md5(params.password)
+      params.password = md5(params.password)
       this.disabled = true
       let res = await this.$axios.post(this.loginType == 0 ? 'login/tellogin' : 'login/acclogin', params)
       setTimeout(() => {

@@ -21,96 +21,98 @@
 
 <script>
 import {
-  Toast
+	Toast
 } from 'vant'
+import md5 from 'md5'
 export default {
-  data() {
-    return {
-      formData: {
-        tel: '',
-        code: '',
-        paypass: '',
-        paypassConfirm: ''
-      },
-      formMsg: {
-        tel: '',
-        code: '',
-        paypass: '',
-        paypassConfirm: ''
-      },
-      countDownText: 0,
-      disabled: false
-    }
-  },
-  watch: {
-    countDownText() {
-      if (this.countDownText > 0) {
-        setTimeout(() => {
-          this.countDownText--
-        }, 1000)
-      }
-    }
-  },
-  methods: {
-    // 发送验证码
-    sendCode() {
-      if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
-        this.formMsg.tel = '请输入正确的号码'
-        return
-      }
-      this.countDownText = 60
-      this.$axios.post('login/getcode', {
-        tel: this.formData.tel
-      }).then(res => {
-        if (res.data.code == 1) {
-          Toast('验证码已发送，请注意查收')
-        } else {
-          Toast(res.data.msg)
-          this.countDownText = 0
-        }
-      })
-    },
-    // 校验
-    updateBefore() {
-      if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
-        this.formMsg.tel = '请输入正确的手机号'
-        return
-      }
-      if (!/^\d{6}$/.test(this.formData.code)) {
-        this.formMsg.code = '请输入6位数的验证码'
-        return
-      }
-      if (!/^[a-zA-Z0-9]\w{5,17}$/.test(this.formData.paypass)) {
-        this.formMsg.paypass = '请输入6-18位字母+数字的支付密码'
-        return
-      }
-      if (this.formData.paypassConfirm !== this.formData.paypass) {
-        this.formMsg.paypassConfirm = '两次输入的支付密码不一致'
-        return
-      }
-      this.update()
-    },
-    // 更新
-    async update() {
-      this.disabled = true
-      let params = {
-        ...this.formData
-      }
-      delete params.paypassConfirm
-      let res = await this.$axios.post('login/resetpaypsd', params)
-      setTimeout(() => {
-        this.disabled = false
-      }, 600)
-      if (res.data.code == 1) {
-        Toast('修改成功')
-        setTimeout(() => {
-          this.$router.push('/login')
-        }, 600)
-      } else {
-        Toast(res.data.msg)
-      }
-    }
-  }
+	data() {
+		return {
+			formData: {
+				tel: '',
+				code: '',
+				paypass: '',
+				paypassConfirm: ''
+			},
+			formMsg: {
+				tel: '',
+				code: '',
+				paypass: '',
+				paypassConfirm: ''
+			},
+			countDownText: 0,
+			disabled: false
+		}
+	},
+	watch: {
+		countDownText() {
+			if (this.countDownText > 0) {
+				setTimeout(() => {
+					this.countDownText--
+				}, 1000)
+			}
+		}
+	},
+	methods: {
+		// 发送验证码
+		sendCode() {
+			if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
+				this.formMsg.tel = '请输入正确的号码'
+				return
+			}
+			this.countDownText = 60
+			this.$axios.post('login/getcode', {
+				tel: this.formData.tel
+			}).then(res => {
+				if (res.data.code == 1) {
+					Toast('验证码已发送，请注意查收')
+				} else {
+					Toast(res.data.msg)
+					this.countDownText = 0
+				}
+			})
+		},
+		// 校验
+		updateBefore() {
+			if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
+				this.formMsg.tel = '请输入正确的手机号'
+				return
+			}
+			if (!/^\d{6}$/.test(this.formData.code)) {
+				this.formMsg.code = '请输入6位数的验证码'
+				return
+			}
+			if (!/^[a-zA-Z0-9]\w{5,17}$/.test(this.formData.paypass)) {
+				this.formMsg.paypass = '请输入6-18位字母+数字的支付密码'
+				return
+			}
+			if (this.formData.paypassConfirm !== this.formData.paypass) {
+				this.formMsg.paypassConfirm = '两次输入的支付密码不一致'
+				return
+			}
+			this.update()
+		},
+		// 更新
+		async update() {
+			this.disabled = true
+			let params = {
+				...this.formData
+			}
+			delete params.paypassConfirm
+			params.paypass = md5(params.paypass)
+			let res = await this.$axios.post('login/resetpaypsd', params)
+			setTimeout(() => {
+				this.disabled = false
+			}, 600)
+			if (res.data.code == 1) {
+				Toast('修改成功')
+				setTimeout(() => {
+					this.$router.push('/login')
+				}, 600)
+			} else {
+				Toast(res.data.msg)
+			}
+		}
+	}
 }
 </script>
 

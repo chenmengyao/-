@@ -20,7 +20,7 @@
     </van-row>
     <van-row class="price">
       <van-col>
-        <em>¥{{details.price_min}}</em>
+        <em class="gray">¥{{details.price_max}}</em><em>¥{{details.price_min}}</em>
       </van-col>
       <van-col>
         <span>
@@ -34,7 +34,7 @@
         <i v-if="coupons.length==0">暂无可用优惠券</i>
       </van-col>
     </van-row>
-    <van-cell class="interval" title="型号" is-link value="请先选择您要购买的商品型号" />
+    <van-cell class="interval" title="型号" is-link value="请先选择您要购买的商品型号" @click="showSku"/>
     <van-cell class="interval" title="地址" is-link :value="details.store&&details.store.site" />
     <van-cell title="运费"  :value="details.postage==0?'免邮':details.postage+'元'" />
     <van-cell>
@@ -59,7 +59,7 @@
     <!-- 店铺详情 -->
     <van-tabs class="good-tabs" v-model="goodTabIdx">
       <van-tab title="商品介绍">
-        <div ref="goodInfo" class="good-info interval">
+        <div v-if="details.details" ref="goodInfo" class="good-info interval">
           <video v-if="details.details[0].content.video" :src="details.details[0].content.video" autoplay controls></video>
           <img :src="details.details[0].content.img" alt="">
           <div v-html="details.details[0].content.editor"></div>
@@ -67,13 +67,13 @@
         </div>
       </van-tab>
       <van-tab title="规格参数">
-        <div class="specification">
+        <div v-if="details.details" class="specification">
           <img :src="details.details[1].content.img" alt="">
           <div v-html="details.details[1].content.editor"></div>
         </div>
       </van-tab>
       <van-tab title="售后保障">
-        <div class="guarantee">
+        <div v-if="details.details" class="guarantee">
           <img :src="details.details[2].content.img" alt="">
           <div v-html="details.details[2].content.editor"></div>
         </div>
@@ -94,7 +94,7 @@
         </dl>
       </van-col>
       <van-col class="link">
-        <router-link :to="{ path: '/', params: {} }">
+        <router-link :to="{ path: '/shop', query: {id: $route.query.id} }">
           <img class="btn" src="@/assets/details/look@3x.png" alt="">
         </router-link>
       </van-col>
@@ -131,7 +131,7 @@
             type="danger"
             @click="props.skuEventBus.$emit('sku:buy')"
           >
-            买买买
+          确定
           </van-button>
         </div>
       </template>
@@ -142,10 +142,12 @@
       <van-goods-action-mini-btn
         icon="chat-o"
         text="客服"
+        @click.native="$router.push({path: '/mine/message/getsm', query: {store_id: $route.query.id}})"
       />
       <van-goods-action-mini-btn
         icon="cart-o"
         text="购物车"
+        @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
       />
       <van-goods-action-big-btn
         text="加入购物车"
@@ -187,8 +189,43 @@ export default {
 			// 规格弹窗
 			skuVisible: false,
 			// 默认选中的sku，具体参考高级用法
-			initialSku: {},
-			sku: {}
+			initialSku: {
+				// 键：skuKeyStr（sku 组合列表中当前类目对应的 key 值）
+				// 值：skuValueId（规格值 id）
+				s1: '30349',
+				s2: '1193',
+				// 初始选中数量
+				selectedNum: 1
+			},
+			// 规格对象
+			sku: {
+				// 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
+				// 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
+				tree: [{
+					k: '颜色', // skuKeyName：规格类目名称
+					v: [],
+					k_s: 's1' // skuKeyStr：sku 组合列表（下方 list）中当前类目对应的 key 值，value 值会是从属于当前类目的一个规格值 id
+				}, {
+					k: '尺码', // skuKeyName：规格类目名称
+					v: [],
+					k_s: 's1' // skuKeyStr：sku 组合列表（下方 list）中当前类目对应的 key 值，value 值会是从属于当前类目的一个规格值 id
+				}],
+				// 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
+				list: [{
+					id: 2259, // skuId，下单时后端需要
+					price: 100, // 价格（单位分）
+					s1: '1215', // 规格类目 k_s 为 s1 的对应规格值 id
+					s2: '1193', // 规格类目 k_s 为 s2 的对应规格值 id
+					s3: '0', // 最多包含3个规格值，为0表示不存在该规格
+					stock_num: 110 // 当前 sku 组合对应的库存
+				}],
+				price: '1.00', // 默认价格（单位元）
+				stock_num: 227, // 商品总库存
+				collection_id: 2261, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
+				none_sku: false, // 是否无规格商品
+				messages: [],
+				hide_stock: false // 是否隐藏剩余库存
+			}
 		}
 	},
 	created() {
@@ -197,6 +234,23 @@ export default {
 	},
 	mounted() {
 		window.addEventListener('scroll', this.checkScroll, this)
+	},
+	watch: {
+		// 监听详情变化
+		details(val) {
+			for (let item of val.stand) {
+				this.sku.tree = [0].v.push({
+					id: item.id,
+					name: item.id,
+					imgUrl: item.img
+				})
+				this.sku.tree = [1].v.push({
+					id: item.id,
+					name: item.id,
+					imgUrl: item.img
+				})
+			}
+		}
 	},
 	methods: {
 		// 跳转
@@ -252,11 +306,15 @@ export default {
 			})
 			this.coupons = res.data.data || []
 		},
+		// 显示商品规格
+		showSku() {
+			console.log('sku')
+			this.skuVisible = true
+		},
 		// 购买前
 		async buyBefore() {
 
-		},
-
+		}
 	}
 }
 </script>
@@ -327,6 +385,7 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        color: $gray;
         .van-col {
             flex: 1;
         }
@@ -334,6 +393,16 @@ export default {
             color: $red;
             font-style: normal;
             font-size: 16px;
+        }
+        .gray {
+            text-decoration: line-through;
+            color: $gray;
+            border-right: 1px solid $gray;
+            padding-right: 10px;
+            margin-right: 10px;
+            height: 16px;
+            display: inline-block;
+            line-height: 16px;
         }
         span {
             color: $gray;

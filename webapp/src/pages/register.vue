@@ -139,7 +139,8 @@ export default {
       }
       delete params.pwdConfirm
       delete params.passwordConfirm
-      // params.pwd = md5(params.pwd)
+      params.password = md5(params.password)
+      params.paypass = md5(params.paypass)
       this.disabled = true
       this.$axios.post('login/registered', params).then(res => {
         setTimeout(() => {
