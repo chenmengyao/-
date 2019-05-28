@@ -161,6 +161,9 @@
 </template>
 
 <script>
+import {
+  Toast
+} from 'vant'
 const $raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
   window.setTimeout(callback, 1000 / 60)
 }
@@ -322,8 +325,21 @@ export default {
       this.skuVisible = true
     },
     // 购买前
-    async buyBefore() {
-
+    async buyBefore(evt) {
+      console.log(evt)
+      this.buy(evt)
+    },
+    // 购买
+    async buy(evt) {
+      let res = await this.$axios.post('goods/makesureorder', {
+        stand_id: evt.selectedSkuComb.s1,
+        num: evt.selectedNum
+      })
+      if (res.data.code == 1) {
+        Toast('正在跳转支付')
+      } else {
+        Toast(res.data.msg)
+      }
     }
   }
 }
