@@ -1,16 +1,16 @@
 <template lang="html">
   <div class="suwis-shopping-cart">
     <div class="list-group" v-for="shop in shops">
-      <van-checkbox>
+      <van-checkbox v-model="shop.checked" @change="shopChange(shop)">
         <div class="name">
           <img class="icon" :src="shop.logo" alt="">{{shop.name}}<img class="arrow" src="@/assets/details/arrowright@3x.png" alt="">
         </div>
       </van-checkbox>
-      <van-checkbox   v-for="good in shop.goods">
+      <van-checkbox v-model="good.checked" v-for="good in shop.goods" @change="calcCheckNums">
         <van-card
-          :num="good.id"
+          :num="good.num"
           :price="good.price"
-          :desc="good.header_one"
+          :desc="good.header_one + ' ' + good.header_two"
           :title="good.title"
           :thumb="good.img"
         >
@@ -18,10 +18,10 @@
     </van-checkbox>
   </div>
   <div class="btn-group">
-    <van-checkbox>
+    <van-checkbox v-model="checkall" @change="allChange">
       全选
     </van-checkbox>
-    <img src="@/assets/shopping-cart/remove@3x.png" alt="">
+    <van-button class="btn" type="primary">结算({{checkedNums}})</van-button>
   </div>
 </div>
 </template>
@@ -30,7 +30,10 @@
 export default {
 	data() {
 		return {
-			shops: []
+			shops: [],
+			// 已选商品
+			checkedNums: 0,
+			checkall: false
 		}
 	},
 	created() {
@@ -42,6 +45,28 @@ export default {
 			let res = await this.$axios.post('car/list')
 			// 购物车数量
 			this.shops = res.data.data || []
+		},
+		// 店铺改变
+		shopChange(shop) {
+			for (let good of shop.goods) {
+				this.$set(good, 'checked', shop.checked)
+			}
+			this.calcCheckNums()
+		},
+		// 全选
+		allChange() {
+			for (let shop of this.shops) {
+				this.$set(shop, 'checked', this.checkall)
+				this.shopChange(shop)
+			}
+		},
+		calcCheckNums() {
+			this.checkedNums = 0
+			for (let shop of this.shops) {
+				for (let good of shop.goods) {
+					good.checked ? this.checkedNums++ : ''
+				}
+			}
 		}
 	}
 }
@@ -103,6 +128,12 @@ export default {
         img {
             display: block;
             height: 30px;
+        }
+
+        .btn {
+            height: 6.9vw;
+            line-height: 6.9vw;
+            min-width: 20vw;
         }
     }
 }

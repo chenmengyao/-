@@ -355,21 +355,13 @@ export default {
 		},
 		// 购买
 		async buy(evt) {
-			let res = await this.$axios.post('goods/makesureorder', {
-				stand_id: evt.selectedSkuComb.s1,
-				num: evt.selectedNum
+			this.$router.push({
+				path: '/uc/orders/confirm-order',
+				query: {
+					stand_id: evt.selectedSkuComb.s1,
+					num: evt.selectedNum
+				}
 			})
-			let order = res.data.data || {}
-			if (res.data.code == 1) {
-				this.$router.push({
-					path: '/uc/orders/confirm-order',
-					query: {
-						id: order.goods.id
-					}
-				})
-			} else {
-				Toast(res.data.msg)
-			}
 		},
 		// 添加购物车
 		async addcar(evt) {
