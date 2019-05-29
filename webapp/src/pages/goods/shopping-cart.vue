@@ -14,7 +14,7 @@
           :thumb="good.img"
         >
         <div slot="footer" style="margin-top:-30px;" @click.stop>
-          <van-stepper v-model="good.num" />
+          <van-stepper @change="numChange(good)" v-model="good.num" />
         </div>
       </van-card>
     </van-checkbox>
@@ -60,6 +60,16 @@ export default {
         this.$set(good, 'checked', shop.checked)
       }
       this.calcCheckNums()
+    },
+    // 数量改变
+    async numChange(good) {
+      let res = await this.$axios.post('car/changenum', {
+        id: good.id,
+        num: good.num
+      })
+      if (res.data.code != 1) {
+        Toast(res.data.msg)
+      }
     },
     // 全选
     allChange() {
