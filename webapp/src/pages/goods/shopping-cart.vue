@@ -8,12 +8,14 @@
       </van-checkbox>
       <van-checkbox v-model="good.checked" v-for="good in shop.goods" @change="calcCheckNums">
         <van-card
-          :num="good.num"
           :price="good.price"
           :desc="good.header_one + ' ' + good.header_two"
           :title="good.title"
           :thumb="good.img"
         >
+        <div slot="footer" style="margin-top:-30px;" @click.stop>
+          <van-stepper v-model="good.num" />
+        </div>
       </van-card>
     </van-checkbox>
   </div>
@@ -82,12 +84,12 @@ export default {
       })
       if (res.data.code == 1) {
         // this.$router.push({
-  			// 	path: '/uc/orders/confirm-order',
-  			// 	query: {
-  			// 		stand_id: evt.selectedSkuComb.s1,
-  			// 		num: evt.selectedNum
-  			// 	}
-  			// })
+        // 	path: '/uc/orders/confirm-order',
+        // 	query: {
+        // 		stand_id: evt.selectedSkuComb.s1,
+        // 		num: evt.selectedNum
+        // 	}
+        // })
       } else {
         Toast(res.data.msg)
       }
@@ -132,6 +134,7 @@ export default {
         .van-card {
             background: transparent;
             padding-left: 0;
+            width: 80vw;
         }
     }
 
