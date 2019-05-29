@@ -384,9 +384,10 @@ export default {
 		async getCarList(evt) {
 			let res = await this.$axios.post('car/list')
 			// 购物车数量
-			let shops = res.data.data || []
+			let shops = res.data.data || {}
 			this.carNum = 0
-			for (let shop of shops) {
+			for (let key in shops) {
+        let shop = shops[key]
 				for (let good of shop.goods) {
 					this.carNum += 1
 				}

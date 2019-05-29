@@ -23,7 +23,10 @@
     <van-checkbox v-model="checkall" @change="allChange">
       全选
     </van-checkbox>
-    <van-button class="btn" type="primary" @click="makeOrder">结算({{checkedNums}})</van-button>
+    <div>
+      <van-button class="btn" v-if="selecteds.length>0" type="warning" @click="deleteGoods">删除</van-button>
+      <van-button class="btn" type="primary" @click="makeOrder">结算({{selecteds.length}})</van-button>
+    </div>
   </div>
 </div>
 </template>
@@ -35,10 +38,10 @@ import {
 export default {
   data() {
     return {
-      shops: [],
+      shops: {},
+      checkall: false,
       // 已选商品
-      checkedNums: 0,
-      checkall: false
+      selecteds: []
     }
   },
   created() {
@@ -49,7 +52,7 @@ export default {
     async getCarList(evt) {
       let res = await this.$axios.post('car/list')
       // 购物车数量
-      this.shops = res.data.data || []
+      this.shops = res.data.data || {}
     },
     // 店铺改变
     shopChange(shop) {
@@ -60,39 +63,42 @@ export default {
     },
     // 全选
     allChange() {
-      for (let shop of this.shops) {
+      for (let key in this.shops) {
+        let shop = this.shops[key]
         this.$set(shop, 'checked', this.checkall)
         this.shopChange(shop)
       }
     },
     calcCheckNums() {
-      this.checkedNums = 0
-      for (let shop of this.shops) {
+      this.selecteds = []
+      for (let key in this.shops) {
+        let shop = this.shops[key]
         for (let good of shop.goods) {
-          good.checked ? this.checkedNums++ : ''
+          if (good.checked) {
+            this.selecteds.push(good.id)
+          }
         }
+      }
+    },
+    async deleteGoods() {
+      let res = await this.$axios.post('car/delete', {
+        id: this.selecteds
+      })
+      if (res.data.code == 1) {
+        // 刷新列表
+        this.getCarList()
+      } else {
+        Toast(res.data.msg)
       }
     },
     // 结算购物车 car/makesureorder
     async makeOrder() {
-      let ids = []
-      for (let shop of this.shops) {
-        ids.push(shop.id)
-      }
-      let res = await this.$axios.post('car/makesureorder', {
-        car_id: ids.join(',')
+      this.$router.push({
+        path: '/uc/orders/confirm-order',
+        query: {
+          car_id: this.selecteds.join(',')
+        }
       })
-      if (res.data.code == 1) {
-        // this.$router.push({
-        // 	path: '/uc/orders/confirm-order',
-        // 	query: {
-        // 		stand_id: evt.selectedSkuComb.s1,
-        // 		num: evt.selectedNum
-        // 	}
-        // })
-      } else {
-        Toast(res.data.msg)
-      }
     }
   }
 }
@@ -161,6 +167,8 @@ export default {
             height: 6.9vw;
             line-height: 6.9vw;
             min-width: 20vw;
+            margin-left: 6vw;
+            border-radius: 50px;
         }
     }
 }
