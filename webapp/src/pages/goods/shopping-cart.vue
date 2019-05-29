@@ -1,19 +1,18 @@
 <template lang="html">
   <div class="suwis-shopping-cart">
-    <div class="list-group" v-for="item in 5">
+    <div class="list-group" v-for="shop in shops">
       <van-checkbox>
         <div class="name">
-          <img class="icon" src="touiocn.png" alt="">新胜数码通讯<img class="arrow" src="@/assets/details/arrowright@3x.png" alt="">
+          <img class="icon" :src="shop.logo" alt="">{{shop.name}}<img class="arrow" src="@/assets/details/arrowright@3x.png" alt="">
         </div>
       </van-checkbox>
-      <van-checkbox   v-for="item in 3">
+      <van-checkbox   v-for="good in shop.goods">
         <van-card
-          num="2"
-          price="2.00"
-          desc="描述信息"
-          title="商品标题"
-          thumb="/test3.png"
-          origin-price="10.00"
+          :num="good.id"
+          :price="good.price"
+          :desc="good.header_one"
+          :title="good.title"
+          :thumb="good.img"
         >
       </van-card>
     </van-checkbox>
@@ -28,7 +27,24 @@
 </template>
 
 <script>
-export default {}
+export default {
+	data() {
+		return {
+			shops: []
+		}
+	},
+	created() {
+		this.getCarList()
+	},
+	methods: {
+		// 获取购物车数量
+		async getCarList(evt) {
+			let res = await this.$axios.post('car/list')
+			// 购物车数量
+			this.shops = res.data.data || []
+		}
+	}
+}
 </script>
 
 <style lang="scss">
@@ -36,6 +52,8 @@ export default {}
     padding: 15px;
     background: $bg;
     padding-bottom: 55px;
+    min-height: 100vh;
+    box-sizing: border-box;
 
     .list-group {
         background: #fff;
