@@ -8,7 +8,7 @@
       <!-- <div> -->
         <van-tabs background="none" animated :line-height='0' title-inactive-color="#ef7f7c" title-active-color="#fff" v-model="active" swipeable>
         <van-tab>
-            <div slot="title">
+            <div slot="title" @click="getNumber('0')">
               <div class="suwis-tab-title">14:00</div>
               <div class="suwis-tab-title1">抢购中</div>
             </div>
@@ -24,8 +24,16 @@
                   </div>
                </div>
                <div>
-                  <div class="d-more" v-if="flashList[0].goods.length==0">暂无数据</div>
-                  <div class="suwis-con" v-else v-for="(item,index) in flashList[0].goods">
+                  <!-- <div class="d-more" v-if="flashList[0].goods.length==0">暂无数据</div> -->
+                   <van-list
+  v-model="loading"
+  :finished="finished"
+  finished-text="没有更多了"
+  error-text="请求失败，点击重新加载"
+  :error.sync="error"
+  @load="loadlist"
+>
+                  <div class="suwis-con" v-for="(item,index) in flashList[0].goods">
                     <div class="suwis-con-left">
                         <img :src="item.img" width="100%">
                     </div>
@@ -53,12 +61,14 @@
                         </div>
                     </div>
                   </div>
-                  
+                   </van-list>
                </div>
+               
             </div>
+           
         </van-tab>
         <van-tab>
-             <div slot="title">
+             <div slot="title"  @click="getNumber('1')">
               <div class="suwis-tab-title">16:00</div>
               <div class="suwis-tab-title1">等待中
 
@@ -77,8 +87,16 @@
                </div>
             </div>
              <div>
-                  <div v-if="flashList[1].goods.length==0" class="d-more">暂无数据</div>
-                  <div class="suwis-con" v-else v-for="(item,index) in flashList[1].goods">
+                  <!-- <div v-if="flashList[1].goods.length==0" class="d-more">暂无数据</div> -->
+                  <van-list
+  v-model="loading"
+  :finished="finished"
+  finished-text="没有更多了"
+  error-text="请求失败，点击重新加载"
+  :error.sync="error"
+  @load="loadlist"
+>
+                  <div class="suwis-con" v-for="(item,index) in flashList[1].goods">
                     <div class="suwis-con-left">
                         <img :src="item.img" width="100%">
                     </div>
@@ -100,13 +118,14 @@
                             </div>
                         </div>
                     </div>
-                  </div>
+                    </div>
+                    </van-list>
                </div>
         </van-tab>
         <van-tab>
             <div slot="title">
                <div slot="title">
-                <div class="suwis-tab-title">20:00</div>
+                <div class="suwis-tab-title" @click="getNumber('2')">20:00</div>
                 <div class="suwis-tab-title1">抢购中</div>
               </div>
             </div>
@@ -123,8 +142,16 @@
                </div>
             </div>
              <div>
-               <div v-if="flashList[2].goods.length==0" class="d-more">暂无数据</div>
-                  <div class="suwis-con" v-else v-for="(item,index) in flashList[2].goods">
+               <!-- <div v-if="flashList[2].goods.length==0" class="d-more">暂无数据</div> -->
+               <van-list
+  v-model="loading"
+  :finished="finished"
+  finished-text="没有更多了"
+  error-text="请求失败，点击重新加载"
+  :error.sync="error"
+  @load="loadlist"
+>
+                  <div class="suwis-con" v-for="(item,index) in flashList[2].goods">
                     <div class="suwis-con-left">
                         <img :src="item.img" width="100%">
                     </div>
@@ -146,13 +173,15 @@
                             </div>
                         </div>
                     </div>
+                    
                   </div>
+                  </van-list>
                </div>
         </van-tab>
         <van-tab>
             <div slot="title">
                <div slot="title">
-                <div class="suwis-tab-title">18:00</div>
+                <div class="suwis-tab-title" @click="getNumber('3')">18:00</div>
                 <div class="suwis-tab-title1">抢购中</div>
               </div>
             </div>
@@ -169,8 +198,16 @@
                </div>
             </div>
              <div>
-               <div v-if="flashList[3].goods.length==0" class="d-more">暂无数据</div>
-                  <div class="suwis-con" v-else  v-for="(item,index) in flashList[3].goods">
+               <!-- <div v-if="flashList[3].goods.length==0" class="d-more">暂无数据</div> -->
+               <van-list
+  v-model="loading"
+  :finished="finished"
+  finished-text="没有更多了"
+  error-text="请求失败，点击重新加载"
+  :error.sync="error"
+  @load="loadlist"
+>
+                  <div class="suwis-con"  v-for="(item,index) in flashList[3].goods">
                     <div class="suwis-con-left">
                         <img :src="item.img" width="100%">
                     </div>
@@ -193,12 +230,13 @@
                         </div>
                     </div>
                   </div>
+                  </van-list>
                </div>
         </van-tab>
        <van-tab>
             <div slot="title">
                <div slot="title">
-                <div class="suwis-tab-title">22:00</div>
+                <div class="suwis-tab-title" @click="getNumber('4')">22:00</div>
                 <div class="suwis-tab-title1">抢购中</div>
               </div>
             </div>
@@ -215,8 +253,16 @@
                </div>
             </div>
              <div>
-               <div v-if="flashList[4].goods.length==0" class="d-more">暂无数据</div>
-                  <div class="suwis-con" v-else v-for="(item,index) in flashList[4].goods">
+               <!-- <div v-if="flashList[4].goods.length==0" class="d-more">暂无数据</div> -->
+               <van-list
+  v-model="loading"
+  :finished="finished"
+  finished-text="没有更多了"
+  error-text="请求失败，点击重新加载"
+  :error.sync="error"
+  @load="loadlist"
+>
+                  <div class="suwis-con" v-for="(item,index) in flashList[4].goods">
                     <div class="suwis-con-left">
                         <img :src="item.img" width="100%">
                     </div>
@@ -239,6 +285,7 @@
                         </div>
                     </div>
                   </div>
+                  </van-list>
                </div>
         </van-tab>
       </van-tabs>
@@ -259,18 +306,49 @@ export default {
         {goods:[]},
         {goods:[]}
       ],
-      banner:[]
+      loading: false,
+      finished: false,
+      error: false,
+      banner:[],
+      page:1,
+      num:0
     }
   },
   methods:{
-    getFlashList(){
-      this.$axios.post('goods/lists',{
-        type:1,
-        page:1,
-        num:10
-      }).then(res => {
-          this.flashList=res.data.data
-      })
+    getNumber(num){
+       this.num=num
+    },
+    // getFlashList(){
+    //   this.$axios.post('goods/lists',{
+    //     type:1,
+    //     page:1,
+    //     num:10
+    //   }).then(res => {
+    //       this.flashList=res.data.data
+    //   })
+    // },
+    loadlist() {
+      
+         this.$axios.post('goods/lists',{
+            type:1,
+            page:this.page,
+            num:5
+          }).then(res => {
+            if (res.data.code === 1) {
+              if(res.data&&res.data.data){
+                for(let i in res.data.data){
+                   this.flashList[i].goods= this.flashList[i].goods.concat(res.data.data[i].goods||[])
+                }
+                if (this.page * 5 > res.data.data[this.num].total) this.finished = true
+              }
+            } else {
+                this.$toast(res.data.msg);
+            }
+            this.page++
+            this.loading = false
+          }).catch(() => {
+              this.error = true
+          })
     },
     getBanner(){
       this.$axios.post('goods/goodsbanner',{
@@ -281,13 +359,13 @@ export default {
     }
   },
   created(){
-    this.getFlashList()
+    // this.getFlashList()
     this.getBanner()
   }
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 .van-hairline--top-bottom::after{
   border:0;
 }
@@ -327,10 +405,7 @@ export default {
   margin-bottom:15px;
   text-align: left;
 }
-.van-tab{
-  line-height: 20px;
-  flex-basis:20% !important;
-}
+
 .suwis-tab-title{
   font-size: 16px;
   line-height: 18px;
@@ -384,5 +459,10 @@ export default {
 }
 .d-more{
   text-align: center
+}
+.van-tab{
+  line-height: 20px;
+  flex-basis:20% !important;
+  -webkit-flex-basis: 20% !important;
 }
 </style>

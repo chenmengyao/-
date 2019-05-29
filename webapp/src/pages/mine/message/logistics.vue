@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-     <div class="suwis-logistics" v-for="(item,index) in list">
+     <!-- <div class="suwis-logistics" v-for="(item,index) in list">
          <div class="suwis-logistics-title">
              <div>{{item.title}}</div>
              <div>{{item.time|dateFmt3}}</div>
@@ -14,8 +14,34 @@
                  <div>物流单号：{{item.express}} {{item.express_number}}</div>
              </div>
          </div>
-     </div>
+     </div> -->
      
+ <van-list
+  v-model="loading"
+  :finished="finished"
+  finished-text="没有更多了"
+  error-text="请求失败，点击重新加载"
+  :error.sync="error"
+  @load="loadlist"
+>
+   <div class="suwis-logistics" v-for="(item,index) in list">
+         <div class="suwis-logistics-title">
+             <div>{{item.title}}</div>
+             <div>{{item.time|dateFmt3}}</div>
+         </div>
+        <div class="suwis-logistics-title">
+             <div class="suwis-logistics-img">
+                 <img :src="item.goods_img">
+             </div>
+             <div class="suwis-logistics-con">
+                 <div>{{item.goods_name}}</div>
+                 <div>物流单号：{{item.express}} {{item.express_number}}</div>
+             </div>
+         </div>
+     </div> 
+</van-list>
+
+
   </div>
 </template>
 
@@ -23,7 +49,11 @@
 export default {
     data(){
       return{
-          list:[]
+        list:[], 
+        loading: false,
+        finished: false,
+        error: false,
+        page:1,
       }
     },
   mounted() {
@@ -31,11 +61,25 @@ export default {
      this.getData()
   },
   methods:{
-      getData(){
-        this.$axios.post('message/logistics').then(res => {
-          this.list=res.data.data
-        })
-      }
+      loadlist() {
+         this.$axios.post('message/logistics',{
+            page:this.page,
+            num:10
+          }).then(res => {
+            if (res.data.code === 1) {
+              if(res.data.data&&res.data.data.logistics){
+                 this.list=this.list.concat(res.data.data.logistics)
+                if (this.page * 10 > res.data.data.total) this.finished = true
+              }
+            } else {
+                this.$toast(res.data.msg);
+            }
+            this.page++
+            this.loading = false
+          }).catch(() => {
+              this.error = true
+          })
+    },
   }
 }
 </script>

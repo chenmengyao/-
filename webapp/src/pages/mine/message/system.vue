@@ -1,7 +1,7 @@
 <template lang="html">
   <div>
-    <div v-if="!stsyemList.length" style="line-height:40px;text-align:center">暂无系统消息</div>
-    <div v-else class="suwis-system-list" v-for="item in stsyemList">
+    <!-- <div v-if="!stsyemList.length" style="line-height:40px;text-align:center">暂无系统消息</div> -->
+    <!-- <div v-else class="suwis-system-list" v-for="item in stsyemList">
       <div>
         <div class="suwis-system-titie">
             <img src="../../../assets/infor1.png">系统消息
@@ -11,8 +11,31 @@
            <span>{{item.content}}</span>
         </div>
         </div>
-      </div>
+      </div> -->
       
+
+
+
+      <van-list
+  v-model="loading"
+  :finished="finished"
+  finished-text="没有更多了"
+  error-text="请求失败，点击重新加载"
+  :error.sync="error"
+  @load="loadlist"
+>
+   <div class="suwis-system-list" v-for="item in stsyemList">
+     <div>
+        <div class="suwis-system-titie">
+            <img src="../../../assets/infor1.png">系统消息
+        </div>
+        <div class="suwis-system-date">{{item.time|dateFmt}}</div>
+        <div class="suwis-system-con">
+           <span>{{item.content}}</span>
+        </div>
+        </div> 
+       </div> 
+</van-list>
   </div>
 </template>
 
@@ -20,12 +43,38 @@
 export default {
   data(){
     return{
-     stsyemList:[]
+     stsyemList:[],
+     loading: false,
+     finished: false,
+     error: false,
+     page:1,
     }
   },
   methods:{
+    loadlist() {
+         this.$axios.post('message/system',{
+            page:this.page,
+            num:10
+          }).then(res => {
+            if (res.data.code === 1) {
+              if(res.data.data&&res.data.data.system){
+                 this.stsyemList=this.stsyemList.concat(res.data.data.system)
+                if (this.page * 10 > res.data.data.total) this.finished = true
+              }
+            } else {
+                this.$toast(res.data.msg);
+            }
+            this.page++
+            this.loading = false
+          }).catch(() => {
+              this.error = true
+          })
+    },
     getStsyem(){
-      this.$axios.post('message/system').then(res => {
+      this.$axios.post('message/system',{
+        page:1,
+        num:10
+      }).then(res => {
         if(res.data.data){
           this.stsyemList=res.data.data
         }
@@ -33,7 +82,7 @@ export default {
     }
   },
   mounted() {
-    this.getStsyem()
+    // this.getStsyem()
      document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5')
 
   }

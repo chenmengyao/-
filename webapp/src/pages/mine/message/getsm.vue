@@ -122,13 +122,23 @@ export default {
   },
   methods:{
       onRefresh() {
-       this.$axios.post('message/getsm',{
-          store_id:this.$route.query.store_id,
-          id:68
-      }).then(res => {
-          this.isLoading=false
-         console.log(res.data.data.msg)
-      })
+        if(sessionStorage.getItem("message")){
+            this.messageList=JSON.parse(sessionStorage.getItem("message"))
+            
+            this.$axios.post('message/getsm',{
+                store_id:this.$route.query.store_id,
+                id:this.messageList[0].id
+            }).then(res => { 
+                this.isLoading=false
+                var arr=[]
+                    for(let i in res.data.data.msg){
+                        this.messageList.unshift(res.data.data.msg[i])
+                    }
+                    sessionStorage.setItem("message", JSON.stringify(this.messageList)); 
+                
+            })
+        }
+       
     },
     getList(){
         var uuid=new Date().getTime()
