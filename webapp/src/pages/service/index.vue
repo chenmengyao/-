@@ -137,6 +137,7 @@ export default {
       for (var i = 1; i < value.length; i++) {
         areaName = areaName + value[i].name + ' '
       }
+      console.log(value)
       this.carmodel = areaName
     },
     goSearch(){
@@ -147,9 +148,14 @@ export default {
           category:this.switchTabId,
           search:this.keyword,
           page:this.page,
+          province:'深圳市',
+          city:'深圳市',
+          area:'南山区',
           num:10,
-          pointx:this.lat,
-          pointy:this.lng
+           pointx:'223243.86',
+          pointy:'1140310.40'
+          // pointx:this.lat,
+          // pointy:this.lng
         }).then(res => {
           this.cagetory=res.data.data.cagetory
           this.convenient=res.data.data.convenient

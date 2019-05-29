@@ -36,7 +36,7 @@
         alt="">
       <span>好物推荐</span>
     </router-link>
-    <router-link to="/service/index"
+    <router-link to="/service"
       class="col">
       <img src="@/assets/index/service@3x.png"
         alt="">
