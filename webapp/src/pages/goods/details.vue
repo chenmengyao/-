@@ -602,6 +602,7 @@ export default {
         video {
             width: 100%;
             margin-bottom: 2.8vw;
+            background: #000;
         }
         .no-data {
             color: $gray;
