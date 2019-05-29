@@ -34,7 +34,7 @@
         <i v-if="coupons.length==0">暂无可用优惠券</i>
       </van-col>
     </van-row>
-    <van-cell class="interval" title="型号" is-link value="请先选择您要购买的商品型号" @click="showSku"/>
+    <van-cell class="interval" title="型号" is-link value="请先选择您要购买的商品型号" @click="showSku('buy')"/>
     <van-cell class="interval" title="地址" is-link :value="details.store&&details.store.site" />
     <van-cell title="运费"  :value="details.postage==0?'免邮':details.postage+'元'" />
     <van-cell>
@@ -60,7 +60,7 @@
     <van-tabs class="good-tabs" v-model="goodTabIdx">
       <van-tab title="商品介绍">
         <div v-if="details.details" ref="goodInfo" class="good-info interval">
-          <video v-if="details.details[0].content.video" :src="details.details[0].content.video" autoplay controls></video>
+          <video x5-video-player-type="h5" x5-video-player-fullscreen="true" x-webkit-airplay="allow" webkit-playsinline playsinline v-if="details.details[0].content.video" :src="details.details[0].content.video" autoplay controls></video>
           <img :src="details.details[0].content.img" alt="">
           <div v-html="details.details[0].content.editor"></div>
           <span class="no-data">已经没有更多啦～</span>
@@ -103,16 +103,16 @@
     <!--  -->
     <van-sku
       v-model="skuVisible"
-      stepper-title="我要买"
+      stepper-title="数量"
       :sku="sku"
-      :goods="details"
+      :goods="skugoods"
       :goods-id="details.id"
       :hide-stock="sku.hide_stock"
       :quota="0"
       :quota-used="0"
       reset-stepper-on-hide
       :initial-sku="initialSku"
-      @buy-clicked="buyBefore"
+      @buy-clicked="skuConfirm"
     >
       <!-- 自定义 sku-header-price -->
       <template slot="sku-header-price" slot-scope="props">
@@ -145,22 +145,35 @@
         @click.native="$router.push({path: '/mine/message/getsm', query: {store_id: $route.query.id}})"
       />
       <van-goods-action-mini-btn
+        v-if="carNum>0"
+        :info="carNum"
+        icon="cart-o"
+        text="购物车"
+        @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
+      />
+      <van-goods-action-mini-btn
+        v-else
         icon="cart-o"
         text="购物车"
         @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
       />
       <van-goods-action-big-btn
         text="加入购物车"
+        @click.native="showSku('addcar')"
       />
       <van-goods-action-big-btn
         primary
         text="立即购买"
+        @click.native="showSku('buy')"
       />
     </van-goods-action>
   </div>
 </template>
 
 <script>
+import {
+	Toast
+} from 'vant'
 const $raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
 	window.setTimeout(callback, 1000 / 60)
 }
@@ -181,6 +194,8 @@ export default {
 				selected: false
 			}],
 			timer: {},
+			// 打开规格方式
+			actionType: '',
 			goodTabIdx: 0,
 			// 商品详情
 			details: {},
@@ -197,39 +212,33 @@ export default {
 				// 初始选中数量
 				selectedNum: 1
 			},
+			// 规格弹窗图片
+			skugoods: {
+				title: '',
+				picture: ''
+			},
 			// 规格对象
 			sku: {
 				// 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
 				// 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
 				tree: [],
 				// 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
-				list: [{
-					id: 2259, // skuId，下单时后端需要
-					price: 100, // 价格（单位分）
-					s1: '1215', // 规格类目 k_s 为 s1 的对应规格值 id
-					s2: '1193', // 规格类目 k_s 为 s2 的对应规格值 id
-					s3: '0', // 最多包含3个规格值，为0表示不存在该规格
-					stock_num: 110 // 当前 sku 组合对应的库存
-				}, {
-					id: 2259, // skuId，下单时后端需要
-					price: 100, // 价格（单位分）
-					s1: '1215', // 规格类目 k_s 为 s1 的对应规格值 id
-					s2: '1193', // 规格类目 k_s 为 s2 的对应规格值 id
-					s3: '0', // 最多包含3个规格值，为0表示不存在该规格
-					stock_num: 110 // 当前 sku 组合对应的库存
-				}],
-				price: '1.00', // 默认价格（单位元）
-				stock_num: 227, // 商品总库存
+				list: [],
+				price: 0, // 默认价格（单位元）
+				stock_num: 0, // 商品总库存
 				collection_id: 2261, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
 				none_sku: false, // 是否无规格商品
 				messages: [],
 				hide_stock: false // 是否隐藏剩余库存
-			}
+			},
+			// 购物车数量
+			carNum: 0
 		}
 	},
 	created() {
 		this.getDetails()
 		this.getCoupons()
+		this.getCarList()
 	},
 	mounted() {
 		window.addEventListener('scroll', this.checkScroll, this)
@@ -237,14 +246,15 @@ export default {
 	watch: {
 		// 监听详情变化
 		details(val) {
-			let keys = ['header_one_label', 'header_two_label', 'header_three_label']
+			// 'header_two_label', 'header_three_label'
+			let keys = ['header_one_label', ]
 			for (let key of keys) {
 				if (val.stand.length == 0) break
 				if (val.stand[0][key] != '空' && val.stand[0][key]) {
 					this.sku.tree.push({
 						k: val.stand[0][key],
 						v: [],
-						k_s: ''
+						k_s: 's1'
 					})
 				}
 			}
@@ -255,8 +265,19 @@ export default {
 						name: item[keys[idx].replace('_label', '')],
 						imgUrl: item.img
 					})
+					this.sku.list.push({
+						id: this.details.id,
+						price: item.price * 100,
+						s1: item.id,
+						stock_num: item.count
+					})
 				}
 			}
+			// 设置价格
+			this.sku.price = this.details.price_min
+			this.sku.stock_num = this.details.inventory
+			this.skugoods.title = this.details.title
+			this.skugoods.picture = this.details.img
 		}
 	},
 	methods: {
@@ -314,13 +335,63 @@ export default {
 			this.coupons = res.data.data || []
 		},
 		// 显示商品规格
-		showSku() {
-			console.log('sku')
+		showSku(type) {
+			// 检查登录状态
+			if (!this.$store.getters['core/logined']) {
+				Toast('请您先登录')
+				this.$router.push('/login')
+				return
+			}
 			this.skuVisible = true
+			this.actionType = type
+		},
+		// 关闭规格弹窗
+		hideSku() {
+			this.skuVisible = false
 		},
 		// 购买前
-		async buyBefore() {
-
+		async skuConfirm(evt) {
+			this[this.actionType](evt)
+		},
+		// 购买
+		async buy(evt) {
+			this.$router.push({
+				path: '/uc/orders/confirm-order',
+				query: {
+					stand_id: evt.selectedSkuComb.s1,
+					num: evt.selectedNum
+				}
+			})
+		},
+		// 添加购物车
+		async addcar(evt) {
+			let res = await this.$axios.post('car/add', {
+				stand_id: evt.selectedSkuComb.s1,
+				num: evt.selectedNum,
+				goods_id: this.$route.query.id,
+				store_id: this.details.store.id
+			})
+			if (res.data.code == 1) {
+				Toast('添加购物车成功')
+				this.hideSku()
+				// 刷新购物车数量
+				this.getCarList()
+			} else {
+				Toast(res.data.msg)
+			}
+		},
+		// 获取购物车数量
+		async getCarList(evt) {
+			let res = await this.$axios.post('car/list')
+			// 购物车数量
+			let shops = res.data.data || {}
+			this.carNum = 0
+			for (let key in shops) {
+        let shop = shops[key]
+				for (let good of shop.goods) {
+					this.carNum += 1
+				}
+			}
 		}
 	}
 }
@@ -532,6 +603,7 @@ export default {
         video {
             width: 100%;
             margin-bottom: 2.8vw;
+            background: #000;
         }
         .no-data {
             color: $gray;

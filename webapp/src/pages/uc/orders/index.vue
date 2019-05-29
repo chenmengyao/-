@@ -8,7 +8,7 @@
                     error-text="请求失败，点击重新加载"
                     :error.sync="error"
                     :finished="finished"
-                    @load="getList">
+                    @load="getList('add')">
                     <template v-if="list && list.length">
                         <ShopItem
                             v-for="shop in list"
@@ -52,6 +52,8 @@
     import ScorePay from '@/components/uc/orders/pay-type'
     import ButtonMap from '@/constants/order/button-map'
 
+    import md5 from'md5'
+
     export default {
         name: "OrderList",
         components: {
@@ -65,6 +67,7 @@
         data() {
             return {
                 activeTabIndex: 0,
+                currentOrderId: '',
                 error: false,
                 finished: false,
                 loading: false,
@@ -108,7 +111,12 @@
             closePasswordModal() {
                 this.password = ''
             },
-            getList() {
+            getList(type = 'reset') {
+                // 重置页码参数
+                if (type === 'reset') {
+                  this.list = []
+                  this.page = 1
+                }
                 const { num, page, sta } = this
                 this.$axios
                     .post('/order/index', {
@@ -135,8 +143,6 @@
             },
             onClickTab(index) {
                 this.sta = this.tabList[index].sta
-                this.page = 1
-                this.list = []
                 this.getList()
             },
             onClickOrder(goods) {
@@ -171,7 +177,26 @@
                 }
             },
             onPasswordInput(key) {
-                this.password = (this.password + key).slice(0, 6);
+                this.password = this.password + key
+                if (this.password.length === 6) {
+                    this.$axios
+                        .post('/order/receiving', {
+                            order_id: this.currentOrderId,
+                            paypass: md5(this.password)
+                        })
+                        .then(({ data }) => {
+                            if (data.code === 1) {
+                                this.$toast('确认收货成功');
+                                this.password = ''
+                                this.currentOrderId = ''
+                                this.passwordModalShow = false
+                                this.getList()
+                            } else {
+                                this.password = ''
+                                this.$toast(data.msg);
+                            }
+                        })
+                }
             },
             onPasswordDelete() {
                 this.password = this.password.slice(0, this.password.length - 1);
@@ -186,7 +211,6 @@
                         })
                         .then(({ data }) => {
                             if (data.code === 1) {
-                                this.page = 1
                                 this.$toast('取消订单成功');
                                 this.getList()
                             } else {
@@ -217,24 +241,7 @@
             },
             confirmReceive(orderId) {
                 this.passwordModalShow = true
-
-                // this.$dialog.confirm({
-                //     message: '确认收到此商品吗？'
-                // }).then(() => {
-                //     this.$axios
-                //         .post('/order/receiving', {
-                //             order_id: orderId
-                //         })
-                //         .then(({ data }) => {
-                //             if (data.code === 1) {
-                //                 this.page = 1
-                //                 this.$toast('确认收货成功');
-                //                 this.getList()
-                //             } else {
-                //                 this.$toast(data.msg);
-                //             }
-                //         })
-                // })
+                this.currentOrderId = orderId
             },
             evaluateOrder(orderId) {
                 this.$router.push({
@@ -246,16 +253,15 @@
             },
             deleteOrder(orderId) {
                 this.$dialog.confirm({
-                    message: '该订单已关闭／完成，您确定要删除吗？'
+                    message: '您确定要删除该订单吗？'
                 }).then(() => {
                     this.$axios
-                        .post('/order/cancel', {
-                            number: orderId
+                        .post('/order/delete', {
+                            id: orderId
                         })
                         .then(({ data }) => {
                             if (data.code === 1) {
-                                this.page = 1
-                                this.$toast('取消订单成功');
+                                this.$toast('删除订单成功');
                                 this.getList()
                             } else {
                                 this.$toast(data.msg);

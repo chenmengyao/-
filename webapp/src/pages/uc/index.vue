@@ -1,7 +1,7 @@
 <template lang="html">
     <div class="suwis-uc">
         <div class="uc-top-button">
-            <img class="button" src="@/assets/uc/qc-code@2x.png" alt="二维码">
+            <img class="button" src="@/assets/uc/qr-code@2x.png" alt="二维码">
             <router-link to="/uc/setting">
                 <img class="button" src="@/assets/uc/setting@2x.png" alt="设置">
             </router-link>
@@ -26,7 +26,7 @@
                 </div>
                 <div class="location">
                     <van-icon name="location" color="#fff"/>
-                    {{ user.city || '---' }}
+                    {{ (user.province + user.city) || '---' }}
                 </div>
             </div>
         </div>

@@ -1,34 +1,107 @@
 <template lang="html">
   <div class="suwis-shopping-cart">
-    <div class="list-group" v-for="item in 5">
-      <van-checkbox>
+    <div class="list-group" v-for="shop in shops">
+      <van-checkbox v-model="shop.checked" @change="shopChange(shop)">
         <div class="name">
-          <img class="icon" src="touiocn.png" alt="">新胜数码通讯<img class="arrow" src="@/assets/details/arrowright@3x.png" alt="">
+          <img class="icon" :src="shop.logo" alt="">{{shop.name}}<img class="arrow" src="@/assets/details/arrowright@3x.png" alt="">
         </div>
       </van-checkbox>
-      <van-checkbox   v-for="item in 3">
+      <van-checkbox v-model="good.checked" v-for="good in shop.goods" @change="calcCheckNums">
         <van-card
-          num="2"
-          price="2.00"
-          desc="描述信息"
-          title="商品标题"
-          thumb="/test3.png"
-          origin-price="10.00"
+          :price="good.price"
+          :desc="good.header_one + ' ' + good.header_two"
+          :title="good.title"
+          :thumb="good.img"
         >
+        <div slot="footer" style="margin-top:-30px;" @click.stop>
+          <van-stepper v-model="good.num" />
+        </div>
       </van-card>
     </van-checkbox>
   </div>
   <div class="btn-group">
-    <van-checkbox>
+    <van-checkbox v-model="checkall" @change="allChange">
       全选
     </van-checkbox>
-    <img src="@/assets/shopping-cart/remove@3x.png" alt="">
+    <div>
+      <van-button class="btn" v-if="selecteds.length>0" type="warning" @click="deleteGoods">删除</van-button>
+      <van-button class="btn" type="primary" @click="makeOrder">结算({{selecteds.length}})</van-button>
+    </div>
   </div>
 </div>
 </template>
 
 <script>
-export default {}
+import {
+  Toast
+} from 'vant'
+export default {
+  data() {
+    return {
+      shops: {},
+      checkall: false,
+      // 已选商品
+      selecteds: []
+    }
+  },
+  created() {
+    this.getCarList()
+  },
+  methods: {
+    // 获取购物车数量
+    async getCarList(evt) {
+      let res = await this.$axios.post('car/list')
+      // 购物车数量
+      this.shops = res.data.data || {}
+    },
+    // 店铺改变
+    shopChange(shop) {
+      for (let good of shop.goods) {
+        this.$set(good, 'checked', shop.checked)
+      }
+      this.calcCheckNums()
+    },
+    // 全选
+    allChange() {
+      for (let key in this.shops) {
+        let shop = this.shops[key]
+        this.$set(shop, 'checked', this.checkall)
+        this.shopChange(shop)
+      }
+    },
+    calcCheckNums() {
+      this.selecteds = []
+      for (let key in this.shops) {
+        let shop = this.shops[key]
+        for (let good of shop.goods) {
+          if (good.checked) {
+            this.selecteds.push(good.id)
+          }
+        }
+      }
+    },
+    async deleteGoods() {
+      let res = await this.$axios.post('car/delete', {
+        id: this.selecteds
+      })
+      if (res.data.code == 1) {
+        // 刷新列表
+        this.getCarList()
+      } else {
+        Toast(res.data.msg)
+      }
+    },
+    // 结算购物车 car/makesureorder
+    async makeOrder() {
+      this.$router.push({
+        path: '/uc/orders/confirm-order',
+        query: {
+          car_id: this.selecteds.join(',')
+        }
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -36,6 +109,8 @@ export default {}
     padding: 15px;
     background: $bg;
     padding-bottom: 55px;
+    min-height: 100vh;
+    box-sizing: border-box;
 
     .list-group {
         background: #fff;
@@ -65,6 +140,7 @@ export default {}
         .van-card {
             background: transparent;
             padding-left: 0;
+            width: 80vw;
         }
     }
 
@@ -85,6 +161,14 @@ export default {}
         img {
             display: block;
             height: 30px;
+        }
+
+        .btn {
+            height: 6.9vw;
+            line-height: 6.9vw;
+            min-width: 20vw;
+            margin-left: 6vw;
+            border-radius: 50px;
         }
     }
 }
