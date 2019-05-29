@@ -21,54 +21,78 @@
     <van-checkbox v-model="checkall" @change="allChange">
       全选
     </van-checkbox>
-    <van-button class="btn" type="primary">结算({{checkedNums}})</van-button>
+    <van-button class="btn" type="primary" @click="makeOrder">结算({{checkedNums}})</van-button>
   </div>
 </div>
 </template>
 
 <script>
+import {
+  Toast
+} from 'vant'
 export default {
-	data() {
-		return {
-			shops: [],
-			// 已选商品
-			checkedNums: 0,
-			checkall: false
-		}
-	},
-	created() {
-		this.getCarList()
-	},
-	methods: {
-		// 获取购物车数量
-		async getCarList(evt) {
-			let res = await this.$axios.post('car/list')
-			// 购物车数量
-			this.shops = res.data.data || []
-		},
-		// 店铺改变
-		shopChange(shop) {
-			for (let good of shop.goods) {
-				this.$set(good, 'checked', shop.checked)
-			}
-			this.calcCheckNums()
-		},
-		// 全选
-		allChange() {
-			for (let shop of this.shops) {
-				this.$set(shop, 'checked', this.checkall)
-				this.shopChange(shop)
-			}
-		},
-		calcCheckNums() {
-			this.checkedNums = 0
-			for (let shop of this.shops) {
-				for (let good of shop.goods) {
-					good.checked ? this.checkedNums++ : ''
-				}
-			}
-		}
-	}
+  data() {
+    return {
+      shops: [],
+      // 已选商品
+      checkedNums: 0,
+      checkall: false
+    }
+  },
+  created() {
+    this.getCarList()
+  },
+  methods: {
+    // 获取购物车数量
+    async getCarList(evt) {
+      let res = await this.$axios.post('car/list')
+      // 购物车数量
+      this.shops = res.data.data || []
+    },
+    // 店铺改变
+    shopChange(shop) {
+      for (let good of shop.goods) {
+        this.$set(good, 'checked', shop.checked)
+      }
+      this.calcCheckNums()
+    },
+    // 全选
+    allChange() {
+      for (let shop of this.shops) {
+        this.$set(shop, 'checked', this.checkall)
+        this.shopChange(shop)
+      }
+    },
+    calcCheckNums() {
+      this.checkedNums = 0
+      for (let shop of this.shops) {
+        for (let good of shop.goods) {
+          good.checked ? this.checkedNums++ : ''
+        }
+      }
+    },
+    // 结算购物车 car/makesureorder
+    async makeOrder() {
+      let ids = []
+      for (let shop of this.shops) {
+        ids.push(shop.id)
+      }
+      let res = await this.$axios.post('car/makesureorder', {
+        car_id: ids.join(',')
+      })
+      if (res.data.code == 1) {
+        // this.$router.push({
+  			// 	path: '/uc/orders/confirm-order',
+  			// 	query: {
+  			// 		stand_id: evt.selectedSkuComb.s1,
+  			// 		num: evt.selectedNum
+  			// 	}
+  			// })
+      } else {
+        Toast(res.data.msg)
+      }
+    }
+  }
 }
 </script>
 
