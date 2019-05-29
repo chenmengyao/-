@@ -145,6 +145,14 @@
         @click.native="$router.push({path: '/mine/message/getsm', query: {store_id: $route.query.id}})"
       />
       <van-goods-action-mini-btn
+        v-if="carNum>0"
+        :info="carNum"
+        icon="cart-o"
+        text="购物车"
+        @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
+      />
+      <van-goods-action-mini-btn
+        v-else
         icon="cart-o"
         text="购物车"
         @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
@@ -222,12 +230,15 @@ export default {
 				none_sku: false, // 是否无规格商品
 				messages: [],
 				hide_stock: false // 是否隐藏剩余库存
-			}
+			},
+			// 购物车数量
+			carNum: 0
 		}
 	},
 	created() {
 		this.getDetails()
 		this.getCoupons()
+		this.getCarList()
 	},
 	mounted() {
 		window.addEventListener('scroll', this.checkScroll, this)
@@ -365,9 +376,18 @@ export default {
 			if (res.data.code == 1) {
 				Toast('添加购物车成功')
 				this.hideSku()
+				// 刷新购物车数量
+				this.getCarList()
 			} else {
 				Toast(res.data.msg)
 			}
+		},
+		// 获取购物车数量
+		async getCarList(evt) {
+			let res = await this.$axios.post('car/list')
+			// 购物车数量
+			let data = res.data.data || []
+			this.carNum = data.length || 0
 		}
 	}
 }
