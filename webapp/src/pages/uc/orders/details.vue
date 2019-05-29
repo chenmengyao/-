@@ -128,13 +128,12 @@
                     case 'pay':
                         this.payOrder(orderId)
                         break
-                    case 'viewLogistics':
-
+                    case 'logistics':
+                        this.checkLogistics(orderId)
                         break
                     case 'receive':
                         this.confirmReceive(orderId)
                         break
-
                     case 'evaluate':
                         this.evaluateOrder(orderId)
                         break
