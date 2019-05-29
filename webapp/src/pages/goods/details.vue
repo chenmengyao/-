@@ -359,8 +359,14 @@ export default {
 				stand_id: evt.selectedSkuComb.s1,
 				num: evt.selectedNum
 			})
+			let order = res.data.data || {}
 			if (res.data.code == 1) {
-				Toast('正在跳转支付')
+				this.$router.push({
+					path: '/uc/orders/confirm-order',
+					query: {
+						id: order.goods.id
+					}
+				})
 			} else {
 				Toast(res.data.msg)
 			}
@@ -386,8 +392,13 @@ export default {
 		async getCarList(evt) {
 			let res = await this.$axios.post('car/list')
 			// 购物车数量
-			let data = res.data.data || []
-			this.carNum = data.length || 0
+			let shops = res.data.data || []
+			this.carNum = 0
+			for (let shop of shops) {
+				for (let good of shop.goods) {
+					this.carNum += 1
+				}
+			}
 		}
 	}
 }
