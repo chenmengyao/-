@@ -24,10 +24,11 @@ export default {
     font-size: 12px;
 
     dt {
-        img {
-            border-radius: 4px;
-            margin-bottom: 3px;
-        }
+        min-height: calc(50vw - 18px);
+        max-height: calc(50vw - 18px);
+        overflow: hidden;
+        border-radius: 4px;
+        margin-bottom: 2vw;
     }
     .title {
         font-size: 14px;
@@ -53,6 +54,7 @@ export default {
             font-size: 14px;
             font-style: normal;
         }
+
         .bought {
             color: $gray;
             transform: scale(0.9);
