@@ -4,7 +4,7 @@
       <van-col v-for="nav in navlist" span="8" :class="{active:nav.selected}" @click.native="skip(nav)">{{nav.name}}</van-col>
     </van-row>
     <!--  -->
-    <van-swipe :autoplay="3000" indicator-color="white">
+    <van-swipe ref="banner" :autoplay="3000" indicator-color="white">
       <van-swipe-item>
         <img :src="details.img" alt="">
       </van-swipe-item>
@@ -30,11 +30,11 @@
     </van-row>
     <van-row class="coupon">
       <van-col span="24">
-        优惠券&nbsp;&nbsp;<span v-for="item in coupons" v-if="item.number_can>0&&item.sta==1">{{item.title}}</span>
+        优惠券&nbsp;&nbsp;<span @click="couponsVisible=true" v-for="item in coupons" v-if="item.number_can>0&&item.sta==1">{{item.title}}</span>
         <i v-if="coupons.length==0">暂无可用优惠券</i>
       </van-col>
     </van-row>
-    <van-cell class="interval" title="型号" is-link value="请先选择您要购买的商品型号" @click="showSku('buy')"/>
+    <van-cell class="interval" title="型号" is-link :value="current.selectedSkuComb.name" @click="showSku('hideSku')"/>
     <van-cell class="interval" title="地址" is-link :value="details.store&&details.store.site" />
     <van-cell title="运费"  :value="details.postage==0?'免邮':details.postage+'元'" />
     <van-cell>
@@ -43,42 +43,50 @@
     <!-- 评论 -->
     <van-cell ref="comment" class="interval comment">
       <span slot="title">评价（{{details.evaluate_count}}）</span>
-      <span>好评率&nbsp;<em>97%</em></span>
+      <span>好评率&nbsp;<em>0%</em></span>
     </van-cell>
-    <comment-list>
-      <comment-item v-for="item in 2"
+    <comment-list v-if="details.evaluate">
+      <comment-item v-for="(item,idx) in details.evaluate"
+        v-if="idx<3"
         name="橘猫****到我家"
         date="2019-03-01 12:01"
         avatar="touiocn.png"
         content="拿到手了，拿着不错，蛮透明，贴合度也高，摄像头的位置刚刚好。"
         :medias="['images/details/media.jpg','images/details/media.jpg','images/details/media.jpg','images/details/media.jpg','images/details/media.jpg']">
       </comment-item>
+      <van-row v-if="details.evaluate.length==0" type="flex" align="center" justify="center">
+        <van-col style="color:#999999;">
+          暂无评价~
+        </van-col>
+      </van-row>
     </comment-list>
     <!-- 评论 //-->
-    <router-link class="comment-more" :to="{ path: '/', params: {} }">查看更多评价<img src="@/assets/details/more@3x.png" alt=""></router-link>
+    <router-link v-if="details.evaluate&&details.evaluate.length>3" class="comment-more" :to="{ path: '/', params: {} }">查看更多评价<img src="@/assets/details/more@3x.png" alt=""></router-link>
     <!-- 店铺详情 -->
-    <van-tabs class="good-tabs" v-model="goodTabIdx">
-      <van-tab title="商品介绍">
-        <div v-if="details.details" ref="goodInfo" class="good-info interval">
-          <video x5-video-player-type="h5" x5-video-player-fullscreen="true" x-webkit-airplay="allow" webkit-playsinline playsinline v-if="details.details[0].content.video" :src="details.details[0].content.video" autoplay controls></video>
-          <img :src="details.details[0].content.img" alt="">
-          <div v-html="details.details[0].content.editor"></div>
-          <span class="no-data">已经没有更多啦～</span>
-        </div>
-      </van-tab>
-      <van-tab title="规格参数">
-        <div v-if="details.details" class="specification">
-          <img :src="details.details[1].content.img" alt="">
-          <div v-html="details.details[1].content.editor"></div>
-        </div>
-      </van-tab>
-      <van-tab title="售后保障">
-        <div v-if="details.details" class="guarantee">
-          <img :src="details.details[2].content.img" alt="">
-          <div v-html="details.details[2].content.editor"></div>
-        </div>
-      </van-tab>
-    </van-tabs>
+    <div ref="content">
+      <van-tabs class="good-tabs" v-model="goodTabIdx">
+        <van-tab title="商品介绍">
+          <div v-if="details.details" class="good-info interval">
+            <video x5-video-player-type="h5" x5-video-player-fullscreen="true" x-webkit-airplay="allow" webkit-playsinline playsinline v-if="details.details[0].content.video" :src="details.details[0].content.video" autoplay controls></video>
+            <img :src="details.details[0].content.img" alt="">
+            <div v-html="details.details[0].content.editor"></div>
+            <span class="no-data">已经没有更多啦～</span>
+          </div>
+        </van-tab>
+        <van-tab title="规格参数">
+          <div v-if="details.details" class="specification">
+            <img :src="details.details[1].content.img" alt="">
+            <div v-html="details.details[1].content.editor"></div>
+          </div>
+        </van-tab>
+        <van-tab title="售后保障">
+          <div v-if="details.details" class="guarantee">
+            <img :src="details.details[2].content.img" alt="">
+            <div v-html="details.details[2].content.editor"></div>
+          </div>
+        </van-tab>
+      </van-tabs>
+    </div>
     <!-- 店铺详情 //-->
     <!-- 店铺信息 -->
     <van-row class="interval shop" v-if="details.store">
@@ -100,7 +108,7 @@
       </van-col>
     </van-row>
     <!-- 店铺信息 //-->
-    <!--  -->
+    <!-- 商品规格 -->
     <van-sku
       v-model="skuVisible"
       stepper-title="数量"
@@ -120,7 +128,6 @@
           <span class="van-sku__price-symbol">￥</span><span class="van-sku__price-num">{{ props.price }}</span>
         </div>
       </template>
-
       <!-- 自定义 sku actions -->
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
@@ -136,8 +143,21 @@
         </div>
       </template>
     </van-sku>
-    <!--  -->
-    <!--  -->
+    <!-- 商品规格 //-->
+    <!-- 优惠券 //-->
+    <coupon-list v-model="couponsVisible" title="请领取优惠券">
+      <coupon-item
+        v-for="item in coupons"
+        :title="item.title"
+        :desc="`满${item.total}减${item.sum}`"
+        :price="item.sum"
+        :time="item.end_time"
+        btn-text="领取"
+        @click="receiveCoupon(item)">
+      </coupon-item>
+    </coupon-list>
+    <!-- 优惠券 -->
+    <!-- 底部操作条 -->
     <van-goods-action>
       <van-goods-action-mini-btn
         icon="chat-o"
@@ -162,11 +182,19 @@
         @click.native="showSku('addcar')"
       />
       <van-goods-action-big-btn
+        v-if="!current.selectedSkuComb.id"
         primary
         text="立即购买"
         @click.native="showSku('buy')"
       />
+      <van-goods-action-big-btn
+        v-else
+        primary
+        text="立即购买"
+        @click.native="buy(current)"
+      />
     </van-goods-action>
+    <!-- 底部操作条 //-->
   </div>
 </template>
 
@@ -174,6 +202,7 @@
 import {
 	Toast
 } from 'vant'
+import _ from 'lodash'
 const $raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
 	window.setTimeout(callback, 1000 / 60)
 }
@@ -190,10 +219,11 @@ export default {
 				selected: false
 			}, {
 				name: '详情',
-				key: 'goodInfo',
+				key: 'content',
 				selected: false
 			}],
 			timer: {},
+			lockscroll: false,
 			// 打开规格方式
 			actionType: '',
 			goodTabIdx: 0,
@@ -232,7 +262,15 @@ export default {
 				hide_stock: false // 是否隐藏剩余库存
 			},
 			// 购物车数量
-			carNum: 0
+			carNum: 0,
+			// 当前商品
+			current: {
+				selectedSkuComb: {
+					name: '请选择商品型号'
+				}
+			},
+			// 优惠券显示内容
+			couponsVisible: false
 		}
 	},
 	created() {
@@ -242,6 +280,9 @@ export default {
 	},
 	mounted() {
 		window.addEventListener('scroll', this.checkScroll, this)
+	},
+	beforeDestroy() {
+		window.removeEventListener('scroll', this.checkScroll, this)
 	},
 	watch: {
 		// 监听详情变化
@@ -262,14 +303,15 @@ export default {
 				for (let idx in this.sku.tree) {
 					this.sku.tree[idx].v.push({
 						id: item.id,
-						name: item[keys[idx].replace('_label', '')],
+						name: item.header_one + ' ' + item.header_two,
 						imgUrl: item.img
 					})
 					this.sku.list.push({
 						id: this.details.id,
 						price: item.price * 100,
 						s1: item.id,
-						stock_num: item.count
+						stock_num: item.count,
+						name: item.header_one + ' ' + item.header_two
 					})
 				}
 			}
@@ -283,6 +325,8 @@ export default {
 	methods: {
 		// 跳转
 		skip(nav) {
+			if (this.lockscroll) return
+			this.lockscroll = true
 			this.scrollTo(this.$refs[nav.key])
 		},
 		// 滚动到相应位置
@@ -290,17 +334,21 @@ export default {
 			window.cancelAnimationFrame(this.timer)
 			let ot = el.offsetTop - 50
 			let sy = window.scrollY
-			let speed = 30
+			let speed = 39
 			let distance = sy > ot ? sy - speed : sy + speed
-			if (distance > ot - speed * 2 && distance < ot) distance = ot
-			if (distance < ot + speed * 2 && distance > ot) distance = ot
+			if (distance >= ot - speed && distance <= ot) distance = ot
+			if (distance <= ot + speed && distance >= ot) distance = ot
 			window.scrollTo(0, distance)
 			if (sy != ot) {
 				this.timer = $raf(() => {
 					this.scrollTo(el)
 				})
 			}
+			this.unlockScroll()
 		},
+		unlockScroll: _.debounce(function() {
+			this.lockscroll = false
+		}, 186),
 		// 检查滚动
 		checkScroll() {
 			let sy = window.scrollY
@@ -334,6 +382,18 @@ export default {
 			})
 			this.coupons = res.data.data || []
 		},
+		// 领取优惠券
+		async receiveCoupon(item) {
+			let res = await this.$axios.post('goods/getcoupon', {
+				coupon_id: item.id
+			})
+			if (res.data.code == 1) {
+				Toast('领取成功')
+			} else {
+				Toast(res.data.msg)
+			}
+			this.couponsVisible = false
+		},
 		// 显示商品规格
 		showSku(type) {
 			// 检查登录状态
@@ -346,8 +406,10 @@ export default {
 			this.actionType = type
 		},
 		// 关闭规格弹窗
-		hideSku() {
+		hideSku(evt) {
 			this.skuVisible = false
+			// 设置当前型号
+			this.current = evt
 		},
 		// 购买前
 		async skuConfirm(evt) {
@@ -373,7 +435,7 @@ export default {
 			})
 			if (res.data.code == 1) {
 				Toast('添加购物车成功')
-				this.hideSku()
+				this.hideSku(evt)
 				// 刷新购物车数量
 				this.getCarList()
 			} else {
@@ -387,7 +449,7 @@ export default {
 			let shops = res.data.data || {}
 			this.carNum = 0
 			for (let key in shops) {
-        let shop = shops[key]
+				let shop = shops[key]
 				for (let good of shop.goods) {
 					this.carNum += 1
 				}

@@ -1,15 +1,13 @@
 <template>
-    <van-actionsheet v-model="show" title="确认付款">
+    <van-actionsheet v-model="popupShow" title="确认付款" :close-on-click-overlay="false" @cancel="cancel">
         <van-cell-group>
             <van-cell title="请选择付款方式"></van-cell>
-            <van-radio-group v-model="radio">
+            <van-radio-group v-model="radio" @change="select">
                 <van-radio v-for="pay in typeList" :name="pay.key" :key="pay.key">
                     <div class="check-line">
                         <img :src="pay.imgUrl" alt="pay.name" class="pay-image">
                         {{pay.name}}
-                        <!--<div class="content"></div>-->
                     </div>
-
                 </van-radio>
             </van-radio-group>
         </van-cell-group>
@@ -27,6 +25,7 @@
         data() {
             return {
                 radio: 'aliPay',
+                popupShow: false,
                 typeList: [
                     {
                         key: 'aliPay',
@@ -50,6 +49,20 @@
                     },
                 ]
             }
+        },
+        methods: {
+            cancel() {
+                this.$emit('close')
+            },
+            select() {
+                this.popupShow = false
+                this.$emit('select', this.radio)
+            }
+        },
+        watch: {
+            show() {
+                this.popupShow = this.show
+            }
         }
     }
 </script>
@@ -66,5 +79,8 @@
             height: 24px;
             margin-right: 10px;
         }
+    }
+    .van-radio-group {
+        padding: 0 15px;
     }
 </style>

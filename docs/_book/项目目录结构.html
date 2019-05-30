@@ -1,0 +1,441 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>项目目录结构 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="参考资料.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    前言
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="参考资料.html">
+            
+                <a href="参考资料.html">
+            
+                    
+                    参考资料
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3" data-path="项目目录结构.html">
+            
+                <a href="项目目录结构.html">
+            
+                    
+                    项目目录结构
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" >
+            
+                <span>
+            
+                    
+                    系统组件
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="components/good-list.html">
+            
+                <a href="components/good-list.html">
+            
+                    
+                    商品列表
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="components/comment-list.html">
+            
+                <a href="components/comment-list.html">
+            
+                    
+                    评论列表
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="components/coupon-list.html">
+            
+                <a href="components/coupon-list.html">
+            
+                    
+                    优惠券列表
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >项目目录结构</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <pre><code class="lang-mydoc">&#x2502;  app.config.js  // app&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF0C;&#x53EF;&#x5C06;&#x4E00;&#x4E9B;&#x901A;&#x7528;&#x7684;&#x914D;&#x7F6E;&#x653E;&#x5230;&#x8FD9;&#x91CC;&#xFF0C;&#x7136;&#x540E;&#x5728;&#x7A0B;&#x5E8F;&#x91CC;&#x9762;&#x901A;&#x8FC7;this.$config &#x83B7;&#x53D6;
+&#x2502;  babel.config.js // babel&#x914D;&#x7F6E;&#x6587;&#x4EF6;
+&#x2502;  package.json // &#x9879;&#x76EE;&#x4F9D;&#x8D56;&#x63CF;&#x8FF0;&#x6587;&#x4EF6;
+&#x2502;  README.md  // &#x9879;&#x76EE;&#x57FA;&#x672C;&#x4FE1;&#x606F;&#x63CF;&#x8FF0;&#x6587;&#x4EF6;
+&#x2502;  vue.config.js // vue-cli &#x914D;&#x7F6E;&#x6587;&#x4EF6;
+&#x2502;
+&#x251C;&#x2500;public // &#x9759;&#x6001;&#x8D44;&#x6E90;&#x5B58;&#x653E;&#x6587;&#x4EF6;&#x5939;
+&#x2502;      favicon.ico
+&#x2502;      index.html
+&#x2502;
+&#x251C;&#x2500;src
+&#x2502;  &#x2502;  App.vue
+&#x2502;  &#x2502;  main.js  // &#x7A0B;&#x5E8F;&#x5165;&#x53E3;
+&#x2502;  &#x2502;  router.js // &#x8DEF;&#x7531;&#x6587;&#x4EF6;
+&#x2502;  &#x2502;  store.js // vuex &#x72B6;&#x6001;&#x6587;&#x4EF6;
+&#x2502;  &#x2502;
+&#x2502;  &#x251C;&#x2500;assets  // &#x9759;&#x6001;&#x8D44;&#x6E90;&#x6587;&#x4EF6;&#x5939;&#xFF08;&#x6B64;&#x6587;&#x4EF6;&#x5939;&#x4E0B;&#x7684;&#x8D44;&#x6E90;&#x88AB;&#x5F15;&#x7528;&#x540E;&#x4F1A;&#x81EA;&#x52A8;&#x52A0;&#x4E0A;hash&#xFF09;
+&#x2502;  &#x2502;      logo.png
+&#x2502;  &#x2502;
+&#x2502;  &#x251C;&#x2500;components  // &#x7EC4;&#x4EF6;&#x5B58;&#x653E;&#x76EE;&#x5F55;
+&#x2502;  &#x2502;      HelloWorld.vue
+&#x2502;  &#x2502;      index.js // &#x5168;&#x5C40;&#x7EC4;&#x4EF6;&#x6CE8;&#x518C;&#x5165;&#x53E3;
+&#x2502;  &#x2502;
+&#x2502;  &#x251C;&#x2500;pages
+&#x2502;  &#x2502;  &#x2502;  index.vue  // &#x9996;&#x9875;
+&#x2502;  &#x2502;  &#x2502;  login.vue  // &#x767B;&#x9646;
+&#x2502;  &#x2502;  &#x2502;  register.vue  // &#x6CE8;&#x518C;
+&#x2502;  &#x2502;  &#x2502;  resetpwd.vue  // &#x4FEE;&#x6539;&#x5BC6;&#x7801;
+&#x2502;  &#x2502;  &#x2502;  resetpaypwd.vue  // &#x4FEE;&#x6539;&#x652F;&#x4ED8;&#x5BC6;&#x7801;
+&#x2502;  &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x251C;&#x2500;goods
+&#x2502;  &#x2502;  &#x2502;      classify.vue  // &#x5546;&#x54C1;&#x5206;&#x7C7B;
+&#x2502;  &#x2502;  &#x2502;      details.vue // &#x5546;&#x54C1;&#x8BE6;&#x60C5;
+&#x2502;  &#x2502;  &#x2502;      list.vue  // &#x5546;&#x54C1;&#x5217;&#x8868;
+&#x2502;  &#x2502;  &#x2502;      search.vue // &#x5546;&#x54C1;&#x641C;&#x7D22;
+&#x2502;  &#x2502;  &#x2502;      shopping-cart.vue // &#x8D2D;&#x7269;&#x8F66;
+&#x2502;  &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x251C;&#x2500;news
+&#x2502;  &#x2502;  &#x2502;      details.vue  // &#x8D44;&#x8BAF;&#x8BE6;&#x60C5;
+&#x2502;  &#x2502;  &#x2502;      index.vue // &#x8D44;&#x8BAF;&#x5217;&#x8868;
+&#x2502;  &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x251C;&#x2500;mine
+&#x2502;  &#x2502;  &#x2502;  &#x2502;  commission.vue // &#x6211;&#x7684;&#x4F63;&#x91D1;
+&#x2502;  &#x2502;  &#x2502;  &#x2502;  details.vue //
+&#x2502;  &#x2502;  &#x2502;  &#x2502;  feedback.vue //
+&#x2502;  &#x2502;  &#x2502;  &#x2502;  information.vue // &#x6D88;&#x606F;&#x5217;&#x8868;
+&#x2502;  &#x2502;  &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x2502;  &#x2514;&#x2500;message
+&#x2502;  &#x2502;  &#x2502;          logistics.vue // &#x4EA4;&#x6613;&#x7269;&#x6D41;
+&#x2502;  &#x2502;  &#x2502;          system.vue
+&#x2502;  &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x251C;&#x2500;service
+&#x2502;  &#x2502;  &#x2502;      feedback.vue // &#x610F;&#x89C1;&#x53CD;&#x9988;
+&#x2502;  &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x251C;&#x2500;service
+&#x2502;  &#x2502;  &#x2502;      index.vue // &#x4FBF;&#x6C11;&#x670D;&#x52A1;&#x5217;&#x8868;&#x9875;
+&#x2502;  &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x251C;&#x2500;special
+&#x2502;  &#x2502;  &#x2502;      auction-sale.vue  // &#x7ADE;&#x62CD;&#x6361;&#x6F0F;
+&#x2502;  &#x2502;  &#x2502;      clearance-sale.vue // &#x5E95;&#x4EF7;&#x6E05;&#x4ED3;
+&#x2502;  &#x2502;  &#x2502;      flash-sale.vue // &#x9650;&#x65F6;&#x62A2;&#x8D2D;
+&#x2502;  &#x2502;  &#x2502;      recommend-sale.vue // &#x63A8;&#x8350;&#x597D;&#x7269;
+&#x2502;  &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x2514;&#x2500;uc
+&#x2502;  &#x2502;      &#x2502;  index.vue // &#x4E2A;&#x4EBA;&#x4E2D;&#x5FC3;&#x4E3B;&#x9875;
+&#x2502;  &#x2502;      &#x2502;
+&#x2502;  &#x2502;      &#x251C;&#x2500;coupons
+&#x2502;  &#x2502;      &#x2502;      details.vue // &#x4F18;&#x60E0;&#x5238;-&#x8BE6;&#x60C5;
+&#x2502;  &#x2502;      &#x2502;      index.vue // &#x4F18;&#x60E0;&#x5238;-&#x5217;&#x8868;
+&#x2502;  &#x2502;      &#x2502;
+&#x2502;  &#x2502;      &#x251C;&#x2500;messages
+&#x2502;  &#x2502;      &#x2502;      index.vue // &#x6D88;&#x606F;&#x4E2D;&#x5FC3;-&#x4E3B;&#x9875;
+&#x2502;  &#x2502;      &#x2502;      logistics.vue // &#x6D88;&#x606F;&#x4E2D;&#x5FC3;-&#x7269;&#x6D41;&#x6D88;&#x606F;
+&#x2502;  &#x2502;      &#x2502;      service.vue // &#x6D88;&#x606F;&#x4E2D;&#x5FC3;-&#x5BA2;&#x670D;&#x6D88;&#x606F;
+&#x2502;  &#x2502;      &#x2502;      system.vue // &#x6D88;&#x606F;&#x4E2D;&#x5FC3;-&#x7CFB;&#x7EDF;&#x6D88;&#x606F;
+&#x2502;  &#x2502;      &#x2502;
+&#x2502;  &#x2502;      &#x251C;&#x2500;footprint
+&#x2502;  &#x2502;      &#x2502;      index.vue // &#x6D88;&#x606F;&#x4E2D;&#x5FC3;-&#x4E3B;&#x9875;
+&#x2502;  &#x2502;      &#x2502;
+&#x2502;  &#x2502;      &#x251C;&#x2500;footprint
+&#x2502;  &#x2502;      &#x2502;      details.vue //
+&#x2502;  &#x2502;      &#x2502;      grant.vue //
+&#x2502;  &#x2502;      &#x2502;      index.vue //
+&#x2502;  &#x2502;      &#x2502;
+&#x2502;  &#x2502;      &#x251C;&#x2500;score
+&#x2502;  &#x2502;      &#x2502;      details.vue //
+&#x2502;  &#x2502;      &#x2502;
+&#x2502;  &#x2502;      &#x251C;&#x2500;orders
+&#x2502;  &#x2502;      &#x2502;      apply-refund.vue // &#x7533;&#x8BF7;&#x9000;&#x6B3E;
+&#x2502;  &#x2502;      &#x2502;      comment.vue // &#x8BA2;&#x5355;&#x8BC4;&#x4EF7;
+&#x2502;  &#x2502;      &#x2502;      details.vue // &#x8BA2;&#x5355;&#x8BE6;&#x60C5;
+&#x2502;  &#x2502;      &#x2502;      index.vue // &#x8BA2;&#x5355;&#x5217;&#x8868;
+&#x2502;  &#x2502;      &#x2502;      logistics-details.vue  // &#x7269;&#x6D41;&#x8BE6;&#x60C5;
+&#x2502;  &#x2502;      &#x2502;      logistics-query.vue // &#x7269;&#x6D41;&#x67E5;&#x8BE2;
+&#x2502;  &#x2502;      &#x2502;      refund-details.vue // &#x9000;&#x6B3E;/&#x552E;&#x540E;&#x8BE6;&#x60C5;
+&#x2502;  &#x2502;      &#x2502;      refund.vue // &#x9000;&#x6B3E;/&#x552E;&#x540E;
+&#x2502;  &#x2502;      &#x2502;      servicetype.vue // &#x9009;&#x62E9;&#x670D;&#x52A1;&#x5185;&#x5BB9;
+&#x2502;  &#x2502;      &#x2502;
+&#x2502;  &#x2502;      &#x2514;&#x2500;popularize
+&#x2502;  &#x2502;              details.vue // &#x6211;&#x7684;&#x63A8;&#x5E7F;-&#x8BE6;&#x60C5;
+&#x2502;  &#x2502;              grant.vue // &#x6211;&#x7684;&#x63A8;&#x5E7F;-&#x53D1;&#x653E;&#x989D;&#x5EA6;
+&#x2502;  &#x2502;              index.vue // &#x6211;&#x7684;&#x63A8;&#x5E7F;-&#x5217;&#x8868;
+&#x2502;  &#x2502;
+&#x2502;  &#x251C;&#x2500;plugins
+&#x2502;  &#x2502;  &#x2502;  index.js  // &#x7B2C;&#x4E09;&#x65B9;&#x5E93;&#x5F15;&#x7528;&#x5165;&#x53E3;
+&#x2502;  &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x251C;&#x2500;axios
+&#x2502;  &#x2502;  &#x2502;      index.js // ajax&#x5E93;
+&#x2502;  &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x251C;&#x2500;clipboard
+&#x2502;  &#x2502;  &#x2502;      index.js  // &#x590D;&#x5236;&#x7C98;&#x8D34;&#x63D2;&#x4EF6;
+&#x2502;  &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x251C;&#x2500;filters // &#x5168;&#x5C40;&#x8FC7;&#x6EE4;&#x5668;
+&#x2502;  &#x2502;  &#x2502;      filters.js
+&#x2502;  &#x2502;  &#x2502;      index.js
+&#x2502;  &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x251C;&#x2500;log
+&#x2502;  &#x2502;  &#x2502;      index.js  // &#x65E5;&#x5FD7;&#x8BB0;&#x5F55;&#x63D2;&#x4EF6;
+&#x2502;  &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x251C;&#x2500;moment
+&#x2502;  &#x2502;  &#x2502;      index.js // &#x65E5;&#x671F;&#x683C;&#x5F0F;&#x5316;&#x63D2;&#x4EF6;
+&#x2502;  &#x2502;  &#x2502;
+&#x2502;  &#x2502;  &#x2514;&#x2500;vant
+&#x2502;  &#x2502;          index.js // vant ui
+&#x2502;  &#x2502;
+&#x2502;  &#x2514;&#x2500;styles
+&#x2502;          index.scss // &#x5168;&#x5C40;&#x6837;&#x5F0F;&#x5165;&#x53E3;
+&#x2502;          variables.scss // &#x5168;&#x5C40;&#x53D8;&#x91CF;
+&#x2502;
+&#x2514;&#x2500;tests // &#x6D4B;&#x8BD5;&#x6A21;&#x5757;
+    &#x2514;&#x2500;unit
+            .eslintrc.js
+            example.spec.js
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="参考资料.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 参考资料">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"项目目录结构","level":"1.3","depth":1,"next":{"title":"系统组件","level":"1.4","depth":1,"ref":"","articles":[{"title":"商品列表","level":"1.4.1","depth":2,"path":"components/good-list.md","ref":"components/good-list.md","articles":[]},{"title":"评论列表","level":"1.4.2","depth":2,"path":"components/comment-list.md","ref":"components/comment-list.md","articles":[]},{"title":"优惠券列表","level":"1.4.3","depth":2,"path":"components/coupon-list.md","ref":"components/coupon-list.md","articles":[]}]},"previous":{"title":"参考资料","level":"1.2","depth":1,"path":"参考资料.md","ref":"参考资料.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"项目目录结构.md","mtime":"2019-05-30T12:39:22.554Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-30T12:39:29.172Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

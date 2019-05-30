@@ -7,18 +7,18 @@
             </li>
         </ul>
         <template v-for="item in list">
-            <dl class="footprint-item" v-if="item.length">
-                <dt class="title">{{item[0].time |date}}</dt>
-                <dd class="goods-list" v-for="goods in item" :key="goods.goods_id">
-                    <div class="goods-item">
+            <div class="footprint-item" v-if="item.length">
+                <div class="title">{{item[0].time |date}}</div>
+                <ul class="goods-list">
+                    <li class="goods-item" v-for="goods in item" :key="goods.goods_id">
                         <img :src="goods.img" class="img">
                         <div class="bottom-line">
                             <span class="price">￥{{goods.price_min}}</span>
                             <span class="button">· · ·</span>
                         </div>
-                    </div>
-                </dd>
-            </dl>
+                    </li>
+                </ul>
+            </div>
         </template>
     </div>
 </template>
@@ -105,11 +105,10 @@
             }
         }
         .footprint-item {
-            margin: 0;
-            padding: 14px;
+            margin-top: 14px;
+            padding: 0 14px;
             .title {
                 line-height: 16px;
-                margin-top: 14px;
                 color: #999;
                 font-size: 12px;
                 text-align: left;
@@ -122,12 +121,12 @@
             }
             .goods-item {
                 overflow: hidden;
-                width: 108px;
+                width: 28vw;
+                margin-bottom: 10px;
                 border-radius: 4px;
                 .img {
                     display: block;
-                    width: 108px;
-                    height: 108px;
+                    height: 30vw;
                     border: none;
                 }
                 .bottom-line {

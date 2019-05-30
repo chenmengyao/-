@@ -33,6 +33,11 @@ const vfilter = {
     if (!val) return 0
     let rs = Number(val).toLocaleString()
     return rs
-  }
+  },
+  // 性别
+    sex(val) {
+      const sexList = ['未知', '男', '女']
+      return sexList[val]
+    }
 }
 export default vfilter;

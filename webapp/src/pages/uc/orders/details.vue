@@ -180,7 +180,6 @@
                             }
                         })
                 })
-
             },
             evaluateOrder(orderId) {
                 this.$router.push({
