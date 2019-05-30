@@ -37,6 +37,14 @@
        </div>
     </div>
     <div>
+       <van-list
+  v-model="loading"
+  :finished="finished"
+  finished-text="没有更多了"
+  error-text="请求失败，点击重新加载"
+  :error.sync="error"
+  @load="loadList"
+>
       <div class="suwis-con" v-for="(item,index) in convenient">
        <div class="suwis-con-left">
           <img :src="item.img" width="100%">
@@ -53,7 +61,7 @@
                  </div>
                  <div style="margin-top:10px;">
                     <img src="../../assets/dis.png" class="suwis-con-icon">
-                    距离您{{item.distance}}km
+                    距离您{{item.distance}}m
                  </div>
               </div>
               <div style="float:right">
@@ -62,7 +70,7 @@
            </div>
        </div>
     </div>
-    
+    </van-list>
     </div>
     </div>
   </div>
@@ -83,6 +91,9 @@ export default {
   data(){
     let self = this;
     return{
+       error:false,
+       loading: false,
+       finished: false,
        center: [121.59996, 31.197646],
           lng:'',
           lat: '',
@@ -96,6 +107,11 @@ export default {
                   if (result && result.position) {
                     self.lng = result.position.lng;
                     self.lat = result.position.lat;
+                  }else{
+                    console.log('lng')
+                  
+                    self.lng = '30.60';
+                    self.lat ='114.30';
                   }
                 });
               }
@@ -123,7 +139,9 @@ export default {
     switchTab(id){
       this.switchTabId=id
       this.keyword=''
-      this.getData()
+      this.page=1
+      this.convenient=[]
+      this.finished=false
     },
     //关闭地址选择框
     closeArea(){
@@ -144,10 +162,10 @@ export default {
     goSearch(){
       this.getData()
     },
-      getData(){
-        let pro=''
-        let city=''
-        let town=''
+    	loadList(){
+        let pro='湖北省'
+        let city='武汉市'
+        let town='江夏区'
         if(this.valueList.length){
           pro=this.valueList[0].name
           city=this.valueList[1].name
@@ -166,17 +184,24 @@ export default {
           // pointx:this.lat,
           // pointy:this.lng
         }).then(res => {
-          if(this.switchTabId==null){
-            this.switchTabId=res.data.data.cagetory[0].id
-          }
-          this.cagetory=res.data.data.cagetory
-          this.convenient=res.data.data.convenient
-        })
-      }
+          	if(res.data.code==1){
+               if(this.switchTabId==null){
+                  this.switchTabId=res.data.data.cagetory[0].id
+                }
+                this.cagetory=res.data.data.cagetory
+                this.convenient=this.convenient.concat(res.data.data.convenient)
+                if (this.page * 10 >res.data.data.total) this.finished = true
+            }
+            this.page++
+            this.loading = false
+          
+        }).catch(()=>{
+	  			this.error = true
+	  		})
+	  	},
   },
   created(){
-    // this.getMap()
-    this.getData()
+    // this.finished=false
   }
 }
 </script>
@@ -184,6 +209,7 @@ export default {
 <style lang="css">
 .d-keyword{
   height: 22px;
+  width: 80px;
   border: none;
   font-size: 12px;
 }

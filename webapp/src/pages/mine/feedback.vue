@@ -39,9 +39,12 @@ export default {
     		contact_way:this.contact_way,
     		content:this.content
     	}).then(res=>{
+				if(res.data.code==1){
+          this.contact_way="";
+					this.content="";
+					this.$router.push({path:'/mine/details'});
+				}
     		Toast(res.data.msg);
-    		this.contact_way="";
-    		this.content="";
     	})
   		}
     	
