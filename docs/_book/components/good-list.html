@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>优惠券列表 · GitBook</title>
+        <title>商品列表 · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,8 +57,8 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="comment-list.html" />
     
-    <link rel="prev" href="comment-list.html" />
     
 
     </head>
@@ -127,7 +127,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.3.1" data-path="good-list.html">
+        <li class="chapter active" data-level="1.3.1" data-path="good-list.html">
             
                 <a href="good-list.html">
             
@@ -153,7 +153,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.3.3" data-path="coupon-list.html">
+        <li class="chapter " data-level="1.3.3" data-path="coupon-list.html">
             
                 <a href="coupon-list.html">
             
@@ -201,7 +201,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >优惠券列表</a>
+        <a href=".." >商品列表</a>
     </h1>
 </div>
 
@@ -216,47 +216,20 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h3 id="&#x4F18;&#x60E0;&#x5238;&#x5217;&#x8868;&#x7EC4;&#x4EF6;">&#x4F18;&#x60E0;&#x5238;&#x5217;&#x8868;&#x7EC4;&#x4EF6;</h3>
-<p><img src="http://ps574m5ib.bkt.clouddn.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20190530174057.jpg" alt="&#x5FAE;&#x4FE1;&#x622A;&#x56FE;\_20190530174057"></p>
+                                <h3 id="&#x5546;&#x54C1;&#x5217;&#x8868;">&#x5546;&#x54C1;&#x5217;&#x8868;</h3>
+<p><img src="http://ps574m5ib.bkt.clouddn.com/%E5%95%86%E5%93%81%E5%88%97%E8%A1%A8.jpg" alt="&#x5546;&#x54C1;&#x5217;&#x8868;"></p>
 <h3 id="&#x7528;&#x6CD5;">&#x7528;&#x6CD5;</h3>
-<pre><code class="lang-js">&lt;coupon-list v-model=<span class="hljs-string">&quot;couponsVisible&quot;</span> title=<span class="hljs-string">&quot;&#x8BF7;&#x9886;&#x53D6;&#x4F18;&#x60E0;&#x5238;&quot;</span>&gt;
-  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">coupon-item</span>
-    <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;item in list&quot;</span>
-    <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;&#x65B0;&#x4EBA;&#x4F18;&#x60E0;&#x5238;&quot;</span>
-    <span class="hljs-attr">desc</span>=<span class="hljs-string">&quot;&#x6EE1;1000&#x5143;&#x5373;&#x53EF;&#x4F7F;&#x7528;&quot;</span>
-    <span class="hljs-attr">price</span>=<span class="hljs-string">&quot;50&quot;</span>
-    <span class="hljs-attr">time</span>=<span class="hljs-string">&quot;2019-02-01 17:05&quot;</span>
-    <span class="hljs-attr">btn-text</span>=<span class="hljs-string">&quot;&#x9886;&#x53D6;&quot;</span>
-    @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;test&quot;</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">coupon-item</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">coupon-list</span>&gt;</span>
+<pre><code class="lang-js">&lt;good-list&gt;
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">good-item</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;item in goods&quot;</span>
+    <span class="hljs-attr">:img</span>=<span class="hljs-string">&quot;item.img&quot;</span>
+    <span class="hljs-attr">:title</span>=<span class="hljs-string">&quot;item.title&quot;</span>
+    <span class="hljs-attr">:price</span>=<span class="hljs-string">&quot;item.price_min&quot;</span>
+    <span class="hljs-attr">:sell</span>=<span class="hljs-string">&quot;item.sell&quot;</span>
+    @<span class="hljs-attr">click.native</span>=<span class="hljs-string">&quot;$router.push({path:&apos;/goods/details&apos;, query: {id: item.id}})&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">good-item</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">good-list</span>&gt;</span>
 </span></code></pre>
-<h3 id="props-coupon-list">props coupon-list</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">&#x540D;&#x79F0;</th>
-<th style="text-align:left">&#x63CF;&#x8FF0;</th>
-<th>&#x6570;&#x636E;&#x7C7B;&#x578B;</th>
-<th>&#x9ED8;&#x8BA4;&#x503C;</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">v-model</td>
-<td style="text-align:left">&#x662F;&#x5426;&#x663E;&#x793A;</td>
-<td>Boolean</td>
-<td>false</td>
-</tr>
-<tr>
-<td style="text-align:left">title</td>
-<td style="text-align:left">&#x4F18;&#x60E0;&#x5238;&#x9762;&#x677F;&#x6807;&#x9898;</td>
-<td>String</td>
-<td>-</td>
-</tr>
-</tbody>
-</table>
-<h3 id="props-coupon-item">props coupon-item</h3>
+<h3 id="props">props</h3>
 <table>
 <thead>
 <tr>
@@ -274,8 +247,8 @@
 <td>-</td>
 </tr>
 <tr>
-<td style="text-align:left">desc</td>
-<td style="text-align:left">&#x4F18;&#x60E0;&#x5238;&#x63CF;&#x8FF0;</td>
+<td style="text-align:left">img</td>
+<td style="text-align:left">&#x56FE;&#x7247;&#x5730;&#x5740;</td>
 <td>String</td>
 <td>-</td>
 </tr>
@@ -286,15 +259,9 @@
 <td>-</td>
 </tr>
 <tr>
-<td style="text-align:left">time</td>
-<td style="text-align:left">&#x6709;&#x6548;&#x65F6;&#x95F4;</td>
-<td>String</td>
-<td>-</td>
-</tr>
-<tr>
-<td style="text-align:left">btn-text</td>
-<td style="text-align:left">&#x6309;&#x94AE;&#x6587;&#x5B57;</td>
-<td>String</td>
+<td style="text-align:left">sell</td>
+<td style="text-align:left">&#x5DF2;&#x552E;&#x6570;&#x91CF;</td>
+<td>Number</td>
 <td>-</td>
 </tr>
 </tbody>
@@ -311,10 +278,10 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">click</td>
+<td style="text-align:left">click.native</td>
 <td style="text-align:left">&#x5355;&#x51FB;&#x4E8B;&#x4EF6;</td>
-<td>Object</td>
-<td>{title:&apos;&apos;,desc:&apos;&apos;,price :&apos;&apos;,time:&apos;&apos;}</td>
+<td>-</td>
+<td>&#x6839;&#x636E;&#x9700;&#x8981;&#x53EF;&#x4F20; item</td>
 </tr>
 </tbody>
 </table>
@@ -345,10 +312,10 @@
 
             
                 
-                <a href="comment-list.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 评论列表">
-                    <i class="fa fa-angle-left"></i>
-                </a>
                 
+                <a href="comment-list.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 评论列表">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -357,7 +324,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"优惠券列表","level":"1.3.3","depth":2,"previous":{"title":"评论列表","level":"1.3.2","depth":2,"path":"components/comment-list.md","ref":"components/comment-list.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"components/coupon-list.md","mtime":"2019-05-30T10:18:15.752Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-30T10:26:28.197Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"商品列表","level":"1.3.1","depth":2,"next":{"title":"评论列表","level":"1.3.2","depth":2,"path":"components/comment-list.md","ref":"components/comment-list.md","articles":[]},"previous":{"title":"系统组件","level":"1.3","depth":1,"ref":"","articles":[{"title":"商品列表","level":"1.3.1","depth":2,"path":"components/good-list.md","ref":"components/good-list.md","articles":[]},{"title":"评论列表","level":"1.3.2","depth":2,"path":"components/comment-list.md","ref":"components/comment-list.md","articles":[]},{"title":"优惠券列表","level":"1.3.3","depth":2,"path":"components/coupon-list.md","ref":"components/coupon-list.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"components/good-list.md","mtime":"2019-05-30T10:21:31.649Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-30T10:26:28.197Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
