@@ -43,19 +43,25 @@
     <!-- 评论 -->
     <van-cell ref="comment" class="interval comment">
       <span slot="title">评价（{{details.evaluate_count}}）</span>
-      <span>好评率&nbsp;<em>97%</em></span>
+      <span>好评率&nbsp;<em>0%</em></span>
     </van-cell>
-    <comment-list>
-      <comment-item v-for="item in 2"
+    <comment-list v-if="details.evaluate">
+      <comment-item v-for="(item,idx) in details.evaluate"
+        v-if="idx<3"
         name="橘猫****到我家"
         date="2019-03-01 12:01"
         avatar="touiocn.png"
         content="拿到手了，拿着不错，蛮透明，贴合度也高，摄像头的位置刚刚好。"
         :medias="['images/details/media.jpg','images/details/media.jpg','images/details/media.jpg','images/details/media.jpg','images/details/media.jpg']">
       </comment-item>
+      <van-row v-if="details.evaluate.length==0" type="flex" align="center" justify="center">
+        <van-col style="color:#999999;">
+          暂无评价~
+        </van-col>
+      </van-row>
     </comment-list>
     <!-- 评论 //-->
-    <router-link class="comment-more" :to="{ path: '/', params: {} }">查看更多评价<img src="@/assets/details/more@3x.png" alt=""></router-link>
+    <router-link v-if="details.evaluate&&details.evaluate.length>3" class="comment-more" :to="{ path: '/', params: {} }">查看更多评价<img src="@/assets/details/more@3x.png" alt=""></router-link>
     <!-- 店铺详情 -->
     <div ref="content">
       <van-tabs class="good-tabs" v-model="goodTabIdx">
@@ -386,7 +392,7 @@ export default {
 			} else {
 				Toast(res.data.msg)
 			}
-      this.couponsVisible = false
+			this.couponsVisible = false
 		},
 		// 显示商品规格
 		showSku(type) {
