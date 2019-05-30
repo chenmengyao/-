@@ -16,8 +16,8 @@ export default {}
     padding: 0 12px;
     .suwis-good-item {
         flex: 1;
-        min-width: calc(50% - 6px);
-        max-width: calc(50% - 6px);
+        min-width: calc(50vw - 18px);
+        max-width: calc(50vw - 18px);
     }
 }
 </style>

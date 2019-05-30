@@ -55,29 +55,29 @@
 
 <script>
 export default {
-	data() {
-		return {
-			details: {},
-			goods: [],
-			params: {
-				store_id: 0,
-				type: 0,
-				page: 1,
-				num: 20,
-				search: '你好'
-			}
-		}
-	},
-	created() {
-		this.getList()
-	},
-	methods: {
-		async getList() {
-			this.params.store_id = this.$route.query.id
-			let res = await this.$axios.post('goods/lists', this.params)
-			this.goods = res.data.data || []
-		}
-	}
+  data() {
+    return {
+      details: {},
+      goods: [],
+      params: {
+        store_id: 0,
+        type: 0,
+        page: 1,
+        num: 20,
+        search: '你好'
+      }
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    async getList() {
+      this.params.store_id = this.$route.query.id
+      let res = await this.$axios.post('goods/lists', this.params)
+      this.goods = res.data.data || []
+    }
+  }
 }
 </script>
 
