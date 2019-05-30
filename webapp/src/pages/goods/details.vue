@@ -122,7 +122,6 @@
           <span class="van-sku__price-symbol">￥</span><span class="van-sku__price-num">{{ props.price }}</span>
         </div>
       </template>
-
       <!-- 自定义 sku actions -->
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions">
@@ -142,13 +141,13 @@
     <!-- 优惠券 //-->
     <coupon-list v-model="couponsVisible" title="请领取优惠券">
       <coupon-item
-        v-for="item in 2"
-        title="新人优惠券"
-        desc="满1000元即可使用"
-        price="50"
-        time="2019-02-01 17:05"
+        v-for="item in coupons"
+        :title="item.title"
+        :desc="`满${item.total}减${item.sum}`"
+        :price="item.sum"
+        :time="item.end_time"
         btn-text="领取"
-        @click="test">
+        @click="receiveCoupon(item)">
       </coupon-item>
     </coupon-list>
     <!-- 优惠券 -->
@@ -265,7 +264,7 @@ export default {
 				}
 			},
 			// 优惠券显示内容
-			couponsVisible: true
+			couponsVisible: false
 		}
 	},
 	created() {
@@ -318,9 +317,6 @@ export default {
 		}
 	},
 	methods: {
-		test(evt) {
-			console.log(evt, 'evt')
-		},
 		// 跳转
 		skip(nav) {
 			if (this.lockscroll) return
@@ -379,6 +375,18 @@ export default {
 				goods_id: this.$route.query.id
 			})
 			this.coupons = res.data.data || []
+		},
+		// 领取优惠券
+		async receiveCoupon(item) {
+			let res = await this.$axios.post('goods/getcoupon', {
+				coupon_id: item.id
+			})
+			if (res.data.code == 1) {
+				Toast('领取成功')
+			} else {
+				Toast(res.data.msg)
+			}
+      this.couponsVisible = false
 		},
 		// 显示商品规格
 		showSku(type) {
