@@ -31,10 +31,16 @@
          </div>
         <div class="suwis-logistics-title">
              <div class="suwis-logistics-img">
+                 <router-link tag="div" :to="{path: '/uc/orders/logistics-details', query: {id: item.order_id}}">
                  <img :src="item.goods_img">
+                 </router-link>
              </div>
              <div class="suwis-logistics-con">
-                 <div>{{item.goods_name}}</div>
+                 <div>
+                    <router-link tag="div" :to="{path: '/uc/orders/logistics-details', query: {id: item.order_id}}">
+                     {{item.goods_name}}
+                 </router-link>
+                </div>
                  <div>物流单号：{{item.express}} {{item.express_number}}</div>
              </div>
          </div>

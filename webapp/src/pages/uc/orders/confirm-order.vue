@@ -109,7 +109,7 @@
                 :price="coupon.sum"
                 :time="coupon.end_time | dateFmt"
                 btn-text="使用"
-                @click="test">
+                @click="onCouponClick">
             </couponItem>
         </CouponList>
     </div>
@@ -181,6 +181,9 @@
                         id: goods.id
                     }
                 })
+            },
+            onCouponClick() {
+
             },
             selectAddress() {
                 this.$router.push({
