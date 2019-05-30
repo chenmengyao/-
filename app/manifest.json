@@ -126,7 +126,7 @@
         "tags": [{
           "tag": "font",
           "id": "indexIcon",
-          "text": "\ue60b",
+          "text": "\ue6a9;",
           "position": {
             "top": "5px",
             "left": "0",
@@ -134,10 +134,10 @@
             "height": "24px"
           },
           "textStyles": {
-            "fontSrc": "_www/fonts/app.ttf",
+            "fontSrc": "_www/fonts/iconfont.ttf",
             "align": "center",
             "size": "28px",
-            "color": "#515151"
+            "color": "#666666"
           }
         }, {
           "tag": "font",
@@ -152,12 +152,12 @@
           "textStyles": {
             "align": "center",
             "size": "12px",
-            "color": "#515151"
+            "color": "#666666"
           }
         }, {
           "tag": "font",
-          "id": "caseIcon",
-          "text": "\ue735",
+          "id": "goodsIcon",
+          "text": "\ue7f9;",
           "position": {
             "top": "5px",
             "left": "23%",
@@ -165,14 +165,14 @@
             "height": "24px"
           },
           "textStyles": {
-            "fontSrc": "_www/fonts/app.ttf",
+            "fontSrc": "_www/fonts/iconfont.ttf",
             "align": "center",
             "size": "28px",
-            "color": "#515151"
+            "color": "#666666"
           }
         }, {
           "tag": "font",
-          "id": "caseText",
+          "id": "goodsText",
           "text": "列表",
           "position": {
             "top": "25px",
@@ -183,12 +183,12 @@
           "textStyles": {
             "align": "center",
             "size": "12px",
-            "color": "#515151"
+            "color": "#666666"
           }
         }, {
           "tag": "font",
-          "id": "joinIcon",
-          "text": "\ue645",
+          "id": "carIcon",
+          "text": "\ue669;",
           "position": {
             "top": "5px",
             "left": "47%",
@@ -196,14 +196,14 @@
             "height": "24px"
           },
           "textStyles": {
-            "fontSrc": "_www/fonts/app.ttf",
+            "fontSrc": "_www/fonts/iconfont.ttf",
             "align": "center",
             "size": "24px",
-            "color": "#515151"
+            "color": "#666666"
           }
         }, {
           "tag": "font",
-          "id": "joinText",
+          "id": "carText",
           "text": "购物车",
           "position": {
             "top": "25px",
@@ -214,12 +214,12 @@
           "textStyles": {
             "align": "center",
             "size": "12px",
-            "color": "#515151"
+            "color": "#666666"
           }
         }, {
           "tag": "font",
-          "id": "aboutIcon",
-          "text": "\ue65d",
+          "id": "myIcon",
+          "text": "\ue61e;",
           "position": {
             "top": "5px",
             "left": "72%",
@@ -227,14 +227,14 @@
             "height": "24px"
           },
           "textStyles": {
-            "fontSrc": "_www/fonts/app.ttf",
+            "fontSrc": "_www/fonts/iconfont.ttf",
             "align": "center",
             "size": "28px",
-            "color": "#515151"
+            "color": "#666666"
           }
         }, {
           "tag": "font",
-          "id": "aboutText",
+          "id": "myText",
           "text": "我的",
           "position": {
             "top": "25px",
@@ -245,7 +245,7 @@
           "textStyles": {
             "align": "center",
             "size": "12px",
-            "color": "#515151"
+            "color": "#666666"
           }
         }]
       }]
