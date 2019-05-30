@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-e5d55926"],{"753e":function(n,e,t){"use strict";var s=t("dd73"),u=t.n(s);u.a},dd73:function(n,e,t){},f262:function(n,e,t){"use strict";t.r(e);var s=function(){var n=this,e=n.$createElement,t=n._self._c||e;return t("div",{staticClass:"suwis-user-agreement"},[n._v("\n  用户协议\n")])},u=[],c={},a=c,i=(t("753e"),t("2877")),r=Object(i["a"])(a,s,u,!1,null,null,null);e["default"]=r.exports}}]);
+//# sourceMappingURL=chunk-e5d55926.58783bbe.js.map
