@@ -15,7 +15,7 @@
     "72": "icon.png"
   },
   /*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
-  "launch_path": "http://test.suwis.com/1905_tideway_shop/webapp/dist/",
+  "launch_path": "index.html",
   "developer": {
     /*开发者名称*/
     "name": "",
@@ -160,7 +160,7 @@
             "text": "",
             "position": {
               "top": "4px",
-              "left": "20%",
+              "left": "25%",
               "width": "25%",
               "height": "24px"
             },
@@ -176,7 +176,7 @@
             "text": "分类",
             "position": {
               "top": "23px",
-              "left": "20%",
+              "left": "25%",
               "width": "25%",
               "height": "24px"
             },
@@ -191,7 +191,7 @@
             "text": "",
             "position": {
               "top": "4px",
-              "left": "55%",
+              "left": "50%",
               "width": "25%",
               "height": "24px"
             },
@@ -204,10 +204,10 @@
           {
             "tag": "font",
             "id": "contactText",
-            "text": "通讯录",
+            "text": "购物车",
             "position": {
               "top": "24px",
-              "left": "55%",
+              "left": "50%",
               "width": "25%",
               "height": "24px"
             },
@@ -218,16 +218,16 @@
           },
           {
             "tag": "font",
-            "id": "contactIcon",
-            "text": "",
+            "id": "newwindowIcon",
+            "text": "",
             "position": {
               "top": "4px",
-              "left": "55%",
+              "left": "75%",
               "width": "25%",
               "height": "24px"
             },
             "textStyles": {
-              "fontSrc": "_www/fonts/mui.ttf",
+              "fontSrc": "_www/fonts/iconfont.ttf",
               "align": "center",
               "size": "24px"
             }
@@ -238,7 +238,7 @@
             "text": "我的",
             "position": {
               "top": "24px",
-              "left": "55%",
+              "left": "75%",
               "width": "25%",
               "height": "24px"
             },

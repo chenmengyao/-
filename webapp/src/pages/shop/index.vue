@@ -1,22 +1,17 @@
 <template lang="html">
   <div class="suwis-shop">
     <!-- 店铺信息 -->
-    <van-row class="interval shop" v-if="details.store">
+    <van-row class="shop" v-if="store">
       <van-col>
         <dl>
           <dt>
-            <img :src="details.store.logo" alt="">
+            <img :src="store.logo" alt="">
           </dt>
           <dd>
-            <h6>{{details.store.name}}</h6>
-            <span>在售商品<em>{{details.store_count}}</em>件</span>
+            <h6>{{store.name}}</h6>
+            <span>在售商品<em>{{total}}</em>件</span>
           </dd>
         </dl>
-      </van-col>
-      <van-col class="link">
-        <router-link :to="{ path: '/', params: {} }">
-          <img class="btn" src="@/assets/details/look@3x.png" alt="">
-        </router-link>
       </van-col>
     </van-row>
     <!-- 店铺信息 //-->
@@ -60,18 +55,22 @@
 export default {
   data() {
     return {
-      details: {},
+      store: {},
       goods: [],
+      total: 0,
       params: {
         store_id: 0,
         sell: 'down',
         price: 'down',
         zh: 'down',
+        page: 1,
+        num: 20,
         search: ''
       }
     }
   },
   created() {
+    this.getStore()
     this.getList()
   },
   watch: {
@@ -83,11 +82,19 @@ export default {
     }
   },
   methods: {
+    async getStore() {
+      let res = await this.$axios.post('goods/getstore', {
+        id: this.$route.query.id
+      })
+      let data = res.data.data || {}
+      this.store = data
+    },
     async getList() {
       this.params.store_id = this.$route.query.id
       let res = await this.$axios.post('goods/storelist', this.params)
       let data = res.data.data || {}
       this.goods = data.goods || []
+      this.total = data.total || 0
     }
   }
 }
@@ -96,6 +103,63 @@ export default {
 <style lang="scss" scoped>
 .suwis-shop {
     position: relative;
+    .shop {
+        bottom: 50px;
+        width: 100vw;
+        height: 86px;
+        background: #fff;
+        display: flex;
+        justify-content: space-between;
+        z-index: 399;
+        font-size: 12px;
+        padding: 0 12px;
+
+        .van-col {
+            display: flex;
+            align-items: center;
+        }
+
+        dl {
+            display: flex;
+            align-items: center;
+
+            dd,
+            dt {
+                margin: 0;
+            }
+            dd {
+                padding-left: 10px;
+            }
+
+            img {
+                max-width: 44px;
+                border-radius: 4px;
+                display: block;
+            }
+
+            h6 {
+                color: $primary;
+                margin: 0;
+                padding-bottom: 5px;
+                font-size: 14px;
+            }
+
+            span {
+                color: $gray;
+            }
+
+            em {
+                font-style: normal;
+                color: $red;
+            }
+        }
+        .link {
+            justify-content: center;
+            .btn {
+                max-width: 68px;
+            }
+        }
+    }
     .interval {
         border-top: 6px solid $border;
     }
