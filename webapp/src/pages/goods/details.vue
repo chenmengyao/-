@@ -102,7 +102,7 @@
         </dl>
       </van-col>
       <van-col class="link">
-        <router-link :to="{ path: '/shop', query: {id: $route.query.id} }">
+        <router-link :to="{ path: '/shop', query: {id: details.store.id } }">
           <img class="btn" src="@/assets/details/look@3x.png" alt="">
         </router-link>
       </van-col>

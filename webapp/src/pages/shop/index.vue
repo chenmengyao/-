@@ -25,17 +25,20 @@
         <img class="icon" src="@/assets/shop/list@2x.png" alt="">列表
       </van-col>
       <van-row>
-        <van-col class="btn">
+        <van-col class="btn" @click.native="params.zh=='down'?params.zh='up':params.zh='down'">
           综合
-          <img class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
+          <img v-if="params.zh=='down'" class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
+          <img v-else class="icon" src="@/assets/shop/arrow_top.png" alt="">
         </van-col>
-        <van-col class="btn">
+        <van-col class="btn" @click.native="params.sell=='down'?params.sell='up':params.sell='down'">
           销量
-          <img class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
+          <img v-if="params.sell=='down'" class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
+          <img v-else class="icon" src="@/assets/shop/arrow_top.png" alt="">
         </van-col>
-        <van-col class="btn">
+        <van-col class="btn" @click.native="params.price=='down'?params.price='up':params.price='down'">
           价格
-          <img class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
+          <img v-if="params.price=='down'" class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
+          <img v-else class="icon" src="@/assets/shop/arrow_top.png" alt="">
         </van-col>
       </van-row>
     </van-row>
@@ -44,7 +47,7 @@
       <good-item v-for="item in goods"
         :img="item.img"
         :title="item.title"
-        :price="item.price_min"
+        :price="item.price"
         :sell="item.sell"
         @click.native="$router.push({path:'/goods/details', query: {id: item.id}})">
       </good-item>
@@ -61,21 +64,30 @@ export default {
       goods: [],
       params: {
         store_id: 0,
-        type: 0,
-        page: 1,
-        num: 20,
-        search: '你好'
+        sell: 'down',
+        price: 'down',
+        zh: 'down',
+        search: ''
       }
     }
   },
   created() {
     this.getList()
   },
+  watch: {
+    params: {
+      deep: true,
+      handler() {
+        this.getList()
+      }
+    }
+  },
   methods: {
     async getList() {
       this.params.store_id = this.$route.query.id
-      let res = await this.$axios.post('goods/lists', this.params)
-      this.goods = res.data.data || []
+      let res = await this.$axios.post('goods/storelist', this.params)
+      let data = res.data.data || {}
+      this.goods = data.goods || []
     }
   }
 }

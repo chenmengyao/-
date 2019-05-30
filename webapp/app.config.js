@@ -7,6 +7,7 @@ export default {
   licenseExemptUrls: [
     '/',
     '/goods/details',
+    '/shop',
     '/register',
     '/updatepwd',
     '/user-agreement',
