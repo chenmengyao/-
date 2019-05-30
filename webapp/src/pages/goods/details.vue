@@ -142,11 +142,13 @@
     <!-- 优惠券 //-->
     <coupon-list v-model="couponsVisible" title="请领取优惠券">
       <coupon-item
-        v-for="item in 3"
+        v-for="item in 2"
         title="新人优惠券"
         desc="满1000元即可使用"
         price="50"
-        time="2019-02-01 17:05">
+        time="2019-02-01 17:05"
+        btn-text="领取"
+        @click="test">
       </coupon-item>
     </coupon-list>
     <!-- 优惠券 -->
@@ -316,6 +318,9 @@ export default {
 		}
 	},
 	methods: {
+		test(evt) {
+			console.log(evt, 'evt')
+		},
 		// 跳转
 		skip(nav) {
 			if (this.lockscroll) return

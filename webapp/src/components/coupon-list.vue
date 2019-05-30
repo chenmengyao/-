@@ -39,7 +39,7 @@ export default {
     }
 
     h5 {
-        margin: 0;
+        margin: 0 0 6vw;
         font-size: 14px;
         color: $primary;
     }
