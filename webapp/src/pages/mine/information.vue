@@ -1,7 +1,7 @@
 <template lang="html">
   <div>
     <div>
-        <router-link :to="{path:'/mine/message/system'}">
+        <router-link :to="{path:'/mine/message/logistics'}">
           <div class="suwis-infor-list">
             <div>
               <img src="../../assets/infor2.png" style="width:26px">
@@ -12,7 +12,7 @@
             </div>
           </div>
         </router-link>
-        <router-link :to="{path:'/mine/message/logistics'}">
+        <router-link :to="{path:'/mine/message/system'}">
         <div class="suwis-infor-list">
            <div>
              <img src="../../assets/infor1.png" style="width:26px">
