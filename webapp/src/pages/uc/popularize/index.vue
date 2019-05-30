@@ -111,14 +111,17 @@
         methods: {
             changeSort(type) {
                 this.sortActive === type
-                    ? this[`${type}Sort`] = this[`${type}Sort`] === 'up' ? 'down' : 'up'
+                    ? this[`${type}Sort`] = this[`${type}Sort`] === 'up' ? '' : 'up'
                     : this.sortActive = type
             },
             getList() {
                 const url = this.tabStatus === 'new' ? '/mine/generalize_new' : '//mine/generalize_all'
                 this.$axios
                     .post(url, {
-
+                        page: this.page,
+                        num: this.num,
+                        time: this.timeSort,
+                        sum: this.tabStatus === 'new' ? undefined : this.numSort
                     })
                     .then(({ data }) => {
                         if (data.code === 1) {

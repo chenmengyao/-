@@ -62,14 +62,15 @@
                     })
             },
             onAddressClick(id) {
-                const { from, num, stand_id } = this.query
+                const { from, num, stand_id, score } = this.query
                 if (from === 'confirm-order') {
                     this.$router.push({
                         path: '/uc/orders/confirm-order',
                         query: {
-                            addressId: id,
+                            address_id: id,
                             num,
-                            stand_id
+                            stand_id,
+                            score
                         }
                     })
                 }

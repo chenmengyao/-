@@ -3,13 +3,13 @@
         <van-cell-group class="score-box">
             <van-cell center value-class="cell-content">
                 <template slot="title">
-                    我的积分：113456分
+                    我的积分：{{score_balance}}分
                 </template>
             </van-cell>
             <van-cell center value-class="cell-content">
                 <template slot="title">
-                    我的积分：113456分
-                    <span style="color: #f0914b;font-size: 12px">￥20</span>
+                    可用积分：{{score_balance}}分
+                    <span class="use-all" @click="score = score_balance">全部使用</span>
                 </template>
             </van-cell>
             <van-field
@@ -19,6 +19,10 @@
                 placeholder="请输入本次使用的积分数" />
             <div class="bottom-tip">*积分兑换公式：100积分=1元</div>
         </van-cell-group>
+
+        <div class="button-line">
+            <div class="deploy" @click="confirm">确定</div>
+        </div>
     </div>
 </template>
 
@@ -27,8 +31,47 @@
         name: "score-decount",
         data() {
             return {
-                score: ''
+                query: {},
+                score: '',
+                score_balance: ''   // 积分余额
             }
+        },
+        methods: {
+            confirm() {
+                if (+this.score > +this.score_balance) {
+                    this.$toast('输入的积分不能大于可用积分');
+                    return
+                }
+                const { address_id, num, stand_id } = this.query
+                this.$router.push({
+                    path: '/uc/orders/confirm-order',
+                    query: {
+                        address_id,
+                        num,
+                        stand_id,
+                        score: this.score
+                    }
+                })
+            }
+        },
+        created() {
+            Object.assign(this.query, this.$route.query)
+            this.$axios
+                .post('/mine/myscore')
+                .then(({ data }) => {
+                    if (data.code === 1) {
+                        this.finished = true
+                        if (data.data) {
+                            this.score_balance = data.data.score_balance
+                        }
+                    } else {
+                        this.$toast(data.msg);
+                    }
+                    this.loading = false
+                })
+                .catch(() => {
+                    this.error = true
+                })
         }
     }
 </script>
@@ -47,6 +90,28 @@
             color: #f0914b;
             font-size: 10px;
             text-align: right;
+        }
+        .use-all {
+            margin-left: 5px;
+            padding: 2px 5px;
+            color: #f0914b;
+            font-size: 12px;
+        }
+        .button-line {
+            width: 100%;
+            margin-top: 30px;
+            .deploy {
+                width:323px;
+                height:45px;
+                margin: 0 auto;
+                background:linear-gradient(54deg,rgba(245,92,60,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
+                border-radius:25px;
+                color: #fff;
+                cursor: pointer;
+                font-size: 16px;
+                line-height: 45px;
+                text-align: center;
+            }
         }
     }
 

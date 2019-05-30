@@ -17,21 +17,18 @@
                     <span class="shop-name">{{shop[0].name}}</span>
                 </div>
                 <van-card
-                        v-for="goods in shop"
-                        :key="goods.goods_id"
-                        :num="goods.num"
-                        :price="goods.goods_price"
-                        :title="goods.goods_name"
-                        :thumb="goods.goods_img"
-                        @click="onClick(goods)">
-                    <template v-if="goods.desc && goods.desc.length" #desc>
-                        <div class="card-desc">
-                            <span v-for="desc in shopData.desc" :key="desc">{{desc}}</span>
-                        </div>
-                    </template>
-                    <template v-if="goods.tags && goods.tags.length" #tags>
-                        <div class="card-tags">
-                            <van-tag class="card-tag" color="rgba(240,145,75,.16)" v-for="tag in shopData.tags">{{tag}}</van-tag>
+                    v-for="goods in shop"
+                    :key="goods.goods_id"
+                    :num="num"
+                    :price="goods.price"
+                    :title="goods.title"
+                    :thumb="goods.img"
+                    @click="onClick(goods)">
+                    <template #desc>
+                        <div class="desc-line">
+                            <div class="desc-item">{{goods.header_one}}</div>
+                            <div class="desc-item">{{goods.header_two}}</div>
+                            <div class="desc-item">{{goods.header_three}}</div>
                         </div>
                     </template>
                 </van-card>
@@ -39,9 +36,14 @@
         </template>
 
         <van-cell-group class="personal-box">
+            <van-cell title="购买数量" v-if="orderFrom === 'single'" center value-class="cell-content">
+                <template>
+                    <van-stepper v-model="num" />
+                </template>
+            </van-cell>
             <van-cell title="配送方式" center value-class="content">
                 <template>
-                    普通快递 <span style="font-size: 10px">（运费：￥0.00）</span>
+                    普通快递 <span style="font-size: 10px">（运费：￥{{postage}}）</span>
                 </template>
             </van-cell>
             <van-field
@@ -54,7 +56,7 @@
         <van-cell-group class="discount-box">
             <van-cell center value-class="cell-content">
                 <template slot="title">
-                    <van-checkbox v-model="couponId">卖家优惠券</van-checkbox>
+                    <van-checkbox v-model="useCoupon">卖家优惠券</van-checkbox>
                 </template>
                 <template>
                     <div @click="selectCoupon">
@@ -65,7 +67,7 @@
             </van-cell>
             <van-cell center value-class="cell-content short-content">
                 <template slot="title">
-                    <van-checkbox v-model="discount">会员优惠 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;">（会员折扣9.5折）</span></van-checkbox>
+                    <van-checkbox v-model="useDiscount">会员优惠 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;">（会员折扣9.5折）</span></van-checkbox>
                 </template>
                 <template>
                     -20
@@ -73,7 +75,7 @@
             </van-cell>
             <van-cell center value-class="cell-content short-content">
                 <template slot="title">
-                    <van-checkbox v-model="score">积分抵扣 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;">（可用积分：1234）</span></van-checkbox>
+                    <van-checkbox v-model="useScore">积分抵扣：{{score}}<span style="color: #b4b4b4;font-size: 12px;line-height: 24px;">（可用积分：1234）</span></van-checkbox>
                 </template>
                 <template>
                     <div @click="setScore">
@@ -94,37 +96,68 @@
 
         <div class="submit-box">
             <span>合计：<span style="color: #e83f44">￥20</span></span>
-            <button class="submit">提交订单</button>
+            <button class="submit" @click="toPay">提交订单</button>
         </div>
+
+        <PayType :show="payTypeShow" @close="payTypeShow = false" @select="selectPayType"></PayType>
+
+        <CouponList v-model="couponShow" title="选择优惠券">
+            <couponItem
+                v-for="coupon in couponList"
+                :title="coupon.title"
+                :desc="`满${coupon.total}元即可使用`"
+                :price="coupon.sum"
+                :time="coupon.end_time | dateFmt"
+                btn-text="使用"
+                @click="test">
+            </couponItem>
+        </CouponList>
     </div>
 </template>
 
 <script>
     import defaultShopLogo from '@/assets/orders/shop-logo.png'
+    import PayType from '@/components/uc/orders/pay-type'
+    import CouponList from '@//components/coupon-list'
+    import CouponItem from '@//components/coupon-item'
 
     export default {
+        components: {
+            CouponList,
+            CouponItem,
+            PayType
+        },
         filters: {
             location(v) {
                 return (v.province + v.city + v.area + v.address) || '---'
             }
         },
+        computed: {
+            postage() {
+                return this.shopList.reduce((result, shop) => {
+                    shop.forEach(goods => result += goods.postage)
+                    return result
+                }, 0)
+            }
+        },
         data() {
             return {
-                addressId: '',
+                address_id: '',
                 address: {},
-                couponId: '',   // 优惠券id
-                discount: '',   // 折扣
+                useCoupon: true,
+                couponList: [],
+                coupon_id: '',   // 优惠券id
+                couponShow: false,
+                useDiscount: true,   // 折扣
                 defaultShopLogo,
                 express_remark: '', // 备注
+                num: '',    // 直接购买时商品的数量
+                score: '',
                 stand_id: '',
-                shopData: {
-                    num: 1,
-                    desc: '',
-                    coupon: true
-                },
                 shopList: [],
-                score: '',  // 积分
-                order: []
+                useScore: true,  // 积分
+                orderFrom: '',  // 订单来源：single: 直接购买    car：购物车
+                payTypeShow: false,
             }
         },
         methods: {
@@ -142,7 +175,12 @@
                 this.shopList = Object.values(shopData)
             },
             onClick(goods) {
-
+                this.$router.push({
+                    path: '/goods/details',
+                    query: {
+                        id: goods.id
+                    }
+                })
             },
             selectAddress() {
                 this.$router.push({
@@ -150,26 +188,50 @@
                     query: {
                         from: 'confirm-order',
                         stand_id: this.stand_id,
-                        num: this.num
+                        num: this.num,
+                        score: this.score
                     }
                 })
             },
             selectCoupon() {
-                console.log('coupon')
+                this.couponList.length ? this.couponShow = true : this.$toast('抱歉，暂无可用优惠券')
+            },
+            selectPayType(key) {
+                this.payTypeShow = false
             },
             setScore() {
                 this.$router.push({
                     path: '/uc/orders/score-discount',
                     query: {
-
+                        address_id: this.address_id,
+                        num: this.num,
+                        stand_id: this.stand_id,
                     }
                 })
+            },
+            toPay() {
+                this.payTypeShow = true
+                this.$axios
+                    .post('/tgoods/topay', {
+                        stand_id: this.stand_id,
+                        num: this.num,
+                        coupon_id: this.useCoupon ? this.coupon_id : undefined,
+                        is_vip: this.useDiscount ? 1 : undefined,
+                        score_sum: this.useScore ? this.score : undefined
+                    })
             }
         },
         created() {
-            this.stand_id = this.$route.query.stand_id
-            this.num = this.$route.query.num
-            this.addressId = this.$route.query.addressId
+            if (this.$route.query.stand_id) {
+                this.stand_id = this.$route.query.stand_id
+                this.num = this.$route.query.num
+                this.score = this.$route.query.score
+                this.address_id = this.$route.query.address_id
+                this.orderFrom = 'single'
+            } else if (this.$route.query.car_id) {
+                this.orderFrom = 'car'
+
+            }
             this.$axios
                 .post('/goods/makesureorder', {
                     stand_id: this.stand_id,
@@ -179,7 +241,8 @@
                     if (data.code === 1) {
                         if (data.data) {
                             this.handleData([data.data.goods])
-                            this.address = data.data.address.find(item => this.addressId ? item.id === +this.addressId : item.sta === 1)
+                            this.couponList = data.data.coupon
+                            this.address = data.data.address.find(item => this.address_id ? item.id === +this.address_id : item.sta === 1)
                             console.log(this.address)
                         }
                     } else {
@@ -233,7 +296,6 @@
             .shop-info {
                 display: flex;
                 align-items: center;
-
             }
             .shop-logo {
                 width: 20px;
@@ -242,6 +304,22 @@
             }
             .shop-name {
                 margin-right: 6px;
+            }
+            .van-card__content {
+                justify-content: space-between;
+            }
+            .van-card__title {
+                height: 32px;
+            }
+            .desc-line {
+                display: flex;
+                flex-wrap: wrap;
+                color: #999;
+                .desc-item {
+                    padding: 0 6px;
+                    margin-right: 8px;
+                    background:rgba(240,145,75,0.1);
+                }
             }
         }
         .personal-box {
