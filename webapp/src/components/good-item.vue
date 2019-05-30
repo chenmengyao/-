@@ -34,6 +34,13 @@ export default {
         text-align: left;
         justify-content: flex-start;
         padding-bottom: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        flex-direction: column;
+        text-align: justify;
+        line-height: 20px;
     }
     dd {
         padding: 0;

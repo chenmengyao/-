@@ -4,7 +4,7 @@
       <van-col v-for="nav in navlist" span="8" :class="{active:nav.selected}" @click.native="skip(nav)">{{nav.name}}</van-col>
     </van-row>
     <!--  -->
-    <van-swipe :autoplay="3000" indicator-color="white">
+    <van-swipe ref="banner" :autoplay="3000" indicator-color="white">
       <van-swipe-item>
         <img :src="details.img" alt="">
       </van-swipe-item>
@@ -57,28 +57,30 @@
     <!-- 评论 //-->
     <router-link class="comment-more" :to="{ path: '/', params: {} }">查看更多评价<img src="@/assets/details/more@3x.png" alt=""></router-link>
     <!-- 店铺详情 -->
-    <van-tabs class="good-tabs" v-model="goodTabIdx">
-      <van-tab title="商品介绍">
-        <div v-if="details.details" ref="goodInfo" class="good-info interval">
-          <video x5-video-player-type="h5" x5-video-player-fullscreen="true" x-webkit-airplay="allow" webkit-playsinline playsinline v-if="details.details[0].content.video" :src="details.details[0].content.video" autoplay controls></video>
-          <img :src="details.details[0].content.img" alt="">
-          <div v-html="details.details[0].content.editor"></div>
-          <span class="no-data">已经没有更多啦～</span>
-        </div>
-      </van-tab>
-      <van-tab title="规格参数">
-        <div v-if="details.details" class="specification">
-          <img :src="details.details[1].content.img" alt="">
-          <div v-html="details.details[1].content.editor"></div>
-        </div>
-      </van-tab>
-      <van-tab title="售后保障">
-        <div v-if="details.details" class="guarantee">
-          <img :src="details.details[2].content.img" alt="">
-          <div v-html="details.details[2].content.editor"></div>
-        </div>
-      </van-tab>
-    </van-tabs>
+    <div ref="content">
+      <van-tabs class="good-tabs" v-model="goodTabIdx">
+        <van-tab title="商品介绍">
+          <div v-if="details.details" class="good-info interval">
+            <video x5-video-player-type="h5" x5-video-player-fullscreen="true" x-webkit-airplay="allow" webkit-playsinline playsinline v-if="details.details[0].content.video" :src="details.details[0].content.video" autoplay controls></video>
+            <img :src="details.details[0].content.img" alt="">
+            <div v-html="details.details[0].content.editor"></div>
+            <span class="no-data">已经没有更多啦～</span>
+          </div>
+        </van-tab>
+        <van-tab title="规格参数">
+          <div v-if="details.details" class="specification">
+            <img :src="details.details[1].content.img" alt="">
+            <div v-html="details.details[1].content.editor"></div>
+          </div>
+        </van-tab>
+        <van-tab title="售后保障">
+          <div v-if="details.details" class="guarantee">
+            <img :src="details.details[2].content.img" alt="">
+            <div v-html="details.details[2].content.editor"></div>
+          </div>
+        </van-tab>
+      </van-tabs>
+    </div>
     <!-- 店铺详情 //-->
     <!-- 店铺信息 -->
     <van-row class="interval shop" v-if="details.store">
@@ -181,6 +183,7 @@
 import {
   Toast
 } from 'vant'
+import _ from 'lodash'
 const $raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
   window.setTimeout(callback, 1000 / 60)
 }
@@ -197,10 +200,11 @@ export default {
         selected: false
       }, {
         name: '详情',
-        key: 'goodInfo',
+        key: 'content',
         selected: false
       }],
       timer: {},
+      lockscroll: false,
       // 打开规格方式
       actionType: '',
       goodTabIdx: 0,
@@ -256,6 +260,9 @@ export default {
   mounted() {
     window.addEventListener('scroll', this.checkScroll, this)
   },
+  beforeDestroy(){
+    window.removeEventListener('scroll', this.checkScroll, this)
+  },
   watch: {
     // 监听详情变化
     details(val) {
@@ -297,6 +304,8 @@ export default {
   methods: {
     // 跳转
     skip(nav) {
+      if (this.lockscroll) return
+      this.lockscroll = true
       this.scrollTo(this.$refs[nav.key])
     },
     // 滚动到相应位置
@@ -304,17 +313,21 @@ export default {
       window.cancelAnimationFrame(this.timer)
       let ot = el.offsetTop - 50
       let sy = window.scrollY
-      let speed = 30
+      let speed = 39
       let distance = sy > ot ? sy - speed : sy + speed
-      if (distance > ot - speed * 2 && distance < ot) distance = ot
-      if (distance < ot + speed * 2 && distance > ot) distance = ot
+      if (distance >= ot - speed && distance <= ot) distance = ot
+      if (distance <= ot + speed && distance >= ot) distance = ot
       window.scrollTo(0, distance)
       if (sy != ot) {
         this.timer = $raf(() => {
           this.scrollTo(el)
         })
       }
+      this.unlockScroll()
     },
+    unlockScroll: _.debounce(function() {
+      this.lockscroll = false
+    }, 186),
     // 检查滚动
     checkScroll() {
       let sy = window.scrollY
