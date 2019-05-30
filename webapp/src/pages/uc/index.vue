@@ -79,10 +79,10 @@
                 <span class="option-name">我的足迹</span>
             </router-link>
 
-            <router-link to="/uc/vip" class="option-item link">
-                <img src="@/assets/uc/my-vip@2x.png" alt="" class="option-image">
+            <a href="javascript:;" class="option-item link" @click="toVip">
+                <img src="@/assets/uc/my-vip@2x.png" class="option-image">
                 <span class="option-name">我的VIP</span>
-            </router-link>
+            </a>
 
             <router-link to="/uc/score" class="option-item link">
                 <img src="@/assets/uc/my-score@2x.png" alt="" class="option-image">
@@ -104,7 +104,7 @@
                 <span class="option-name">我的消息</span>
             </router-link>
 
-            <router-link to="/uc/orders" class="option-item link">
+            <router-link to="/mine/feedback" class="option-item link">
                 <img src="@/assets/uc/response@2x.png" alt="" class="option-image">
                 <span class="option-name">意见反馈</span>
             </router-link>
@@ -130,7 +130,8 @@
                 sta_2: 0,
                 sta_3: 0,
                 sta_4: 0,
-                user: {}
+                user: {},
+                user_type: 0    // 0:普通用户,1:vip,2:团长
             }
         },
         methods: {
@@ -143,6 +144,13 @@
                         this.$toast(data.msg);
                     }
                 })
+            },
+            toVip() {
+                if (this.user_type === 0) {
+                    this.$toast('抱歉，您还不是VIP');
+                } else {
+                    this.$router.push('/uc/vip')
+                }
             }
         },
         created() {
@@ -218,7 +226,7 @@
         }
         .my-order {
             box-sizing: border-box;
-            height: 20.5vh;
+            height: 22vh;
             margin: 6vw 16px 0;
             padding: 1.5vh 4vw;
             background-color: #fff;

@@ -27,7 +27,7 @@
                 </van-list>
             </van-tab>
         </van-tabs>
-        <ScorePay :show="payTypeShow"></ScorePay>
+        <PayType :show="payTypeShow" @close="payTypeShow = false" @select="selectPayType"></PayType>
         <van-actionsheet
             title="请输入支付密码"
             v-model="passwordModalShow"
@@ -49,7 +49,7 @@
 <script>
     import ShopItem from '@/components/uc/orders/shop-item'
     import ButtonLine from '@/components/uc/orders/button-line'
-    import ScorePay from '@/components/uc/orders/pay-type'
+    import PayType from '@/components/uc/orders/pay-type'
     import ButtonMap from '@/constants/order/button-map'
 
     import md5 from'md5'
@@ -59,7 +59,7 @@
         components: {
             ButtonLine,
             ShopItem,
-            ScorePay
+            PayType
         },
         filters: {
             buttonList: v => ButtonMap.filter(item => item.sta.includes(v))
@@ -238,6 +238,9 @@
                         id: orderId
                     }
                 })
+            },
+            selectPayType(key) {
+                this.payTypeShow = false
             },
             confirmReceive(orderId) {
                 this.passwordModalShow = true
