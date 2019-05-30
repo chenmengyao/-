@@ -1,19 +1,19 @@
 <template>
     <div class="suwis-vip">
         <div class="info-box">
-            <div class="tag">团队: 周红娇</div>
+            <div class="tag">团长: {{detail.captain_name}}</div>
             <div class="info-line">
                 <img src="@/assets/login/avatar@3x.png" alt="头像" class="profile">
                 <div class="info-right">
                     <div class="name">
-                        穿堂而过的风
+                        {{detail.name}}
                         <span class="level">
                             <img src="@/assets/myvip.png" alt="vip" class="vip">
-                            LV.3
+                            LV.{{detail.vip}}
                         </span>
                     </div>
                     <div class="register-time">
-                        2018-09-10注册VIP
+                        {{detail.time | dateFmt3}} 注册VIP
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
             <li class="item">
                 <div class="title">
                     <img src="@/assets/uc/vip@2x.png" alt="vip" class="icon">
-                    VIP额度：5000
+                    VIP额度：{{detail.vip_sum}}
                 </div>
                 <p class="para">额度说明：VIP额度由对应团长发放额度，从注册VIP之日起满一年额度自动清零。VIP额度即为等额优惠券，购买商品时即可使用。</p>
             </li>
@@ -33,7 +33,7 @@
                     <img src="@/assets/uc/vip-level@2x.png" alt="vip" class="icon">
                     VIP等级
                 </div>
-                <p class="para">当前等级：LV.3</p>
+                <p class="para">当前等级：LV.{{detail.vip}}</p>
                 <p class="para">实际使用vip额度超出原有额度一倍时，VIP等级可以提升一级</p>
             </li>
 
@@ -54,7 +54,9 @@
     export default {
         data() {
             return {
+                detail: {
 
+                }
             }
         },
         methods: {
@@ -64,8 +66,7 @@
                     .then(({ data }) => {
                         if (data.code === 1) {
                             if (data.data) {
-                                console.log(data.data)
-                                // Object.assign(this, data.data)
+                                this.detail = data.data
                             }
                         } else {
                             this.$toast(data.msg);

@@ -6,19 +6,19 @@
         <ul class="address-list">
             <li class="address-item" v-for="item in list" :key="item.id">
                 <img src="@/assets/uc/address@2x.png" alt="地址" class="address-icon">
-                <div class="info">
+                <div class="info" @click="onAddressClick(item.id)">
                     <div class="info-title">
                         <div class="title-left">
                             <span class="name">{{item.name}}</span>
                             <span class="tel">{{item.tel}}</span>
                             <span class="default" v-if="item.sta === 1">默认</span>
                         </div>
-                        <div class="edit" @click="edit(item.id)">编辑</div>
                     </div>
                     <div class="info-address">
                         {{item | address}}
                     </div>
                 </div>
+                <div class="edit" @click="edit(item.id)">编辑</div>
             </li>
         </ul>
     </div>
@@ -33,7 +33,12 @@
         },
         data() {
             return {
-                list: []
+                list: [],
+                query: {
+                    from: '',   // 页面的来源
+                    num: '',
+                    stand_id: ''
+                }
             }
         },
         methods: {
@@ -55,10 +60,24 @@
                             this.$toast(data.msg);
                         }
                     })
+            },
+            onAddressClick(id) {
+                const { from, num, stand_id } = this.query
+                if (from === 'confirm-order') {
+                    this.$router.push({
+                        path: '/uc/orders/confirm-order',
+                        query: {
+                            addressId: id,
+                            num,
+                            stand_id
+                        }
+                    })
+                }
             }
         },
         created() {
             this.getAddresses()
+            Object.assign(this.query, this.$route.query)
         },
     }
 </script>
@@ -94,6 +113,7 @@
                 flex: 1;
                 flex-direction: column;
                 justify-content: space-between;
+                cursor: pointer;
             }
             .info-title {
                 display: flex;
@@ -120,12 +140,6 @@
                     line-height: 18px;
                     text-align: center;
                 }
-                .edit {
-                    color: #999;
-                    font-size: 12px;
-                    line-height: 22px;
-                    padding: 0 5px;
-                }
             }
             .info-address {
                 display: -webkit-box;
@@ -137,6 +151,13 @@
                 line-height: 24px;
                 -ms-text-overflow: ellipsis;
                 text-overflow: ellipsis;
+            }
+            .edit {
+                padding: 0 6px 0 12px;
+                border-left: 1px solid #ddd;
+                color: #999;
+                font-size: 12px;
+                line-height: 32px;
             }
         }
     }

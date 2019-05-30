@@ -4,12 +4,53 @@
             <img src="@/assets/uc/no-data@2x.png" alt="暂无数据" class="tip-image">
             <div class="tip-text">暂无相关数据哦～</div>
         </template>
+
         <template v-else-if="status === 'noRight'">
             <img src="@/assets/uc/no-data@2x.png" alt="暂无权限" class="tip-image">
             <div class="tip-text">您还不是团长，暂无推广权限</div>
             <button class="apply-grouper" @click="applyShow = true">申请成为团长</button>
         </template>
+
         <template v-else>
+            <div class="name">
+                <van-tabs v-model="activeTab" animated class="tabs" @change="onClickTab">
+                    <van-tab v-for="tab in tabList" :title="tab.name" class="tab-item">
+                        <van-list
+                            v-model="loading"
+                            finished-text="没有订单记录了"
+                            error-text="请求失败，点击重新加载"
+                            :error.sync="error"
+                            :finished="finished"
+                            @load="getList('add')">
+                            <template v-if="list && list.length">
+                                <div class="member-item">
+                                    <div class="left">
+                                        <div class="title">
+                                            <img src="@/assets/login/avatar@3x.png" class="profile">
+                                            <span class="name"></span>
+                                            <img src="@/assets/myvip.png" class="vip">
+                                            <span class="level">LV.</span>
+                                        </div>
+                                    </div>
+                                    <div class="right">
+                                        <button class="button">发放额度</button>
+                                    </div>
+                                </div>
+                            </template>
+                        </van-list>
+                    </van-tab>
+                </van-tabs>
+                <div class="button-line">
+                    <div class="button-item" @click="changeSort('time')">
+                        <span>注册时间</span>
+                        <van-icon size="14px" :name="timeSort === 'up' ? 'arrow-up' : 'arrow-down'" :color="sortActive === 'time' ? '#f0914b' : '#999'"></van-icon>
+                    </div>
+                    <div class="button-item" v-if="tabStatus === 'all'" @click="changeSort('num')">
+                        <span>消费金额</span>
+                        <van-icon size="14px" :name="numSort === 'up' ? 'arrow-up' : 'arrow-down'" :color="sortActive === 'num' ? '#f0914b' : '#999'"></van-icon>
+                    </div>
+                </div>
+            </div>
 
         </template>
 
@@ -40,28 +81,66 @@
     export default {
         data() {
             return {
-                applyShow: false,
+                activeTab: 0,
+                applyShow: false,   // 申请成为团长弹框展示
+                error: false,
+                finished: false,
+                loading: false,
+                list: [],
+                num: 20,            // 每页的数量
+                page: 1,            // 页码
                 phoneText: '400-818-9956',
                 emailText: '745108931@qq.com',
-                status: 'noRight',
+                timeSort: 'up',
+                numSort: 'up',
+                sortActive: 'time',
+                status: 'list',
+                tabStatus: 'new',
+                tabList: [
+                    {
+                        key: 'new',
+                        name: '新注册',
+                    },
+                    {
+                        key: 'all',
+                        name: '全部'
+                    }
+                ]
             }
         },
         methods: {
-            getNewPopularize() {
+            changeSort(type) {
+                this.sortActive === type
+                    ? this[`${type}Sort`] = this[`${type}Sort`] === 'up' ? 'down' : 'up'
+                    : this.sortActive = type
+            },
+            getList() {
+                const url = this.tabStatus === 'new' ? '/mine/generalize_new' : '//mine/generalize_all'
                 this.$axios
-                    .post('/mine/generalize_new')
+                    .post(url, {
+
+                    })
                     .then(({ data }) => {
                         if (data.code === 1) {
-                            console.log({data})
-                            // data && Object.assign(this, data.data)
+                            if (data.data && data.data.order) {
+                                this.list = this.list.concat(data.data.order)
+                                if (page * num > data.data.total) this.finished = true
+                            }
                         } else {
+                            this.error = true
                             this.$toast(data.msg);
                         }
+                        this.page++
+                        this.loading = false
                     })
+                    .catch(() => {
+                        this.error = true
+                    })
+            },
+            onClickTab(index) {
+                this.tabStatus = this.tabList[index].key
+                this.getList()
             }
-        },
-        created() {
-            this.getNewPopularize()
         },
         mounted() {
             const clipboardPhone = new this.clipboard('#clipboard-phone')
@@ -82,8 +161,9 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .suwis-popularize {
+        position: relative;
         min-height: 100vh;
         text-align: center;
         .tip-image {
@@ -155,6 +235,43 @@
                 font-size: 36px;
                 text-align: center;
                 transform: translateX(-50%);
+            }
+        }
+
+
+        .van-tabs__wrap {
+            width: 40%;
+        }
+
+        .member-item {
+            display: flex;
+            padding: 14px 16px;
+            border-bottom: 1px solid #f5f5f5;
+            .left {
+                flex: 1;
+            }
+            .right {
+                margin-left: 10px;
+            }
+        }
+
+        .button-line {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            justify-content: flex-end;
+            width: 60%;
+            color: #666;
+            font-size: 12px;
+            line-height: 44px;
+            .button-item {
+                display: flex;
+                align-items: center;
+                padding: 0 12px;
+            }
+            .van-icon {
+                margin-left: 8px;
             }
         }
     }
