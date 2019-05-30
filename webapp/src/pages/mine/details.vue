@@ -1,38 +1,85 @@
 <template>
 	<div>
-		<div class="suwis-details-con">
-			<div style="flex:1 ;padding-top: 15px;">
-				<div style="float:left">
-					<span class="suwis-details-hondian"></span>
-					<span class="suwis-details-fanhui">我的反馈</span>
-				</div>	
-				<div style="float: right;">
-					<span class="suwis-details-shijian">2019-03-09 12:01</span>
-				</div>
-				<div style="clear:both"></div>
-			</div>
-		</div>
-		<div class="suwis-details-con">
-			<div class="suwis-details-wenben">
-				我的反馈我的反馈我的反馈我的反馈我的反馈我的反馈我的反馈我的反馈我的反馈我的反馈我的反馈我的反馈我的反馈我的反馈我的反馈我的反馈。　
-			</div>
-		</div>
-		<div class="suwis-details-con{">
-			<div class="suwis-details-huifu">
-				<div style=" padding-bottom: 9px;">
-					<diV class="suwis-details-pintaihuifu">来自平台的回复：</diV>
-					<div class="suwis-details-huifushijian">2019-03-09 12:01</div>
-				</div>　
-				<div style="padding-top: 10px;text-align: left;">
-					<div class="suwis-details-huifuneiron">平台的回复平台的回复平台的回复平台的回复平台的回复平台的回复平台的回复平</div>
+		     <van-list
+  v-model="loading"
+  :finished="finished"
+  finished-text="没有更多了"
+  error-text="请求失败，点击重新加载"
+  :error.sync="error"
+  @load="initialization"
+>
+		<div class="suwis-coupons-con" v-if="history_feedback.length" v-for="item in history_feedback">
+			<div class="suwis-details-con">
+				<div style="flex:1 ;padding-top: 15px;">
+					<div style="float:left">
+						<span class="suwis-details-hondian"></span>
+						<span class="suwis-details-fanhui">{{item.name}}</span>
+					</div>	
+					<div style="float: right;">
+						<span class="suwis-details-shijian">{{item.time|dateFmt}}</span>
+					</div>
+					<div style="clear:both"></div>
 				</div>
 			</div>
-			
+			<div class="suwis-details-con">
+				<div class="suwis-details-wenben">
+					{{item.content||'我是反馈内容'}}
+				</div>
+			</div>
+			<div>
+				<div class="suwis-details-con{">
+					<div class="suwis-details-huifu">
+						<div style=" padding-bottom: 9px;">
+							<diV class="suwis-details-pintaihuifu">来自平台的回复：</diV>
+							<div class="suwis-details-huifushijian" v-if='item.sta==1'>{{item.reply.time|dateFmt}}</div>
+						</div>　
+						<div style="padding-top: 10px;text-align: left;">
+							<div class="suwis-details-huifuneiron">{{item.sta==1?item.reply.content:'系统尚未回复'}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
+		</van-list>
 	</div>
 </template>
 
 <script>
+import Vue from 'vue'
+import { Toast } from 'vant';
+export default {
+	data(){
+		return{		
+			history_feedback:[],
+			banner:[],
+			error:false,
+			loading: false,
+      finished: false,
+			total:null,
+			page:1,
+		}
+	},
+	methods:{
+	  	initialization(){
+	  		this.$axios.post('message/history_feedback',{
+	  			page:this.page,
+            	num:10
+	  		}).then(res=>{
+	  			if(res.data.code==1){
+						this.total=res.data.data.total
+						this.history_feedback=this.history_feedback.concat(res.data.data.data)
+		  				if (this.page * 10 > this.total) this.finished = true
+	  			}
+	  			this.page++
+          this.loading = false
+	  		}).catch(()=>{
+	  			this.error = true
+	  		})
+	  	}
+  },
+  created(){
+  }
+}
 </script>
 
 <style>

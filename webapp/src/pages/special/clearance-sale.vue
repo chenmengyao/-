@@ -69,11 +69,14 @@
   @load="loadlist"
 >
   <div class="suwis-news-list" v-for="(item,index) in clearList">
+    
          <div class="suwis-news-right">
+           <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'clearance'}}">
            <img :src="item.img" width="100%">
+           </router-link>
          </div>
          <div class="suwis-news-left">
-            <span>{{item.title}}</span>
+            <span><router-link tag="span" :to="{path: '/goods/details', query: {id: item.id,type:'clearance'}}">{{item.title}}</router-link></span>
             <div class='suwis-news-tips'>
               <span class='suwis-news-date'>
                 <span class="d-yuan-price">￥59.9</span>
@@ -82,11 +85,14 @@
               </span>
               <span class='suwis-news-num'>
                 <span class="d-sale-btn">
+                  <router-link tag="span" :to="{path: '/goods/details', query: {id: item.id,type:'clearance'}}">
                    <img src="../../assets/gm.png">
+                   </router-link>
                 </span>
               </span>
             </div>
          </div>
+         
       </div>
 </van-list>
   </div>

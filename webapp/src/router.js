@@ -193,6 +193,10 @@ export default new Router({
     name: 'mine_feedback',
     component: () => import('./pages/mine/feedback.vue')
   }, {
+    path: '/mine/details',
+    name: 'mine_details',
+    component: () => import('./pages/mine/details.vue')
+  }, {
     path: '/mine/commission', //我的佣金
     name: 'mine_commission',
     component: () => import('./pages/mine/commission.vue')

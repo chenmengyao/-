@@ -1,22 +1,50 @@
 <template lang="html">
   <div>
 	  <div class="suwis-feedback-con">
-	    	<textarea class="suwis-feedback-txt" placeholder="请输入您遇到的问题和建议～"></textarea>
+	    	<textarea id="wenti" class="suwis-feedback-txt" placeholder="请输入您遇到的问题和建议～" v-model="content"></textarea>
 	  </div>
 	  <div class="suwis-feedback-con">
-	    <input class="suwis-feedback-inp" type="text" placeholder="请输入您的联系电话／邮箱" />
+	    <input id="dianhua" class="suwis-feedback-inp" type="text" placeholder="请输入您的联系电话／邮箱"  v-model="contact_way"/>
 	  </div>
-	  <div class="suwis-feedback-con">
-	  	<van-button round type="danger">提交</van-button>
+	  <div class="suwis-feedback-con" >
+	  	<van-button round type="danger" @click="submit()">提交</van-button>
 	  </div>
   </div>
 </template>
 
 <script>
+	import Vue from 'vue'
+import { Toast } from 'vant';
+Vue.use(Toast);
 export default {
   data(){
     return{
-      keyWord:'',
+    	token:'', //token
+      contact_way:'', //联系方式
+      content:'', //详情内容
+      code:'', //状态码
+      msg	:'' //消息
+    }
+  },
+  methods:{
+  	submit(){
+  		if(this.content==null || this.content==""){
+  			Toast("详情内容不能为空！！")
+  			return;
+  		}else if(this.contact_way==null || this.contact_way==""){
+  			Toast("联系方式不能为空！！")
+  			return;
+  		}else{
+  			this.$axios.post('message/feedback',{
+    		contact_way:this.contact_way,
+    		content:this.content
+    	}).then(res=>{
+    		Toast(res.data.msg);
+    		this.contact_way="";
+    		this.content="";
+    	})
+  		}
+    	
     }
   }
 }

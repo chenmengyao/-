@@ -27,8 +27,9 @@
             <div class="suwis-recom-item" v-for="(item,index) in reomList">
               <div :class="index%2==0?'d-flex':'d-flex1'">
                   <div style="flex:1;">
-                    <div class="d-recom-img"><img :src="item.img" width="100%"></div>
-                    <span class="suwis-recom-title">{{item.title}}</span>
+                    <div class="d-recom-img">
+                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'recommend'}}"><img :src="item.img" width="100%"></router-link></div>
+                    <span class="suwis-recom-title"><router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'recommend'}}">{{item.title}}</router-link></span>
                     <span class="d-item-title">
                       <span>推荐指数:</span>
                       <van-rate

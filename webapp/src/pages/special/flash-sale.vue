@@ -35,10 +35,15 @@
 >
                   <div class="suwis-con" v-for="(item,index) in flashList[0].goods">
                     <div class="suwis-con-left">
+                       <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
                         <img :src="item.img" width="100%">
+                        </router-link>
                     </div>
                       <div class="suwis-con-right">
-                        <div>{{item.title}}</div>
+                        <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
+                        <div>
+                          {{item.title}}
+                        </div>
                         <div style="margin-top:5px;">
                             <div class="suwis-right-con">
                               <div style="padding:7px 0;">
@@ -59,6 +64,7 @@
                               <img src="../../assets/masq.png" style="width:66px;">
                             </div>
                         </div>
+                       </router-link>
                     </div>
                   </div>
                    </van-list>
@@ -98,9 +104,12 @@
 >
                   <div class="suwis-con" v-for="(item,index) in flashList[1].goods">
                     <div class="suwis-con-left">
+                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
                         <img :src="item.img" width="100%">
+                        </router-link>
                     </div>
                       <div class="suwis-con-right">
+                        <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
                         <div>{{item.title}}</div>
                         <div style="margin-top:5px;">
                             <div class="suwis-right-con">
@@ -117,7 +126,9 @@
                               <img src="../../assets/wait.png" style="width:66px;">
                             </div>
                         </div>
+                        </router-link>
                     </div>
+                    
                     </div>
                     </van-list>
                </div>
@@ -153,9 +164,12 @@
 >
                   <div class="suwis-con" v-for="(item,index) in flashList[2].goods">
                     <div class="suwis-con-left">
+                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
                         <img :src="item.img" width="100%">
+                        </router-link>
                     </div>
                       <div class="suwis-con-right">
+                        <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
                         <div>{{item.title}}</div>
                         <div style="margin-top:5px;">
                             <div class="suwis-right-con">
@@ -172,6 +186,7 @@
                               <img src="../../assets/wait.png" style="width:66px;">
                             </div>
                         </div>
+                        </router-link>
                     </div>
                     
                   </div>
@@ -209,9 +224,12 @@
 >
                   <div class="suwis-con"  v-for="(item,index) in flashList[3].goods">
                     <div class="suwis-con-left">
+                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
                         <img :src="item.img" width="100%">
+                        </router-link>
                     </div>
                       <div class="suwis-con-right">
+                        <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
                         <div>{{item.title}}</div>
                         <div style="margin-top:5px;">
                             <div class="suwis-right-con">
@@ -228,6 +246,7 @@
                               <img src="../../assets/wait.png" style="width:66px;">
                             </div>
                         </div>
+                        </router-link>
                     </div>
                   </div>
                   </van-list>
@@ -264,9 +283,12 @@
 >
                   <div class="suwis-con" v-for="(item,index) in flashList[4].goods">
                     <div class="suwis-con-left">
+                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
                         <img :src="item.img" width="100%">
+                        </router-link>
                     </div>
                       <div class="suwis-con-right">
+                        <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
                         <div>{{item.title}}</div>
                         <div style="margin-top:5px;">
                             <div class="suwis-right-con">
@@ -283,6 +305,7 @@
                               <img src="../../assets/wait.png" style="width:66px;">
                             </div>
                         </div>
+                        </router-link>
                     </div>
                   </div>
                   </van-list>
@@ -413,6 +436,7 @@ export default {
 .suwis-con-right>div:nth-child(1){
    font-size: 14px;
   line-height: 20px;
+  height: 40px;
   color: #333;
   display: -webkit-box;
   -webkit-box-orient: vertical;
