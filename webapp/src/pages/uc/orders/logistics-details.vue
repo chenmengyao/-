@@ -46,14 +46,15 @@
         data() {
             return {
                 goodInfo: {},
-                logisticsInfo: []
+                logisticsInfo: [],
+                order_id: ''
         }
         },
         created() {
-            this.id = this.$route.query.id
+            this.order_id = this.$route.query.order_id
             this.$axios
                 .post('/order/checkthelogistics', {
-                    order_id: this.id
+                    order_id: this.order_id
                 })
                 .then(({data}) => {
                     if (data.code === 1) {

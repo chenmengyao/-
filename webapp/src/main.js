@@ -15,6 +15,23 @@ VueAMap.initAMapApiLoader({  key: '89cd7d92df47ba3d8791a760bd4c07e1',  plugin:
 
 Vue.config.productionTip = false
 
+const onPlusReady = function (callback, context = this) {
+    if (window.plus) {
+        callback.call(context)
+    } else {
+        document.addEventListener('plusready', callback.bind(context))
+    }
+}
+
+Vue.mixin({
+    beforeCreate() {
+      onPlusReady(() => {this.plusReady = true}, this)
+    },
+    methods: {
+        onPlusReady
+    }
+})
+
 // 挂载到app变量上
 window.app = {
   $vm: new Vue({

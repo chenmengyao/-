@@ -17,23 +17,26 @@
                     <van-tab v-for="tab in tabList" :title="tab.name" class="tab-item">
                         <van-list
                             v-model="loading"
-                            finished-text="没有订单记录了"
+                            finished-text="没有用户了"
                             error-text="请求失败，点击重新加载"
                             :error.sync="error"
                             :finished="finished"
                             @load="getList('add')">
                             <template v-if="list && list.length">
-                                <div class="member-item">
+                                <div class="member-item" v-for="item in list">
                                     <div class="left">
                                         <div class="title">
-                                            <img src="@/assets/login/avatar@3x.png" class="profile">
-                                            <span class="name"></span>
+                                            <img :src="item.sex | sexUrl" class="profile">
+                                            <span class="name">{{item.nickname}}</span>
                                             <img src="@/assets/myvip.png" class="vip">
-                                            <span class="level">LV.</span>
+                                            <span class="level">LV.{{item.vip}}</span>
                                         </div>
+                                        <div class="info">{{item.city || '---'}} / {{item.tel}}</div>
+                                        <div class="date">{{item.time | dateFmt}}</div>
                                     </div>
-                                    <div class="right">
-                                        <button class="button">发放额度</button>
+                                    <div class="right" :style="{'justify-content': tabStatus === 'new' ? 'center' : 'flex-end'}">
+                                        <button v-if="tabStatus === 'new'" class="button" @click="grant(item.id)">发放额度</button>
+                                        <span v-else-if="tabStatus === 'all'">{{item.sum}}</span>
                                     </div>
                                 </div>
                             </template>
@@ -78,7 +81,17 @@
 </template>
 
 <script>
+    import defaultLogo from '@/assets/login/avatar@3x.png'
+    import maleLogo from '@/assets/uc/male.png'
+    import femaleLogo from '@/assets/uc/female.png'
+
     export default {
+        filters: {
+            sexUrl(sex) {
+                const logoList = [defaultLogo, maleLogo, femaleLogo]
+                return sex ? logoList[sex] : defaultLogo
+            }
+        },
         data() {
             return {
                 activeTab: 0,
@@ -113,21 +126,29 @@
                 this.sortActive === type
                     ? this[`${type}Sort`] = this[`${type}Sort`] === 'up' ? '' : 'up'
                     : this.sortActive = type
+                this.getList()
             },
-            getList() {
-                const url = this.tabStatus === 'new' ? '/mine/generalize_new' : '//mine/generalize_all'
+            getList(type = 'reset') {
+                if (type === 'reset') {
+                    this.list = []
+                    this.page = 1
+                }
+                const { num, page } = this
+                const url = this.tabStatus === 'new' ? '/mine/generalize_new' : '/mine/generalize_all'
                 this.$axios
                     .post(url, {
-                        page: this.page,
-                        num: this.num,
+                        page,
+                        num,
                         time: this.timeSort,
                         sum: this.tabStatus === 'new' ? undefined : this.numSort
                     })
                     .then(({ data }) => {
                         if (data.code === 1) {
-                            if (data.data && data.data.order) {
-                                this.list = this.list.concat(data.data.order)
+                            if (data.data && data.data.user) {
+                                this.list = this.list.concat(data.data.user)
                                 if (page * num > data.data.total) this.finished = true
+                            } else {
+                                this.error = true
                             }
                         } else {
                             this.error = true
@@ -139,6 +160,12 @@
                     .catch(() => {
                         this.error = true
                     })
+            },
+            grant(id) {
+                this.$router.push({
+                    path: '/uc/popularize/grant',
+                    query: { id }
+                })
             },
             onClickTab(index) {
                 this.tabStatus = this.tabList[index].key
@@ -251,10 +278,62 @@
             padding: 14px 16px;
             border-bottom: 1px solid #f5f5f5;
             .left {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 70px;
                 flex: 1;
+                text-align: left;
+                .title {
+                    display: flex;
+                    align-items: center;
+                }
+                .profile {
+                    width: 20px;
+                    height: 20px;
+                }
+                .name {
+                    margin-left: 6px;
+                    color: #333;
+                    font-size: 14px;
+                }
+                .vip {
+                    width: 18px;
+                    height: 16px;
+                    margin-left: 6px;
+                }
+                .level {
+                    margin-left: 4px;
+                    color: #e3b156;
+                }
+                .info {
+                    color: #666;
+                    font-size: 12px;
+                    text-indent: 26px;
+                }
+                .date {
+                    color: #999;
+                    font-size: 12px;
+                    text-indent: 26px;
+                }
             }
             .right {
                 margin-left: 10px;
+                display: flex;
+                flex-direction: column;
+                .button {
+                    width: 70px;
+                    height: 30px;
+                    padding: 0;
+                    line-height: 28px;
+                    border: 1px solid #e83f44;
+                    box-sizing: border-box;
+                    color: #e83f44;
+                    border-radius: 15px;
+                    background: #fff;
+                    font-size: 12px;
+                    text-align: center;
+                }
             }
         }
 
