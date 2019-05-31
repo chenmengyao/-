@@ -105,7 +105,6 @@ export default {
     position: relative;
     .shop {
         bottom: 50px;
-        width: 100vw;
         height: 86px;
         background: #fff;
         display: flex;
