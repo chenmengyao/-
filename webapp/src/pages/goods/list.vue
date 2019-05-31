@@ -87,10 +87,12 @@ export default {
         padding: 15px;
         font-size: 14px;
         position: fixed;
+        width: 100vw;
+        background: #fff;
         top: 0;
         left: 0;
-        right: 0;
         height: 50px;
+        box-sizing: border-box;
         .icon {
             max-width: 14px;
             margin-right: 3px;
