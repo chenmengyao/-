@@ -111,7 +111,7 @@
       },
       {
         "tag": "font",
-        "id": "myIcon",
+        "id": "ucIcon",
         "text": "",
         "position": {
           "top": "5px",
@@ -128,7 +128,7 @@
       },
       {
         "tag": "font",
-        "id": "myText",
+        "id": "ucText",
         "text": "我的",
         "position": {
           "top": "25px",
@@ -143,17 +143,5 @@
         }
       }
     ]
-  }],
-  "titleNView": {
-    "backgroundcolor": "rgba(221,11,17,1)",
-    "titletext": "潮玩城",
-    "titlecolor": "#fff"
-  },
-  "statusbar": {
-    /*none|suggestedDevice|supportedDevice，沉浸式状态栏情况  */
-    "immersed": "supportedDevice",
-    /* dark|light, 系统状态栏样式 */
-    "style": "light",
-    "background": "rgba(221,11,17,1)"
-  }
+  }]
 }
