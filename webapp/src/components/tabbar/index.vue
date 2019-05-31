@@ -40,7 +40,8 @@ export default {
 		document.addEventListener('plusready', this.init, false)
 	},
 	methods: {
-		init() {
+		async init() {
+			// 获取配置文件
 			this.ntab = plus.nativeObj.View.getViewById('tabbar')
 			this.ntab.addEventListener('click', (e) => {
 				console.log('tab click')

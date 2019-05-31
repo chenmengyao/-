@@ -46,5 +46,6 @@ export default {
 #app {
     width: 100vw;
     padding-bottom: 50px;
+    box-sizing: border-box;
 }
 </style>
