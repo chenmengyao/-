@@ -79,6 +79,7 @@ export default {
 .suwis-goods {
     position: relative;
     padding-top: 50px;
+    padding-bottom: 50px;
 
     .interval {
         border-top: 6px solid $border;

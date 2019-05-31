@@ -14,7 +14,8 @@ export default {
     '/user-agreement',
     '/news',
     '/news/details',
-    '/goods/list'
+    '/goods/list',
+    '/goods/classify'
   ],
   // 底部导航隐藏地址配置
   noTabbarUrls: [

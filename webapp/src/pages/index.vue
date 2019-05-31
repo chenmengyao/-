@@ -117,6 +117,7 @@ export default {
 <style lang="scss" scoped>
 .suwis-index {
     position: relative;
+    padding-bottom: 50px;
 
     .menus {
         display: flex;
