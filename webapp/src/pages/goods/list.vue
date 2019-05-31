@@ -78,6 +78,7 @@ export default {
 <style lang="scss" scoped>
 .suwis-goods {
     position: relative;
+    padding-top: 50px;
 
     .interval {
         border-top: 6px solid $border;
@@ -85,6 +86,11 @@ export default {
     .filter {
         padding: 15px;
         font-size: 14px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 50px;
         .icon {
             max-width: 14px;
             margin-right: 3px;

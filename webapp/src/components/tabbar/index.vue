@@ -35,9 +35,23 @@ export default {
 			ntab: {}
 		}
 	},
+	computed: {
+		app() {
+			return this.$store.getters['core/app']
+		}
+	},
 	mounted() {
 		// 初始化绑定事件
 		document.addEventListener('plusready', this.init, false)
+	},
+	watch: {
+		app: {
+			deep: true,
+			handler() {
+				// 切换状态
+				this.toggleState()
+			}
+		}
 	},
 	methods: {
 		async init() {
@@ -85,6 +99,10 @@ export default {
 		drawNative: function(id, styles, tags) {
 			var view = new plus.nativeObj.View(id, styles, tags)
 			return view
+		},
+		// 切换状态栏显示状态
+		toggleState() {
+			this.app.tabbarVisible ? this.ntab.show() : this.ntab.hide()
 		}
 	}
 }

@@ -70,6 +70,8 @@ export default {
 	mounted() {
 		setTimeout(() => {
 			this.loaded = true
+			// 隐藏导航栏
+			this.$store.commit('core/hideTabbar', true)
 		}, 150)
 	},
 	watch: {

@@ -45,7 +45,5 @@ export default {
 <style lang="scss">
 #app {
     width: 100vw;
-    padding-bottom: 50px;
-    box-sizing: border-box;
 }
 </style>
