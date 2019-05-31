@@ -15,9 +15,8 @@
 </template>
 
 <script>
-    const ALIPAYSERVER = 'http://demo.dcloud.net.cn/helloh5/payment/alipay.php?total=';
-    const WXPAYSERVER = 'http://demo.dcloud.net.cn/helloh5/payment/wxpay.php?total=';
-
+    const PAYSERVER = 'http://demo.dcloud.net.cn/payment/?payid='
+    let w = null
     export default {
         props: {
             show: {
@@ -59,43 +58,50 @@
                 this.$emit('close')
             },
             pay() {
+                if (w) return //检查是否请求订单中
                 const _this = this
                 // 从服务器请求支付订单
-                let PAYSERVER = '';
-                if (this.payType === 'alipay') {
-                    PAYSERVER = ALIPAYSERVER;
-                } else if (this.payType === 'wxpay') {
-                    PAYSERVER = WXPAYSERVER;
+                let url = PAYSERVER;
+                if (this.payType === 'alipay' || this.payType === 'wxpay') {
+                    url += this.payType;
                 } else {
                     this.$toast("不支持此支付通道！");
                     return;
                 }
+                this.$toast('create AJAX:' + this.payType)
+                let appid = plus.runtime.appid;
+                if (navigator.userAgent.indexOf('StreamApp') >= 0) {
+                    appid = 'Stream';
+                }
+                url += '&appid=' + appid + '&total=';
                 const xhr = new XMLHttpRequest(); //uni-app中请使用uni的request api联网
+                w = plus.nativeUI.showWaiting();
                 xhr.onreadystatechange = function () {
                     switch (xhr.readyState) {
                         case 4:
+                            w.close();
+                            w=null;
                             if (xhr.status == 200) {
-                                plus.payment.request(this.channel[this.payType], xhr.responseText, function (result) {
-                                    _this.$toast('支付成功')
-                                    // plus.nativeUI.alert("支付成功！", function () {
-                                    //     back();
-                                    // });
+                                plus.payment.request(this.pays[this.payType], xhr.responseText, function (result) {
+                                    plus.nativeUI.alert("支付成功！", function () {
+                                        back();
+                                    });
                                 }, function (error) {
-                                    _this.$toast("支付失败：" + error.code);
+                                    plus.nativeUI.alert("支付失败：" + error.code);
                                 });
                             } else {
-                                alert("获取订单信息失败！");
+                                plus.nativeUI.alert('获取订单信息失败！', null, '捐赠');
                             }
                             break;
                         default:
                             break;
                     }
                 }
-                xhr.open('GET', PAYSERVER);
+                xhr.open('GET', url+'10');
                 xhr.send();
             },
             select() {
-                this.pay()
+                if (window.plus) this.pay()
                 // this.popupShow = false
                 this.$emit('select', this.payType)
             }

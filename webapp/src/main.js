@@ -25,7 +25,7 @@ const onPlusReady = function (callback, context = this) {
 
 Vue.mixin({
     beforeCreate() {
-      onPlusReady(() => {this.plusReady = true}, this)
+        onPlusReady(() => {this.plusReady = true}, this)
     },
     methods: {
         onPlusReady

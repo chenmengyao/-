@@ -19,16 +19,16 @@
                 <van-card
                     v-for="goods in shop"
                     :key="goods.goods_id"
-                    :num="num"
+                    :num="orderFrom === 'single' ? num : goods.num"
                     :price="goods.price"
                     :title="goods.title"
                     :thumb="goods.img"
                     @click="onClick(goods)">
                     <template #desc>
                         <div class="desc-line">
-                            <div class="desc-item">{{goods.header_one}}</div>
-                            <div class="desc-item">{{goods.header_two}}</div>
-                            <div class="desc-item">{{goods.header_three}}</div>
+                            <div class="desc-item" v-if="goods.header_one">{{goods.header_one}}</div>
+                            <div class="desc-item" v-if="goods.header_two">{{goods.header_two}}</div>
+                            <div class="desc-item" v-if="goods.header_three">{{goods.header_three}}</div>
                         </div>
                     </template>
                 </van-card>
@@ -56,7 +56,10 @@
         <van-cell-group class="discount-box">
             <van-cell center value-class="cell-content">
                 <template slot="title">
-                    <van-checkbox v-model="useCoupon">卖家优惠券</van-checkbox>
+                    <van-checkbox v-model="useCoupon" @change="getData">
+                        卖家优惠券
+                        <div v-show="coupon.sum"> 可优惠{{coupon.sum}}元</div>
+                    </van-checkbox>
                 </template>
                 <template>
                     <div @click="selectCoupon">
@@ -67,15 +70,18 @@
             </van-cell>
             <van-cell center value-class="cell-content short-content">
                 <template slot="title">
-                    <van-checkbox v-model="useDiscount">会员优惠 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;">（会员折扣9.5折）</span></van-checkbox>
+                    <van-checkbox v-model="useDiscount" @change="getData">会员优惠 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;">（会员折扣9.5折）</span></van-checkbox>
                 </template>
                 <template>
-                    -20
+                    -{{discount}}
                 </template>
             </van-cell>
             <van-cell center value-class="cell-content short-content">
                 <template slot="title">
-                    <van-checkbox v-model="useScore">积分抵扣：{{score}}<span style="color: #b4b4b4;font-size: 12px;line-height: 24px;">（可用积分：1234）</span></van-checkbox>
+                    <van-checkbox v-model="useScore" @change="getData">
+                        积分抵扣 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;">（可用积分：1234）</span>
+                        <div v-show="score">使用{{score}}分</div>
+                    </van-checkbox>
                 </template>
                 <template>
                     <div @click="setScore">
@@ -89,13 +95,13 @@
         <van-cell-group class="result-box">
             <van-cell title="还需支付" center value-class="cell-content">
                 <template>
-                    <span style="color: #e83f44">￥20</span>
+                    <span style="color: #e83f44">￥{{total}}</span>
                 </template>
             </van-cell>
         </van-cell-group>
 
         <div class="submit-box">
-            <span>合计：<span style="color: #e83f44">￥20</span></span>
+            <span>合计：<span style="color: #e83f44">{{total}}</span></span>
             <button class="submit" @click="toPay">提交订单</button>
         </div>
 
@@ -109,7 +115,7 @@
                 :price="coupon.sum"
                 :time="coupon.end_time | dateFmt"
                 btn-text="使用"
-                @click="onCouponClick">
+                @click="onCouponClick(coupon)">
             </couponItem>
         </CouponList>
     </div>
@@ -144,23 +150,63 @@
             return {
                 address_id: '',
                 address: {},
-                useCoupon: true,
+                car_id: '',
                 couponList: [],
-                coupon_id: '',   // 优惠券id
+                coupon: {},   // 优惠券id
                 couponShow: false,
+                discount: 0,    // 折扣的金额
                 useDiscount: true,   // 折扣
                 defaultShopLogo,
                 express_remark: '', // 备注
-                num: '',    // 直接购买时商品的数量
-                score: '',
+                num: 0,    // 直接购买时商品的数量
+                score: 0,
                 stand_id: '',
                 shopList: [],
+                total: 0,
+                useCoupon: true,
                 useScore: true,  // 积分
                 orderFrom: '',  // 订单来源：single: 直接购买    car：购物车
                 payTypeShow: false,
             }
         },
         methods: {
+            getData() {
+                let url, params
+                if (this.orderFrom === 'single') {
+                    url = '/goods/makesureorder'
+                    params = {
+                        stand_id: this.stand_id,
+                        num: this.num,
+                        coupon_sum: this.useCoupon ? this.coupon.sum : undefined,
+                        is_vip: this.useDiscount ? 1 : undefined,
+                        score_sum: this.useScore ? this.score : undefined
+                    }
+                } else if (this.orderFrom === 'car') {
+                    url = '/car/makesureorder'
+                    params = {
+                        car_id: this.car_id,
+                        coupon_sum: this.useCoupon ? this.coupon.sum : undefined,
+                        is_vip: this.useDiscount ? 1 : undefined,
+                        score_sum: this.useScore ? this.score : undefined
+                    }
+                }
+                this.$axios
+                    .post(url, params)
+                    .then(({ data }) => {
+                        if (data.code === 1) {
+                            if (data.data) {
+                                this.handleData(this.orderFrom === 'single' ? [data.data.goods] : data.data.car)
+                                this.total = data.data.total
+                                this.discount = data.data.use_vipdiscount
+                                this.couponList = data.data.coupon
+                                this.address = data.data.address.find(item => this.address_id ? item.id === +this.address_id : item.sta === 1)
+                                console.log(this.address)
+                            }
+                        } else {
+                            this.$toast(data.msg);
+                        }
+                    })
+            },
             // 将商品数据格式化为一个数组，该数组的项是以店铺为单元的商品数组
             handleData(data) {
                 // 先生成按照店铺id作为key的对象
@@ -182,16 +228,18 @@
                     }
                 })
             },
-            onCouponClick() {
-
+            onCouponClick(coupon) {
+                this.coupon = coupon
+                this.couponShow = false
             },
             selectAddress() {
                 this.$router.push({
                     path: '/uc/setting/address',
                     query: {
                         from: 'confirm-order',
-                        stand_id: this.stand_id,
-                        num: this.num,
+                        car_id: this.orderFrom === 'single' ? undefined : this.car_id,
+                        stand_id: this.orderFrom === 'single' ? this.stand_id : undefined,
+                        num: this.orderFrom === 'single' ? this.num : undefined,
                         score: this.score
                     }
                 })
@@ -207,8 +255,9 @@
                     path: '/uc/orders/score-discount',
                     query: {
                         address_id: this.address_id,
-                        num: this.num,
-                        stand_id: this.stand_id,
+                        car_id: this.orderFrom === 'single' ? undefined : this.car_id,
+                        stand_id: this.orderFrom === 'single' ? this.stand_id : undefined,
+                        num: this.orderFrom === 'single' ? this.num : undefined,
                     }
                 })
             },
@@ -218,7 +267,7 @@
                     .post('/tgoods/topay', {
                         stand_id: this.stand_id,
                         num: this.num,
-                        coupon_id: this.useCoupon ? this.coupon_id : undefined,
+                        coupon_id: this.useCoupon ? this.coupon.id : undefined,
                         is_vip: this.useDiscount ? 1 : undefined,
                         score_sum: this.useScore ? this.score : undefined
                     })
@@ -226,32 +275,16 @@
         },
         created() {
             if (this.$route.query.stand_id) {
+                this.orderFrom = 'single'
                 this.stand_id = this.$route.query.stand_id
                 this.num = this.$route.query.num
-                this.score = this.$route.query.score
-                this.address_id = this.$route.query.address_id
-                this.orderFrom = 'single'
             } else if (this.$route.query.car_id) {
                 this.orderFrom = 'car'
-
+                this.car_id = this.$route.query.car_id
             }
-            this.$axios
-                .post('/goods/makesureorder', {
-                    stand_id: this.stand_id,
-                    num: this.num
-                })
-                .then(({ data }) => {
-                    if (data.code === 1) {
-                        if (data.data) {
-                            this.handleData([data.data.goods])
-                            this.couponList = data.data.coupon
-                            this.address = data.data.address.find(item => this.address_id ? item.id === +this.address_id : item.sta === 1)
-                            console.log(this.address)
-                        }
-                    } else {
-                        this.$toast(data.msg);
-                    }
-                })
+            this.score = this.$route.query.score
+            this.address_id = this.$route.query.address_id
+            this.getData()
         }
     }
 </script>
@@ -259,6 +292,7 @@
 <style scoped lang="scss">
     .suwis-confirm-order {
         min-height: 100vh;
+        margin-bottom: 60px;
         background: #f5f5f5;
         box-sizing: border-box;
         font-size: 14px;

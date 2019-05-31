@@ -12,7 +12,7 @@
                 <van-icon name="arrow" size="10px" color="#b4b4b4"/>
             </template>
         </van-cell>
-        <van-cell title="我的二维码名片" :clickable="true" :center="true" value-class="content" @click="qrCodeShow = true">
+        <van-cell title="我的二维码名片" :clickable="true" :center="true" value-class="content" @click="barCodeScan">
             <template>
                 <img src="@/assets/uc/qr-code-black@2x.png" alt="二维码" class="qr-code">
                 <van-icon name="arrow" size="10px" color="#b4b4b4"/>
@@ -69,19 +69,20 @@
         <!-- 修改昵称弹框 // -->
 
         <!-- 二维码弹框 -->
-        <van-popup v-model="qrCodeShow" :close-on-click-overlay="false" class="popup-qr-code">
-            <div class="info-box">
-                <img :src="user.photo || require('../../../assets/login/avatar@3x.png')" alt="头像" class="profile">
-                <div class="info">
-                    <span class="name">{{user.name}}</span>
-                    <span class="address">{{user | address}}</span>
-                </div>
-                <div class="img-box">
-                    <img src="" alt="" class="qr-code">
-                </div>
-            </div>
-            <div class="close" @click="qrCodeShow = false">×</div>
-        </van-popup>
+        <!--<van-popup v-model="qrCodeShow" :close-on-click-overlay="false" position="top" class="popup-qr-code">-->
+            <!--<div class="info-box">-->
+                <!--<img :src="user.photo || require('../../../assets/login/avatar@3x.png')" alt="头像" class="profile">-->
+                <!--<div class="info">-->
+                    <!--<span class="name">{{user.name}}</span>-->
+                    <!--<span class="address">{{user | address}}</span>-->
+                <!--</div>-->
+                <!--<div class="img-box">-->
+                    <!--<img src="" alt="" class="qr-code">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="close" @click="qrCodeShow = false">×</div>-->
+        <!--</van-popup>-->
+        <BarCode :activity="barCodeActivity" :show="qrCodeShow" @close="closeBarCode"></BarCode>
         <!-- 二维码弹框 //-->
 
         <!-- 修改位置弹框 -->
@@ -89,15 +90,23 @@
             <van-area :area-list="areaList" :value="locationValue" @confirm="confirmLocation" @cancel="closePopup"/>
         </van-popup>
         <!-- 修改位置弹框 // -->
+
+        <!-- 修改位置弹框 // -->
+
+
     </div>
 </template>
 
 <script>
     import areaList from '@/constants/uc/address'
     import profile from '../../../assets/login/avatar@3x.png'
+    import BarCode from '@/components/bar-code'
 
     export default {
         name: "setting",
+        components: {
+            BarCode
+        },
         filters: {
             address(v) {
                 return v.area ? v.province + v.city + v.area : '---'
@@ -106,6 +115,7 @@
         data() {
             return {
                 areaList,
+                barCodeActivity: '',
                 name: '',       // 弹框昵称
                 maxSize: 500 * 1024,    // 上传图片的最大kb
                 profileUrl: '',
@@ -118,6 +128,14 @@
             }
         },
         methods: {
+            barCodeScan() {
+                this.qrCodeShow = true
+                this.barCodeActivity = 'start'
+            },
+            closeBarCode() {
+                this.qrCodeShow = false
+                this.barCodeActivity = 'cancel'
+            },
             closePopup() {
                 this.profileUrl = ''
                 this.name = ''
