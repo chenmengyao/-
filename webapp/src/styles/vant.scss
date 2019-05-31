@@ -5,3 +5,12 @@
   border-radius: 50px;
   border: none;
 }
+
+.van-checkbox {
+  .van-checkbox__icon--checked {
+    .van-icon {
+      background-color: #E83F44;
+      border-color: #E83F44;
+    }
+  }
+}
