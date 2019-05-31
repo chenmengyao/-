@@ -46,8 +46,10 @@
   <!--  -->
   <dl class="news">
     <dt>
-      <img src="@/assets/index/news@3x.png"
-        alt="">
+      <router-link to="/news">
+        <img src="@/assets/index/news@3x.png"
+          alt="">
+      </router-link>
     </dt>
     <dd>
       <van-row>

@@ -15,7 +15,12 @@ export default {
     '/news',
     '/news/details',
     '/goods/list',
-    '/goods/classify'
+    '/goods/classify',
+    '/special/clearance',
+    '/special/auction',
+    '/special/flash',
+    '/special/recommend',
+    '/service'
   ],
   // 底部导航隐藏地址配置
   noTabbarUrls: [
