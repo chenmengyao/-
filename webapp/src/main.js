@@ -29,14 +29,12 @@ const onPlusReady = function(callback, context = this) {
 }
 
 Vue.mixin({
-  beforeCreate() {
-    onPlusReady(() => {
-      this.plusReady = true
-    }, this)
-  },
-  methods: {
-    onPlusReady
-  }
+    beforeCreate() {
+      onPlusReady(() => {this.plusReady = true}, this)
+    },
+    methods: {
+        onPlusReady
+    }
 })
 
 // 路由拦截
