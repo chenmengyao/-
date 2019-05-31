@@ -3,13 +3,41 @@
 </template>
 
 <script>
+import lwb from './launchwebview.json'
 export default {
+	data() {
+		return {
+			navlist: [{
+				name: '首页',
+				icon: '&#xe60b;',
+				path: '/',
+				id: 'index'
+			}, {
+				name: '列表',
+				icon: '&#xe735;',
+				path: '/goods/list',
+				id: 'list'
+			}, {
+				name: '购物车',
+				icon: '&#xe645;',
+				path: '/goods/shopping-cart',
+				id: 'car'
+			}, {
+				name: '我的',
+				icon: '&#xe65d;',
+				path: '/my',
+				id: 'my'
+			}],
+			options: {
+				ACTIVE_COLOR: 'rgba(221,11,17,1)',
+				NORMAL_COLOR: '#666666'
+			},
+			ntab: {}
+		}
+	},
 	mounted() {
-		console.error('created')
 		// 初始化绑定事件
-		setTimeout(() => {
-			this.init()
-		}, 1000)
+		document.addEventListener('plusready', this.init, false)
 	},
 	methods: {
 		init() {

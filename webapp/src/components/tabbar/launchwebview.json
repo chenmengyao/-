@@ -1,0 +1,159 @@
+{
+  "bottom": "0px",
+  "background": "rgba(250, 250, 250, 1)",
+  "subNViews": [{
+    "id": "tabbar",
+    "styles": {
+      "bottom": "0px",
+      "left": "0",
+      "height": "50px",
+      "width": "100%",
+      "backgroundColor": "rgba(250, 250, 250, 1)"
+    },
+    "tags": [{
+        "tag": "font",
+        "id": "indexIcon",
+        "text": "",
+        "position": {
+          "top": "5px",
+          "left": "0",
+          "width": "25%",
+          "height": "24px"
+        },
+        "textStyles": {
+          "fontSrc": "_www/fonts/iconfont.ttf",
+          "align": "center",
+          "size": "28px",
+          "color": "#666666"
+        }
+      },
+      {
+        "tag": "font",
+        "id": "indexText",
+        "text": "首页",
+        "position": {
+          "top": "25px",
+          "left": "0",
+          "width": "25%",
+          "height": "24px"
+        },
+        "textStyles": {
+          "align": "center",
+          "size": "12px",
+          "color": "#666666"
+        }
+      },
+      {
+        "tag": "font",
+        "id": "listIcon",
+        "text": "",
+        "position": {
+          "top": "5px",
+          "left": "23%",
+          "width": "25%",
+          "height": "24px"
+        },
+        "textStyles": {
+          "fontSrc": "_www/fonts/iconfont.ttf",
+          "align": "center",
+          "size": "28px",
+          "color": "#666666"
+        }
+      },
+      {
+        "tag": "font",
+        "id": "listText",
+        "text": "列表",
+        "position": {
+          "top": "25px",
+          "left": "23%",
+          "width": "25%",
+          "height": "24px"
+        },
+        "textStyles": {
+          "align": "center",
+          "size": "12px",
+          "color": "#666666"
+        }
+      },
+      {
+        "tag": "font",
+        "id": "carIcon",
+        "text": "",
+        "position": {
+          "top": "5px",
+          "left": "47%",
+          "width": "25%",
+          "height": "24px"
+        },
+        "textStyles": {
+          "fontSrc": "_www/fonts/iconfont.ttf",
+          "align": "center",
+          "size": "24px",
+          "color": "#666666"
+        }
+      },
+      {
+        "tag": "font",
+        "id": "carText",
+        "text": "购物车",
+        "position": {
+          "top": "25px",
+          "left": "47%",
+          "width": "25%",
+          "height": "28px"
+        },
+        "textStyles": {
+          "align": "center",
+          "size": "12px",
+          "color": "#666666"
+        }
+      },
+      {
+        "tag": "font",
+        "id": "myIcon",
+        "text": "",
+        "position": {
+          "top": "5px",
+          "left": "72%",
+          "width": "25%",
+          "height": "24px"
+        },
+        "textStyles": {
+          "fontSrc": "_www/fonts/iconfont.ttf",
+          "align": "center",
+          "size": "28px",
+          "color": "#666666"
+        }
+      },
+      {
+        "tag": "font",
+        "id": "myText",
+        "text": "我的",
+        "position": {
+          "top": "25px",
+          "left": "72%",
+          "width": "25%",
+          "height": "24px"
+        },
+        "textStyles": {
+          "align": "center",
+          "size": "12px",
+          "color": "#666666"
+        }
+      }
+    ]
+  }],
+  "titleNView": {
+    "backgroundcolor": "rgba(221,11,17,1)",
+    "titletext": "潮玩城",
+    "titlecolor": "#fff"
+  },
+  "statusbar": {
+    /*none|suggestedDevice|supportedDevice，沉浸式状态栏情况  */
+    "immersed": "supportedDevice",
+    /* dark|light, 系统状态栏样式 */
+    "style": "light",
+    "background": "rgba(221,11,17,1)"
+  }
+}

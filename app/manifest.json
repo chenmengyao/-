@@ -161,7 +161,7 @@
           },
           {
             "tag": "font",
-            "id": "goodsIcon",
+            "id": "listIcon",
             "text": "",
             "position": {
               "top": "5px",
@@ -178,7 +178,7 @@
           },
           {
             "tag": "font",
-            "id": "goodsText",
+            "id": "listText",
             "text": "列表",
             "position": {
               "top": "25px",
