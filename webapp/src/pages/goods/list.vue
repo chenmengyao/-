@@ -83,6 +83,7 @@ export default {
     .interval {
         border-top: 6px solid $border;
     }
+
     .filter {
         padding: 15px;
         font-size: 14px;

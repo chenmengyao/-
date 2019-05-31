@@ -71,7 +71,7 @@ export default {
 		setTimeout(() => {
 			this.loaded = true
 			// 隐藏导航栏
-			this.$store.commit('core/hideTabbar', true)
+			this.$store.commit('core/toggleTabbar', false)
 		}, 150)
 	},
 	watch: {
@@ -147,6 +147,8 @@ export default {
 					token: data.data,
 					user
 				})
+				// 显示导航栏
+				this.$store.commit('core/toggleTabbar', true)
 			} else {
 				Toast(data.msg)
 			}
