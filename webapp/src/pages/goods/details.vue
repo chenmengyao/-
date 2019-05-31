@@ -506,6 +506,8 @@ export default {
     }
 
     .banner {
+        height: 100vw;
+        overflow: hidden;
         img {
             width: 100%;
         }

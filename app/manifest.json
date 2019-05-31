@@ -18,10 +18,10 @@
   "launch_path": "http://10.16.40.45:8080/#/",
   "developer": {
     /*开发者名称*/
-    "name": "",
+    "name": "Iovrzk",
     /*开发者邮箱地址*/
-    "email": "",
-    "url": ""
+    "email": "Iovrzk@qq.com",
+    "url": "http://qie.suwis.com"
   },
   "permissions": {
     "Accelerometer": {
@@ -274,14 +274,14 @@
       }
     },
     "splashscreen": {
-      "autoclose": true,
       /*是否自动关闭程序启动界面，true表示应用加载应用入口页面后自动关闭；false则需调plus.navigator.closeSplashscreen()关闭*/
+      "autoclose": true,
       "waiting": false
     },
-    "popGesture": "close",
     /*设置应用默认侧滑返回关闭Webview窗口，"none"为无侧滑返回功能，"hide"为侧滑隐藏Webview窗口。参考http://ask.dcloud.net.cn/article/102*/
-    "runmode": "normal",
+    "popGesture": "close",
     /*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
+    "runmode": "normal",
     "signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",
     /*可选，保留给应用签名，暂不使用*/
     "distribute": {
@@ -336,8 +336,8 @@
           "<uses-permission android:name=\"android.permission.RECEIVE_USER_PRESENT\"/>"
         ]
       },
-      "orientation": ["portrait-primary"],
       /*应用支持的方向，portrait-primary：竖屏正方向；portrait-secondary：竖屏反方向；landscape-primary：横屏正方向；landscape-secondary：横屏反方向*/
+      "orientation": ["portrait-primary"],
       "icons": {
         "ios": {
           "prerendered": true,
@@ -487,44 +487,6 @@
           "js/util.js"
         ],
         "refer": ["html/tab-webview-subpage-contact.html", "html/new-webview.html"],
-        "priority": 0
-      },
-      "launch.html": {
-        "resources": [
-          "js/mui.min.js",
-          "css/mui.min.css",
-          "html/tab-webview-subpage-about.html"
-        ],
-        "refer": [
-          "html/tab-webview-subpage-setting.html",
-          "html/tab-webview-subpage-chat.html",
-          "html/tab-webview-subpage-contact.html"
-        ],
-        "priority": 0
-      },
-      "html/tab-webview-subpage-setting.html": {
-        "resources": ["fonts/mui.ttf", "css/mui.min.css", "js/mui.min.js"],
-        "refer": [],
-        "priority": 0
-      },
-      "html/tab-webview-subpage-about.html": {
-        "resources": ["css/mui.min.css", "js/mui.min.js", "js/util.js"],
-        "refer": [],
-        "priority": 0
-      },
-      "html/tab-webview-subpage-chat.html": {
-        "resources": ["fonts/mui.ttf", "js/mui.min.js", "css/mui.min.css"],
-        "refer": [],
-        "priority": 0
-      },
-      "html/tab-webview-subpage-contact.html": {
-        "resources": ["images/60x60.gif", "js/mui.min.js", "css/mui.min.css"],
-        "refer": [],
-        "priority": 0
-      },
-      "html/new-webview.html": {
-        "resources": ["css/mui.min.css", "js/mui.min.js", "fonts/mui.ttf"],
-        "refer": [],
         "priority": 0
       }
     },
