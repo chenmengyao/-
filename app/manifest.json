@@ -15,7 +15,7 @@
         "72" : "icon.png"
     },
     /*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
-    "launch_path" : "http://test.suwis.com/1905_tideway_shop/webapp/dist/",
+    "launch_path" : "http://10.16.40.45:8080/#/",
     "developer" : {
         /*开发者名称*/
         "name" : "",
@@ -262,7 +262,12 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "titleNView" : {
+                "backgroundcolor" : "rgba(221,11,17,1)",
+                "titletext" : "潮玩城",
+                "titlecolor" : "#fff"
+            }
         },
         "splashscreen" : {
             "autoclose" : true,

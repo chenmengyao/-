@@ -4,7 +4,7 @@
       <van-col v-for="nav in navlist" span="8" :class="{active:nav.selected}" @click.native="skip(nav)">{{nav.name}}</van-col>
     </van-row>
     <!--  -->
-    <van-swipe ref="banner" :autoplay="3000" indicator-color="white">
+    <van-swipe class="banner" ref="banner" :autoplay="3000" indicator-color="white">
       <van-swipe-item>
         <img :src="details.img" alt="">
       </van-swipe-item>
@@ -502,6 +502,12 @@ export default {
             left: 50%;
             bottom: 0;
             border-bottom: 2px solid $red;
+        }
+    }
+
+    .banner {
+        img {
+            width: 100%;
         }
     }
 
