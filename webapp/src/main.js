@@ -42,11 +42,13 @@ Vue.mixin({
 // 路由拦截
 router.beforeEach((to, from, next) => {
   // 动态设置页面标题
-  plus.webview.currentWebview().setStyle({
-    titleNView: {
-      titleText: to.name
-    }
-  })
+  try {
+    plus.webview.currentWebview().setStyle({
+      titleNView: {
+        titleText: to.name
+      }
+    })
+  } catch (e) {}
   let hideTabbar = true
   for (let url in config.noTabbarUrls) {
     if (to.path == url) {

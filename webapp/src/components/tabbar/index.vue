@@ -58,8 +58,6 @@ export default {
 			// 获取配置文件
 			this.ntab = plus.nativeObj.View.getViewById('tabbar')
 			this.ntab.addEventListener('click', (e) => {
-				console.log('tab click')
-				// console.log(e)
 				let x = e.clientX
 				let w = window.innerWidth
 				let index = 0
@@ -102,7 +100,9 @@ export default {
 		},
 		// 切换状态栏显示状态
 		toggleState() {
-			this.app.tabbarVisible ? this.ntab.show() : this.ntab.hide()
+			try {
+				this.app.tabbarVisible ? this.ntab.show() : this.ntab.hide()
+			} catch (e) {}
 		}
 	}
 }
