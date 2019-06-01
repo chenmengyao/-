@@ -7,7 +7,10 @@ export default new Router({
   routes: [{
     path: '/',
     name: '潮玩城',
-    component: () => import('./pages/index.vue')
+    component: () => import('./pages/index.vue'),
+    meta: {
+      keepAlive: true
+    }
   }, {
     path: '/login',
     name: '登录',
@@ -39,7 +42,10 @@ export default new Router({
   }, {
     path: '/goods/classify',
     name: '商品分类',
-    component: () => import('./pages/goods/classify.vue')
+    component: () => import('./pages/goods/classify.vue'),
+    meta: {
+      keepAlive: true
+    }
   }, {
     path: '/goods/details',
     name: '商品详情',
@@ -47,7 +53,10 @@ export default new Router({
   }, {
     path: '/goods/list',
     name: '商品列表',
-    component: () => import('./pages/goods/list.vue')
+    component: () => import('./pages/goods/list.vue'),
+    meta: {
+      keepAlive: true
+    }
   }, {
     path: '/goods/search',
     name: '搜索商品',

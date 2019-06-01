@@ -95,6 +95,8 @@ export default {
         left: 0;
         height: 50px;
         box-sizing: border-box;
+        z-index: 999;
+        
         .icon {
             max-width: 14px;
             margin-right: 3px;

@@ -13,9 +13,9 @@ export default {
 				path: '/',
 				id: 'index'
 			}, {
-				name: '列表',
+				name: '分类',
 				icon: '&#xe735;',
-				path: '/goods/list',
+				path: '/goods/classify',
 				id: 'list'
 			}, {
 				name: '购物车',

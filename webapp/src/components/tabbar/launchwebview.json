@@ -63,7 +63,7 @@
       {
         "tag": "font",
         "id": "listText",
-        "text": "列表",
+        "text": "分类",
         "position": {
           "top": "25px",
           "left": "23%",
