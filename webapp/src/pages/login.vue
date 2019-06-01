@@ -40,127 +40,133 @@
 
 <script>
 import {
-	Toast
+  Toast
 } from 'vant'
 import md5 from 'md5'
 export default {
-	components: {},
-	data() {
-		return {
-			// 登陆方式
-			loginType: 1,
-			formData: {
-				tel: '18687512006',
-				code: '',
-				nickname: 'Ivorzk',
-				password: '123456',
-				type: 1
-			},
-			formMsg: {
-				tel: '',
-				code: '',
-				nickname: '',
-				password: '',
-			},
-			loaded: false,
-			disabled: false,
-			countDownText: 0
-		}
-	},
-	mounted() {
-		setTimeout(() => {
-			this.loaded = true
-			// 隐藏导航栏
-			this.$store.commit('core/toggleTabbar', false)
-		}, 150)
-	},
-	watch: {
-		countDownText() {
-			if (this.countDownText > 0) {
-				setTimeout(() => {
-					this.countDownText--
-				}, 1000)
-			}
-		}
-	},
-	methods: {
-		// 发送验证码
-		sendCode() {
-			if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
-				this.formMsg.tel = '请输入正确的号码'
-				return
-			}
-			this.countDownText = 60
-			this.$axios.post('login/getcode', {
-				tel: this.formData.tel
-			}).then(res => {
-				if (res.data.code == 1) {
-					Toast('验证码已发送，请注意查收')
-				} else {
-					Toast(res.data.msg)
-					this.countDownText = 0
-				}
-			})
-		},
-		// 登陆前校验
-		loginBefore() {
-			// 验证码登陆
-			if (this.loginType == 0) {
-				if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
-					this.formMsg.tel = '请输入正确的号码'
-					return
-				}
-				if (!/^\d{6}$/.test(this.formData.code)) {
-					this.formMsg.code = '请输入6位数的验证码'
-					return
-				}
-			}
-			// 账号登陆
-			if (this.loginType == 1) {
-				if (!this.formData.nickname) {
-					this.formMsg.nickname = '请输入用户名'
-					return
-				}
-				if (!this.formData.password) {
-					this.formMsg.password = '请输入密码'
-					return
-				}
-			}
-			this.login()
-		},
-		// 登陆
-		async login() {
-			let params = {
-				...this.formData
-			}
-			params.password = md5(params.password)
-			this.disabled = true
-			let res = await this.$axios.post(this.loginType == 0 ? 'login/tellogin' : 'login/acclogin', params)
-			setTimeout(() => {
-				this.disabled = false
-			}, 600)
-			let data = res.data
-			if (data.code == 1) {
-				let user = await this.getUserInfo(data.data)
-				// 储存用户信息
-				this.$store.commit('core/login', {
-					token: data.data,
-					user
-				})
-				// 显示导航栏
-				this.$store.commit('core/toggleTabbar', true)
-			} else {
-				Toast(data.msg)
-			}
-		},
-		// getuser
-		async getUserInfo(token) {
-			let res = await this.$axios.post('mine/index', {
-				token
-			})
-			return res.data.data.user
-		}
-	}
+  components: {},
+  data() {
+    return {
+      // 登陆方式
+      loginType: 1,
+      formData: {
+        tel: '18687512006',
+        code: '',
+        nickname: 'Ivorzk',
+        password: '123456',
+        type: 1
+      },
+      formMsg: {
+        tel: '',
+        code: '',
+        nickname: '',
+        password: '',
+      },
+      loaded: false,
+      disabled: false,
+      countDownText: 0
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.loaded = true
+      // 隐藏导航栏
+      this.$store.commit('core/toggleTabbar', false)
+    }, 150)
+  },
+  watch: {
+    countDownText() {
+      if (this.countDownText > 0) {
+        setTimeout(() => {
+          this.countDownText--
+        }, 1000)
+      }
+    }
+  },
+  methods: {
+    // 发送验证码
+    sendCode() {
+      if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
+        this.formMsg.tel = '请输入正确的号码'
+        return
+      }
+      this.countDownText = 60
+      this.$axios.post('login/getcode', {
+        tel: this.formData.tel
+      }).then(res => {
+        if (res.data.code == 1) {
+          Toast('验证码已发送，请注意查收')
+        } else {
+          Toast(res.data.msg)
+          this.countDownText = 0
+        }
+      })
+    },
+    // 登陆前校验
+    loginBefore() {
+      // 验证码登陆
+      if (this.loginType == 0) {
+        if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
+          this.formMsg.tel = '请输入正确的号码'
+          return
+        }
+        if (!/^\d{6}$/.test(this.formData.code)) {
+          this.formMsg.code = '请输入6位数的验证码'
+          return
+        }
+      }
+      // 账号登陆
+      if (this.loginType == 1) {
+        if (!this.formData.nickname) {
+          this.formMsg.nickname = '请输入用户名'
+          return
+        }
+        if (!this.formData.password) {
+          this.formMsg.password = '请输入密码'
+          return
+        }
+      }
+      this.login()
+    },
+    // 登陆
+    async login() {
+      let params = {
+        ...this.formData
+      }
+      params.password = md5(params.password)
+      this.disabled = true
+      let res = await this.$axios.post(this.loginType == 0 ? 'login/tellogin' : 'login/acclogin', params)
+      setTimeout(() => {
+        this.disabled = false
+      }, 600)
+      let data = res.data
+      if (data.code == 1) {
+        let user = await this.getUserInfo(data.data)
+        // 储存用户信息
+        this.$store.commit('core/login', {
+          token: data.data,
+          user
+        })
+        // 显示导航栏
+        this.$store.commit('core/toggleTabbar', true)
+        //
+        if (this.$route.path == '/login') {
+          setTimeout(() => {
+            this.$router.push('/uc')
+          }, 600)
+        }
+      } else {
+        Toast(data.msg)
+      }
+    },
+    // getuser
+    async getUserInfo(token) {
+      let res = await this.$axios.post('mine/index', {
+        token
+      })
+      return res.data.data.user
+    }
+  }
 }
 </script>
 
