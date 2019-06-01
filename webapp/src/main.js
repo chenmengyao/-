@@ -29,12 +29,14 @@ const onPlusReady = function(callback, context = this) {
 }
 
 Vue.mixin({
-    beforeCreate() {
-      onPlusReady(() => {this.plusReady = true}, this)
-    },
-    methods: {
-        onPlusReady
-    }
+  beforeCreate() {
+    onPlusReady(() => {
+      this.plusReady = true
+    }, this)
+  },
+  methods: {
+    onPlusReady
+  }
 })
 
 // 路由拦截
@@ -48,7 +50,7 @@ router.beforeEach((to, from, next) => {
     })
   } catch (e) {}
   let hideTabbar = true
-  for (let url in config.noTabbarUrls) {
+  for (let url of config.noTabbarUrls) {
     if (to.path == url) {
       hideTabbar = false
       break

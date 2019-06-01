@@ -103,6 +103,7 @@ export default {
 <style lang="scss" scoped>
 .suwis-shop {
     position: relative;
+    padding-bottom: 50px;
     .shop {
         bottom: 50px;
         height: 86px;

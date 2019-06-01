@@ -27,6 +27,7 @@ export default {
     '/register',
     '/resetpaypwd',
     '/resetpwd',
-    '/login'
+    '/login',
+    '/goods/details'
   ]
 }
