@@ -1,6 +1,7 @@
 <template>
 <div class="suwis-index">
-  <van-swipe :autoplay="3000"
+  <van-swipe class="banner"
+    :autoplay="3000"
     indicator-color="#E83F44">
     <van-swipe-item v-for="item in banners">
       <router-link :to="{ path: '/goods/details', query: {id: item.goods_id} }">
@@ -121,6 +122,11 @@ export default {
     position: relative;
     padding-bottom: 50px;
 
+    .banner {
+        height: 43.9vw;
+        overflow: hidden;
+    }
+
     .menus {
         display: flex;
         justify-content: center;
@@ -138,7 +144,8 @@ export default {
                 opacity: 0.8;
             }
             img {
-                max-width: 12vw;
+                width: 12vw;
+                height: 12vw;
                 display: block;
                 margin: auto auto 5px;
             }

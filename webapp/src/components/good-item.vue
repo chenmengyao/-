@@ -1,7 +1,7 @@
 <template lang="html">
   <dl class="suwis-good-item">
     <dt>
-      <img :src="img" alt="">
+      <img :src="img" v-lazy="img" alt="">
     </dt>
     <dd class="title">
       {{title||''}}
@@ -29,6 +29,9 @@ export default {
         overflow: hidden;
         border-radius: 4px;
         margin-bottom: 2vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     .title {
         font-size: 14px;
@@ -41,7 +44,7 @@ export default {
         -webkit-line-clamp: 2;
         flex-direction: column;
         text-align: justify;
-        line-height: 20px;
+        line-height: 22px;
     }
     dd {
         padding: 0;
