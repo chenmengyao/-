@@ -5,6 +5,8 @@
 -   [APP下载](APP下载.md)
 -   [APP图片尺寸规范](APP图片尺寸规范.md)
 -   [项目目录结构](项目目录结构.md)
+-   [APP配置文件](APP配置文件.md)
+-   [APP已集成的插件](APP已集成的插件.md)
 -   [切换NPM镜像](切换NPM镜像.md)
 -   [APP路由](APP路由.md)
 -   APP全局对象
