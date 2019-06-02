@@ -2,9 +2,9 @@
   <div class="suwis-goods">
     <van-row class="filter" type="flex" align="center" justify="space-between">
       <van-row>
-        <van-col class="btn" @click.native="params.zh=='down'?params.zh='up':params.zh='down'">
+        <van-col class="btn" @click.native="params.evaluate=='down'?params.evaluate='up':params.evaluate='down'">
           综合
-          <img v-if="params.zh=='down'" class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
+          <img v-if="params.evaluate=='down'" class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
           <img v-else class="icon" src="@/assets/shop/arrow_top.png" alt="">
         </van-col>
         <van-col class="btn" @click.native="params.sell=='down'?params.sell='up':params.sell='down'">
@@ -23,55 +23,82 @@
       </van-col>
     </van-row>
     <!-- 商品列表 -->
-    <good-list>
-      <good-item v-for="item in goods"
-        :img="item.img"
-        :title="item.title"
-        :price="item.price"
-        :sell="item.sell"
-        @click.native="$router.push({path:'/goods/details', query: {id: item.id}})">
-      </good-item>
-    </good-list>
+    <van-list
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="loadList"
+    >
+      <good-list>
+        <good-item v-for="item in goods"
+          :img="item.img"
+          :title="item.title"
+          :price="item.price"
+          :sell="item.sell"
+          @click.native="$router.push({path:'/goods/details', query: {id: item.id}})">
+        </good-item>
+      </good-list>
+    </van-list>
     <!-- 商品列表 //-->
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
 export default {
-	data() {
-		return {
-			store: {},
-			goods: [],
-			total: 0,
-			params: {
-				sell: 'down',
-				price: 'down',
-				zh: 'down',
-				page: 1,
-				num: 20,
-				search: ''
-			}
-		}
-	},
-	created() {
-		this.getList()
-	},
-	watch: {
-		params: {
-			deep: true,
-			handler() {
-				this.getList()
-			}
-		}
-	},
-	methods: {
-		async getList() {
-			this.params.store_id = this.$route.query.id
-			let res = await this.$axios.post('goods/lists', this.params)
-			let data = res.data.data || {}
-			this.goods = data.goods || []
-		}
-	}
+  data() {
+    return {
+      store: {},
+      goods: [],
+      total: 0,
+      params: {
+        sell: 'down',
+        price: 'down',
+        evaluate: 'down',
+        page: 0,
+        num: 20,
+        search: '',
+        category: ''
+      },
+      loading: false,
+      finished: false
+    }
+  },
+  created() {},
+  watch: {
+    'params.sell'() {
+      this.params.page = 1
+      this.goods = []
+      this.getList()
+    },
+    'params.price'() {
+      this.params.page = 1
+      this.goods = []
+      this.getList()
+    },
+    'params.evaluate'() {
+      this.params.page = 1
+      this.goods = []
+      this.getList()
+    }
+  },
+  methods: {
+    loadList: _.debounce(function() {
+      // 获取url上的参数
+      this.params.page += 1
+      this.getList()
+    }, 186),
+    async getList() {
+      this.loading = true
+      this.params.search = this.$route.query.search || ''
+      this.params.category = this.$route.query.category || ''
+      let res = await this.$axios.post('goods/lists', this.params)
+      let data = res.data.data || {}
+      this.goods = this.goods.concat(data.goods || [])
+      this.loading = false
+      if (!data.goods || data.goods.length == 0) this.finished = true
+    }
+  }
 }
 </script>
 
@@ -96,7 +123,7 @@ export default {
         height: 50px;
         box-sizing: border-box;
         z-index: 999;
-        
+
         .icon {
             max-width: 14px;
             margin-right: 3px;

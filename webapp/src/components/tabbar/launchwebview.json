@@ -13,7 +13,7 @@
     "tags": [{
         "tag": "font",
         "id": "indexIcon",
-        "text": "",
+        "text": "\ue6a9",
         "position": {
           "top": "5px",
           "left": "0",
@@ -46,7 +46,7 @@
       {
         "tag": "font",
         "id": "listIcon",
-        "text": "",
+        "text": "\ue7f9",
         "position": {
           "top": "5px",
           "left": "23%",
@@ -79,7 +79,7 @@
       {
         "tag": "font",
         "id": "carIcon",
-        "text": "",
+        "text": "\ue669",
         "position": {
           "top": "5px",
           "left": "47%",
@@ -111,8 +111,8 @@
       },
       {
         "tag": "font",
-        "id": "ucIcon",
-        "text": "",
+        "id": "myIcon",
+        "text": "\ue61e",
         "position": {
           "top": "5px",
           "left": "72%",
@@ -128,7 +128,7 @@
       },
       {
         "tag": "font",
-        "id": "ucText",
+        "id": "myText",
         "text": "我的",
         "position": {
           "top": "25px",

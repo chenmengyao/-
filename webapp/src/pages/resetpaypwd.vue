@@ -9,10 +9,10 @@
          <van-button class="send-code" slot="button" size="small" type="primary" :disabled="countDownText>0" @click="sendCode">{{countDownText>0?`${countDownText}s后可重新发送`:'发送验证码'}}</van-button>
       </van-field>
       <van-field type="password" v-model="formData.paypass" @focus="formMsg.paypass=''" :error-message="formMsg.paypass" placeholder="请输入8-16位支付密码">
-        <img class="field-icon" slot="left-icon"  src="@/assets/login/pwd@3x.png" alt="">
+        <img class="field-icon" slot="left-icon"  src="@/assets/login/paypwd@3x.png" alt="">
       </van-field>
       <van-field type="password" v-model="formData.paypassConfirm" @focus="formMsg.paypassConfirm=''" :error-message="formMsg.paypassConfirm" placeholder="请再次确认您的支付密码">
-        <img class="field-icon" slot="left-icon"  src="@/assets/login/pwd@3x.png" alt="">
+        <img class="field-icon" slot="left-icon"  src="@/assets/login/paypwd@3x.png" alt="">
       </van-field>
     </van-cell-group>
     <van-button :disabled="disabled" class="btn-submit" type="primary" @click="updateBefore">确认修改</van-button>

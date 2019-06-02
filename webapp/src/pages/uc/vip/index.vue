@@ -17,6 +17,16 @@
                     </div>
                 </div>
             </div>
+            <div class="score-line">
+                <div class="progress-line">
+                    <div class="progress" :style="{ width: location }"></div>
+                    <div class="total-score" :style="{ left: location }">37500</div>
+                </div>
+                <div class="level-line">
+                    <span>LV.{{detail.vip}}</span>
+                    <span>LV.{{detail.vip + 1}}</span>
+                </div>
+            </div>
         </div>
 
         <ul class="illustration">
@@ -52,6 +62,11 @@
 
 <script>
     export default {
+        computed: {
+            location() {
+                return '75%'
+            }
+        },
         data() {
             return {
                 detail: {
@@ -111,6 +126,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                margin-bottom: 32px;
                 .profile {
                     box-sizing: border-box;
                     width: 40px;
@@ -153,6 +169,65 @@
                     font-size: 10px;
                 }
             }
+            .score-line {
+                .progress-line {
+                    position: relative;
+                    margin: 0 36px 8px;
+                    background: #b28327;
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        top: -2px;
+                        left: -4px;
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: #fff;
+                    }
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: -2px;
+                        right: -4px;
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: #b28327;
+                    }
+                }
+                .total-score {
+                    position: absolute;
+                    top: -24px;
+                    height: 16px;
+                    padding: 0 6px;
+                    background: rgba(255,255,255,.75);
+                    border-radius: 10px;
+                    color: #e5b75f;
+                    line-height: 16px;
+                    font-size: 10px;
+                    transform: translateX(-50%);
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        top: 9px;
+                        left: 50%;
+                        border: 4px solid #fff;
+                        border-color: transparent transparent rgba(255,255,255,.75) rgba(255,255,255,.75);
+                        transform: rotate(-45deg) translateX(-50%);
+                    }
+                }
+                .progress {
+                    height: 4px;
+                    background: #fff;
+                }
+                .level-line {
+                    display: flex;
+                    justify-content: space-between;
+                    margin: 0 28px;
+                    color: #fff;
+                    font-size: 10px;
+                }
+            }
         }
         .illustration {
             .item {
@@ -172,7 +247,7 @@
                 }
             }
             .para {
-                margin: 0;
+                margin: 0 0 0 28px;
                 color: #999;
                 font-size: 14px;
                 line-height: 24px;

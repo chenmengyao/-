@@ -1,11 +1,11 @@
 <template lang="html">
     <div class="suwis-order-detail">
         <!-- 商品卡片 -->
-        <ShopItem
+        <OrderCard
             :shop-data="shopData"
-            :goods-list="goodsList"
-            :show-price="false"
-        ></ShopItem>
+            :show-price="false">
+            <GoodsItem :goods-list="goodsList" @click="onClickGoods"></GoodsItem>
+        </OrderCard>
         <!-- 商品卡片 //-->
 
         <!-- 地址卡片 -->
@@ -33,12 +33,12 @@
                 <span class="row-value text-right">￥ 192</span>
             </div>
 
-            <div class="card-row">
+            <div class="card-row thick-row">
                 <span class="row-key">订单总价</span>
                 <span class="row-value text-right">￥ 192</span>
             </div>
 
-            <div class="card-row">
+            <div class="card-row thick-row">
                 <span class="row-key">实际付款</span>
                 <span class="row-value text-right color-red">￥ 192</span>
             </div>
@@ -101,14 +101,16 @@
 </template>
 
 <script>
-    import ShopItem from '@/components/uc/orders/shop-item'
+    import OrderCard from '@/components/uc/orders/order-card'
+    import GoodsItem from '@/components/uc/orders/goods-item'
     import ButtonLine from '@/components/uc/orders/button-line'
     import ButtonMap from '@/constants/order/button-map'
 
     export default {
         components: {
-            ShopItem,
-            ButtonLine
+            OrderCard,
+            ButtonLine,
+            GoodsItem
         },
         filters: {
             buttonList: v => ButtonMap.filter(item => item.sta.includes(v))
@@ -131,13 +133,29 @@
                     case 'logistics':
                         this.checkLogistics(orderId)
                         break
+                    case 'refund':
+                        this.refundOrder(orderId)
+                        break
+                    case 'return':
+                        this.returnOrder(orderId)
+                        break
                     case 'receive':
                         this.confirmReceive(orderId)
                         break
                     case 'evaluate':
                         this.evaluateOrder(orderId)
                         break
+                    case 'delete':
+                        this.deleteOrder(orderId)
+                        break
                 }
+            },
+
+            onClickGoods(goods) {
+                this.$router.push({
+                    path: '/goods/details',
+                    query: {id: goods.id}
+                })
             },
             cancelOrder(orderId) {
                 this.$dialog.confirm({
@@ -161,6 +179,32 @@
             payOrder(orderId) {
                 this.payTypeShow = true
             },
+            checkLogistics(orderId) {
+                this.$router.push({
+                    path: '/uc/orders/logistics-details',
+                    query: {
+                        id: orderId
+                    }
+                })
+            },
+            refundOrder(orderId) {
+                this.$router.push({
+                    path: '/uc/orders/apply',
+                    query: {
+                        id: orderId,
+                        type: 'refund'
+                    }
+                })
+            },
+            returnOrder(orderId) {
+                this.$router.push({
+                    path: '/uc/orders/servicetype',
+                    query: {
+                        id: orderId
+                    }
+                })
+            },
+
             // 确认收货收货
             confirmReceive(orderId) {
                 this.$dialog.confirm({
@@ -187,6 +231,24 @@
                     query: {
                         id: orderId
                     }
+                })
+            },
+            deleteOrder(orderId) {
+                this.$dialog.confirm({
+                    message: '您确定要删除该订单吗？'
+                }).then(() => {
+                    this.$axios
+                        .post('/order/delete', {
+                            id: orderId
+                        })
+                        .then(({ data }) => {
+                            if (data.code === 1) {
+                                this.$toast('删除订单成功');
+                                this.getList()
+                            } else {
+                                this.$toast(data.msg);
+                            }
+                        })
                 })
             }
         },
@@ -269,8 +331,16 @@
             }
 
         }
-        .card-price .card-row {
-            justify-content: space-between;
+        .card-price {
+            padding-bottom: 6px;
+            .card-row {
+                justify-content: space-between;
+            }
+            .thick-row {
+                margin: 0;
+                padding: 10px 0;
+                border-top: 1px solid #f5f5f5;
+            }
         }
         .card-order {
             .card-row {

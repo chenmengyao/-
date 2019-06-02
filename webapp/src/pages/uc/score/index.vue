@@ -179,6 +179,7 @@
             .title {
                 margin-bottom: 16px;
                 font-size: 16px;
+                text-align: center;
             }
             .para {
                 margin: 0;

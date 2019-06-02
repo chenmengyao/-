@@ -32,6 +32,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        background: #fff;
     }
     .title {
         font-size: 14px;
