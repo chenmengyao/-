@@ -5,20 +5,20 @@
 
 #### 切换步骤
 
-> 1. 切换镜像源
+> 1.切换镜像源
 
     // npm
 
     npm set registry https://npm.suwis.com
 
 
-> 2. 添加用户（初次使用时需要操作）
+> 2.添加用户（初次使用时需要操作）
 
     // npm
 
     npm adduser --registry https://npm.suwis.com
 
-> 3. 登陆仓库保存用户凭证
+> 3.登陆仓库保存用户凭证
 
      // npm 登录方式
 
@@ -30,12 +30,12 @@
 
      yarn login
 
-> 4. 安装项目依赖
+> 4.安装项目依赖
 
      // npm
 
      npm install
 
-     // yarn 
+     // yarn
 
      yarn
