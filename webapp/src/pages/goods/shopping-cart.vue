@@ -46,7 +46,7 @@ import {
 export default {
   data() {
     return {
-      shops: {},
+      shops: null,
       checkall: false,
       // 已选商品
       selecteds: []
