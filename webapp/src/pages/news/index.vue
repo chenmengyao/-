@@ -3,7 +3,7 @@
     <div class="suwis-news-ban">
       <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;" :height="200">
         <van-swipe-item v-for="item in banner">
-          <img :src="item.img" style="width:100%;">
+          <img  v-lazy="item.img" style="width:100%;">
         </van-swipe-item>
       </van-swipe>
     </div>

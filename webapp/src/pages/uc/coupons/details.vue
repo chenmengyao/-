@@ -71,7 +71,11 @@
     </div>
     <div class="suwis-btn" v-if="$route.query.type==1">
        <div>
-         <div style="flex:1">立即使用</div>
+         <div style="flex:1">
+           <router-link tag="div" :to="{path: '/'}">
+              立即使用
+           </router-link>
+           </div>
        </div>
     </div>
     <div class="suwis-btn" v-else>

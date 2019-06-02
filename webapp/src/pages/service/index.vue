@@ -93,7 +93,7 @@ export default {
     return{
        error:false,
        loading: false,
-       finished: false,
+       finished: true,
        center: [121.59996, 31.197646],
           lng:'',
           lat: '',
@@ -104,12 +104,11 @@ export default {
               init(o) {
                 // o 是高德地图定位插件实例
                 o.getCurrentPosition((status, result) => {
+                  alert(result.position)
                   if (result && result.position) {
                     self.lng = result.position.lng;
                     self.lat = result.position.lat;
                   }else{
-                    console.log('lng')
-                  
                     self.lng = '30.60';
                     self.lat ='114.30';
                   }
@@ -179,10 +178,10 @@ export default {
           city:city,
           area:town,
           num:10,
-          pointx:'223243.86',
-          pointy:'1140310.40'
-          // pointx:this.lat,
-          // pointy:this.lng
+          // pointx:'223243.86',
+          // pointy:'1140310.40'
+          pointx:this.lat,
+          pointy:this.lng
         }).then(res => {
           	if(res.data.code==1){
                if(this.switchTabId==null){
@@ -201,7 +200,7 @@ export default {
 	  	},
   },
   created(){
-    // this.finished=false
+    this.finished=false
   }
 }
 </script>
