@@ -28,10 +28,8 @@
         </van-field>
         <van-button :disabled="disabled" @click="registerBefore" class="btn-submit" type="primary">注册</van-button>
         <div class="footer-link">
-          <router-link to="/resetpwd">忘记密码？</router-link>
-          <br>
           <span class="ua">
-            登陆即代表已同意<router-link to="/user-agreement"><em>《用户服务协议》</em></router-link>
+            <van-checkbox v-model="agreed">登陆即代表已同意<router-link to="/user-agreement"><em>《用户服务协议》</em></router-link></van-checkbox>
           </span>
         </div>
       </div>
@@ -67,7 +65,8 @@ export default {
         paypassConfirm: ''
       },
       countDownText: 0,
-      disabled: false
+      disabled: false,
+      agreed: true
     }
   },
   created() {
@@ -129,6 +128,10 @@ export default {
       }
       if (this.formData.paypassConfirm !== this.formData.paypassConfirm) {
         this.formMsg.paypassConfirm = '两次输入的支付密码不一致'
+        return
+      }
+      if (!this.agreed) {
+        Toast('请同意用户服务协议')
         return
       }
       this.register()

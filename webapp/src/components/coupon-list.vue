@@ -13,15 +13,15 @@
 
 <script>
 export default {
-	props: ['title', 'value'],
-	data() {
-		return {}
-	},
-	methods: {
-		close() {
-			this.$emit('input', false)
-		}
-	}
+  props: ['title', 'value'],
+  data() {
+    return {}
+  },
+  methods: {
+    close() {
+      this.$emit('input', false)
+    }
+  }
 }
 </script>
 
@@ -29,7 +29,7 @@ export default {
 .suwis-coupon-list {
     position: relative;
     background: #fff;
-    padding: 15px;
+    padding: 15px 15px 69px;
 
     .btn-close {
         position: absolute;

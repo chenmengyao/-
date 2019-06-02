@@ -118,7 +118,7 @@ export default {
 .suwis-shopping-cart {
     padding: 15px;
     background: $bg;
-    padding-bottom: 55px;
+    padding-bottom: 105px;
     min-height: 100vh;
     box-sizing: border-box;
 
@@ -156,7 +156,7 @@ export default {
 
     .btn-group {
         position: fixed;
-        bottom: 0;
+        bottom: 50px;
         left: 0;
         width: 100vw;
         height: 55px;

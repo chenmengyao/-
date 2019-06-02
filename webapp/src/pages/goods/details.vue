@@ -4,7 +4,7 @@
       <van-col v-for="nav in navlist" span="8" :class="{active:nav.selected}" @click.native="skip(nav)">{{nav.name}}</van-col>
     </van-row>
     <!--  -->
-    <van-swipe ref="banner" :autoplay="3000" indicator-color="white">
+    <van-swipe class="banner" ref="banner" :autoplay="3000" indicator-color="white">
       <van-swipe-item>
         <img :src="details.img" alt="">
       </van-swipe-item>
@@ -102,7 +102,7 @@
         </dl>
       </van-col>
       <van-col class="link">
-        <router-link :to="{ path: '/shop', query: {id: $route.query.id} }">
+        <router-link :to="{ path: '/shop', query: {id: details.store.id } }">
           <img class="btn" src="@/assets/details/look@3x.png" alt="">
         </router-link>
       </van-col>
@@ -502,6 +502,14 @@ export default {
             left: 50%;
             bottom: 0;
             border-bottom: 2px solid $red;
+        }
+    }
+
+    .banner {
+        height: 100vw;
+        overflow: hidden;
+        img {
+            width: 100%;
         }
     }
 

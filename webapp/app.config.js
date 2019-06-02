@@ -7,10 +7,27 @@ export default {
   licenseExemptUrls: [
     '/',
     '/goods/details',
+    '/shop',
     '/register',
-    '/updatepwd',
+    '/resetpwd',
+    '/resetpaypwd',
     '/user-agreement',
     '/news',
-    '/news/details'
+    '/news/details',
+    '/goods/list',
+    '/goods/classify',
+    '/special/clearance',
+    '/special/auction',
+    '/special/flash',
+    '/special/recommend',
+    '/service'
+  ],
+  // 底部导航隐藏地址配置
+  noTabbarUrls: [
+    '/register',
+    '/resetpaypwd',
+    '/resetpwd',
+    '/login',
+    '/goods/details'
   ]
 }

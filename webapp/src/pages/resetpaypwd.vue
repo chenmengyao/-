@@ -120,6 +120,8 @@ export default {
 .suwis-updatepwd {
     background: rgba(245,245,245,1);
     height: 100vh;
+    padding-bottom: 50px;
+    box-sizing: border-box;
 
     .field-icon {
         width: 19px;

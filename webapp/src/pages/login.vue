@@ -70,6 +70,8 @@ export default {
   mounted() {
     setTimeout(() => {
       this.loaded = true
+      // 隐藏导航栏
+      this.$store.commit('core/toggleTabbar', false)
     }, 150)
   },
   watch: {
@@ -145,9 +147,14 @@ export default {
           token: data.data,
           user
         })
-        setTimeout(() => {
-          this.$router.push('/')
-        }, 600)
+        // 显示导航栏
+        this.$store.commit('core/toggleTabbar', true)
+        //
+        if (this.$route.path == '/login') {
+          setTimeout(() => {
+            this.$router.push('/uc')
+          }, 600)
+        }
       } else {
         Toast(data.msg)
       }

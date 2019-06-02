@@ -5,3 +5,18 @@
   border-radius: 50px;
   border: none;
 }
+
+.van-checkbox {
+  .van-checkbox__icon--checked {
+    .van-icon {
+      background-color: #E83F44;
+      border-color: #E83F44;
+    }
+  }
+}
+
+.van-sku__close-icon {
+  font-size: 29px;
+  top: 2vw;
+  right: 2vw;
+}

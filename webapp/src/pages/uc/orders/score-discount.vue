@@ -28,7 +28,6 @@
 
 <script>
     export default {
-        name: "score-decount",
         data() {
             return {
                 query: {},
@@ -42,11 +41,12 @@
                     this.$toast('输入的积分不能大于可用积分');
                     return
                 }
-                const { address_id, num, stand_id } = this.query
+                const { address_id, car_id, num, stand_id } = this.query
                 this.$router.push({
                     path: '/uc/orders/confirm-order',
                     query: {
                         address_id,
+                        car_id,
                         num,
                         stand_id,
                         score: this.score
