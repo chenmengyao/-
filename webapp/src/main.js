@@ -45,7 +45,14 @@ router.beforeEach((to, from, next) => {
   try {
     plus.webview.currentWebview().setStyle({
       titleNView: {
-        titleText: to.name
+        titleText: to.name,
+        buttons: [{
+          "float": "left",
+          "fontSize": "27px",
+          "fontSrc": "_www/fonts/iconfont.ttf",
+          "text": "\ue6b6",
+          "onclick": "javascript:plus.webview.currentWebview().evalJS('back();')"
+        }]
       }
     })
   } catch (e) {}
@@ -59,6 +66,11 @@ router.beforeEach((to, from, next) => {
   store.commit('core/toggleTabbar', hideTabbar)
   next()
 })
+
+// 路由回退
+window.back = () => {
+  router.history.go(-1)
+}
 
 // 挂载到app变量上
 window.app = {

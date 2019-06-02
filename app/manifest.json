@@ -264,13 +264,7 @@
         "backgroundcolor": "rgba(221,11,17,1)",
         "titletext": "潮玩城",
         "titlecolor": "#fff",
-        "buttons": [{
-          "float": "left",
-          "fontSize": "27px",
-          "fontSrc": "_www/fonts/iconfont.ttf",
-          "text": "\ue6b6",
-          "onclick": "javascript:plus.webview.getWebviewById('page1').evalJS('myshare();')"
-        }]
+        "buttons": []
       },
       "statusbar": {
         /*none|suggestedDevice|supportedDevice，沉浸式状态栏情况  */
