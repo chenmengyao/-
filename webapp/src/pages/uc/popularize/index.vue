@@ -24,7 +24,7 @@
                             @load="getList('add')">
                             <template v-if="list && list.length">
                                 <div class="member-item" v-for="item in list">
-                                    <div class="left">
+                                    <div class="left" @click="toDetail(item.id)">
                                         <div class="title">
                                             <img :src="item.sex | sexUrl" class="profile">
                                             <span class="name">{{item.nickname}}</span>
@@ -36,7 +36,7 @@
                                     </div>
                                     <div class="right" :style="{'justify-content': tabStatus === 'new' ? 'center' : 'flex-end'}">
                                         <button v-if="tabStatus === 'new'" class="button" @click="grant(item.id)">发放额度</button>
-                                        <span v-else-if="tabStatus === 'all'">{{item.sum}}</span>
+                                        <span v-else-if="tabStatus === 'all'" class="sum">{{item.sum || 0}}</span>
                                     </div>
                                 </div>
                             </template>
@@ -128,6 +128,12 @@
                     : this.sortActive = type
                 this.getList()
             },
+            toDetail(id) {
+                this.$router.push({
+                    path: '/uc/popularize/details',
+                    query: { id }
+                })
+            },
             getList(type = 'reset') {
                 if (type === 'reset') {
                     this.list = []
@@ -191,10 +197,12 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scopde>
     .suwis-popularize {
         position: relative;
+        box-sizing: border-box;
         min-height: 100vh;
+        padding-bottom: 50px;
         text-align: center;
         .tip-image {
             margin-top: 30px;
@@ -268,11 +276,6 @@
             }
         }
 
-
-        .van-tabs__wrap {
-            width: 40%;
-        }
-
         .member-item {
             display: flex;
             padding: 14px 16px;
@@ -334,6 +337,10 @@
                     font-size: 12px;
                     text-align: center;
                 }
+                .sum {
+                    color: #999;
+                    font-size: 12px;
+                }
             }
         }
 
@@ -344,6 +351,7 @@
             display: flex;
             justify-content: flex-end;
             width: 60%;
+            background: #fff;
             color: #666;
             font-size: 12px;
             line-height: 44px;

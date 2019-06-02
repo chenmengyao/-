@@ -10,19 +10,19 @@
                     :finished="finished"
                     @load="getList('add')">
                     <template v-if="list && list.length">
-                        <ShopItem
+                        <OrderCard
                             v-for="shop in list"
                             :key="Array.isArray(shop) ? shop[0].id : shop.id"
                             :shop-data="Array.isArray(shop) ? shop[0] : shop"
-                            :goods-list="Array.isArray(shop) ? shop : [shop]"
                             @on-click-item="onClickOrder">
+                            <GoodsItem :goods-list="Array.isArray(shop) ? shop : [shop]" @click="onClickGoods"></GoodsItem>
                             <template #footer>
                                 <ButtonLine
                                     :button-list="(Array.isArray(shop) ? shop[0].sta : shop.sta) | buttonList"
                                     :order-id="Array.isArray(shop) ? shop[0].id : shop.id"
                                     @on-click="onButtonClick"></ButtonLine>
                             </template>
-                        </ShopItem>
+                        </OrderCard>
                     </template>
                 </van-list>
             </van-tab>
@@ -47,7 +47,8 @@
 </template>
 
 <script>
-    import ShopItem from '@/components/uc/orders/shop-item'
+    import OrderCard from '@/components/uc/orders/order-card'
+    import GoodsItem from '@/components/uc/orders/goods-item'
     import ButtonLine from '@/components/uc/orders/button-line'
     import PayType from '@/components/uc/orders/pay-type'
     import ButtonMap from '@/constants/order/button-map'
@@ -58,7 +59,8 @@
         name: "OrderList",
         components: {
             ButtonLine,
-            ShopItem,
+            GoodsItem,
+            OrderCard,
             PayType
         },
         filters: {
@@ -140,6 +142,12 @@
                     .catch(() => {
                         this.error = true
                     })
+            },
+            onClickGoods(goods) {
+                this.$router.push({
+                    path: '/goods/details',
+                    query: {id: goods.id}
+                })
             },
             onClickTab(index) {
                 this.sta = this.tabList[index].sta

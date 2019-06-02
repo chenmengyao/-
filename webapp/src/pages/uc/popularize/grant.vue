@@ -62,6 +62,10 @@
         },
         methods: {
             submit() {
+                if (!this.grant) {
+                    this.$toast('请填写发放额度')
+                    return
+                }
                 this.$dialog.confirm({
                     message: `确认发放额度${this.grant}元？`
                 }).then(() => {
@@ -100,7 +104,9 @@
 
 <style lang="scss" scoped>
     .suwis-grant {
+        box-sizing: border-box;
         min-height: 100vh;
+        padding-bottom: 50px;
         background: #f5f5f5;
         color: #333;
         font-size: 14px;
@@ -113,7 +119,7 @@
         }
         .button-line {
             position: fixed;
-            bottom: 35px;
+            bottom: 85px;
             width: 100%;
             color: #fff;
             line-height: 45px;
