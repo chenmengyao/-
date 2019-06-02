@@ -42,7 +42,6 @@ Vue.mixin({
 router.beforeEach((to, from, next) => {
   // 记录更新时间
   router.updateTime = Date.now()
-  alert(router.updateTime)
   // 动态设置页面标题
   try {
     plus.webview.currentWebview().setStyle({
