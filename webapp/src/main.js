@@ -38,9 +38,11 @@ Vue.mixin({
     onPlusReady
   }
 })
-
 // 路由拦截
 router.beforeEach((to, from, next) => {
+  // 记录更新时间
+  router.updateTime = Date.now()
+  alert(router.updateTime)
   // 动态设置页面标题
   try {
     plus.webview.currentWebview().setStyle({
@@ -51,7 +53,7 @@ router.beforeEach((to, from, next) => {
           "fontSize": "27px",
           "fontSrc": "_www/fonts/iconfont.ttf",
           "text": "\ue6b6",
-          "onclick": "javascript:plus.webview.currentWebview().evalJS('back();')"
+          "onclick": `javascript:plus.webview.currentWebview().evalJS('back("${to.name}");')`
         }]
       }
     })
@@ -68,8 +70,23 @@ router.beforeEach((to, from, next) => {
 })
 
 // 路由回退
-window.back = () => {
+window.back = (name) => {
+  // 返回
   router.history.go(-1)
+  setTimeout(() => {
+    // 监测时间间隔
+    if (Date.now() - router.updateTime > 900) {
+      // 清空返回箭头
+      try {
+        plus.webview.currentWebview().setStyle({
+          titleNView: {
+            titleText: name,
+            buttons: []
+          }
+        })
+      } catch (e) {}
+    }
+  }, 690)
 }
 
 // 挂载到app变量上
