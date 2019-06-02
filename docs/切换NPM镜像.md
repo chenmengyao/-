@@ -14,7 +14,6 @@
 > 2.添加用户（初次使用时需要操作）
 
     // npm
-
     npm adduser --registry https://npm.suwis.com
 
 > 3.登陆仓库保存用户凭证
@@ -30,6 +29,6 @@
 
      // npm
      npm install
-     
+
      // yarn
      yarn
