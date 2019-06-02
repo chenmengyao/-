@@ -47,7 +47,7 @@
 >
       <div class="suwis-con" v-for="(item,index) in convenient">
        <div class="suwis-con-left">
-          <img :src="item.img" width="100%">
+          <img :src="item.img" width="100%" height="100%" style="object-fit:cover;">
        </div>
         <div class="suwis-con-right">
            <div style="height:40px">{{item.title}}</div>
@@ -61,7 +61,7 @@
                  </div>
                  <div style="margin-top:10px;">
                     <img src="../../assets/dis.png" class="suwis-con-icon">
-                    距离您{{item.distance}}m
+                    距离您{{item.distance|meters}}
                  </div>
               </div>
               <div style="float:right">
@@ -104,11 +104,20 @@ export default {
               init(o) {
                 // o 是高德地图定位插件实例
                 o.getCurrentPosition((status, result) => {
-                  alert(result.position)
+                  console.log(result)
                   if (result && result.position) {
+                    self.carmodel=result.addressComponent.city+''+result.addressComponent.district
+                    self.valueList=[{
+                      name:result.addressComponent.province
+                    },{
+                      name:result.addressComponent.city
+                    },{
+                      name:result.addressComponent.district
+                    }]
                     self.lng = result.position.lng;
                     self.lat = result.position.lat;
                   }else{
+                    self.carmodel='武汉市'+''+'江夏区'
                     self.lng = '30.60';
                     self.lat ='114.30';
                   }
@@ -129,6 +138,11 @@ export default {
       valueList:[]
     }
   },
+  watch: {
+      lat(val) {
+        this.finished=false
+      }
+    },
   methods:{
     //拨打电话
     callPhone(tel){
@@ -178,8 +192,6 @@ export default {
           city:city,
           area:town,
           num:10,
-          // pointx:'223243.86',
-          // pointy:'1140310.40'
           pointx:this.lat,
           pointy:this.lng
         }).then(res => {
@@ -200,7 +212,6 @@ export default {
 	  	},
   },
   created(){
-    this.finished=false
   }
 }
 </script>
@@ -258,7 +269,9 @@ export default {
 .suwis-con-left{
   flex:1;
   max-width: 100px;
+  min-width: 100px;
   max-height: 100px;
+  min-height: 100px;
   overflow: hidden;
   border-radius: 4px;
   -webkit-border-radius: 4px;

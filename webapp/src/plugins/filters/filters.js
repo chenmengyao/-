@@ -38,6 +38,17 @@ const vfilter = {
     sex(val) {
       const sexList = ['未知', '男', '女']
       return sexList[val]
+    },
+    //米转换成千米
+    meters(val){
+      let meter
+      if(val>999){
+        meter=val/1000+'km'
+        return meter
+      }else{
+        meter = val+'m'
+        return menubar
+      }
     }
 }
 export default vfilter;

@@ -489,4 +489,7 @@ export default {
   flex-basis:20% !important;
   -webkit-flex-basis: 20% !important;
 }
+.van-hairline--top-bottom::after{
+  border-width:none !important;
+}
 </style>

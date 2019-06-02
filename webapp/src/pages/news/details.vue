@@ -35,7 +35,14 @@ export default {
         this.newDateils=res.data.data;
         this.text=res.data.data.content.text
         this.good=res.data.data.content.good
-    })
+        try {
+          plus.webview.currentWebview().setStyle({
+            titleNView: {
+              titleText: res.data.data.title
+          }
+        })
+      } catch (e) {}
+        })
     }
   },
   created(){

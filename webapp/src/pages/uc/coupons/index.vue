@@ -15,7 +15,7 @@
                                 </div>
                                  <div class="d-title" style="float:left">
                                     <div>{{item.title}}</div>
-                                    <div>{{item.total}}</div>
+                                    <div>满{{item.total}}元即可使用</div>
                                 </div>
                                 <div style="clear:both"></div>
                              </div>
@@ -46,7 +46,7 @@
                                 </div>
                                  <div class="d-title" style="float:left">
                                     <div>{{item.title}}</div>
-                                    <div>{{item.total}}</div>
+                                    <div>满{{item.total}}元即可使用</div>
                                 </div>
                                 <div style="clear:both"></div>
                              </div>
@@ -77,7 +77,7 @@
                                 </div>
                                  <div class="d-title" style="float:left">
                                     <div>{{item.title}}</div>
-                                    <div>{{item.total}}</div>
+                                    <div>满{{item.total}}元即可使用</div>
                                 </div>
                                 <div style="clear:both"></div>
                              </div>
@@ -105,23 +105,8 @@ export default {
   data(){
     return{
       couponsValue:'',
-      tobeused:[{
-        title:'新人优惠券1',
-        total:'满100减50',
-        sum:'500',
-        end_time:'1558252637'
-      },{
-        title:'新人优惠券1',
-        total:'满100减50',
-        sum:'500',
-        end_time:'1558252637'
-      }],
-      used:[{
-        title:'新人优惠券1',
-        total:'满100减50',
-        sum:'500',
-        end_time:'1558252637'
-      }],
+      tobeused:[],
+      used:[],
       pass:[]
     }
   },

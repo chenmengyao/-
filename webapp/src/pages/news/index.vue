@@ -1,9 +1,11 @@
 <template lang="html">
   <div> 
-    <div class="suwis-news-ban">
-      <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;" :height="200">
+    <div class="suwis-news-ban" style="border:1px solid red;height:27vw;overflow:hidden">
+      <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;">
         <van-swipe-item v-for="item in banner">
-          <img  v-lazy="item.img" style="width:100%;">
+          <div  v-lazy-container="{ selector: 'img' }">
+           <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" style="width:100%;height:100%"> 
+          </div>
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -17,6 +19,7 @@
   @load="loadlist"
 >
   <div>
+
         <div class="suwis-news-list" v-for="item in newsList">
           <div class="suwis-news-left">
               <router-link tag="li" :to="{path: '/news/details', query: {id: item.id}}">
@@ -28,8 +31,8 @@
               </p>
           </div>
           <div class="suwis-news-right">
-            <router-link tag="li" to="{path: '/news/details', query: {id: item.id}}">
-              <img :src="item.content.good[0].img" width="100%">
+            <router-link tag="div" to="{path: '/news/details', query: {id: item.id}}">
+              <img :src="item.content.good[0].img" width="100%;height:100%;object-fit:cover;">
             </router-link>
           </div>
         </div>
@@ -130,7 +133,9 @@ ul,li{
 }
 .suwis-news-right {
   max-width: 80px;
-  height: 80px;
+  min-width: 80px;
+  max-height: 80px;
+  min-height: 80px;
   border-radius: 5px;
   overflow: hidden;
 }

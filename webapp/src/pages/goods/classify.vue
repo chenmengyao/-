@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <van-search placeholder="请输入搜索关键词" v-model="keyWord" style="text-align:center"/>
+      <van-search @search="goList" placeholder="请输入搜索关键词" v-model="keyWord" style="text-align:center"/>
     </div>
     <div v-for="(items,index) in tabList">
       <div class="suwis-classify-con">
@@ -25,8 +25,11 @@
               <span style="padding-left:15px;">{{itm.title}}</span>
               <div class="d-title">
                   <span class="d-tips" v-for="(it,ids) in itm.children">
+                     <router-link :to="{ path: '/goods/list',query:{catefory:it.title}}" tag="span">
                     {{it.title}}
+                     </router-link>
                   </span>
+               
               </div>
            </div>
         </div>
@@ -56,6 +59,14 @@ export default {
         delete res.data.data.banner
         this.tabList.push(res.data.data)
     })
+    },
+    goList(){
+       this.$router.push({
+            path: '/goods/list',
+            query: {
+                search: this.keyWord
+            }
+        })
     }
   },
   created(){
