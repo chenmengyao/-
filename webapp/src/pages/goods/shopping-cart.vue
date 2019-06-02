@@ -19,6 +19,14 @@
       </van-card>
     </van-checkbox>
   </div>
+  <!-- 购物车空提示 -->
+  <div class="no-data-text" v-if="JSON.stringify(shops)=='{}'">
+    <div>
+      <h5>购物车空空如也</h5>
+      <router-link to="/">去选购</router-link>
+    </div>
+  </div>
+  <!-- 购物车空提示 //-->
   <div class="btn-group">
     <van-checkbox v-model="checkall" @change="allChange">
       全选
@@ -95,6 +103,7 @@ export default {
         id: this.selecteds
       })
       if (res.data.code == 1) {
+        this.selecteds = []
         // 刷新列表
         this.getCarList()
       } else {
@@ -103,6 +112,10 @@ export default {
     },
     // 结算购物车 car/makesureorder
     async makeOrder() {
+      if (this.selecteds.length == 0) {
+        Toast('请选择结算商品')
+        return
+      }
       this.$router.push({
         path: '/uc/orders/confirm-order',
         query: {
@@ -179,6 +192,27 @@ export default {
             min-width: 20vw;
             margin-left: 6vw;
             border-radius: 50px;
+        }
+    }
+
+    .no-data-text {
+        display: flex;
+        height: calc(100vh - 100px);
+        align-items: center;
+        justify-content: center;
+
+        div {
+            text-align: center;
+            h5 {
+                font-size: 18px;
+                margin: 0;
+                padding: 10px;
+                color: $primary;
+                font-weight: normal;
+            }
+            a {
+                color: $red;
+            }
         }
     }
 }
