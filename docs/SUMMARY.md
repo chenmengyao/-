@@ -5,6 +5,7 @@
 -   [APP下载](APP下载.md)
 -   [APP图片尺寸规范](APP图片尺寸规范.md)
 -   [项目目录结构](项目目录结构.md)
+-   [切换NPM镜像](切换NPM镜像.md)
 -   [APP路由](APP路由.md)
 -   APP全局对象
     -   [标题栏](app/titleNView.md)
