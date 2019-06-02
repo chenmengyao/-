@@ -1,11 +1,11 @@
 <template lang="html">
     <div class="suwis-order-detail">
         <!-- 商品卡片 -->
-        <ShopItem
+        <OrderCard
             :shop-data="shopData"
-            :goods-list="goodsList"
-            :show-price="false"
-        ></ShopItem>
+            :show-price="false">
+            <GoodsItem :goods-list="goodsList" @click="onClickGoods"></GoodsItem>
+        </OrderCard>
         <!-- 商品卡片 //-->
 
         <!-- 地址卡片 -->
@@ -101,14 +101,16 @@
 </template>
 
 <script>
-    import ShopItem from '@/components/uc/orders/shop-item'
+    import OrderCard from '@/components/uc/orders/order-card'
+    import GoodsItem from '@/components/uc/orders/goods-item'
     import ButtonLine from '@/components/uc/orders/button-line'
     import ButtonMap from '@/constants/order/button-map'
 
     export default {
         components: {
-            ShopItem,
-            ButtonLine
+            OrderCard,
+            ButtonLine,
+            GoodsItem
         },
         filters: {
             buttonList: v => ButtonMap.filter(item => item.sta.includes(v))
@@ -138,6 +140,12 @@
                         this.evaluateOrder(orderId)
                         break
                 }
+            },
+            onClickGoods(goods) {
+                this.$router.push({
+                    path: '/goods/details',
+                    query: {id: goods.id}
+                })
             },
             cancelOrder(orderId) {
                 this.$dialog.confirm({

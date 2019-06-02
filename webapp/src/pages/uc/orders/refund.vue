@@ -8,33 +8,34 @@
                 :finished="finished"
                 @load="getList">
             <template v-if="list && list.length">
-                <ShopItem
+                <OrderCard
                         v-for="shop in list"
                         :key="shop.id"
-                        :shop-data="shop"
-                        :goods-list="[shop]"
-                        @on-click-item="onClickOrder">
+                        :shop-data="shop">
+                    <GoodsItem :goods-list="[shop]" @click="onClickGoods"></GoodsItem>
                     <template #footer>
                         <ButtonLine
                                 :button-list="shop.sta | buttonList"
                                 :order-id="shop.id"
                                 @on-click="onButtonClick"></ButtonLine>
                     </template>
-                </ShopItem>
+                </OrderCard>
             </template>
         </van-list>
     </div>
 </template>
 
 <script>
-    import ShopItem from '@/components/uc/orders/shop-item'
+    import OrderCard from '@/components/uc/orders/order-card'
+    import GoodsItem from '@/components/uc/orders/goods-item'
     import ButtonLine from '@/components/uc/orders/button-line'
     import ButtonMap from '@/constants/order/button-map'
 
     export default {
         components: {
             ButtonLine,
-            ShopItem
+            GoodsItem,
+            OrderCard
         },
         filters: {
             buttonList: v => ButtonMap.filter(item => item.sta.includes(v))
@@ -75,7 +76,7 @@
                         this.error = true
                     })
             },
-            onClickOrder(goods) {
+            onClickGoods(goods) {
                 this.$router.push({
                     path: '/uc/orders/refund-details',
                     query: {id: goods.id}

@@ -68,49 +68,53 @@
             </div>
         </div>
 
-        <div class="option-list">
-            <router-link to="/uc/coupons" class="option-item link">
-                <img src="@/assets/uc/my-coupon@2x.png" alt="" class="option-image">
-                <span class="option-name">我的卡券</span>
-            </router-link>
+        <ul class="option-list">
+            <li class="option-li">
+                <router-link to="/uc/coupons" class="option-item link">
+                    <img src="@/assets/uc/my-coupon@2x.png" alt="" class="option-image">
+                    <span class="option-name">我的卡券</span>
+                </router-link>
 
-            <router-link to="/uc/footprint" class="option-item link">
-                <img src="@/assets/uc/foot.png" alt="" class="option-image">
-                <span class="option-name">我的足迹</span>
-            </router-link>
+                <router-link to="/uc/footprint" class="option-item link">
+                    <img src="@/assets/uc/foot.png" alt="" class="option-image">
+                    <span class="option-name">我的足迹</span>
+                </router-link>
 
-            <a href="javascript:;" class="option-item link" @click="toVip">
-                <img src="@/assets/uc/my-vip@2x.png" class="option-image">
-                <span class="option-name">我的VIP</span>
-            </a>
+                <a href="javascript:;" class="option-item link" @click="toVip">
+                    <img src="@/assets/uc/my-vip@2x.png" class="option-image">
+                    <span class="option-name">我的VIP</span>
+                </a>
+            </li>
+            <li class="option-li">
+                <router-link to="/uc/score" class="option-item link">
+                    <img src="@/assets/uc/my-score@2x.png" alt="" class="option-image">
+                    <span class="option-name">我的积分</span>
+                </router-link>
 
-            <router-link to="/uc/score" class="option-item link">
-                <img src="@/assets/uc/my-score@2x.png" alt="" class="option-image">
-                <span class="option-name">我的积分</span>
-            </router-link>
+                <router-link to="/uc/popularize" class="option-item link">
+                    <img src="@/assets/uc/my-extend@2x.png" alt="" class="option-image">
+                    <span class="option-name">我的推广</span>
+                </router-link>
 
-            <router-link to="/uc/popularize" class="option-item link">
-                <img src="@/assets/uc/my-extend@2x.png" alt="" class="option-image">
-                <span class="option-name">我的推广</span>
-            </router-link>
+                <router-link to="/mine/commission" class="option-item link">
+                    <img src="@/assets/uc/my-charge@2x.png" alt="" class="option-image">
+                    <span class="option-name">我的佣金</span>
+                </router-link>
+            </li>
+            <li class="option-li">
+                <router-link to="/mine/information" class="option-item link">
+                    <img src="@/assets/uc/my-message@2x.png" alt="" class="option-image">
+                    <span class="option-name">我的消息</span>
+                </router-link>
 
-            <router-link to="/mine/commission" class="option-item link">
-                <img src="@/assets/uc/my-charge@2x.png" alt="" class="option-image">
-                <span class="option-name">我的佣金</span>
-            </router-link>
+                <router-link to="/mine/feedback" class="option-item link">
+                    <img src="@/assets/uc/response@2x.png" alt="" class="option-image">
+                    <span class="option-name">意见反馈</span>
+                </router-link>
 
-            <router-link to="/uc/messages" class="option-item link">
-                <img src="@/assets/uc/my-message@2x.png" alt="" class="option-image">
-                <span class="option-name">我的消息</span>
-            </router-link>
-
-            <router-link to="/mine/feedback" class="option-item link">
-                <img src="@/assets/uc/response@2x.png" alt="" class="option-image">
-                <span class="option-name">意见反馈</span>
-            </router-link>
-
-            <span class="option-item"></span>
-        </div>
+                <span class="option-item"></span>
+            </li>
+        </ul>
     </div>
 </template>
 
@@ -161,8 +165,10 @@
 
 <style lang="scss" scoped>
     .suwis-uc {
+        box-sizing: border-box;
         min-height: 100vh;
-        background: url('../../assets/uc/uc-bg@2x.png') top center no-repeat;
+        padding-bottom: 50px;
+        background: #fff url('../../assets/uc/uc-bg@2x.png') top center no-repeat;
         background-size: contain;
         .link {
             color: inherit;
@@ -272,21 +278,29 @@
         }
 
         .option-list {
-            display: grid;
-            grid-template-rows: 12.4vh 12.4vh 12.4vh;
-            grid-template-columns: 30.5vw 30.5vw 30.5vw;
-            grid-row-gap: 1px;
-            grid-column-gap: 1px;
             margin: .8vh 4vw 0;
             align-items: center;
             justify-content: center;
             background: #f5f5f5;
+            .option-li {
+                display: flex;
+                height: 12.4vh;
+                border-bottom: 1px solid #f5f5f5;
+                &:last-child {
+                    border: none;
+                }
+            }
             .option-item {
                 display: flex;
+                flex: 1;
                 align-items: center;
                 flex-direction: column;
                 height: 100%;
                 background: #fff;
+                border-right: 1px solid #f5f5f5;
+                &:last-child {
+                    border: none;
+                }
             }
             .option-image {
                 width: 8vw;
