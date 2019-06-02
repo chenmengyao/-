@@ -27,7 +27,7 @@
                         <span class="color-red price">￥{{goodInfo.sum}}</span>
                     </div>
                 </li>
-                <li class="item address" @click="showStatus" v-if="type === 'exchange'">
+                <li class="item address" v-if="type === 'exchange'">
                     <div class="name">换货地址</div>
                     <div class="address-box">
                         <div class="address-top">
@@ -65,7 +65,7 @@
             </div>
 
             <div class="button-line">
-                <div class="deploy">提交</div>
+                <div class="deploy" @click="submit">提交</div>
             </div>
 
         </main>
@@ -192,6 +192,15 @@
                         this.imgList.splice(index, 1)
                     })
             },
+            submit() {
+                this.$axios
+                    .post('/order/aftersale', {
+                        order_id: id,
+                        reason: this.reason,
+                        remark: this.remark,
+                        address_id : this.type === 'exchange' ? '1' : undefined
+                    })
+            }
         },
         created() {
             this.id = this.$route.query.id

@@ -105,9 +105,7 @@
 
 <style lang="scss" scoped>
     .suwis-popularize-details {
-        box-sizing: border-box;
         min-height: 100vh;
-        padding-bottom: 50px;
         background-color: #f5f5f5;
         color: #333;
         font-size: 14px;

@@ -13,12 +13,13 @@
                             <span class="tel">{{item.tel}}</span>
                             <span class="default" v-if="item.sta === 1">默认</span>
                         </div>
+                        <div class="edit" @click="edit(item.id)">编辑</div>
                     </div>
                     <div class="info-address">
                         {{item | address}}
                     </div>
                 </div>
-                <div class="edit" @click="edit(item.id)">编辑</div>
+
             </li>
         </ul>
     </div>
@@ -156,7 +157,6 @@
             }
             .edit {
                 padding: 0 6px 0 12px;
-                border-left: 1px solid #ddd;
                 color: #999;
                 font-size: 12px;
                 line-height: 32px;

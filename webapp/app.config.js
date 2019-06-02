@@ -1,3 +1,9 @@
+import { routes } from '../webapp/src/router'
+
+// 生成以hidePath中的路径开头的底部导航路由数组
+const hidePath = ['/uc/', '/mine/']
+const hideNavBarList = routes.filter(route => hidePath.some(path => route.path.startsWith(path))).map(route => route.path)
+
 export default {
   // 接口地址
   apihost: 'http://huihuilai.ambcon.cn/index.php/index/',
@@ -28,6 +34,7 @@ export default {
     '/resetpaypwd',
     '/resetpwd',
     '/login',
-    '/goods/details'
+    '/goods/details',
+    ...hideNavBarList
   ]
 }

@@ -8,10 +8,10 @@
         </ul>
         <template v-for="item in list">
             <div class="footprint-item" v-if="item.length">
-                <div class="title">{{item[0].time |date}}</div>
+                <div class="title">{{item[0].time | date}}</div>
                 <ul class="goods-list">
                     <li class="goods-item" v-for="goods in item" :key="goods.goods_id">
-                        <img :src="goods.img" class="img">
+                        <img :src="goods.img" v-lazy="goods.img" class="img">
                         <div class="bottom-line">
                             <span class="price">￥{{goods.price_min}}</span>
                             <span class="button">· · ·</span>
@@ -115,17 +115,20 @@
             }
             .goods-list {
                 display: flex;
-                justify-content: space-between;
                 flex-wrap: wrap;
                 margin: 12px 0 0;
             }
             .goods-item {
                 overflow: hidden;
-                width: 28vw;
-                margin-bottom: 10px;
+                width: 32%;
+                margin: 0 2% 10px 0;
                 border-radius: 4px;
+                &:nth-child(3n) {
+                    margin-right: 0;
+                }
                 .img {
                     display: block;
+                    width: 100%;
                     height: 30vw;
                     border: none;
                 }

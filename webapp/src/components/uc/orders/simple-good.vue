@@ -2,7 +2,7 @@
     <div class="suwis-simple-good">
         <ul class="list">
             <li class="item" @click="toggleCheck">
-                <img class="image" :src="storeLogo" alt="商品">
+                <img class="image" :src="storeLogo" v-lazy="storeLogo" alt="商品">
                 <div class="info" :style="infoStyle">
                     <div class="name">{{name}}</div>
                     <template v-if="desc && desc.length">

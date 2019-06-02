@@ -34,3 +34,10 @@
     color: #fff;
   }
 }
+
+// 设置对话框标题和内容间距
+.van-dialog {
+  .van-dialog__header {
+    margin-bottom: 18px;
+  }
+}

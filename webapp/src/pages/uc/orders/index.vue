@@ -145,7 +145,7 @@
             },
             onClickGoods(goods) {
                 this.$router.push({
-                    path: '/goods/details',
+                    path: '/uc/orders/details',
                     query: {id: goods.id}
                 })
             },
@@ -169,6 +169,9 @@
                         break
                     case 'logistics':
                         this.checkLogistics(orderId)
+                        break
+                    case 'refund':
+                        this.refundOrder(orderId)
                         break
                     case 'return':
                         this.returnOrder(orderId)
@@ -211,6 +214,7 @@
             },
             cancelOrder(orderId) {
                 this.$dialog.confirm({
+                    title: '取消订单',
                     message: '该订单还未付款，您确定要取消吗？？'
                 }).then(() => {
                     this.$axios
@@ -238,6 +242,15 @@
             },
             payOrder(orderId) {
                 this.payTypeShow = true
+            },
+            refundOrder(orderId) {
+                this.$router.push({
+                    path: '/uc/orders/apply',
+                    query: {
+                        id: orderId,
+                        type: 'refund'
+                    }
+                })
             },
             returnOrder(orderId) {
                 this.$router.push({

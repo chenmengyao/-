@@ -104,9 +104,9 @@
 
 <style lang="scss" scoped>
     .suwis-grant {
+        position: relative;
         box-sizing: border-box;
         min-height: 100vh;
-        padding-bottom: 50px;
         background: #f5f5f5;
         color: #333;
         font-size: 14px;
@@ -118,8 +118,8 @@
             text-align: right;
         }
         .button-line {
-            position: fixed;
-            bottom: 85px;
+            position: absolute;
+            bottom: 35px;
             width: 100%;
             color: #fff;
             line-height: 45px;

@@ -3,7 +3,7 @@
         <div class="suwis-goods-item"
              v-for="goods in goodsList"
              :key="goods.goods_id">
-            <img :src="goods.goods_img" class="img" @click="onClick">
+            <img :src="goods.goods_img" v-lazy="goods.goods_img" class="img" @click="onClick">
             <div class="center">
                 <div class="title" @click="onClick(goods)">{{goods.goods_name}}</div>
                 <div class="desc-line">

@@ -200,9 +200,7 @@
 <style lang="scss" scopde>
     .suwis-popularize {
         position: relative;
-        box-sizing: border-box;
         min-height: 100vh;
-        padding-bottom: 50px;
         text-align: center;
         .tip-image {
             margin-top: 30px;
