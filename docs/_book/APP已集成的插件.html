@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>切换NPM镜像 · GitBook</title>
+        <title>APP已集成的插件 · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="APP路由.html" />
+    <link rel="next" href="切换NPM镜像.html" />
     
     
-    <link rel="prev" href="APP已集成的插件.html" />
+    <link rel="prev" href="APP配置文件.html" />
     
 
     </head>
@@ -167,7 +167,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.7" data-path="APP已集成的插件.html">
+        <li class="chapter active" data-level="1.7" data-path="APP已集成的插件.html">
             
                 <a href="APP已集成的插件.html">
             
@@ -180,7 +180,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.8" data-path="切换NPM镜像.html">
+        <li class="chapter " data-level="1.8" data-path="切换NPM镜像.html">
             
                 <a href="切换NPM镜像.html">
             
@@ -339,7 +339,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >切换NPM镜像</a>
+        <a href="." >APP已集成的插件</a>
     </h1>
 </div>
 
@@ -354,38 +354,38 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h4 id="&#x6E29;&#x99A8;&#x63D0;&#x793A;">&#x6E29;&#x99A8;&#x63D0;&#x793A;</h4>
-<p>&#x672C;&#x9879;&#x76EE;&#x6240;&#x4F7F;&#x7528;&#x7684;&#x4F9D;&#x8D56;&#x90E8;&#x5206;&#x6765;&#x81EA;&#x4E8E;&#x56E2;&#x961F;&#x5185;&#x90E8;&#x7684;NPM&#x955C;&#x50CF;&#x5730;&#x5740;&#x4E2D;
-&#x6240;&#x4EE5;&#x9700;&#x8981;&#x5207;&#x6362;&#x6210;&#x56E2;&#x961F;&#x5185;&#x90E8;&#x7684;&#x955C;&#x50CF;&#x5730;&#x5740;&#x624D;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;</p>
-<h4 id="&#x5207;&#x6362;&#x6B65;&#x9AA4;">&#x5207;&#x6362;&#x6B65;&#x9AA4;</h4>
-<blockquote>
-<p>1.&#x5207;&#x6362;&#x955C;&#x50CF;&#x6E90;</p>
-</blockquote>
-<pre><code>// npm
-npm set registry https://npm.suwis.com
-</code></pre><blockquote>
-<p>2.&#x6DFB;&#x52A0;&#x7528;&#x6237;&#xFF08;&#x521D;&#x6B21;&#x4F7F;&#x7528;&#x65F6;&#x9700;&#x8981;&#x64CD;&#x4F5C;&#xFF09;</p>
-</blockquote>
-<pre><code>// npm
-npm adduser --registry https://npm.suwis.com
-</code></pre><blockquote>
-<p>3.&#x767B;&#x9646;&#x4ED3;&#x5E93;&#x4FDD;&#x5B58;&#x7528;&#x6237;&#x51ED;&#x8BC1;</p>
-</blockquote>
-<pre><code> // npm &#x767B;&#x5F55;&#x65B9;&#x5F0F;
- npm login
+                                <h4 id="app&#x5DF2;&#x96C6;&#x6210;&#x7684;&#x63D2;&#x4EF6;">APP&#x5DF2;&#x96C6;&#x6210;&#x7684;&#x63D2;&#x4EF6;</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">&#x63D2;&#x4EF6;&#x540D;&#x79F0;</th>
+<th style="text-align:left">&#x63CF;&#x8FF0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><a href="https://youzan.github.io/vant/#/zh-CN/intro" target="_blank">vant</a></td>
+<td style="text-align:left">&#x8F7B;&#x91CF;&#x3001;&#x53EF;&#x9760;&#x7684;&#x79FB;&#x52A8;&#x7AEF; Vue &#x7EC4;&#x4EF6;&#x5E93;</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.kancloud.cn/yunye/axios/234845" target="_blank">axios</a></td>
+<td style="text-align:left">Axios &#x662F;&#x4E00;&#x4E2A;&#x57FA;&#x4E8E; promise &#x7684; HTTP &#x5E93;&#xFF0C;&#x53EF;&#x4EE5;&#x7528;&#x5728;&#x6D4F;&#x89C8;&#x5668;&#x548C; node.js &#x4E2D;</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://clipboardjs.com/" target="_blank">clipboard</a></td>
+<td style="text-align:left">&#x4E00;&#x79CD;&#x5C06;&#x6587;&#x672C;&#x590D;&#x5236;&#x5230;&#x526A;&#x8D34;&#x677F;&#x7684;&#x73B0;&#x4EE3;&#x65B9;&#x6CD5;</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://www.npmjs.com/package/vue-lazyload" target="_blank">vue-lazyload</a></td>
+<td style="text-align:left">&#x7528;&#x4E8E;&#x5728;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4E2D;&#x52A0;&#x8F7D;&#x56FE;&#x50CF;&#x7684;Vue&#x6A21;&#x5757;</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="http://momentjs.cn/" target="_blank">moment</a></td>
+<td style="text-align:left">JavaScript &#x65E5;&#x671F;&#x5904;&#x7406;&#x7C7B;&#x5E93;</td>
+</tr>
+</tbody>
+</table>
 
- // yarn &#x767B;&#x5F55;&#x65B9;&#x5F0F;
- yarn config set registry https://npm.suwis.com
- yarn login
-</code></pre><blockquote>
-<p>4.&#x5B89;&#x88C5;&#x9879;&#x76EE;&#x4F9D;&#x8D56;</p>
-</blockquote>
-<pre><code> // npm
- npm install
-
- // yarn
- yarn
-</code></pre>
                                 
                                 </section>
                             
@@ -412,12 +412,12 @@ npm adduser --registry https://npm.suwis.com
 
             
                 
-                <a href="APP已集成的插件.html" class="navigation navigation-prev " aria-label="Previous page: APP已集成的插件">
+                <a href="APP配置文件.html" class="navigation navigation-prev " aria-label="Previous page: APP配置文件">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="APP路由.html" class="navigation navigation-next " aria-label="Next page: APP路由">
+                <a href="切换NPM镜像.html" class="navigation navigation-next " aria-label="Next page: 切换NPM镜像">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -428,7 +428,7 @@ npm adduser --registry https://npm.suwis.com
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"切换NPM镜像","level":"1.8","depth":1,"next":{"title":"APP路由","level":"1.9","depth":1,"path":"APP路由.md","ref":"APP路由.md","articles":[]},"previous":{"title":"APP已集成的插件","level":"1.7","depth":1,"path":"APP已集成的插件.md","ref":"APP已集成的插件.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"切换NPM镜像.md","mtime":"2019-06-02T09:04:40.060Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-06-02T15:39:59.071Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"APP已集成的插件","level":"1.7","depth":1,"next":{"title":"切换NPM镜像","level":"1.8","depth":1,"path":"切换NPM镜像.md","ref":"切换NPM镜像.md","articles":[]},"previous":{"title":"APP配置文件","level":"1.6","depth":1,"path":"APP配置文件.md","ref":"APP配置文件.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"APP已集成的插件.md","mtime":"2019-06-02T15:39:26.311Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-06-02T15:39:59.071Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
