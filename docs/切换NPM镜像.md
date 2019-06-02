@@ -8,7 +8,6 @@
 > 1.切换镜像源
 
     // npm
-
     npm set registry https://npm.suwis.com
 
 
@@ -21,21 +20,16 @@
 > 3.登陆仓库保存用户凭证
 
      // npm 登录方式
-
      npm login
 
      // yarn 登录方式
-
      yarn config set registry https://npm.suwis.com
-
      yarn login
 
 > 4.安装项目依赖
 
      // npm
-
      npm install
-
+     
      // yarn
-
      yarn
