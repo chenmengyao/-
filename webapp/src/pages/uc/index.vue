@@ -1,7 +1,7 @@
 <template lang="html">
     <div class="suwis-uc">
         <div class="uc-top-button">
-            <img class="button" src="@/assets/uc/qr-code@2x.png" alt="二维码">
+            <img class="button" src="@/assets/uc/qr-code@2x.png" alt="二维码" v-if="user_type === 0 || user_type === 2" @click="barCodeScan">
             <router-link to="/uc/setting">
                 <img class="button" src="@/assets/uc/setting@2x.png" alt="设置">
             </router-link>
@@ -11,7 +11,7 @@
             <div class="info">
                 <div class="login-info">
                     <template v-if="logined">
-                        {{user.nickname}}
+                        {{user.nickname}}user
                         <span class="level">
                             <img src="@/assets/myvip.png" alt="vip" class="vip">
                             LV.{{user.vip}}
@@ -115,13 +115,18 @@
                 <span class="option-item"></span>
             </li>
         </ul>
+        <BarCode :activity="barCodeActivity" :show="qrCodeShow" @close="closeBarCode"></BarCode>
     </div>
 </template>
 
 <script>
+    import BarCode from '@/components/bar-code'
     import { mapGetters } from 'vuex'
 
     export default {
+        components: {
+            BarCode
+        },
         computed: {
             ...mapGetters({
                 logined: 'core/logined'
@@ -129,6 +134,8 @@
         },
         data() {
             return {
+                barCodeActivity: '',
+                qrCodeShow: false,
                 sta_0: 0,
                 sta_1: 0,
                 sta_2: 0,
@@ -148,6 +155,18 @@
                         this.$toast(data.msg);
                     }
                 })
+            },
+            barCodeScan() {
+                const { user_type } = this
+                if (user_type === 0) {
+                    this.qrCodeShow = true
+                    this.barCodeActivity = 'start'
+
+                } else if (user_type === 2) {
+                    this.$router.push({
+                        path: '/uc/setting/card',
+                    })
+                }
             },
             toVip() {
                 if (this.user_type === 0) {

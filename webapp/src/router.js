@@ -102,6 +102,10 @@ export const routes = [
     name: '设置-我的收货地址',
     component: () => import('./pages/uc/setting/address.vue')
 }, {
+    path: '/uc/setting/card',
+    name: '设置-团长名片',
+    component: () => import('./pages/uc/setting/card.vue')
+}, {
     path: '/uc/setting/handleAddress',
     name: '设置-新增/编辑地址',
     component: () => import('./pages/uc/setting/handleAddress.vue')
