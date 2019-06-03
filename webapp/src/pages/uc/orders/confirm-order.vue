@@ -263,12 +263,14 @@
             toPay() {
                 this.payTypeShow = true
                 this.$axios
-                    .post('/tgoods/topay', {
+                    .post('/goods/topay', {
                         stand_id: this.stand_id,
                         num: this.num,
                         coupon_id: this.useCoupon ? this.coupon.id : undefined,
                         is_vip: this.useDiscount ? 1 : undefined,
-                        score_sum: this.useScore ? this.score : undefined
+                        score_sum: this.useScore ? this.score : undefined,
+                        addreess_id: 19,
+                        express_remark: 'test'
                     })
             }
         },
