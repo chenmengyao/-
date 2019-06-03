@@ -114,6 +114,7 @@
             removeImg(index) {
                 this.$dialog
                     .confirm({
+                        title: '移除图片',
                         message: '确定移除该图片吗'
                     })
                     .then(() => {

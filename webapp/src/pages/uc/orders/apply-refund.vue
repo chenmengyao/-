@@ -142,7 +142,6 @@
             return {
                 address: {},
                 address_id: '',
-                addressList: [],
                 goodInfo: {},
                 id: '',
                 maxSize: 500 * 1024,    // 上传图片的最大kb
@@ -209,6 +208,7 @@
             removeImg(index) {
                 this.$dialog
                     .confirm({
+                        title: '移除图片',
                         message: '确定移除该图片吗'
                     })
                     .then(() => {
@@ -263,7 +263,6 @@
                 .then(({ data }) => {
                     if (data.code === 1) {
                         if (data.data) {
-                            this.addressList = data.data
                             this.address = data.data.find(item => this.address_id ? item.id === +this.address_id : item.sta === 1)
                         }
                     } else {
@@ -276,6 +275,7 @@
 
 <style lang="scss" scoped>
     .suwis-apply-refund {
+        position: relative;
         min-height: 100vh;
         padding-top: 50px;
         background-color: #f5f5f5;
@@ -353,7 +353,7 @@
             }
         }
         .button-line {
-            position: fixed;
+            position: absolute;
             width: 100%;
             bottom: 25px;
             .deploy {

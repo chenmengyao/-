@@ -7,7 +7,7 @@
                     <div class="name">{{name}}</div>
                     <template v-if="desc && desc.length">
                         <div class="desc">
-                            <span v-for="item in desc">{{item}}</span>
+                            <span v-for="item in desc" class="desc-item">{{item}}</span>
                         </div>
                     </template>
 
@@ -88,6 +88,9 @@
             color: rgb(153, 153, 153);
             font-size: 12px;
             text-align: left;
+            .desc-item {
+                margin-right: 8px;
+            }
         }
         .checkbox {
             margin-left: 20px;
