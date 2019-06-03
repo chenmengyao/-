@@ -4,7 +4,7 @@
       <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;text-align:center">
         <van-swipe-item v-for="item in banner">
            <div  v-lazy-container="{ selector: 'img' }">
-            <img :data-src="item.img" :data-error="require('../../assets/more.jpg')"  style="height:27vw;width:auto"> 
+            <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%"> 
           </div>
         </van-swipe-item>
       </van-swipe>
@@ -279,5 +279,9 @@ export default {
 }
 .suwis-news-tips>div:nth-child(3){
   margin-top:25px; 
+}
+.van-swipe__indicators{
+  left: none;
+  right: 10px !important;
 }
 </style>

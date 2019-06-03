@@ -91,6 +91,8 @@ export default {
   max-width: 88px;
   min-width: 88px;
   margin-top:15px;
+  min-height:calc(100vh - 64px) !important;
+  background: #EFEFEF
 }
 .d-tips{
   border: 1px solid #ccc;
