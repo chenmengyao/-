@@ -20,8 +20,8 @@
   top: 2vw;
   right: 2vw;
 }
-
 // 设置我的推广的样式
+
 .suwis-popularize {
   .van-tabs__wrap {
     width: 40%;
@@ -29,15 +29,20 @@
 }
 
 .van-dialog__confirm {
-  background:linear-gradient(54deg,rgba(245,92,60,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
+  background: linear-gradient(54deg,rgba(245,92,60,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
+
   .van-button__text {
     color: #fff;
   }
 }
-
 // 设置对话框标题和内容间距
+
 .van-dialog {
   .van-dialog__header {
     margin-bottom: 18px;
   }
+}
+
+.van-actionsheet__close {
+  font-size: 29px;
 }

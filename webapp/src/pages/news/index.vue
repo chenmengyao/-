@@ -1,10 +1,10 @@
 <template lang="html">
   <div> 
-    <div class="suwis-news-ban" style="border:1px solid red;height:27vw;overflow:hidden">
-      <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;">
+    <div class="suwis-news-ban" style="height:27vw;overflow:hidden">
+      <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;text-align:center">
         <van-swipe-item v-for="item in banner">
           <div  v-lazy-container="{ selector: 'img' }">
-           <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" style="width:100%;height:100%"> 
+           <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%"> 
           </div>
         </van-swipe-item>
       </van-swipe>
@@ -32,7 +32,7 @@
           </div>
           <div class="suwis-news-right">
             <router-link tag="div" to="{path: '/news/details', query: {id: item.id}}">
-              <img :src="item.content.good[0].img" width="100%;height:100%;object-fit:cover;">
+              <img :src="item.content.good[0].img" width="100%" height="100%" style="object-fit:cover;">
             </router-link>
           </div>
         </div>
@@ -131,6 +131,10 @@ ul,li{
 .suwis-news-left {
   padding-right: 15px;
 }
+.suwis-news-right>div{
+  width: 80px;
+  height: 80px;
+}
 .suwis-news-right {
   max-width: 80px;
   min-width: 80px;
@@ -160,5 +164,9 @@ ul,li{
 .suwis-news-tips::after {
   clear: both;
   content: "";
+}
+.van-swipe__indicators{
+  left: none;
+  right: 10px !important;
 }
 </style>
