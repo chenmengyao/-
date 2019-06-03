@@ -28,7 +28,8 @@
 
 <script>
 var w = null
-var PAYSERVER = 'http://demo.dcloud.net.cn/payment/?payid='
+// var PAYSERVER = 'http://demo.dcloud.net.cn/payment/?payid='
+var PAYSERVER = 'http://huihuilai.ambcon.cn/index.php/index/pay/pay?pay_type='
 export default {
   props: {
     show: {
@@ -36,9 +37,9 @@ export default {
       default: false
     },
     // 支付金额
-    amount: {
-      type: Number,
-      default: 0.01
+    orderId: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -81,7 +82,7 @@ export default {
     cancel() {
       this.$emit('close')
     },
-    pay(id) {
+    async pay(id) {
       if (w) {
         return;
       } //检查是否请求订单中
@@ -93,7 +94,7 @@ export default {
       console.log('----- 请求支付 -----');
       var url = PAYSERVER;
       if (id == 'alipay' || id == 'wxpay') {
-        url += id;
+        // url += id;
       } else {
         plus.nativeUI.alert('当前环境不支持此支付通道！', null, '捐赠');
         return;
@@ -102,47 +103,68 @@ export default {
       if (navigator.userAgent.indexOf('StreamApp') >= 0) {
         appid = 'Stream';
       }
-      url += '&appid=' + appid + '&total=';
+      // url += '&appid=' + appid + '&total=';
 
       w = plus.nativeUI.showWaiting();
-      // 请求支付订单
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = () => {
-        switch (xhr.readyState) {
-          case 4:
-            w.close();
-            w = null;
-            if (xhr.status == 200) {
-              console.log('----- 请求订单成功 -----');
-              console.log(xhr.responseText);
-              var order = xhr.responseText;
-              plus.payment.request(this.pays[id], order, (result) => {
-                console.log('----- 支付成功 -----');
-                console.log(JSON.stringify(result));
-                plus.nativeUI.alert('支付成功', () => {
-                  // 支付成功
-                  this.popupShow = false
-                  this.$emit('success', true)
-                })
-              }, (e) => {
-                console.log('----- 支付失败 -----');
-                console.log('[' + e.code + ']：' + e.message);
-                this.$emit('fail', true)
-                plus.nativeUI.alert('更多错误信息请参考支付(Payment)规范文档：http://www.html5plus.org/#specification#/specification/Payment.html', null, '支付失败：' + e.code);
-              })
-            } else {
-              console.log('----- 请求订单失败 -----')
-              console.log(xhr.status)
-              plus.nativeUI.alert('获取订单信息失败！')
-            }
-            break;
-          default:
-            break;
-        }
-      }
-      xhr.open('GET', url + this.amount);
-      console.log('请求支付订单：' + url + this.amount);
-      xhr.send();
+      alert(this.orderId)
+      let res = await this.$axios.post('/pay/pay', {
+        pay_type: id,
+        order: this.orderId
+      })
+      console.log(res.data, 'res.data')
+      alert(res.data)
+      plus.payment.request(this.pays[id], res.data, (result) => {
+        console.log('----- 支付成功 -----');
+        console.log(JSON.stringify(result));
+        plus.nativeUI.alert('支付成功', () => {
+          // 支付成功
+          this.popupShow = false
+          this.$emit('success', true)
+        })
+      }, (e) => {
+        console.log('----- 支付失败 -----');
+        console.log('[' + e.code + ']：' + e.message);
+        this.$emit('fail', true)
+        plus.nativeUI.alert('更多错误信息请参考支付(Payment)规范文档：http://www.html5plus.org/#specification#/specification/Payment.html', null, '支付失败：' + e.code);
+      })
+      // // 请求支付订单
+      // var xhr = new XMLHttpRequest();
+      // xhr.onreadystatechange = () => {
+      //   switch (xhr.readyState) {
+      //     case 4:
+      //       w.close();
+      //       w = null;
+      //       if (xhr.status == 200) {
+      //         console.log('----- 请求订单成功 -----');
+      //         console.log(xhr.responseText);
+      //         var order = xhr.responseText;
+      //         plus.payment.request(this.pays[id], order, (result) => {
+      //           console.log('----- 支付成功 -----');
+      //           console.log(JSON.stringify(result));
+      //           plus.nativeUI.alert('支付成功', () => {
+      //             // 支付成功
+      //             this.popupShow = false
+      //             this.$emit('success', true)
+      //           })
+      //         }, (e) => {
+      //           console.log('----- 支付失败 -----');
+      //           console.log('[' + e.code + ']：' + e.message);
+      //           this.$emit('fail', true)
+      //           plus.nativeUI.alert('更多错误信息请参考支付(Payment)规范文档：http://www.html5plus.org/#specification#/specification/Payment.html', null, '支付失败：' + e.code);
+      //         })
+      //       } else {
+      //         console.log('----- 请求订单失败 -----', xhr)
+      //         console.log(xhr.status)
+      //         plus.nativeUI.alert('获取订单信息失败！')
+      //       }
+      //       break;
+      //     default:
+      //       break;
+      //   }
+      // }
+      // xhr.open('GET', url + this.amount);
+      // console.log('请求支付订单：' + url + this.amount);
+      // xhr.send();
     },
     checkServices(pc) {
       if (!pc.serviceReady) {
