@@ -1,16 +1,18 @@
 <template lang="html">
   <div> 
-    <div class="suwis-news-ban">
-      <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
+    <div class="suwis-news-ban" style="height:27vw;overflow:hidden">
+      <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;text-align:center">
         <van-swipe-item v-for="item in banner">
-          <img :src="item.img" style="width:100%;">
+           <div  v-lazy-container="{ selector: 'img' }">
+              <img :data-src="item.img" :data-error="require('../../assets/more.jpg')"  style="height:27vw;width:auto"> 
+           </div>
         </van-swipe-item>
         
       </van-swipe>
     </div>
     <div>
       <!-- <div class="suwis-news-list" v-for="(item,index) in clearList">
-         <div class="suwis-news-right">
+         <div class="suwis-news-right"> 
            <img :src="item.img" width="100%">
          </div>
          <div class="suwis-news-left">

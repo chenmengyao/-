@@ -9,7 +9,7 @@
              <div v-if="item.pid!==null" style="margin-top:14px;">
                  <div style="display:flex;font-size:12px;color:#333;">
                     <div style="flex:1;max-width:55px;max-height:30px;">
-                        <img src="../../../assets/test1.png" style="max-width:30px;border-radius:50%;overflow:hidden;margin:0 10px 0 15px;">
+                        <img :src="store_logo" style="max-width:30px;border-radius:50%;overflow:hidden;margin:0 10px 0 15px;">
                     </div>
                     <div style="flex:1;padding-right:45px">
                          <div style="background:#fff;display:inline-block;padding:3px 11px 3px 9px;border-radius:4px;">
@@ -32,7 +32,7 @@
                          </div>
                     </div>
                     <div style="flex:1;max-width:55px;max-height:30px;">
-                        <img src="../../../assets/test1.png" style="max-width:30px;border-radius:50%;overflow:hidden;margin:0 10px 0 15px;">
+                        <img :src="user_photo" style="max-width:30px;border-radius:50%;overflow:hidden;margin:0 10px 0 15px;">
                     </div>
                  </div>
              </div>
@@ -117,7 +117,9 @@ export default {
      setInter:null,
      messageList:[],
      count: 0,
-     isLoading: false
+     isLoading: false,
+     store_logo:'',
+     user_photo:''
     }
   },
   methods:{
@@ -140,8 +142,21 @@ export default {
         }
        
     },
+    randomNum(minNum,maxNum){ 
+    switch(arguments.length){ 
+        case 1: 
+            return parseInt(Math.random()*minNum+1,10); 
+        break; 
+        case 2: 
+            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
+        break; 
+            default: 
+                return 0; 
+            break; 
+    } 
+} ,
     getList(){
-        var uuid=new Date().getTime()
+        var uuid=this.randomNum(1000,9999)+''+this.randomNum(1000,9999)
       this.$axios.post('message/sendsm',{
           store_id:this.$route.query.store_id,
           uuid:uuid,
@@ -161,6 +176,8 @@ export default {
       this.$axios.post('message/getsm',{
           store_id:this.$route.query.store_id
       }).then(res => {
+          this.store_logo=res.data.data.store_logo
+          this.user_photo=res.data.data.user_photo
             var list=JSON.parse(sessionStorage.getItem("message"))
             var listArr=list.map(function (user) { return user.uuid; })
             var msgArr=res.data.data.msg.map(function (user) { return user.uuid; })
@@ -170,15 +187,15 @@ export default {
                 if(listArr.indexOf(item)>-1){
                 //    console.log(listArr)
                 }else{
-                    if(listArr.indexOf(Number(item))){
+                    if(msgArr.indexOf(Number(item))){
                      var items=res.data.data.msg[msgArr.indexOf(msgArr[i])]
-                     list[listArr.indexOf(Number(item))]=items
+                     list.push(items)
                     }
                     // arr.push(res.data.data.msg[msgArr.indexOf(msgArr[i])])
                 }
             }
             // this.messageList=JSON.parse(sessionStorage.getItem("message")).reverse()
-            sessionStorage.setItem("message", JSON.stringify(list.concat(arr))); 
+            sessionStorage.setItem("message", JSON.stringify(list)); 
         
       })
     }else{
