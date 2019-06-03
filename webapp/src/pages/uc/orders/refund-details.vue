@@ -111,6 +111,19 @@
                         this.$toast(data.msg);
                     }
                 })
+            this.$axios
+                .post('/order/afterdetail', {
+                    order_id: this.id
+                })
+                .then(({ data }) => {
+                    if (data.code === 1) {
+                        if (data.data) {
+                            // this.goodInfo = data.data
+                        }
+                    } else {
+                        this.$toast(data.msg);
+                    }
+                })
         }
     }
 </script>

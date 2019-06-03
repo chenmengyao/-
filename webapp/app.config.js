@@ -1,6 +1,6 @@
 import { routes } from '../webapp/src/router'
 
-// 生成以hidePath中的路径开头的底部导航路由数组
+// 生成以hidePath中的路径开头的隐藏底部导航路由数组
 const hidePath = ['/uc/', '/mine/']
 const hideNavBarList = routes.filter(route => hidePath.some(path => route.path.startsWith(path))).map(route => route.path)
 

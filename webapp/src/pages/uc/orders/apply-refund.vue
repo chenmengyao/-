@@ -27,14 +27,14 @@
                         <span class="color-red price">￥{{goodInfo.sum}}</span>
                     </div>
                 </li>
-                <li class="item address" v-if="type === 'exchange'">
+                <li class="item address" v-if="type === 'exchange'" @click="selectAddress">
                     <div class="name">换货地址</div>
                     <div class="address-box">
                         <div class="address-top">
-                            <span class="address-name">{{goodInfo.express_name}}</span>
-                            <span class="address-tel">{{goodInfo.express_tel}}</span>
+                            <span class="address-name">{{address.name}}</span>
+                            <span class="address-tel">{{address.tel}}</span>
                         </div>
-                        <div class="address">{{goodInfo.express_address}}</div>
+                        <div class="address">{{address | location}}</div>
                     </div>
                     <div class="value">
                         <van-icon name="arrow" size="10px" color="rgb(180, 180, 180)"/>
@@ -107,6 +107,18 @@
 <script>
     import SimpleGood from '@/components/uc/orders/simple-good'
 
+    const typeMap = {
+        refund: '退款',
+        return: '退货退款',
+        exchange: '换货'
+    }
+    const reasonMap = {
+        1: '7天无理由退款',
+        2: '地址、商品信息填写错误',
+        3: '商家缺货',
+        4: '其他'
+    }
+
     export default {
         components: {
             SimpleGood
@@ -119,18 +131,18 @@
                 }
                 return v ? goodsStatus[v] : '请选择'
             },
+            location(v) {
+                return (v.province + v.city + v.area + v.address) || '---'
+            },
             reason(v) {
-                const reason = {
-                    1: '7天无理由退款',
-                    2: '地址、商品信息填写错误',
-                    3: '商家缺货',
-                    4: '其他'
-                }
-                return v ? reason[v] : '请选择'
+                return v ? reasonMap[v] : '请选择'
             }
         },
         data() {
             return {
+                address: {},
+                address_id: '',
+                addressList: [],
                 goodInfo: {},
                 id: '',
                 maxSize: 500 * 1024,    // 上传图片的最大kb
@@ -151,6 +163,17 @@
             changeStatus(status) {
                 this.status = status
                 this.statusShow = false
+            },
+            selectAddress() {
+                const { id, type } = this
+                this.$router.push({
+                    path: '/uc/setting/address',
+                    query: {
+                        from: this.$route.path,
+                        id,
+                        type
+                    }
+                })
             },
             showReason() {
                 this.reasonShow = true
@@ -193,18 +216,35 @@
                     })
             },
             submit() {
+                if (!this.imgList.length) {
+                    this.$toast('请至少上传一张图片凭证')
+                }
+                if (!this.reason) {
+                    this.$toast('请选择原因')
+                }
                 this.$axios
                     .post('/order/aftersale', {
-                        order_id: id,
-                        reason: this.reason,
+                        order_id: this.id,
+                        type: typeMap[this.type],
+                        reason: reasonMap[this.reason],
                         remark: this.remark,
-                        address_id : this.type === 'exchange' ? '1' : undefined
+                        address_id : this.type === 'exchange' ? this.address.id : undefined,
+                        imgs: this.imgList
+                    })
+                    .then(({ data }) => {
+                        if (data.code === 1) {
+                            this.$router.push('/uc/orders')
+                            this.$toast('已提交售后申请');
+                        } else {
+                            this.$toast(data.msg);
+                        }
                     })
             }
         },
         created() {
             this.id = this.$route.query.id
             this.type = this.$route.query.type
+            this.address_id = this.$route.query.address_id
             this.$axios
                 .post('/order/detail', {
                     id: this.id
@@ -213,6 +253,18 @@
                     if (data.code === 1) {
                         if (data.data) {
                             this.goodInfo = data.data
+                        }
+                    } else {
+                        this.$toast(data.msg);
+                    }
+                })
+            this.$axios
+                .post('/user/alladdress')
+                .then(({ data }) => {
+                    if (data.code === 1) {
+                        if (data.data) {
+                            this.addressList = data.data
+                            this.address = data.data.find(item => this.address_id ? item.id === +this.address_id : item.sta === 1)
                         }
                     } else {
                         this.$toast(data.msg);
