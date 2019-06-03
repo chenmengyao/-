@@ -13,8 +13,7 @@
                         <OrderCard
                             v-for="shop in list"
                             :key="Array.isArray(shop) ? shop[0].id : shop.id"
-                            :shop-data="Array.isArray(shop) ? shop[0] : shop"
-                            @on-click-item="onClickOrder">
+                            :shop-data="Array.isArray(shop) ? shop[0] : shop">
                             <GoodsItem :goods-list="Array.isArray(shop) ? shop : [shop]" @click="onClickGoods"></GoodsItem>
                             <template #footer>
                                 <ButtonLine

@@ -51,7 +51,7 @@
         }
         },
         created() {
-            this.order_id = this.$route.query.order_id
+            this.order_id = this.$route.query.id
             this.$axios
                 .post('/order/checkthelogistics', {
                     order_id: this.order_id

@@ -200,7 +200,6 @@
                                 this.discount = data.data.use_vipdiscount
                                 this.couponList = data.data.coupon
                                 this.address = data.data.address.find(item => this.address_id ? item.id === +this.address_id : item.sta === 1)
-                                console.log(this.address)
                             }
                         } else {
                             this.$toast(data.msg);
@@ -236,7 +235,7 @@
                 this.$router.push({
                     path: '/uc/setting/address',
                     query: {
-                        from: 'confirm-order',
+                        from: this.$route.path,
                         car_id: this.orderFrom === 'single' ? undefined : this.car_id,
                         stand_id: this.orderFrom === 'single' ? this.stand_id : undefined,
                         num: this.orderFrom === 'single' ? this.num : undefined,
