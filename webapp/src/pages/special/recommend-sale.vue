@@ -7,10 +7,12 @@
           <span class="d-banntitle-right">共<span>{{total}}</span>件商品</span>
       </div>
       </div>
-      <div class="suwis-news-ban">
-        <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
+      <div class="suwis-news-ban" style="height:27vw;overflow:hidden">
+        <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;text-align:center">
           <van-swipe-item v-for="item in banner">
-            <img :src="item.img" style="width:100%;">
+             <div  v-lazy-container="{ selector: 'img' }">
+            <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%"> 
+            </div>
           </van-swipe-item>
         </van-swipe>
       </div>
@@ -213,5 +215,9 @@ export default {
 }
 .d-flex{
   display:flex;padding:0 7.5px 0 15px
+}
+.van-swipe__indicators{
+  left: none;
+  right: 10px !important;
 }
 </style>

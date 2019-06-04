@@ -2,24 +2,24 @@
     <div class="suwis-popularize-details">
         <div class="top-box">
             <div class="info-box">
-                <img :src="detail.photo || require('@/assets/login/avatar@3x.png')" alt="" class="profile">
+                <img :src="user.photo || require('@/assets/login/avatar@3x.png')" alt="" class="profile">
                 <div class="info">
-                    <div class="name">{{detail.nickname}}</div>
-                    <div class="location">{{detail | location}} / {{detail.name}}</div>
+                    <div class="name">{{user.nickname}}</div>
+                    <div class="location">{{user | location}} / {{user.name}}</div>
                 </div>
                 <div class="level">
                     <img src="@/assets/myvip.png" class="vip">
-                    LV.{{detail.vip}}
+                    LV.{{user.vip}}
                 </div>
             </div>
             <div class="sum-box">
                 <dl class="sum">
                     <dt class="title">可用额度（元）</dt>
-                    <dd class="available">{{detail.vip_sum_use || 0}}</dd>
+                    <dd class="available">{{user.vip_sum_use || 0}}</dd>
                 </dl>
                 <dl class="sum">
                     <dt class="title">VIP额度（元）</dt>
-                    <dd class="total">{{detail.vip_sum || 0}}</dd>
+                    <dd class="total">{{user.vip_sum || 0}}</dd>
                 </dl>
             </div>
         </div>
@@ -45,12 +45,12 @@
                 <template v-if="list && list.length">
                     <div class="cost-item" v-for="item in list">
                         <div class="line">
-                            <span class="time">2018-09-28 11:03</span>
-                            <span class="amount">110.0</span>
+                            <span class="time">{{item.time | dateFmt}}</span>
+                            <span class="amount">{{item.sum}}</span>
                         </div>
                         <div class="line">
-                            <span class="pay-type">微信支付</span>
-                            <span class="status">待收货</span>
+                            <span class="pay-type">{{item.pay_type | payType}}</span>
+                            <span class="status">{{item.sta | orderStatus}}</span>
                         </div>
                     </div>
                 </template>
@@ -62,43 +62,75 @@
 </template>
 
 <script>
+    import payType from '@/constants/order/payType'
+    import orderStatus from '@/constants/order/orderStatus'
+
     export default {
         filters: {
             location(v) {
                 return (v.province + v.city + v.area) || '---'
+            },
+            orderStatus(v) {
+                return orderStatus[v]
+            },
+            payType(v) {
+                return payType[v]
             }
+
         },
         data() {
             return {
-                detail: {},
+                user: {},
                 error: false,
                 finished: false,
                 loading: false,
-                list: [''],
+                list: [],
+                num: 20,            // 每页的数量
+                page: 1,            // 页码
                 timeSort: 'up'
             }
         },
         methods: {
             changeSort() {
-                this.timeSort = this.timeSort === 'up' ? 'down' : 'up'
+                this.timeSort = this.timeSort === 'up' ? '' : 'up'
+                this.getList()
             },
-            getList() {
-
+            getList(type = 'reset') {
+                if (type === 'reset') {
+                    this.list = []
+                    this.page = 1
+                }
+                const { num, page } = this
+                this.$axios
+                    .post('/mine/generalize_detail', {
+                        id: this.id,
+                        page,
+                        num,
+                        time: this.timeSort,
+                    })
+                    .then(({ data }) => {
+                        if (data.code === 1) {
+                            if (data.data && data.data.user) {
+                                this.user = data.data.user
+                                this.list = this.list.concat(data.data.order)
+                                if (page * num > data.data.total) this.finished = true
+                            } else {
+                                this.error = true
+                            }
+                        } else {
+                            this.error = true
+                            this.$toast(data.msg);
+                        }
+                        this.page++
+                        this.loading = false
+                    })
+                    .catch(() => {
+                        this.error = true
+                    })
             }
         },
         created() {
             this.id = this.$route.query.id
-            this.$axios
-                .post('/mine/getgrantvip', {
-                    id: this.id
-                })
-                .then(({ data }) => {
-                    if (data.code === 1) {
-                        if (data.data) this.detail = data.data
-                    } else {
-                        this.$toast(data.msg);
-                    }
-                })
         }
     }
 </script>

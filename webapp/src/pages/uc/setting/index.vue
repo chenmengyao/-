@@ -12,7 +12,7 @@
                 <van-icon name="arrow" size="10px" color="#b4b4b4"/>
             </template>
         </van-cell>
-        <van-cell title="我的二维码名片" :clickable="true" :center="true" value-class="content" @click="barCodeScan">
+        <van-cell title="我的二维码名片" :clickable="true" :center="true" value-class="content" v-if="user_type === 0 || user_type === 2" @click="barCodeScan">
             <template>
                 <img src="@/assets/uc/qr-code-black@2x.png" alt="二维码" class="qr-code">
                 <van-icon name="arrow" size="10px" color="#b4b4b4"/>
@@ -68,31 +68,15 @@
         </van-popup>
         <!-- 修改昵称弹框 // -->
 
-        <!-- 二维码弹框 -->
-        <!--<van-popup v-model="qrCodeShow" :close-on-click-overlay="false" position="top" class="popup-qr-code">-->
-            <!--<div class="info-box">-->
-                <!--<img :src="user.photo || require('../../../assets/login/avatar@3x.png')" alt="头像" class="profile">-->
-                <!--<div class="info">-->
-                    <!--<span class="name">{{user.name}}</span>-->
-                    <!--<span class="address">{{user | address}}</span>-->
-                <!--</div>-->
-                <!--<div class="img-box">-->
-                    <!--<img src="" alt="" class="qr-code">-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="close" @click="qrCodeShow = false">×</div>-->
-        <!--</van-popup>-->
+        <!-- 扫描二维码 -->
         <BarCode :activity="barCodeActivity" :show="qrCodeShow" @close="closeBarCode"></BarCode>
-        <!-- 二维码弹框 //-->
+        <!-- 扫描二维码 // -->
 
         <!-- 修改位置弹框 -->
         <van-popup v-model="locationShow" position="bottom" :close-on-click-overlay="false">
             <van-area :area-list="areaList" :value="locationValue" @confirm="confirmLocation" @cancel="closePopup"/>
         </van-popup>
         <!-- 修改位置弹框 // -->
-
-        <!-- 修改位置弹框 // -->
-
 
     </div>
 </template>
@@ -129,8 +113,16 @@
         },
         methods: {
             barCodeScan() {
-                this.qrCodeShow = true
-                this.barCodeActivity = 'start'
+                const { user_type } = this
+                if (user_type === 0) {
+                    this.qrCodeShow = true
+                    this.barCodeActivity = 'start'
+
+                } else if (user_type === 2) {
+                    this.$router.push({
+                        path: '/uc/setting/card',
+                    })
+                }
             },
             closeBarCode() {
                 this.qrCodeShow = false

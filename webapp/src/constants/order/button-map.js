@@ -1,39 +1,29 @@
-export const RefundButton = {
-    1: [
-        {
-            key: 'contact',
-            name: '联系卖家',
-            type: 'default'
-        },
-        {
-            key: 'modify',
-            name: '修改申请',
-            type: 'default'
-        },
-        {
-            key: 'cancel',
-            name: '撤销申请',
-            type: 'warning'
-        }
-    ],
-    2: [
-        {
-            key: 'contact',
-            name: '联系卖家',
-            type: 'default'
-        },
-        {
-            key: 'logistics',
-            name: '填写物流',
-            type: 'default'
-        },
-        {
-            key: 'cancel',
-            name: '撤销申请',
-            type: 'warning'
-        }
-    ]
-}
+export const RefundButton = [
+    {
+        key: 'contact',
+        name: '联系卖家',
+        type: 'default',
+        sta: [0, 1, 2]
+    },
+    {
+        key: 'logistics',
+        name: '填写物流',
+        type: 'default',
+        sta: [1]
+    },
+    {
+        key: 'modify',
+        name: '修改申请',
+        type: 'default',
+        sta: [0, 2]
+    },
+    {
+        key: 'cancel',
+        name: '撤销申请',
+        type: 'warning',
+        sta: [0, 1, 2]
+    },
+]
 
 export default [
     {

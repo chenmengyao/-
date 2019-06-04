@@ -102,6 +102,10 @@ export const routes = [
     name: '设置-我的收货地址',
     component: () => import('./pages/uc/setting/address.vue')
 }, {
+    path: '/uc/setting/card',
+    name: '设置-团长名片',
+    component: () => import('./pages/uc/setting/card.vue')
+}, {
     path: '/uc/setting/handleAddress',
     name: '设置-新增/编辑地址',
     component: () => import('./pages/uc/setting/handleAddress.vue')
@@ -161,9 +165,9 @@ export const routes = [
     name: '订单-物流详情',
     component: () => import('./pages/uc/orders/logistics-details.vue')
 }, {
-    path: '/uc/orders/logistics-query',
+    path: '/uc/orders/logistics-input',
     name: '订单-查询物流',
-    component: () => import('./pages/uc/orders/logistics-query.vue')
+    component: () => import('./pages/uc/orders/logistics-input.vue')
 }, {
     path: '/uc/orders/refund',
     name: '订单-售后订单列表',

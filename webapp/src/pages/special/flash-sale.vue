@@ -492,4 +492,8 @@ export default {
 .van-hairline--top-bottom::after{
   border-width:none !important;
 }
+.van-swipe__indicators{
+  left: none;
+  right: 10px !important;
+}
 </style>
