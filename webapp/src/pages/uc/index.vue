@@ -184,7 +184,7 @@
                             this.$toast(data.msg);
                         }
                     })
-            }
+            },
             toVip() {
                 if (this.user_type === 0) {
                     this.$toast('抱歉，您还不是VIP');
