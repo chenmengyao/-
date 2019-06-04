@@ -11,14 +11,14 @@
                     @load="getList('add')">
                     <template v-if="list && list.length">
                         <OrderCard
-                            v-for="shop in list"
-                            :key="Array.isArray(shop) ? shop[0].id : shop.id"
-                            :shop-data="Array.isArray(shop) ? shop[0] : shop">
-                            <GoodsItem :goods-list="Array.isArray(shop) ? shop : [shop]" @click="onClickGoods"></GoodsItem>
+                            v-for="order in list"
+                            :key="Array.isArray(order) ? order[0].id : order.id"
+                            :order-data="order">
+                            <GoodsItem :goods-list="Array.isArray(order) ? order : [order]" @click="onClickGoods"></GoodsItem>
                             <template #footer>
                                 <ButtonLine
-                                    :button-list="(Array.isArray(shop) ? shop[0].sta : shop.sta) | buttonList"
-                                    :order-id="Array.isArray(shop) ? shop[0].id : shop.id"
+                                    :button-list="(Array.isArray(order) ? order[0].sta : order.sta) | buttonList"
+                                    :order-id="Array.isArray(order) ? order[0].id : order.id"
                                     @on-click="onButtonClick"></ButtonLine>
                             </template>
                         </OrderCard>
@@ -214,7 +214,7 @@
             cancelOrder(orderId) {
                 this.$dialog.confirm({
                     title: '取消订单',
-                    message: '该订单还未付款，您确定要取消吗？？'
+                    message: '该订单还未付款，您确定要取消吗？'
                 }).then(() => {
                     this.$axios
                         .post('/order/cancel', {
@@ -276,6 +276,7 @@
             },
             deleteOrder(orderId) {
                 this.$dialog.confirm({
+                    title: '删除订单',
                     message: '您确定要删除该订单吗？'
                 }).then(() => {
                     this.$axios

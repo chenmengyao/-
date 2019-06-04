@@ -115,7 +115,7 @@
                 <span class="option-item"></span>
             </li>
         </ul>
-        <BarCode :activity="barCodeActivity" :show="qrCodeShow" @close="closeBarCode"></BarCode>
+        <BarCode :show="qrCodeShow" @close="closeBarCode" @success='scanSuccess'></BarCode>
     </div>
 </template>
 
@@ -146,6 +146,9 @@
             }
         },
         methods: {
+            closeBarCode() {
+                this.qrCodeShow = false
+            },
             getUserInfo() {
                 this.$axios.post('/mine/index')
                 .then(({ data }) => {
@@ -168,6 +171,20 @@
                     })
                 }
             },
+            scanSuccess(codeUrl) {
+                this.qrCodeShow = false
+                this.$axios
+                    .post('/user/captainqrcode', {
+                        region_id: codeUrl
+                    })
+                    .then(({ data }) => {
+                        if(data.code === 1) {
+                            this.$toast('绑定成功')
+                        } else {
+                            this.$toast(data.msg);
+                        }
+                    })
+            }
             toVip() {
                 if (this.user_type === 0) {
                     this.$toast('抱歉，您还不是VIP');

@@ -30,6 +30,7 @@
         },
         methods: {
             closePopup() {
+                if (!window.plus) return
                 scan.close()
                 this.popupShow = false
                 this.$emit('close')
@@ -52,7 +53,8 @@
                 // 获得code
                 result = result.replace(/\n/g, '')
                 this.codeUrl = result
-                this.$toast(result)
+                // this.$toast(result)
+                this.$emit('success', this.codeUrl)
                 this.closePopup()
             },
             openPopup() {
@@ -60,15 +62,12 @@
                 scan = new plus.barcode.Barcode('bcid')
                 scan.onmarked = this.onMarked
                 scan.start()
-            }
+            },
         },
         watch: {
             show() {
                 this.popupShow = this.show
             }
-        },
-        mounted() {
-
         }
     }
 </script>

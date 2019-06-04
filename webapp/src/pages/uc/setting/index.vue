@@ -69,7 +69,7 @@
         <!-- 修改昵称弹框 // -->
 
         <!-- 扫描二维码 -->
-        <BarCode :activity="barCodeActivity" :show="qrCodeShow" @close="closeBarCode"></BarCode>
+        <BarCode :show="qrCodeShow" @close="closeBarCode" @success="scanSuccess"></BarCode>
         <!-- 扫描二维码 // -->
 
         <!-- 修改位置弹框 -->
@@ -99,7 +99,6 @@
         data() {
             return {
                 areaList,
-                barCodeActivity: '',
                 name: '',       // 弹框昵称
                 maxSize: 500 * 1024,    // 上传图片的最大kb
                 profileUrl: '',
@@ -116,7 +115,6 @@
                 const { user_type } = this
                 if (user_type === 0) {
                     this.qrCodeShow = true
-                    this.barCodeActivity = 'start'
 
                 } else if (user_type === 2) {
                     this.$router.push({
@@ -126,7 +124,6 @@
             },
             closeBarCode() {
                 this.qrCodeShow = false
-                this.barCodeActivity = 'cancel'
             },
             closePopup() {
                 this.profileUrl = ''
@@ -244,6 +241,20 @@
                 const maxSize = Math.floor(this.maxSize / 1024)
                 this.$toast(`上传图片最大不能超过${maxSize}KB`)
             },
+            scanSuccess(codeUrl) {
+                this.qrCodeShow = false
+                this.$axios
+                    .post('/user/captainqrcode', {
+                        region_id: codeUrl
+                    })
+                    .then(({ data }) => {
+                        if(data.code === 1) {
+                            this.$toast('绑定成功')
+                        } else {
+                            this.$toast(data.msg);
+                        }
+                    })
+            }
         },
         created() {
             this.getUserInfo()

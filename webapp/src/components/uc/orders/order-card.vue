@@ -3,15 +3,15 @@
         <div class="header">
             <div class="shop-info">
                 <img class="shop-logo" src="@/assets/orders/shop-logo.png" alt="店铺头像" width="20" height="20">
-                <span class="shop-name">{{shopData.store_name}}</span>
+                <span class="shop-name">{{resultData.store_name}}</span>
                 <van-icon name="arrow"/>
             </div>
-            <span class="shop-status">{{ shopData.sta | status }}</span>
+            <span class="shop-status">{{ resultData.sta | status }}</span>
         </div>
 
         <slot></slot>
 
-        <div class="total-price" v-if="showPrice">共{{totalNum}}件商品 合计: ￥{{shopData.sum}}</div>
+        <div class="total-price" v-if="showPrice">共{{totalNum}}件商品 合计: ￥{{totalSum}}</div>
         <slot name="footer"></slot>
     </div>
 </template>
@@ -39,8 +39,8 @@
                 type: Array,
                 default: () => []
             },
-            shopData: {
-                type: Object,
+            orderData: {
+                type: [Object, Array],
                 required: true,
             },
             showPrice: {
@@ -56,8 +56,26 @@
             status: v => statusMap[v]
         },
         computed: {
+            resultData() {
+                const { orderData } = this
+                return Array.isArray(orderData) ? orderData[0] : orderData
+            },
             totalNum() {
-                return this.goodsList.reduce((result, goods) => result + goods.num, 0)
+                const { orderData } = this
+                if (Array.isArray(orderData)) {
+                    return this.orderData.reduce((result, goods) => result + goods.num, 0)
+                } else {
+                    return orderData.num
+                }
+            },
+            // 计算总价
+            totalSum() {
+                const { orderData } = this
+                if (Array.isArray(orderData)) {
+                    return this.orderData.reduce((result, goods) => result + goods.num * goods.goods_price, 0)
+                } else {
+                    return orderData.num * orderData.goods_price
+                }
             }
         },
         methods: {
