@@ -5,8 +5,7 @@
   @cancel="cancel">
 	<van-cell-group>
 		<van-cell title="请选择付款方式"></van-cell>
-		<van-radio-group v-model="payType"
-		  @change="select">
+		<van-radio-group v-model="payType">
 			<van-radio v-for="pay in typeList"
 			  :name="pay.id"
 			  :key="pay.id">
@@ -17,11 +16,9 @@
 				</div>
 			</van-radio>
 		</van-radio-group>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
+		<div class="button-line">
+			<div class="deploy" @click="pay">立即付款</div>
+		</div>
 	</van-cell-group>
 </van-actionsheet>
 </template>
@@ -45,7 +42,13 @@ export default {
 			pays: {},
 			payType: '',
 			popupShow: false,
-			typeList: []
+			typeList: [
+				{
+					id: 'scorePay',
+					description: '佣金余额',
+					icon: require('../../../assets/orders/score-pay@2x.png')
+				},
+			]
 		}
 	},
 	watch: {
@@ -80,7 +83,12 @@ export default {
 		cancel() {
 			this.$emit('close')
 		},
-		async pay(id) {
+		async pay() {
+			const id = this.payType
+			if (id === 'scorePay') {
+				this.$emit('pay', id)
+				return
+			}
 			if (w) {
 				return;
 			} //检查是否请求订单中
@@ -141,10 +149,6 @@ export default {
 					}
 				}, pc.description);
 			}
-		},
-		select() {
-			this.pay(this.payType)
-			this.$emit('select', this.payType)
 		}
 	}
 }
@@ -161,6 +165,22 @@ export default {
         height: 24px;
         margin-right: 10px;
     }
+}
+
+.button-line {
+		padding: 30px 26px 24px;
+		border-top: 1px solid #f5f5f5;
+		.deploy {
+				height:45px;
+				margin: 0 auto;
+				background:linear-gradient(54deg,rgba(245,92,60,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
+				border-radius:25px;
+				color: #fff;
+				cursor: pointer;
+				font-size: 16px;
+				line-height: 45px;
+				text-align: center;
+		}
 }
 
 .van-radio-group {

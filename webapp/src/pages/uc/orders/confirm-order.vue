@@ -17,7 +17,8 @@
 
   <template v-if="shopList && shopList.length">
     <div class="goods-box"
-      v-for="shop in shopList">
+      v-for="shop in shopList"
+      :key='shop.id'>
       <div class="shop-info">
         <img class="shop-logo"
           :src="shop[0].logo || defaultShopLogo"
@@ -53,7 +54,7 @@
       center
       value-class="cell-content">
       <template>
-        <van-stepper v-model="num" />
+        <van-stepper v-model="num" @change="getData"/>
       </template>
     </van-cell>
     <van-cell title="配送方式"
@@ -136,12 +137,14 @@
 
   <PayType :show="payTypeShow"
     @close="payTypeShow = false"
-    @select="selectPayType"
+    @pay="confirmPay"
     :order-id="orderId"></PayType>
 
   <CouponList v-model="couponShow"
     title="选择优惠券">
-    <couponItem v-for="coupon in couponList"
+    <couponItem 
+      v-for="coupon in couponList"
+      :key="coupon.id"
       :title="coupon.title"
       :desc="`满${coupon.total}元即可使用`"
       :price="coupon.sum"
@@ -150,6 +153,22 @@
       @click="onCouponClick(coupon)">
     </couponItem>
   </CouponList>
+
+  <van-actionsheet
+    title="请输入支付密码"
+    v-model="passwordModalShow"
+    :close-on-click-overlay="false"
+    @cancel="closePasswordModal">
+      <van-password-input :value="password"/>
+      <div class="link-line">
+          <router-link to="/resetpaypwd" class="forget-password">忘记支付密码？</router-link>
+      </div>
+      <van-number-keyboard
+          :show="true"
+          @input="onPasswordInput"
+          @delete="onPasswordDelete"
+      />
+  </van-actionsheet>
 </div>
 </template>
 
@@ -158,6 +177,9 @@ import defaultShopLogo from '@/assets/orders/shop-logo.png'
 import PayType from '@/components/uc/orders/pay-type'
 import CouponList from '@//components/coupon-list'
 import CouponItem from '@//components/coupon-item'
+import payTypeMap from '@/constants/order/payType'
+
+import md5 from'md5'
 
 export default {
   components: {
@@ -185,12 +207,15 @@ export default {
       car_id: '',
       couponList: [],
       coupon: {}, // 优惠券id
+      currentPayType: null,  // 当前支付方式
       couponShow: false,
       discount: 0, // 折扣的金额
       useDiscount: true, // 折扣
       defaultShopLogo,
       express_remark: '', // 备注
       num: 0, // 直接购买时商品的数量
+      password: '',               // 支付密码
+      passwordModalShow: false,   // 输入弹框显示
       score: 0,
       stand_id: '',
       shopList: [],
@@ -204,6 +229,9 @@ export default {
     }
   },
   methods: {
+    closePasswordModal() {
+      this.password = ''
+    },
     getData() {
       let url, params
       if (this.orderFrom === 'single') {
@@ -236,6 +264,9 @@ export default {
               this.discount = data.data.use_vipdiscount
               this.couponList = data.data.coupon
               this.address = data.data.address.find(item => this.address_id ? item.id === +this.address_id : item.sta === 1)
+              if (!this.address_id) {
+                this.address_id = this.address.id
+              }
             }
           } else {
             this.$toast(data.msg);
@@ -267,6 +298,31 @@ export default {
       this.coupon = coupon
       this.couponShow = false
     },
+    onPasswordInput(key) {
+      if (this.password.length < 6) {
+        this.password = this.password + key
+      }
+      if (this.password.length === 6) {
+        this.$axios
+          .post('/pay/pay', {
+            order: this.orderId,
+            pay_type: this.currentPayType.taypeKey,
+            paypass: this.currentPayType.key === 'scorePay' ? md5(this.password) : undefined
+          })
+          .then(({ data }) => {
+            if (data.code === 1) {
+              this.$toast('支付成功');
+              this.$router.push('/uc/orders')
+            } else {
+              this.password = ''
+              this.$toast(data.msg);
+            }
+          })
+      }
+    },
+    onPasswordDelete() {
+        this.password = this.password.slice(0, this.password.length - 1);
+    },
     selectAddress() {
       this.$router.push({
         path: '/uc/setting/address',
@@ -282,8 +338,9 @@ export default {
     selectCoupon() {
       this.couponList.length ? this.couponShow = true : this.$toast('抱歉，暂无可用优惠券')
     },
-    selectPayType(key) {
-      this.payTypeShow = false
+    confirmPay(key) {
+      this.passwordModalShow = true
+      this.currentPayType = payTypeMap.find(type => type.key === key)
     },
     setScore() {
       this.$router.push({
@@ -304,7 +361,7 @@ export default {
         coupon_id: this.useCoupon ? this.coupon.id : undefined,
         is_vip: this.useDiscount ? 1 : undefined,
         score_sum: this.useScore ? this.score : undefined,
-        addreess_id: 19,
+        address_id: this.address_id,
         express_remark: 'test'
       })
       // 记录订单号
@@ -347,7 +404,6 @@ export default {
     }
     .van-icon {
         line-height: 24px;
-
     }
     .cell-content {
         display: flex;
@@ -420,5 +476,21 @@ export default {
             color: #fff;
         }
     }
+    .van-popup {
+      .van-icon {
+        line-height: 44px;
+      }
+    }
+    .van-password-input {
+        margin: 16px 20px;
+    }
+    .forget-password {
+        color: #f0914b;
+    }
+    .link-line {
+        margin: 0 20px 250px;
+        text-align: right;
+    }
+      
 }
 </style>

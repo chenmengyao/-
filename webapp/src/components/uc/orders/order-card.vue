@@ -31,9 +31,6 @@
     }
 
     export default {
-        components: {
-            GoodsItem
-        },
         props: {
             goodsList: {
                 type: Array,

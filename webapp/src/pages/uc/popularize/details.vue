@@ -74,7 +74,7 @@
                 return orderStatus[v]
             },
             payType(v) {
-                return payType[v]
+                return payType[v].name
             }
 
         },
