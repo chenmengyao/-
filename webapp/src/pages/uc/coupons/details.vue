@@ -83,6 +83,18 @@
          <div style="flex:1">立即使用</div>
        </div>
     </div>
+    <!-- <div style="background:red;height:500px;padding-top:5px;">
+    <div class="bg">
+           <div class="d-stutas d-stutas1" v-if="$route.query.type==1">待使用</div>
+          <div class="d-stutas d-stutas1 d-status2" v-if="$route.query.type==2">已使用</div>
+          <div class="d-stutas d-stutas1 d-status2" v-if="$route.query.type==3">已过期</div>
+          <div style="display:flex;text-align:center">
+            <div style="flex:1;font-size:40px;line-height:17.6vw;">100</div>
+             <div style="flex:1">fdfd</div>
+          </div>
+      
+    </div>
+    </div> -->
   </div>
 </template>
 
@@ -115,6 +127,11 @@ export default {
 </script>
 
 <style lang="css">
+.bg {
+        padding:5.5vw 5vw 8vw 5vw;
+        /* color: #fff; */
+        background: url("../../../assets/couponBg.png") no-repeat center bottom/cover;
+    }
 .d-stutas{
   position:absolute;
   left:23px;

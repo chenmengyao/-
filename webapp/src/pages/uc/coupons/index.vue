@@ -3,9 +3,9 @@
     <div>
        <van-tabs  @change="getTobeusedList" v-model="couponsValue" :line-height="2" animated color="#E83F44" swipeable title-active-color="#333" title-inactive-color="#333">
           <van-tab title="待使用">
-             <div class="suwis-coupons-con" v-if="tobeused.length" v-for="item in tobeused">
+             <div class="suwis-coupons-con" v-if="tobeused.length">
                <router-link tag="div" :to="{path: '/uc/coupons/details', query: {id: 0,type:1}}">
-                <div>
+                <!-- <div>
                    <div class="suwis-coupons-list">
                        <div class="suwis-coupons-listtop">
                            <div>
@@ -28,15 +28,24 @@
                        <div><img class="d-icon" src="../../../assets/coupons-date.png"><span></span>有效期至：{{item.end_time|dateFmt}}</div>
                        <div>待使用</div>
                    </div>
-                </div>
+                </div> -->
+                  <coupon-item
+                    v-for="item in tobeused"
+                    type="1"
+                    :title="item.title"
+                    :desc="`满${item.total}减${item.sum}`"
+                    :price="item.sum"
+                    :time="item.end_time"
+                    btn-text="待使用">
+                  </coupon-item>
                 </router-link>
              </div>
              <div v-if="!tobeused.length" style="text-align:center;line-height:40px;">暂无数据</div>
           </van-tab>
           <van-tab title="已使用">
-             <div class="suwis-coupons-con" v-if="tobeused.length" v-for="item in tobeused">
+             <div class="suwis-coupons-con" v-if="tobeused.length">
                <router-link tag="div" :to="{path: '/uc/coupons/details', query: {id: 0,type:2}}">
-                <div>
+                <!-- <div>
                    <div class="suwis-coupons-list d-bgcolor">
                        <div class="suwis-coupons-listtop">
                            <div>
@@ -59,15 +68,24 @@
                        <div><img class="d-icon" src="../../../assets/coupons-date.png"><span></span>有效期至：{{item.end_time|dateFmt}}</div>
                        <div style="color:#999">已使用</div>
                    </div>
-                </div>
+                </div> -->
+                <coupon-item
+                    v-for="item in tobeused"
+                    :title="item.title"
+                    :type="2"
+                    :desc="`满${item.total}减${item.sum}`"
+                    :price="item.sum"
+                    :time="item.end_time"
+                    btn-text="已使用">
+                  </coupon-item>
                 </router-link>
              </div>
              <div v-if="!tobeused.length" style="text-align:center;line-height:40px;">暂无数据</div>
           </van-tab>
           <van-tab title="已过期">
-            <div class="suwis-coupons-con" v-if="tobeused.length" v-for="item in tobeused">
+            <div class="suwis-coupons-con" v-if="tobeused.length">
               <router-link tag="div" :to="{path: '/uc/coupons/details', query: {id: 0,type:3}}">
-                <div>
+                <!-- <div>
                    <div class="suwis-coupons-list d-bgcolor">
                        <div class="suwis-coupons-listtop">
                            <div>
@@ -90,7 +108,16 @@
                        <div><img class="d-icon" src="../../../assets/coupons-date.png"><span></span>有效期至：{{item.end_time|dateFmt}}</div>
                        <div style="color:#999">已过期</div>
                    </div>
-                </div>
+                </div> -->
+                <coupon-item
+                    v-for="item in tobeused"
+                    :title="item.title"
+                    :type="3"
+                    :desc="`满${item.total}减${item.sum}`"
+                    :price="item.sum"
+                    :time="item.end_time"
+                    btn-text="已使用">
+                  </coupon-item>
                 </router-link>
              </div>
              <div v-if="!tobeused.length" style="text-align:center;line-height:40px;">暂无数据</div>
@@ -107,7 +134,8 @@ export default {
       couponsValue:'',
       tobeused:[],
       used:[],
-      pass:[]
+      pass:[],
+      couponsVisible:true
     }
   },
   methods:{
@@ -179,7 +207,7 @@ export default {
   line-height: 60px;
   font-size: 35px;
   padding-left: 15px;
-  border-left: 0.5px dashed #fff
+  border-left: 0.5px dashed #ccc
 }
 .d-icon{
   width: 47px;

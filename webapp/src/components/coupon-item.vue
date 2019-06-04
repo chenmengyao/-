@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="suwis-coupon-item" @click="click">
-    <dl class="bg">
+    <dl :class="type=='1'?'bg':'bg1'">
       <dt>
         <img class="money" src="@/assets/coupons/money@3x.png" alt="">
         <div>
@@ -14,10 +14,10 @@
     </dl>
     <dl>
       <dt>
-        <img class="time" src="@/assets/coupons/time@3x.png" alt="">有效期至：{{time}}
+        <img class="time" src="@/assets/coupons/time@3x.png" alt="">有效期至：{{time|dateFmt}}
       </dt>
       <dd>
-        <span class="btn">
+        <span :class="type=='1'?'btn':'btn1'">
           {{btnText||'领取'}}
         </span>
       </dd>
@@ -27,7 +27,7 @@
 
 <script>
 export default {
-	props: ['title', 'desc', 'price', 'time', 'btnText'],
+	props: ['title', 'desc', 'price', 'time', 'btnText','type'],
 	methods: {
 		click() {
 			// 单击
@@ -35,7 +35,8 @@ export default {
 				title: this.title,
 				desc: this.desc,
 				price: this.price,
-				time: this.time,
+        time: this.time,
+        type:this.type
 			})
 		}
 	}
@@ -53,6 +54,12 @@ export default {
         padding: 3vw 0 3vw 3vw;
         color: #fff;
         background: #fff url("./../assets/coupons/bg@3x.png") no-repeat center bottom/cover;
+        line-height: 23px;
+    }
+    .bg1 {
+        padding: 3vw 0 3vw 3vw;
+        color: #fff;
+        background: #fff url("./../assets/coupons/gray.png") no-repeat center bottom/cover;
         line-height: 23px;
     }
 
@@ -96,9 +103,11 @@ export default {
             height: 50px;
             background: url("./../assets/coupons/border@3x.png") repeat-y left center/16px;
         }
-
         .btn {
             color: rgba(232, 63, 68, 1);
+        }
+        .btn1 {
+            color: #999;
         }
     }
 }
