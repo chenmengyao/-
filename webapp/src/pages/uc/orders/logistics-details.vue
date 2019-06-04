@@ -2,9 +2,9 @@
     <div class="suwis-logistics-details">
         <div class="map-box"></div>
         <SimpleGood
-            :name="goodInfo.goods_name"
-            :desc="goodInfo.desc"
-            :store-logo="goodInfo.goods_img"
+            :name="goodInfo.title"
+            :desc="[goodInfo.header_one, goodInfo.header_two, goodInfo.header_three]"
+            :store-logo="goodInfo.img"
         ></SimpleGood>
         <div class="logistics-box">
             <div class="order-info">
@@ -13,12 +13,11 @@
                     物流动态
                 </div>
                 <ul class="logistics-info">
-                    <li class="logistics-item">订单编号：20190122123456789</li>
-                    <li class="logistics-item">物流单号：20190122123456789</li>
+                    <li class="logistics-item">订单编号：{{logisticsInfo.EBusinessID}}</li>
+                    <li class="logistics-item">物流单号：{{logisticsInfo.LogisticCode}}</li>
                 </ul>
             </div>
-        </div>
-        <van-steps direction="vertical" :active="0">
+            <van-steps direction="vertical" :active="0">
             <van-icon slot="inactive-icon" name="success"/>
             <van-step>
                 <div class="step-box">
@@ -38,6 +37,7 @@
                 <div class="detail">2016-07-12 12:40</div>
             </van-step>
         </van-steps>
+        </div>
     </div>
 </template>
 
@@ -49,12 +49,18 @@
         components: {
             SimpleGood
         },
+        computed: {
+            traces() {
+                const result = this.logisticsInfo.Traces || []
+                return result.revers()
+            }
+        },
         data() {
             return {
                 goodInfo: {},
                 logisticsInfo: [],
                 order_id: ''
-        }
+            }
         },
         created() {
             this.order_id = this.$route.query.id
@@ -65,7 +71,8 @@
                 .then(({data}) => {
                     if (data.code === 1) {
                         if (data.data) {
-                            this.logisticsInfo = data.data
+                            this.goodInfo = data.data.goods
+                            this.logisticsInfo = data.data.logistics
                         }
                     } else {
                         this.$toast(data.msg);
@@ -109,6 +116,7 @@
 
 <style lang="scss" scoped>
     .suwis-logistics-details {
+        position: relative;
         min-height: 100vh;
         background-color: rgb(245, 245, 245);
         color: #333;
@@ -118,8 +126,15 @@
             background: #fff;
         }
         .logistics-box {
+            position: absolute;
+            top: 190px;
+            bottom: 18px;
+            box-sizing: border-box;
+            width: calc(100% - 30px); // 减去margin的宽度
+            margin: 0 15px;
             padding: 16px 12px;
             background: #fff;
+            border-radius: 4px;
             .title {
                 display: flex;
                 align-items: center;

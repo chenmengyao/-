@@ -2,10 +2,12 @@
     <div class="suwis-order-detail">
         <!-- 商品卡片 -->
         <OrderCard
-            :order-data="orderData"
+            v-for="order in orderlist"
+            :key="order[0].id"
+            :order-data="order"
             :show-price="false">
             <GoodsItem 
-                :goods-list="goodsList" 
+                :goods-list="order" 
                 @click="onClickGoods"></GoodsItem>
         </OrderCard>
         <!-- 商品卡片 //-->
@@ -42,7 +44,7 @@
 
             <div class="card-row thick-row">
                 <span class="row-key">实际付款</span>
-                <span class="row-value text-right color-red">￥ 192</span>
+                <span class="row-value text-right color-red">￥ {{startSum}}</span>
             </div>
         </div>
         <!-- 价格卡片 //-->
@@ -52,11 +54,11 @@
             <h5 class="card-title">订单信息</h5>
             <div class="card-row">
                 <span class="row-key">订单编号</span>
-                <span class="row-value">20190122123456789</span>
+                <span class="row-value">{{shopData.number}}</span>
             </div>
             <div class="card-row">
                 <span class="row-key">交易编号</span>
-                <span class="row-value">{{shopData.number}}</span>
+                <span class="row-value">{{shopData.number + shopData.id}}</span>
             </div>
             <div class="card-row">
                 <span class="row-key">获得积分</span>
@@ -152,14 +154,34 @@
                     return orderData.num * orderData.goods_price
                 }
             },
+            // 订单总价
             orderSum() {
-                return this.goodsSum + Number(this.shopData.carriage)
+                const { orderData } = this
+                if (Array.isArray(orderData)) {
+                    return this.orderData.reduce((result, goods) => result += +goods.old_price, 0)
+                } else {
+                    return orderData.old_price
+                }
+            },
+            // 实际付款
+            startSum() {
+                const { orderData } = this
+                if (Array.isArray(orderData)) {
+                    return this.orderData.reduce((result, goods) => result += +goods.start_sum, 0)
+                } else {
+                    return orderData.start_sum
+                }
             }
         },
         data() {
             return {
+                tempList: [
+                    [
+                        
+                    ]
+                ],
                 currentOrderId: '',
-                goodsList: [],
+                orderlist: [],
                 orderData: {},  // 订单信息
                 payTypeShow: false,
                 password: '',
@@ -311,6 +333,22 @@
                             }
                         })
                 })
+            },
+            // 针对订单数据做处理返回新的数组,按店铺id进行分组
+            handleOrderData(orderList = []) {
+                return orderList.reduce((result, order) => {
+                    if (Array.isArray(order)) {
+                        const temp = {}
+                        order.forEach(goods => {
+                            // 根据店铺id对商品进行分组
+                            temp[goods.store_id] ? temp[goods.store_id].push(goods) : temp[goods.store_id] = [goods]
+                        })
+                        Object.values(temp).forEach(value => result.push(value))
+                    } else {
+                        result.push([order])
+                    }
+                    return result
+                }, [])
             }
         },
         created() {
@@ -324,7 +362,7 @@
                         if (data.data) {
                             this.orderData = data.data
                             this.shopData = Array.isArray(data.data) ? data.data[0] : data.data
-                            this.goodsList = Array.isArray(data.data) ? data.data : [data.data]
+                            this.orderlist = this.handleOrderData(data.data)
                         }
                     } else {
                         this.$toast(data.msg);
