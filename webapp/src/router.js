@@ -6,7 +6,7 @@ Vue.use(Router)
 export const routes = [
 {
     path: '/',
-    name: '潮玩城',
+    name: '惠回来',
     component: () => import('./pages/index.vue'),
     meta: {
         keepAlive: true
