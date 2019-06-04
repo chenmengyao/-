@@ -9,14 +9,14 @@
                 @load="getList">
             <template v-if="list && list.length">
                 <OrderCard
-                        v-for="shop in list"
-                        :key="shop.id"
-                        :shop-data="shop">
-                    <GoodsItem :goods-list="[shop]" @click="onClickGoods"></GoodsItem>
+                        v-for="order in list"
+                        :key="order.id"
+                        :order-data="order">
+                    <GoodsItem :goods-list="[order]" @click="onClickGoods"></GoodsItem>
                     <template #footer>
                         <ButtonLine
-                                :button-list="shop.sta | buttonList"
-                                :order-id="shop.id"
+                                :button-list="order.sta | buttonList"
+                                :order-id="order.id"
                                 @on-click="onButtonClick"></ButtonLine>
                     </template>
                 </OrderCard>

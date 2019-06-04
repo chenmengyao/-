@@ -3,6 +3,7 @@
         <main class="content">
             <SimpleGood
                 :name="detail.goods_name"
+                :desc="[detail.header_one, detail.header_two, detail.header_three]"
                 :store-logo="detail.store_logo"
             ></SimpleGood>
             <ul class="comment-list">

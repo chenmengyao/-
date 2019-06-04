@@ -11,14 +11,14 @@
                     @load="getList('add')">
                     <template v-if="list && list.length">
                         <OrderCard
-                            v-for="shop in list"
-                            :key="Array.isArray(shop) ? shop[0].id : shop.id"
-                            :shop-data="Array.isArray(shop) ? shop[0] : shop">
-                            <GoodsItem :goods-list="Array.isArray(shop) ? shop : [shop]" @click="onClickGoods"></GoodsItem>
+                            v-for="order in list"
+                            :key="order[0].id"
+                            :order-data="order">
+                            <GoodsItem :goods-list="order" @click="onClickGoods"></GoodsItem>
                             <template #footer>
                                 <ButtonLine
-                                    :button-list="(Array.isArray(shop) ? shop[0].sta : shop.sta) | buttonList"
-                                    :order-id="Array.isArray(shop) ? shop[0].id : shop.id"
+                                    :button-list="order[0].sta | buttonList"
+                                    :order-id="order[0].id"
                                     @on-click="onButtonClick"></ButtonLine>
                             </template>
                         </OrderCard>
@@ -72,7 +72,9 @@
                 error: false,
                 finished: false,
                 loading: false,
-                list: [],
+                list: [
+                    
+                ],
                 num: 20,            // 每页的数量
                 page: 1,            // 页码
                 sta: undefined,     // 不传sta为全部订单 0 待付款 1 待发货 2 待收货 3 退款/售后 4 待评价 5 已完成 6 已关闭
@@ -128,7 +130,9 @@
                     .then(({ data }) => {
                         if (data.code === 1) {
                             if (data.data && data.data.order) {
-                                this.list = this.list.concat(data.data.order)
+                                const orderData = this.handleOrderData(data.data.order)
+                                console.log({orderData})
+                                this.list = this.list.concat(orderData)
                                 if (page * num > data.data.total) this.finished = true
                             }
                         } else {
@@ -141,6 +145,22 @@
                     .catch(() => {
                         this.error = true
                     })
+            },
+            // 针对订单数据做处理返回新的数组,按店铺id进行分组
+            handleOrderData(orderList = []) {
+                return orderList.reduce((result, order) => {
+                    if (Array.isArray(order)) {
+                        const temp = {}
+                        order.forEach(goods => {
+                            // 根据店铺id对商品进行分组
+                            temp[goods.store_id] ? temp[goods.store_id].push(goods) : temp[goods.store_id] = [goods]
+                        })
+                        Object.values(temp).forEach(value => result.push(value))
+                    } else {
+                        result.push([order])
+                    }
+                    return result
+                }, [])
             },
             onClickGoods(goods) {
                 this.$router.push({
@@ -214,7 +234,7 @@
             cancelOrder(orderId) {
                 this.$dialog.confirm({
                     title: '取消订单',
-                    message: '该订单还未付款，您确定要取消吗？？'
+                    message: '该订单还未付款，您确定要取消吗？'
                 }).then(() => {
                     this.$axios
                         .post('/order/cancel', {
@@ -276,6 +296,7 @@
             },
             deleteOrder(orderId) {
                 this.$dialog.confirm({
+                    title: '删除订单',
                     message: '您确定要删除该订单吗？'
                 }).then(() => {
                     this.$axios

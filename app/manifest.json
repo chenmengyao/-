@@ -3,7 +3,7 @@
     /*应用的标识，创建应用时自动生成，勿手动修改*/
     "id" : "H5C15CCD6",
     /*应用名称，程序桌面图标名称*/
-    "name" : "潮玩城",
+    "name" : "惠回来",
     "version" : {
         /*应用版本名称*/
         "name" : "1.0.1",
@@ -15,7 +15,7 @@
         "72" : "icon.png"
     },
     /*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
-    "launch_path" : "http://192.168.0.103:8080",
+    "launch_path" : "index.html",
     "developer" : {
         /*开发者名称*/
         "name" : "Iovrzk",
@@ -110,7 +110,8 @@
         },
         "Push" : {},
         "Share" : {},
-        "Statistic" : {}
+        "Statistic" : {},
+        "Payment" : {}
     },
     "plus" : {
         "launchwebview" : {
@@ -264,7 +265,7 @@
             ],
             "titleNView" : {
                 "backgroundcolor" : "rgba(221,11,17,1)",
-                "titletext" : "潮玩城",
+                "titletext" : "惠回来",
                 "titlecolor" : "#fff",
                 "buttons" : []
             },

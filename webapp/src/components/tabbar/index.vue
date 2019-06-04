@@ -26,7 +26,7 @@ export default {
 				name: '我的',
 				icon: '&#xe65d;',
 				path: '/uc',
-				id: 'uc'
+				id: 'my'
 			}],
 			options: {
 				ACTIVE_COLOR: 'rgba(221,11,17,1)',

@@ -2,9 +2,13 @@
     <div class="suwis-order-detail">
         <!-- 商品卡片 -->
         <OrderCard
-            :shop-data="shopData"
+            v-for="order in orderlist"
+            :key="order[0].id"
+            :order-data="order"
             :show-price="false">
-            <GoodsItem :goods-list="goodsList" @click="onClickGoods"></GoodsItem>
+            <GoodsItem 
+                :goods-list="order" 
+                @click="onClickGoods"></GoodsItem>
         </OrderCard>
         <!-- 商品卡片 //-->
 
@@ -25,22 +29,22 @@
         <div class="card card-price">
             <div class="card-row row-light-grey">
                 <span class="row-key">商品总价</span>
-                <span class="row-value text-right">￥ 192</span>
+                <span class="row-value text-right">￥ {{goodsSum}}</span>
             </div>
 
             <div class="card-row row-light-grey">
                 <span class="row-key">运费</span>
-                <span class="row-value text-right">￥ 192</span>
+                <span class="row-value text-right">￥ {{shopData.carriage}}</span>
             </div>
 
             <div class="card-row thick-row">
                 <span class="row-key">订单总价</span>
-                <span class="row-value text-right">￥ 192</span>
+                <span class="row-value text-right">￥ {{orderSum}}</span>
             </div>
 
             <div class="card-row thick-row">
                 <span class="row-key">实际付款</span>
-                <span class="row-value text-right color-red">￥ 192</span>
+                <span class="row-value text-right color-red">￥ {{startSum}}</span>
             </div>
         </div>
         <!-- 价格卡片 //-->
@@ -49,12 +53,12 @@
         <div class="card card-order">
             <h5 class="card-title">订单信息</h5>
             <div class="card-row">
-                <span class="row-key">商品总价</span>
-                <span class="row-value">20190122123456789</span>
+                <span class="row-key">订单编号</span>
+                <span class="row-value">{{shopData.number}}</span>
             </div>
             <div class="card-row">
                 <span class="row-key">交易编号</span>
-                <span class="row-value">{{shopData.number}}</span>
+                <span class="row-value">{{shopData.number + shopData.id}}</span>
             </div>
             <div class="card-row">
                 <span class="row-key">获得积分</span>
@@ -62,19 +66,19 @@
             </div>
             <div class="card-row">
                 <span class="row-key">下单时间</span>
-                <span class="row-value">2019-03-05 12:09</span>
+                <span class="row-value">{{shopData.time | dateFmt}}</span>
             </div>
             <div class="card-row" v-if="shopData.sta > 0">
                 <span class="row-key">付款时间</span>
-                <span class="row-value">2019-03-05 12:09</span>
+                <span class="row-value">{{shopData.pay_time | dateFmt}}</span>
             </div>
             <div class="card-row" v-if="shopData.sta > 1">
                 <span class="row-key">发货时间</span>
-                <span class="row-value">2019-03-05 12:09</span>
+                <span class="row-value">{{shopData.shipments_time | dateFmt}}</span>
             </div>
             <div class="card-row" v-if="shopData.sta > 4">
                 <span class="row-key">成交时间</span>
-                <span class="row-value">2019-03-05 12:09</span>
+                <span class="row-value">{{shopData.success_time | dateFmt}}</span>
             </div>
             <div class="card-row row-button">
                 <div class="button-item">
@@ -97,12 +101,36 @@
                 @on-click="onButtonClick"></ButtonLine>
         </div>
         <!-- 按钮卡片 //-->
+
+        <!-- 支付类型弹框 -->
+        <PayType :show="payTypeShow" @close="payTypeShow = false"></PayType>
+        <!-- 支付类型弹框 //-->
+
+        <!-- 输入支付密码弹框 -->
+        <van-actionsheet
+            title="请输入支付密码"
+            v-model="passwordModalShow"
+            :close-on-click-overlay="false"
+            @cancel="closePasswordModal">
+            <van-password-input :value="password"/>
+            <div class="link-line">
+                <router-link to="/resetpaypwd" class="forget-password">忘记支付密码？</router-link>
+            </div>
+            <van-number-keyboard
+                :show="true"
+                @input="onPasswordInput"
+                @delete="onPasswordDelete"
+            />
+        </van-actionsheet>
+        <!-- 输入支付密码弹框 //-->
+
     </div>
 </template>
 
 <script>
     import OrderCard from '@/components/uc/orders/order-card'
     import GoodsItem from '@/components/uc/orders/goods-item'
+    import PayType from '@/components/uc/orders/pay-type'
     import ButtonLine from '@/components/uc/orders/button-line'
     import ButtonMap from '@/constants/order/button-map'
 
@@ -110,18 +138,61 @@
         components: {
             OrderCard,
             ButtonLine,
-            GoodsItem
+            GoodsItem,
+            PayType
         },
         filters: {
             buttonList: v => ButtonMap.filter(item => item.sta.includes(v))
         },
+        computed: {
+            // 商品总价
+            goodsSum() {
+                const { orderData } = this
+                if (Array.isArray(orderData)) {
+                    return this.orderData.reduce((result, goods) => result + goods.num * goods.goods_price, 0)
+                } else {
+                    return orderData.num * orderData.goods_price
+                }
+            },
+            // 订单总价
+            orderSum() {
+                const { orderData } = this
+                if (Array.isArray(orderData)) {
+                    return this.orderData.reduce((result, goods) => result += +goods.old_price, 0)
+                } else {
+                    return orderData.old_price
+                }
+            },
+            // 实际付款
+            startSum() {
+                const { orderData } = this
+                if (Array.isArray(orderData)) {
+                    return this.orderData.reduce((result, goods) => result += +goods.start_sum, 0)
+                } else {
+                    return orderData.start_sum
+                }
+            }
+        },
         data() {
             return {
-                goodsList: [],
-                shopData: {}
+                tempList: [
+                    [
+                        
+                    ]
+                ],
+                currentOrderId: '',
+                orderlist: [],
+                orderData: {},  // 订单信息
+                payTypeShow: false,
+                password: '',
+                passwordModalShow: false,
+                shopData: {}    // 店铺信息
             }
         },
         methods: {
+            closePasswordModal() {
+                this.password = ''
+            },
             onButtonClick(key, orderId) {
                 switch (key) {
                     case 'cancel':
@@ -157,9 +228,34 @@
                     query: {id: goods.id}
                 })
             },
+            onPasswordInput(key) {
+                this.password = this.password + key
+                if (this.password.length === 6) {
+                    this.$axios
+                        .post('/order/receiving', {
+                            order_id: this.currentOrderId,
+                            paypass: md5(this.password)
+                        })
+                        .then(({ data }) => {
+                            if (data.code === 1) {
+                                this.$toast('确认收货成功');
+                                this.password = ''
+                                this.currentOrderId = ''
+                                this.passwordModalShow = false
+                            } else {
+                                this.password = ''
+                                this.$toast(data.msg);
+                            }
+                        })
+                }
+            },
+            onPasswordDelete() {
+                this.password = this.password.slice(0, this.password.length - 1);
+            },
             cancelOrder(orderId) {
                 this.$dialog.confirm({
-                    message: '确认取消此订单吗？'
+                    title: '取消订单',
+                    message: '该订单还未付款，您确定要取消吗？'
                 }).then(() => {
                     this.$axios
                         .post('/order/cancel', {
@@ -167,9 +263,7 @@
                         })
                         .then(({ data }) => {
                             if (data.code === 1) {
-                                this.page = 1
                                 this.$toast('取消订单成功');
-                                this.getList()
                             } else {
                                 this.$toast(data.msg);
                             }
@@ -186,6 +280,9 @@
                         id: orderId
                     }
                 })
+            },
+            payOrder(orderId) {
+                this.payTypeShow = true
             },
             refundOrder(orderId) {
                 this.$router.push({
@@ -207,23 +304,8 @@
 
             // 确认收货收货
             confirmReceive(orderId) {
-                this.$dialog.confirm({
-                    message: '确认收到此商品吗？'
-                }).then(() => {
-                    this.$axios
-                        .post('/order/receiving', {
-                            order_id: orderId
-                        })
-                        .then(({ data }) => {
-                            if (data.code === 1) {
-                                this.page = 1
-                                this.$toast('确认收货成功');
-                                this.getList()
-                            } else {
-                                this.$toast(data.msg);
-                            }
-                        })
-                })
+                this.passwordModalShow = true
+                this.currentOrderId = orderId
             },
             evaluateOrder(orderId) {
                 this.$router.push({
@@ -235,6 +317,7 @@
             },
             deleteOrder(orderId) {
                 this.$dialog.confirm({
+                    title: '删除订单',
                     message: '您确定要删除该订单吗？'
                 }).then(() => {
                     this.$axios
@@ -244,12 +327,28 @@
                         .then(({ data }) => {
                             if (data.code === 1) {
                                 this.$toast('删除订单成功');
-                                this.getList()
+                                this.$router.push('/uc/orders')
                             } else {
                                 this.$toast(data.msg);
                             }
                         })
                 })
+            },
+            // 针对订单数据做处理返回新的数组,按店铺id进行分组
+            handleOrderData(orderList = []) {
+                return orderList.reduce((result, order) => {
+                    if (Array.isArray(order)) {
+                        const temp = {}
+                        order.forEach(goods => {
+                            // 根据店铺id对商品进行分组
+                            temp[goods.store_id] ? temp[goods.store_id].push(goods) : temp[goods.store_id] = [goods]
+                        })
+                        Object.values(temp).forEach(value => result.push(value))
+                    } else {
+                        result.push([order])
+                    }
+                    return result
+                }, [])
             }
         },
         created() {
@@ -261,8 +360,9 @@
                 .then(({ data }) => {
                     if (data.code === 1) {
                         if (data.data) {
+                            this.orderData = data.data
                             this.shopData = Array.isArray(data.data) ? data.data[0] : data.data
-                            this.goodsList = Array.isArray(data.data) ? data.data : [data.data]
+                            this.orderlist = this.handleOrderData(data.data)
                         }
                     } else {
                         this.$toast(data.msg);
@@ -349,6 +449,8 @@
                 &.row-button {
                     justify-content: space-around;
                     margin-top: 16px;
+                    padding-top: 10px;
+                    border-top: 1px solid #f5f5f5;
                 }
                 .button-item {
                     display: flex;

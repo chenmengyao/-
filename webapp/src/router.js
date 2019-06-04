@@ -6,7 +6,7 @@ Vue.use(Router)
 export const routes = [
 {
     path: '/',
-    name: '潮玩城',
+    name: '惠回来',
     component: () => import('./pages/index.vue'),
     meta: {
         keepAlive: true
@@ -101,6 +101,10 @@ export const routes = [
     path: '/uc/setting/address',
     name: '设置-我的收货地址',
     component: () => import('./pages/uc/setting/address.vue')
+}, {
+    path: '/uc/setting/card',
+    name: '设置-团长名片',
+    component: () => import('./pages/uc/setting/card.vue')
 }, {
     path: '/uc/setting/handleAddress',
     name: '设置-新增/编辑地址',

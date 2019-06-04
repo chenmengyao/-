@@ -3,7 +3,7 @@
         <main class="content">
             <SimpleGood
                 :name="goodInfo.goods_name"
-                :desc="goodInfo.desc"
+                :desc="[goodInfo.header_one, goodInfo.header_two, goodInfo.header_three]"
                 :store-logo="goodInfo.goods_img"
             ></SimpleGood>
             <ul class="list">

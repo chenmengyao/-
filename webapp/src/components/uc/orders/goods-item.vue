@@ -64,10 +64,14 @@
                 text-overflow: ellipsis;
             }
             .desc-line {
+                display: flex;
                 margin-bottom: 8px;
                 color: #999;
                 font-size: 10px;
                 line-height: 14px;
+                .desc-item {
+                    margin-left: 8px;
+                }
             }
         }
         .right {
