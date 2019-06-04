@@ -280,6 +280,8 @@ export default {
 	},
 	mounted() {
 		window.addEventListener('scroll', this.checkScroll, this)
+		// 隐藏底部导航条
+		this.$store.commit('core/hideTabbar')
 	},
 	beforeDestroy() {
 		window.removeEventListener('scroll', this.checkScroll, this)
