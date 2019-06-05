@@ -171,10 +171,10 @@ export default {
 }
 .suwis-coupons-con{
   display: flex;
-  padding: 15px 15px 5px 15px;
+  padding: 0 15px 5px 15px;
 }
 .suwis-coupons-con:nth-child(1){
-  padding-top: 20px;
+  /* padding-top: 20px; */
 }
 .suwis-coupons-con>div{
   flex:1;

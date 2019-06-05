@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div id="flash">
         <!-- <van-tabs background="#FAA537" title-inactive-color="red" :line-height="0" title-active-color="#fff" v-model="active" swipeable> -->
     <!-- <div style="background-image: linear-gradient(to right , #F35A5A, #DD0B11);">-->
         <!-- <van-tabs background="none" line-height="0" animated title-inactive-color="red" title-active-color="#fff" v-model="active" swipeable>  -->
@@ -14,15 +14,16 @@
             </div>
             <div>
                <div>
-                  <div style="display:flex;padding:15px 10px;padding-top:0;margin-top:15px;">
-                        <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
+                      <div class="suwis-news-ban" style="height:27vw;overflow:hidden">
+                        <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;text-align:center">
                           <van-swipe-item v-for="item in banner">
-                            <img :src="item.img" style="width:100%;border-radius:4px;">
+                            <div  v-lazy-container="{ selector: 'img' }">
+                              <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%"> 
+                            </div>
                           </van-swipe-item>
                         </van-swipe>
-                    
+                      </div>
                   </div>
-               </div>
                <div>
                   <!-- <div class="d-more" v-if="flashList[0].goods.length==0">暂无数据</div> -->
                    <van-list
@@ -82,14 +83,15 @@
             </div>
             <div>
                <div>
-                  <div style="display:flex;padding:15px 10px;padding-top:0">
-                        <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
-                           <van-swipe-item v-for="item in banner">
-                            <img :src="item.img" style="width:100%;border-radius:4px;">
+                   <div class="suwis-news-ban" style="height:27vw;overflow:hidden">
+                        <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;text-align:center">
+                          <van-swipe-item v-for="item in banner">
+                            <div  v-lazy-container="{ selector: 'img' }">
+                              <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%"> 
+                            </div>
                           </van-swipe-item>
                         </van-swipe>
-                    
-                  </div>
+                      </div>
                </div>
             </div>
              <div>
@@ -137,19 +139,20 @@
             <div slot="title">
                <div slot="title">
                 <div class="suwis-tab-title" @click="getNumber('2')">20:00</div>
-                <div class="suwis-tab-title1">抢购中</div>
+                <div class="suwis-tab-title1">等待中</div>
               </div>
             </div>
               <div>
                <div>
-                  <div style="display:flex;padding:15px 10px;padding-top:0">
-                        <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
-                           <van-swipe-item v-for="item in banner">
-                            <img :src="item.img" style="width:100%;border-radius:4px;">
+                   <div class="suwis-news-ban" style="height:27vw;overflow:hidden">
+                        <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;text-align:center">
+                          <van-swipe-item v-for="item in banner">
+                            <div  v-lazy-container="{ selector: 'img' }">
+                              <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%"> 
+                            </div>
                           </van-swipe-item>
                         </van-swipe>
-                    
-                  </div>
+                      </div>
                </div>
             </div>
              <div>
@@ -197,19 +200,20 @@
             <div slot="title">
                <div slot="title">
                 <div class="suwis-tab-title" @click="getNumber('3')">18:00</div>
-                <div class="suwis-tab-title1">抢购中</div>
+                <div class="suwis-tab-title1">等待中</div>
               </div>
             </div>
               <div>
                <div>
-                  <div style="display:flex;padding:15px 10px;padding-top:0">
-                        <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
-                           <van-swipe-item v-for="item in banner">
-                            <img :src="item.img" style="width:100%;border-radius:4px;">
+                   <div class="suwis-news-ban" style="height:27vw;overflow:hidden">
+                        <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;text-align:center">
+                          <van-swipe-item v-for="item in banner">
+                            <div  v-lazy-container="{ selector: 'img' }">
+                              <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%"> 
+                            </div>
                           </van-swipe-item>
                         </van-swipe>
-                    
-                  </div>
+                      </div>
                </div>
             </div>
              <div>
@@ -256,19 +260,20 @@
             <div slot="title">
                <div slot="title">
                 <div class="suwis-tab-title" @click="getNumber('4')">22:00</div>
-                <div class="suwis-tab-title1">抢购中</div>
+                <div class="suwis-tab-title1">等待中</div>
               </div>
             </div>
               <div>
                <div>
-                  <div style="display:flex;padding:15px 10px;padding-top:0">
-                        <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;height:100%">
-                           <van-swipe-item v-for="item in banner">
-                            <img :src="item.img" style="width:100%;border-radius:4px;">
+                   <div class="suwis-news-ban" style="height:27vw;overflow:hidden">
+                        <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;text-align:center">
+                          <van-swipe-item v-for="item in banner">
+                            <div  v-lazy-container="{ selector: 'img' }">
+                              <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%"> 
+                            </div>
                           </van-swipe-item>
                         </van-swipe>
-                    
-                  </div>
+                      </div>
                </div>
             </div>
              <div>
@@ -387,6 +392,16 @@ export default {
   }
 }
 </script>
+<style lang="css">
+#flash .van-hairline--top-bottom::after{
+  border:0;
+}
+#flash .van-tab{
+  line-height: 20px;
+  flex-basis:20% !important;
+  -webkit-flex-basis: 20% !important;
+}
+</style>
 
 <style lang="css" scoped>
 .van-hairline--top-bottom::after{
@@ -460,6 +475,13 @@ export default {
   flex: 1;
   padding-left: 15px;
 }
+.suwis-news-ban{
+  margin:15px;
+  margin-top: 0px;
+  border-radius: 4px;
+  -webkit-border-radius:4px;
+  overflow: hidden;
+}
 .d-yuan-price{
   text-decoration: line-through;
   border-right: 1px solid #E6E6E6;
@@ -483,11 +505,6 @@ export default {
 }
 .d-more{
   text-align: center
-}
-.van-tab{
-  line-height: 20px;
-  flex-basis:20% !important;
-  -webkit-flex-basis: 20% !important;
 }
 .van-hairline--top-bottom::after{
   border-width:none !important;
