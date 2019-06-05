@@ -58,12 +58,15 @@ router.beforeEach((to, from, next) => {
     })
   } catch (e) {}
   let hideTabbar = true
+  console.log('-------------')
   for (let url of config.noTabbarUrls) {
+    console.log(to.path , url)
     if (to.path == url) {
       hideTabbar = false
       break
     }
   }
+  console.log(hideTabbar)
   store.commit('core/toggleTabbar', hideTabbar)
   next()
 })
