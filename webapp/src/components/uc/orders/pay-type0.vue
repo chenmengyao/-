@@ -53,7 +53,7 @@ export default {
         //     imgUrl: require('../../../assets/orders/union-pay@2x.png')
         // },
         {
-          key: 'scorePay',
+          key: 'balancepay',
           name: '佣金余额支付',
           imgUrl: require('../../../assets/orders/score-pay@2x.png')
         },

@@ -1,6 +1,8 @@
 <template>
-<van-actionsheet v-model="popupShow"
+<van-actionsheet 
+	v-model="popupShow"
   title="确认付款"
+	class="suwis-pay-type"
   :close-on-click-overlay="false"
   @cancel="cancel">
 	<van-cell-group>
@@ -10,9 +12,11 @@
 			  :name="pay.id"
 			  :key="pay.id">
 				<div class="check-line">
-					<img :src="pay.icon"
-					  class="pay-image">
-					{{pay.description}}支付
+					<span class="option">
+						<img :src="pay.icon" class="pay-image">
+						{{pay.description}}支付
+					</span>
+					<span class="balance-sum">可用佣金{{balanceSum}}</span>
 				</div>
 			</van-radio>
 		</van-radio-group>
@@ -27,6 +31,10 @@
 var w = null
 export default {
 	props: {
+		balanceSum: {
+			type: Number,
+			default: 0
+		},
 		show: {
 			type: Boolean,
 			default: false
@@ -44,7 +52,7 @@ export default {
 			popupShow: false,
 			typeList: [
 				{
-					id: 'scorePay',
+					id: 'balancepay',
 					description: '佣金余额',
 					icon: require('../../../assets/orders/score-pay@2x.png')
 				},
@@ -81,11 +89,12 @@ export default {
 	},
 	methods: {
 		cancel() {
+			this.payType = ''
 			this.$emit('close')
 		},
 		async pay() {
 			const id = this.payType
-			if (id === 'scorePay') {
+			if (id === 'balancepay') {
 				this.$emit('pay', id)
 				return
 			}
@@ -154,6 +163,21 @@ export default {
 }
 </script>
 
+<style lang="scss">
+	.suwis-pay-type {
+		.van-radio-group {
+				padding: 0 15px;
+				.van-radio {
+					display: flex;
+					align-items: center;
+				}
+				.van-radio__label {
+					flex: 1;
+				}
+		}
+	}
+</style>
+
 <style scoped lang="scss">
 .check-line {
     display: flex;
@@ -165,6 +189,14 @@ export default {
         height: 24px;
         margin-right: 10px;
     }
+		.balance-sum {
+			color: #f0914b;
+			font-size: 12px
+		}
+		.option {
+			display: flex;
+			align-items: center;
+		}
 }
 
 .button-line {
@@ -183,7 +215,5 @@ export default {
 		}
 }
 
-.van-radio-group {
-    padding: 0 15px;
-}
+
 </style>

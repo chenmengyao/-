@@ -19,6 +19,7 @@
                                 <ButtonLine
                                     :button-list="order[0].sta | buttonList"
                                     :order-id="order[0].id"
+                                    :order-numer="+order[0].number"
                                     @on-click="onButtonClick"></ButtonLine>
                             </template>
                         </OrderCard>
@@ -26,7 +27,11 @@
                 </van-list>
             </van-tab>
         </van-tabs>
-        <PayType :show="payTypeShow" @close="payTypeShow = false" @select="selectPayType"></PayType>
+        <PayType 
+            :show="payTypeShow" 
+            :balance-sum="balance_sum"
+            @close="payTypeShow = false" 
+            @pay="confirmPay"></PayType>
         <van-actionsheet
             title="请输入支付密码"
             v-model="passwordModalShow"
@@ -51,6 +56,7 @@
     import ButtonLine from '@/components/uc/orders/button-line'
     import PayType from '@/components/uc/orders/pay-type'
     import ButtonMap from '@/constants/order/button-map'
+    import payTypeMap from '@/constants/order/payType'
 
     import md5 from'md5'
 
@@ -68,19 +74,20 @@
         data() {
             return {
                 activeTabIndex: 0,
+                balance_sum: 0, // 可用佣金
                 currentOrderId: '',
+                currentOrderNumber: '',
                 error: false,
                 finished: false,
                 loading: false,
-                list: [
-                    
-                ],
+                list: [],
                 num: 20,            // 每页的数量
                 page: 1,            // 页码
                 sta: undefined,     // 不传sta为全部订单 0 待付款 1 待发货 2 待收货 3 退款/售后 4 待评价 5 已完成 6 已关闭
                 payTypeShow: false,
                 password: '',               // 支付密码
                 passwordModalShow: false,   // 输入弹框显示
+                passwordModalType: 'receive',    // 密码弹框类型
                 tabList: [
                     {
                         key: 'all',
@@ -114,6 +121,24 @@
             closePasswordModal() {
                 this.password = ''
             },
+            confirmPay(key) {
+                this.passwordModalShow = true
+                this.currentPayType = payTypeMap.find(type => type.key === key)
+            },
+            getBalance() {
+                // 查询可用佣金
+                this.$axios
+                .post('/mine/mycommission')
+                .then(({ data }) => {
+                    if (data.code === 1) {
+                    if (data.data) {
+                        this.balance_sum = data.data
+                    }
+                    } else {
+                    this.$toast(data.msg);
+                    }
+                })
+            },
             getList(type = 'reset') {
                 // 重置页码参数
                 if (type === 'reset') {
@@ -131,7 +156,6 @@
                         if (data.code === 1) {
                             if (data.data && data.data.order) {
                                 const orderData = this.handleOrderData(data.data.order)
-                                console.log({orderData})
                                 this.list = this.list.concat(orderData)
                                 if (page * num > data.data.total) this.finished = true
                             }
@@ -178,13 +202,13 @@
                     query: {id: goods.id}
                 })
             },
-            onButtonClick(key, orderId) {
+            onButtonClick(key, orderId, orderNumer) {
                 switch (key) {
                     case 'cancel':
                         this.cancelOrder(orderId)
                         break
                     case 'pay':
-                        this.payOrder(orderId)
+                        this.payOrder(orderNumer)
                         break
                     case 'logistics':
                         this.checkLogistics(orderId)
@@ -209,7 +233,8 @@
             onPasswordInput(key) {
                 this.password = this.password + key
                 if (this.password.length === 6) {
-                    this.$axios
+                    if (this.passwordModalType === 'receive') {
+                        this.$axios
                         .post('/order/receiving', {
                             order_id: this.currentOrderId,
                             paypass: md5(this.password)
@@ -226,6 +251,27 @@
                                 this.$toast(data.msg);
                             }
                         })
+                    } else if (this.passwordModalType === 'pay') {
+                        this.$axios
+                        .post('/pay/pay', {
+                            order: this.currentOrderNumber,
+                            pay_type: this.currentPayType.key,
+                            paypass: this.currentPayType.key === 'balancepay' ? md5(this.password) : undefined
+                        })
+                        .then(({ data }) => {
+                            if (data.code === 1) {
+                                this.password = ''
+                                this.currentOrderNumber = ''
+                                this.passwordModalShow = false
+                                this.payTypeShow = false
+                                this.$toast('支付成功');
+                                this.getList()
+                            } else {
+                                this.password = ''
+                                this.$toast(data.msg);
+                            }
+                        })
+                    }
                 }
             },
             onPasswordDelete() {
@@ -259,8 +305,11 @@
                     }
                 })
             },
-            payOrder(orderId) {
+            payOrder(orderNumer) {
+                this.getBalance()
                 this.payTypeShow = true
+                this.passwordModalType = 'pay'
+                this.currentOrderNumber = orderNumer
             },
             refundOrder(orderId) {
                 this.$router.push({
@@ -284,6 +333,7 @@
             },
             confirmReceive(orderId) {
                 this.passwordModalShow = true
+                this.passwordModalType = 'receive'
                 this.currentOrderId = orderId
             },
             evaluateOrder(orderId) {

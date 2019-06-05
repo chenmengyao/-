@@ -98,12 +98,17 @@
             <ButtonLine
                 :button-list="shopData.sta | buttonList"
                 :order-id="shopData.id"
+                :order-numer="+shopData.number"
                 @on-click="onButtonClick"></ButtonLine>
         </div>
         <!-- 按钮卡片 //-->
 
         <!-- 支付类型弹框 -->
-        <PayType :show="payTypeShow" @close="payTypeShow = false"></PayType>
+        <PayType 
+            :show="payTypeShow" 
+            :balance-sum="balance_sum"
+            @close="payTypeShow = false" 
+            @pay="confirmPay"></PayType>
         <!-- 支付类型弹框 //-->
 
         <!-- 输入支付密码弹框 -->
@@ -133,6 +138,9 @@
     import PayType from '@/components/uc/orders/pay-type'
     import ButtonLine from '@/components/uc/orders/button-line'
     import ButtonMap from '@/constants/order/button-map'
+    import payTypeMap from '@/constants/order/payType'
+
+    import md5 from 'md5'
 
     export default {
         components: {
@@ -180,12 +188,15 @@
                         
                     ]
                 ],
+                balance_sum: 0,
                 currentOrderId: '',
+                currentOrderNumber: '',
                 orderlist: [],
                 orderData: {},  // 订单信息
                 payTypeShow: false,
                 password: '',
-                passwordModalShow: false,
+                passwordModalShow: false,   // 输入弹框显示
+                passwordModalType: 'receive',    // 密码弹框类型
                 shopData: {}    // 店铺信息
             }
         },
@@ -193,13 +204,31 @@
             closePasswordModal() {
                 this.password = ''
             },
-            onButtonClick(key, orderId) {
+            confirmPay(key) {
+                this.passwordModalShow = true
+                this.currentPayType = payTypeMap.find(type => type.key === key)
+            },
+            getBalance() {
+                // 查询可用佣金
+                this.$axios
+                .post('/mine/mycommission')
+                .then(({ data }) => {
+                    if (data.code === 1) {
+                    if (data.data) {
+                        this.balance_sum = data.data
+                    }
+                    } else {
+                    this.$toast(data.msg);
+                    }
+                })
+            },
+            onButtonClick(key, orderId, orderNumer) {
                 switch (key) {
                     case 'cancel':
                         this.cancelOrder(orderId)
                         break
                     case 'pay':
-                        this.payOrder(orderId)
+                        this.payOrder(orderNumer)
                         break
                     case 'logistics':
                         this.checkLogistics(orderId)
@@ -231,7 +260,8 @@
             onPasswordInput(key) {
                 this.password = this.password + key
                 if (this.password.length === 6) {
-                    this.$axios
+                    if (this.passwordModalType === 'receive') {
+                        this.$axios
                         .post('/order/receiving', {
                             order_id: this.currentOrderId,
                             paypass: md5(this.password)
@@ -247,6 +277,23 @@
                                 this.$toast(data.msg);
                             }
                         })
+                    } else if (this.passwordModalType === 'pay') {
+                        this.$axios
+                        .post('/pay/pay', {
+                            order: this.currentOrderNumber,
+                            pay_type: this.currentPayType.key,
+                            paypass: this.currentPayType.key === 'balancepay' ? md5(this.password) : undefined
+                        })
+                        .then(({ data }) => {
+                            if (data.code === 1) {
+                                this.$toast('支付成功');
+                                this.$router.push('/uc/orders')
+                                } else {
+                                this.password = ''
+                                this.$toast(data.msg);
+                            }
+                        })
+                    }
                 }
             },
             onPasswordDelete() {
@@ -270,8 +317,11 @@
                         })
                 })
             },
-            payOrder(orderId) {
+            payOrder(orderNumer) {
+                this.getBalance()
                 this.payTypeShow = true
+                this.passwordModalType = 'pay'
+                this.currentOrderNumber = orderNumer
             },
             checkLogistics(orderId) {
                 this.$router.push({
@@ -280,9 +330,6 @@
                         id: orderId
                     }
                 })
-            },
-            payOrder(orderId) {
-                this.payTypeShow = true
             },
             refundOrder(orderId) {
                 this.$router.push({
@@ -305,6 +352,7 @@
             // 确认收货收货
             confirmReceive(orderId) {
                 this.passwordModalShow = true
+                this.passwordModalType = 'receive'
                 this.currentOrderId = orderId
             },
             evaluateOrder(orderId) {
@@ -472,6 +520,16 @@
             margin: 0 0 16px;
             font-size: 16px;
             font-weight: normal;
+        }
+        .van-password-input {
+            margin: 16px 20px;
+        }
+        .forget-password {
+            color: #f0914b;
+        }
+        .link-line {
+            margin: 0 20px 250px;
+            text-align: right;
         }
     }
 </style>

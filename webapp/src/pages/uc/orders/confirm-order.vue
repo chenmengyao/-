@@ -104,7 +104,7 @@
       <template slot="title">
         <van-checkbox v-model="useScore"
           @change="getData">
-          积分抵扣 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;">（可用积分：1234）</span>
+          积分抵扣 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;">（可用积分：{{score_balance}}）</span>
           <div v-show="score">使用{{score}}分</div>
         </van-checkbox>
       </template>
@@ -138,6 +138,7 @@
   <PayType :show="payTypeShow"
     @close="payTypeShow = false"
     @pay="confirmPay"
+    :balance-sum="balance_sum"
     :order-id="orderId"></PayType>
 
   <CouponList v-model="couponShow"
@@ -204,6 +205,7 @@ export default {
     return {
       address_id: '',
       address: {},
+      balance_sum: 0, // 可用佣金
       car_id: '',
       couponList: [],
       coupon: {}, // 优惠券id
@@ -216,7 +218,8 @@ export default {
       num: 0, // 直接购买时商品的数量
       password: '',               // 支付密码
       passwordModalShow: false,   // 输入弹框显示
-      score: 0,
+      score_balance: 0, // 可用积分总额
+      score: 0, // 使用的积分
       stand_id: '',
       shopList: [],
       total: 0,
@@ -231,6 +234,20 @@ export default {
   methods: {
     closePasswordModal() {
       this.password = ''
+    },
+    getBalance() {
+      // 查询可用佣金
+      this.$axios
+      .post('/mine/mycommission')
+      .then(({ data }) => {
+        if (data.code === 1) {
+          if (data.data) {
+            this.balance_sum = data.data
+          }
+        } else {
+          this.$toast(data.msg);
+        }
+      })
     },
     getData() {
       let url, params
@@ -306,8 +323,8 @@ export default {
         this.$axios
           .post('/pay/pay', {
             order: this.orderId,
-            pay_type: this.currentPayType.taypeKey,
-            paypass: this.currentPayType.key === 'scorePay' ? md5(this.password) : undefined
+            pay_type: this.currentPayType.key,
+            paypass: this.currentPayType.key === 'balancepay' ? md5(this.password) : undefined
           })
           .then(({ data }) => {
             if (data.code === 1) {
@@ -377,6 +394,25 @@ export default {
       this.orderFrom = 'car'
       this.car_id = this.$route.query.car_id
     }
+
+    // 查询可用积分
+    this.$axios
+      .post('/mine/myscore')
+      .then(({ data }) => {
+        if (data.code === 1) {
+          if (data.data) {
+            this.score_balance = data.data.score_balance
+          }
+        } else {
+          this.$toast(data.msg);
+        }
+      })
+    .catch(() => {
+      this.error = true
+    })
+
+    this.getBalance()
+
     this.score = this.$route.query.score
     this.address_id = this.$route.query.address_id
     this.getData()
