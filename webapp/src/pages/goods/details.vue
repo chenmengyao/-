@@ -35,7 +35,7 @@
       </van-col>
     </van-row>
     <van-cell class="interval" title="型号" is-link :value="current.selectedSkuComb.name" @click="showSku('hideSku')"/>
-    <van-cell class="interval" title="地址" is-link :value="details.store&&details.store.site" />
+    <van-cell class="interval" title="店铺地址" :value="details.store&&details.store.site" />
     <van-cell title="运费"  :value="details.postage==0?'免邮':details.postage+'元'" />
     <van-cell>
       <span slot="title"><img class="security" src="@/assets/details/security@3x.png" alt="">该商品支持7天无理由退款</span>
@@ -128,14 +128,16 @@
           <span class="van-sku__price-symbol">￥</span><span class="van-sku__price-num">{{ props.price }}</span>
         </div>
       </template>
+      <!--  -->
+      <div slot="sku-messages"></div>
       <!-- 自定义 sku actions -->
       <template slot="sku-actions" slot-scope="props">
-        <div class="van-sku-actions">
+        <div class="van-sku-actions" style="width:86vw;margin:auto;padding:3.9vw 0;">
           <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
           <van-button
             square
             size="large"
-            type="danger"
+            type="primary"
             @click="props.skuEventBus.$emit('sku:buy')"
           >
           确定
