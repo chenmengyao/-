@@ -124,8 +124,8 @@ export default {
   },
   methods:{
       onRefresh() {
-        if(sessionStorage.getItem("message")){
-            this.messageList=JSON.parse(sessionStorage.getItem("message"))
+        if(localStorage.getItem("message")){
+            this.messageList=JSON.parse(localStorage.getItem("message"))
             
             this.$axios.post('message/getsm',{
                 store_id:this.$route.query.store_id,
@@ -136,7 +136,7 @@ export default {
                     for(let i in res.data.data.msg){
                         this.messageList.unshift(res.data.data.msg[i])
                     }
-                    sessionStorage.setItem("message", JSON.stringify(this.messageList)); 
+                    localStorage.setItem("message", JSON.stringify(this.messageList)); 
                 
             })
         }
@@ -166,19 +166,19 @@ export default {
           var div = document.getElementById('d-content-scroll')
           var con={content:this.sendMessage,uuid:uuid,pid:null}
           this.messageList.push(con)
-          sessionStorage.setItem("message", JSON.stringify(this.messageList)); 
+          localStorage.setItem("message", JSON.stringify(this.messageList)); 
           this.sendMessage=''
       })
     },
      getMessage(){
-         if(sessionStorage.getItem("message")){
-      this.messageList=JSON.parse(sessionStorage.getItem("message"))
+         if(localStorage.getItem("message")){
+      this.messageList=JSON.parse(localStorage.getItem("message"))
       this.$axios.post('message/getsm',{
           store_id:this.$route.query.store_id
       }).then(res => {
           this.store_logo=res.data.data.store_logo
           this.user_photo=res.data.data.user_photo
-            var list=JSON.parse(sessionStorage.getItem("message"))
+            var list=JSON.parse(localStorage.getItem("message"))
             var listArr=list.map(function (user) { return user.uuid; })
             var msgArr=res.data.data.msg.map(function (user) { return user.uuid; })
             var arr=[]
@@ -194,8 +194,8 @@ export default {
                     // arr.push(res.data.data.msg[msgArr.indexOf(msgArr[i])])
                 }
             }
-            // this.messageList=JSON.parse(sessionStorage.getItem("message")).reverse()
-            sessionStorage.setItem("message", JSON.stringify(list)); 
+            // this.messageList=JSON.parse(localStorage.getItem("message")).reverse()
+            localStorage.setItem("message", JSON.stringify(list)); 
         
       })
     }else{
@@ -203,7 +203,7 @@ export default {
           store_id:this.$route.query.store_id
       }).then(res => {
           this.messageList=res.data.data.msg.reverse()
-            sessionStorage.setItem("message", JSON.stringify(res.data.data.msg));
+            localStorage.setItem("message", JSON.stringify(res.data.data.msg));
       })
     }
      }
@@ -217,7 +217,7 @@ export default {
   },
   destroyed(){
         clearInterval(this.setInter); 
-        sessionStorage.removeItem("message");
+        localStorage.removeItem("message");
     }
 }
 </script>
