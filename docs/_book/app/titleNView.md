@@ -23,6 +23,7 @@ this.$store.commit('core/header', {
 
       }
     },
+    // 右边图标
     right: {
       // 字号
       fontSize: '27px',
