@@ -499,5 +499,5 @@
             "resources" : [ "js/mui.js", "css/mui.css" ]
         }
     },
-    "fullscreen" : true
+    "fullscreen" : false
 }
