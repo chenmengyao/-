@@ -16,7 +16,7 @@ export default [
   },
   {
     name: '佣金',
-    key: 'scorePay',
+    key: 'balancepay',
     taypeKey: 3
   }
 ]

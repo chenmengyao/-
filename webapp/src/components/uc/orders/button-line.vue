@@ -17,11 +17,12 @@
     export default {
         props: {
             buttonList: Array,
-            orderId: Number
+            orderId: Number,
+            orderNumer: Number,
         },
         methods: {
             onClick(key) {
-                this.$emit('on-click', key, this.orderId)
+                this.$emit('on-click', key, this.orderId, this.orderNumer)
             }
         }
     }
