@@ -58,7 +58,7 @@ export default {
       handler() {
         // 切换状态
         setTimeout(() => {
-          this.toggleState()
+          // this.toggleState()
         }, 1000)
       }
     }
