@@ -1,15 +1,29 @@
 <template lang="html">
   <div class="suwis-user-agreement">
-    用户协议
+    <div v-html="ritchtext"></div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+	data() {
+		return {
+			ritchtext: ''
+		}
+	},
+	created() {
+		this.$axios.post('user/user_agreement').then(res => {
+			if (res.data && res.data.data) {
+				this.ritchtext = JSON.parse(res.data.data)
+			}
+		})
+	}
+}
 </script>
 
 <style lang="scss">
 .suwis-user-agreement {
-    position: relative;
+    padding: 15px;
+    font-size: 14px;
 }
 </style>

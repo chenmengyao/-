@@ -49,6 +49,7 @@ export default {
     margin-bottom: 3.9vw;
     box-shadow: 0 2px 10px rgba(232, 63, 68, 0.3);
     border-radius: 4px;
+    font-size: 12px;
 
     .bg {
         padding: 3vw 0 3vw 3vw;
@@ -72,6 +73,7 @@ export default {
         dt {
             display: flex;
             align-items: center;
+            white-space: nowrap;
         }
 
         dd {
@@ -79,6 +81,7 @@ export default {
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 0;
         }
 
         .title {
