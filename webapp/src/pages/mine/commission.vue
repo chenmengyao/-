@@ -24,12 +24,15 @@
             <div style="font-size:14px;">
                 <div style="float:left;">
                     <div style="float:left">
-                        <img src="../../../public/touiocn.png" style="width:20px;height:20px;margin-top:-2px;">
+                        <img :src="photo" style="width:20px;height:20px;margin-top:-2px;border-radius:50%">
                     </div>
                     <div style="float:left;text-align:left;margin-left:6px;">
                         <div>
-                            {{item.user_nickname}}<img src="../../assets/myvip.png" style="width:18px; vertical-align: middle;margin:0 5px;margin-top:-2px;">
-                            <span style="font-size:12px;font-weight:bold;color:#E3B156">LV.1</span>
+                            {{item.user_nickname}}
+                            <img v-if="userType==1" src="../../assets/myvip.png" style="width:18px; vertical-align: middle;margin:0 5px;margin-top:-2px;">
+                            <span v-if="userType==1" style="font-size:12px;font-weight:bold;color:#E3B156">VIP</span>
+                            <span  v-if="userType==0" style="color:#E3B156">普通用户</span>
+                            <span  v-if="userType==2" style="color:#E3B156">团长</span>
                         </div>
                         <div style="padding-top:8px;font-size:12px">{{item.time|dateFmt}}</div>
                     </div>
@@ -55,6 +58,8 @@
       return {
           comList:[],
           sum:0,//总佣金
+          photo:'',
+          userType:'',
       }
     }, 
      mounted(){
@@ -62,9 +67,14 @@
         that.getCommission().then(function(data){
           that.comList=data.list
             that.sum=data.sum
+            that.userType=data.user_type
             // that.comList=data.list
             that.myChart(data.sum_m)
         })
+        let user=JSON.parse(localStorage.getItem("suwis_app_state"));
+        let photo=user.core.user.user.photo
+        that.photo=photo
+        // console.log(user.core.user.user,'user')
      },
      methods:{
         // 左上角柱状图

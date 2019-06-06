@@ -27,7 +27,7 @@
              <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'auction'}}">
             <div>{{item.title}}</div>
             <div class='suwis-news-tips'>
-               <div><span class="suwis-current-price">当前价 : </span><span class="suwis-current-pri">{{item.price_max}}</span></div>
+               <div><span class="suwis-current-price">当前价 : </span><span class="suwis-current-pri">￥{{item.price_max}}</span></div>
                <div>
                   <span class="suwis-current-price">距离结束仅剩下 </span>
                   <span v-if="item.endTime=='结束'">{{item.endTime}}</span>

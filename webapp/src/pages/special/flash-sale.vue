@@ -47,7 +47,7 @@
                         </div>
                         <div style="margin-top:5px;">
                             <div class="suwis-right-con">
-                              <div style="padding:7px 0;">
+                              <div style="padding:6px 0;">
                                   <!-- 100件好货等您来抢～ -->
                                   <van-progress
                                     :show-pivot="false"
@@ -448,7 +448,7 @@ export default {
   font-size: 16px;
   line-height: 18px;
 }
-.suwis-con-right>div:nth-child(1){
+.suwis-con-right>div>div:nth-child(1){
    font-size: 14px;
   line-height: 20px;
   height: 40px;
