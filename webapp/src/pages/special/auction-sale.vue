@@ -1,10 +1,10 @@
 <template lang="html">
-  <div> 
+  <div>
     <div class="suwis-news-ban" style="height:27vw;overflow:hidden">
       <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;text-align:center">
         <van-swipe-item v-for="item in banner">
            <div  v-lazy-container="{ selector: 'img' }">
-            <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%"> 
+            <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%">
           </div>
         </van-swipe-item>
       </van-swipe>
@@ -31,11 +31,11 @@
                <div>
                   <span class="suwis-current-price">距离结束仅剩下 </span>
                   <span v-if="item.endTime=='结束'">{{item.endTime}}</span>
-                  <span v-else> 
-                    <span class="suwis-auction-date"> {{item.endTime[0]}}</span> 
+                  <span v-else>
+                    <span class="suwis-auction-date"> {{item.endTime[0]}}</span>
                     <span class="suwis-auction-date"> {{item.endTime[1]}}</span> :
-                    <span class="suwis-auction-date"> {{item.endTime[2]}}</span> 
-                    <span class="suwis-auction-date"> {{item.endTime[3]}}</span> 
+                    <span class="suwis-auction-date"> {{item.endTime[2]}}</span>
+                    <span class="suwis-auction-date"> {{item.endTime[3]}}</span>
                   </span>
                 </div>
                <div style="text-align:right;font-size:12px"><span style="color:#E83F44 ">{{item.price_count}}</span><span class="suwis-current-price">次出价</span></div>
@@ -48,81 +48,80 @@
 </template>
 
 <script>
+function InitTime(endtime) {
+  var dd, hh, mm, ss = null;
+  var time = parseInt(endtime * 1000) - new Date().getTime();
+  if (Number(time) <= 0) {
+    return '结束'
 
-function InitTime(endtime){
-    var dd,hh,mm,ss = null;
-    var time = parseInt(endtime*1000) - new Date().getTime();
-    if(Number(time)<=0){
-        return '结束'
-       
-    }else{
-        dd = Math.floor(time / 60 / 60 / 24);
-        hh = Math.floor((time / 60 / 60) % 24);
-        mm = Math.floor((time / 60) % 60);
-        ss = Math.floor(time  % 60);
-        if(mm<10&&ss<10){
-          var str ='0'+mm+'0'+ss;
-        }else if(mm<10){
-          var str ='0'+mm+ss;
-        }else if(ss<10){
-          var str =mm+'0'+ss;
-        }else{
-          var str=mm+''+ss
-        }
-        
-        return str;
+  } else {
+    dd = Math.floor(time / 60 / 60 / 24);
+    hh = Math.floor((time / 60 / 60) % 24);
+    mm = Math.floor((time / 60) % 60);
+    ss = Math.floor(time % 60);
+    if (mm < 10 && ss < 10) {
+      var str = '0' + mm + '0' + ss;
+    } else if (mm < 10) {
+      var str = '0' + mm + ss;
+    } else if (ss < 10) {
+      var str = mm + '0' + ss;
+    } else {
+      var str = mm + '' + ss
     }
+
+    return str;
+  }
 }
 export default {
   data() {
     return {
-      flashList:[],
+      flashList: [],
       active: 'tab-container1',
-      pinkFont:true,
+      pinkFont: true,
       // 上拉刷新、下拉加载
       allLoaded: false, //如果为true,禁止上拉刷新
       autoFill: false, //取消自动填充，
       list: [],
-      banner:[],
-      page:1,
+      banner: [],
+      page: 1,
       loading: false,
       finished: false,
       error: false,
     }
   },
-  methods:{
+  methods: {
     loadlist() {
-         this.$axios.post('goods/lists',{
-           type:2,
-           page:1,
-           num:10
-          }).then(res => {
-            if (res.data.code === 1) {
-              if(res.data.data&&res.data.data.goods){
-                var list=res.data.data.goods
-                 list.map( (obj,index)=>{
-                    this.$set(
-                        obj,"endTime",InitTime(obj.activity_end_time)
-                    );
-                })
-                this.list=this.list.concat(list);
-                //  this.flashList=this.flashList.concat(res.data.data.goods)
-                if (this.page * 10 > res.data.data.total) this.finished = true
-              }
-            } else {
-                this.$toast(res.data.msg);
-            }
-            this.page++
-            this.loading = false
-          }).catch(() => {
-              this.error = true
-          })
-    },
-     getBanner(){
-      this.$axios.post('goods/goodsbanner',{
-        type:2,
+      this.$axios.post('goods/lists', {
+        type: 2,
+        page: 1,
+        num: 10
       }).then(res => {
-        this.banner=res.data.data
+        if (res.data.code === 1) {
+          if (res.data.data && res.data.data.goods) {
+            var list = res.data.data.goods
+            list.map((obj, index) => {
+              this.$set(
+                obj, "endTime", InitTime(obj.activity_end_time)
+              );
+            })
+            this.list = this.list.concat(list);
+            //  this.flashList=this.flashList.concat(res.data.data.goods)
+            if (this.page * 10 > res.data.data.total) this.finished = true
+          }
+        } else {
+          this.$toast(res.data.msg);
+        }
+        this.page++
+        this.loading = false
+      }).catch(() => {
+        this.error = true
+      })
+    },
+    getBanner() {
+      this.$axios.post('goods/goodsbanner', {
+        type: 2,
+      }).then(res => {
+        this.banner = res.data.data
       })
     }
   },
@@ -133,26 +132,16 @@ export default {
       title: '竞拍捡漏',
       // 按钮组
       buttons: {
-        // 左边按钮配置
-        left: {
-          // 字号
-          fontSize: '27px',
-          // 字体路径
-          fontSrc: '_www/fonts/iconfont.ttf',
-          // 按钮文字
-          text: '分享',
-          // 监听点击
-          onclick(){
-              
-          }
-        },
         // 右边图标
         right: {
           // 按钮文字
           text: '竞拍规则',
+          width: '96',
           // 监听点击
-          onclick(){
-            this.$router.push({ path: '/special/auctionrlue' })
+          onclick: () => {
+            this.$router.push({
+              path: '/special/auctionrlue'
+            })
           }
         }
       }
@@ -171,37 +160,37 @@ export default {
     //     console.log(list )
     //     this.list = list;
     //   })
-        
-    },
-    mounted() {
-        setInterval( ()=> {
-            for (var key in this.list) {
-                var aaa = parseInt( this.list[key]["activity_end_time"] );
-                var bbb = new Date().getTime();
-                var rightTime = (aaa*1000) - bbb;
-                if (rightTime > 0) {
-                    var dd = Math.floor(rightTime / 1000 / 60 / 60 / 24);
-                    var hh = Math.floor((rightTime / 1000 / 60 / 60) % 24);
-                    var mm = Math.floor((rightTime / 1000 / 60) % 60);
-                    var ss = Math.floor((rightTime / 1000) % 60);
-                if(mm<10&&ss<10){
-                
-                  this.list[key]["endTime"] ='0'+mm+'0'+ss;
-                }else if(mm<10){
-                  this.list[key]["endTime"]='0'+mm+ss;
-                }else if(ss<10){
-                  this.list[key]["endTime"] =mm+'0'+ss;
-                }else{
-                  this.list[key]["endTime"]=mm+''+ss
-                }
-                }else{
-                  this.list[key]["endTime"]='结束'
-                }
-              
-            }
-        }, 1000);
- 
-    }
+
+  },
+  mounted() {
+    setInterval(() => {
+      for (var key in this.list) {
+        var aaa = parseInt(this.list[key]["activity_end_time"]);
+        var bbb = new Date().getTime();
+        var rightTime = (aaa * 1000) - bbb;
+        if (rightTime > 0) {
+          var dd = Math.floor(rightTime / 1000 / 60 / 60 / 24);
+          var hh = Math.floor((rightTime / 1000 / 60 / 60) % 24);
+          var mm = Math.floor((rightTime / 1000 / 60) % 60);
+          var ss = Math.floor((rightTime / 1000) % 60);
+          if (mm < 10 && ss < 10) {
+
+            this.list[key]["endTime"] = '0' + mm + '0' + ss;
+          } else if (mm < 10) {
+            this.list[key]["endTime"] = '0' + mm + ss;
+          } else if (ss < 10) {
+            this.list[key]["endTime"] = mm + '0' + ss;
+          } else {
+            this.list[key]["endTime"] = mm + '' + ss
+          }
+        } else {
+          this.list[key]["endTime"] = '结束'
+        }
+
+      }
+    }, 1000);
+
+  }
 }
 </script>
 
@@ -278,7 +267,7 @@ export default {
   font-size: 14px;
   display: block;
   border: 1px solid #E83F44;
-  border-radius:15px; 
+  border-radius:15px;
   color: #E83F44
 }
 .d-tags{
@@ -303,13 +292,13 @@ export default {
   margin-left: 3px
 }
 .suwis-news-tips>div:nth-child(1){
-  margin-top:15px; 
+  margin-top:15px;
 }
 .suwis-news-tips>div:nth-child(2){
-  margin-top:10px; 
+  margin-top:10px;
 }
 .suwis-news-tips>div:nth-child(3){
-  margin-top:25px; 
+  margin-top:25px;
 }
 .van-swipe__indicators{
   left: none;

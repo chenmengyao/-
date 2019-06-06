@@ -40,23 +40,6 @@ Vue.mixin({
 })
 // 路由拦截-前置
 router.beforeEach((to, from, next) => {
-  // 记录更新时间
-  router.updateTime = Date.now()
-  // 动态设置页面标题
-  try {
-    plus.webview.currentWebview().setStyle({
-      titleNView: {
-        titleText: to.name,
-        buttons: [{
-          "float": "left",
-          "fontSize": "27px",
-          "fontSrc": "_www/fonts/iconfont.ttf",
-          "text": "\ue6b6",
-          "onclick": `javascript:plus.webview.currentWebview().evalJS('back("${to.name}");')`
-        }]
-      }
-    })
-  } catch (e) {}
   next()
 })
 // 路由拦截-后置
@@ -68,28 +51,13 @@ router.afterEach((to, from) => {
       break
     }
   }
+  // 修改标题
+  store.commit('core/header', {
+    title: to.name
+  })
+  // 切换底部状态栏
   store.commit('core/toggleTabbar', hideTabbar)
 })
-
-// 路由回退
-window.back = (name) => {
-  // 返回
-  router.history.go(-1)
-  setTimeout(() => {
-    // 监测时间间隔
-    if (Date.now() - router.updateTime > 900) {
-      // 清空返回箭头
-      try {
-        plus.webview.currentWebview().setStyle({
-          titleNView: {
-            titleText: name,
-            buttons: []
-          }
-        })
-      } catch (e) {}
-    }
-  }, 690)
-}
 
 // 挂载到app变量上
 window.app = {
