@@ -143,7 +143,7 @@ export default {
           text: '分享',
           // 监听点击
           onclick(){
-              this.$router.push({ path: '/special/auctionrlue' })
+              
           }
         },
         // 右边图标
@@ -152,7 +152,7 @@ export default {
           text: '竞拍规则',
           // 监听点击
           onclick(){
-        
+            this.$router.push({ path: '/special/auctionrlue' })
           }
         }
       }
