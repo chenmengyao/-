@@ -19,7 +19,7 @@
     <div class="goods-box"
       v-for="shop in shopList"
       :key='shop.id'>
-      <div class="shop-info">
+      <div class="shop-info" @click="onClickStore(shop[0])">
         <img class="shop-logo"
           :src="shop[0].logo || defaultShopLogo"
           alt="店铺头像"
@@ -311,6 +311,12 @@ export default {
         }
       })
     },
+    onClickStore(store) {
+        this.$router.push({
+            path: '/shop',
+            query: {id: store.store_id}
+        })
+    },
     onCouponClick(coupon) {
       this.coupon = coupon
       this.couponShow = false
@@ -372,15 +378,30 @@ export default {
     },
     async toPay() {
       this.payTypeShow = true
-      let res = await this.$axios.post('/goods/topay', {
-        stand_id: this.stand_id,
-        num: this.num,
-        coupon_id: this.useCoupon ? this.coupon.id : undefined,
-        is_vip: this.useDiscount ? 1 : undefined,
-        score_sum: this.useScore ? this.score : undefined,
-        address_id: this.address_id,
-        express_remark: 'test'
-      })
+      let url, params;
+      if (this.orderFrom === 'single') {
+        url = '/goods/topay'
+        params = {
+          stand_id: this.stand_id,
+          num: this.num,
+          coupon_id: this.useCoupon ? this.coupon.id : undefined,
+          is_vip: this.useDiscount ? 1 : undefined,
+          score_sum: this.useScore ? this.score : undefined,
+          address_id: this.address_id,
+          express_remark: this.express_remark
+        }
+      } else if (this.orderFrom === 'car') {
+        url = '/car/topay'
+        params = {
+          car_id: this.car_id,
+          coupon_id: this.useCoupon ? this.coupon.id : undefined,
+          is_vip: this.useDiscount ? 1 : undefined,
+          score_sum: this.useScore ? this.score : undefined,
+          address_id: this.address_id,
+          express_remark: this.express_remark
+        }
+      }
+      let res = await this.$axios.post(url, params)
       // 记录订单号
       this.orderId = res.data.data
     }

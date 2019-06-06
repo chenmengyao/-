@@ -5,7 +5,8 @@
             v-for="order in orderlist"
             :key="order[0].id"
             :order-data="order"
-            :show-price="false">
+            :show-price="false"
+            @click="onClickStore">
             <GoodsItem 
                 :goods-list="order" 
                 @click="onClickGoods"></GoodsItem>
@@ -257,6 +258,12 @@
                     query: {id: goods.id}
                 })
             },
+            onClickStore(store) {
+                this.$router.push({
+                    path: '/shop',
+                    query: {id: store.store_id}
+                })
+            },
             onPasswordInput(key) {
                 this.password = this.password + key
                 if (this.password.length === 6) {
@@ -410,7 +417,7 @@
                         if (data.data) {
                             this.orderData = data.data
                             this.shopData = Array.isArray(data.data) ? data.data[0] : data.data
-                            this.orderlist = this.handleOrderData(data.data)
+                            this.orderlist = this.handleOrderData(Array.isArray(data.data) ? data.data : [data.data])
                         }
                     } else {
                         this.$toast(data.msg);

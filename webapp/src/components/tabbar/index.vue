@@ -48,18 +48,10 @@ export default {
   watch: {
     app: {
       deep: true,
+      immediate: true,
       handler() {
         // 切换状态
         this.toggleState()
-      }
-    },
-    plusready: {
-      deep: true,
-      handler() {
-        // 切换状态
-        setTimeout(() => {
-          // this.toggleState()
-        }, 1000)
       }
     }
   },

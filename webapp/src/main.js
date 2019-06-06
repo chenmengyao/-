@@ -38,7 +38,7 @@ Vue.mixin({
     onPlusReady
   }
 })
-// 路由拦截
+// 路由拦截-前置
 router.beforeEach((to, from, next) => {
   // 记录更新时间
   router.updateTime = Date.now()
@@ -57,18 +57,18 @@ router.beforeEach((to, from, next) => {
       }
     })
   } catch (e) {}
+  next()
+})
+// 路由拦截-后置
+router.afterEach((to, from) => {
   let hideTabbar = true
-  console.log('-------------')
   for (let url of config.noTabbarUrls) {
-    console.log(to.path , url)
     if (to.path == url) {
       hideTabbar = false
       break
     }
   }
-  console.log(hideTabbar)
   store.commit('core/toggleTabbar', hideTabbar)
-  next()
 })
 
 // 路由回退
