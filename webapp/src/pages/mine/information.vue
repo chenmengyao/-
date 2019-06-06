@@ -7,8 +7,8 @@
               <img src="../../assets/infor2.png" style="width:26px">
               交易物流
             </div>
-            <div>
-              <span class="suwis-infor-tags">03</span>
+            <div v-if="content.count1>0">
+              <span class="suwis-infor-tags">{{content.count1}}</span>
             </div>
           </div>
         </router-link>
@@ -18,8 +18,8 @@
              <img src="../../assets/infor1.png" style="width:26px">
              系统信息
            </div>
-           <div>
-             <span class="suwis-infor-tags">12</span>
+           <div v-if="content.count2>0">
+             <span class="suwis-infor-tags">{{content.count2}}</span>
            </div>
         </div>
         </router-link>
@@ -29,8 +29,8 @@
              <img src="../../assets/infor3.png" style="width:26px">
              客服信息
            </div>
-           <div>
-             <span class="suwis-infor-tags">12</span>
+           <div v-if="content.count3>0">
+             <span class="suwis-infor-tags">{{content.count3}}</span>
            </div>
         </div>
         </router-link>
@@ -40,8 +40,19 @@
 
 <script>
 export default {
+  data(){
+    return{
+      content:'',
+    }
+  },
   mounted() {
     document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5')
+    	this.$axios.post('message/mymsg',{
+	  		}).then(res=>{
+          if(res.data&&res.data.data){
+            this.content=res.data.data
+          }
+        })
   }
 }
 </script>

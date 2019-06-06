@@ -64,7 +64,7 @@ export default {
     },
   mounted() {
      document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5')
-     this.getData()
+    //  this.getData()
   },
   methods:{
       loadlist() {

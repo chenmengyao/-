@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-      <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <van-pull-refresh v-model="isLoading" @refresh="onRefresh" :disabled='isDis'>
 
 
         <div id="d-content-scroll">
@@ -112,6 +112,7 @@ Vue.use(Toast);
 export default {
   data(){
     return{
+     isDis:false,
      list:[],
      sendMessage:'',
      setInter:null,
@@ -124,8 +125,8 @@ export default {
   },
   methods:{
       onRefresh() {
-        if(localStorage.getItem("message")){
-            this.messageList=JSON.parse(localStorage.getItem("message"))
+        if(sessionStorage.getItem("message")){
+            this.messageList=JSON.parse(sessionStorage.getItem("message"))
             
             this.$axios.post('message/getsm',{
                 store_id:this.$route.query.store_id,
@@ -133,10 +134,14 @@ export default {
             }).then(res => { 
                 this.isLoading=false
                 var arr=[]
+                if(!res.data.data.msg.length){
+                    console.log('0000')
+                    this.isDis=true
+                }
                     for(let i in res.data.data.msg){
                         this.messageList.unshift(res.data.data.msg[i])
                     }
-                    localStorage.setItem("message", JSON.stringify(this.messageList)); 
+                    sessionStorage.setItem("message", JSON.stringify(this.messageList)); 
                 
             })
         }
@@ -166,19 +171,19 @@ export default {
           var div = document.getElementById('d-content-scroll')
           var con={content:this.sendMessage,uuid:uuid,pid:null}
           this.messageList.push(con)
-          localStorage.setItem("message", JSON.stringify(this.messageList)); 
+          sessionStorage.setItem("message", JSON.stringify(this.messageList)); 
           this.sendMessage=''
       })
     },
      getMessage(){
-         if(localStorage.getItem("message")){
-      this.messageList=JSON.parse(localStorage.getItem("message"))
+         if(sessionStorage.getItem("message")){
+      this.messageList=JSON.parse(sessionStorage.getItem("message"))
       this.$axios.post('message/getsm',{
           store_id:this.$route.query.store_id
       }).then(res => {
           this.store_logo=res.data.data.store_logo
           this.user_photo=res.data.data.user_photo
-            var list=JSON.parse(localStorage.getItem("message"))
+            var list=JSON.parse(sessionStorage.getItem("message"))
             var listArr=list.map(function (user) { return user.uuid; })
             var msgArr=res.data.data.msg.map(function (user) { return user.uuid; })
             var arr=[]
@@ -194,8 +199,8 @@ export default {
                     // arr.push(res.data.data.msg[msgArr.indexOf(msgArr[i])])
                 }
             }
-            // this.messageList=JSON.parse(localStorage.getItem("message")).reverse()
-            localStorage.setItem("message", JSON.stringify(list)); 
+            // this.messageList=JSON.parse(sessionStorage.getItem("message")).reverse()
+            sessionStorage.setItem("message", JSON.stringify(list)); 
         
       })
     }else{
@@ -203,7 +208,7 @@ export default {
           store_id:this.$route.query.store_id
       }).then(res => {
           this.messageList=res.data.data.msg.reverse()
-            localStorage.setItem("message", JSON.stringify(res.data.data.msg));
+            sessionStorage.setItem("message", JSON.stringify(res.data.data.msg));
       })
     }
      }
@@ -217,7 +222,7 @@ export default {
   },
   destroyed(){
         clearInterval(this.setInter); 
-        localStorage.removeItem("message");
+        sessionStorage.removeItem("message");
     }
 }
 </script>
