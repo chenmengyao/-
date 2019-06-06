@@ -5,7 +5,8 @@
             v-for="order in orderlist"
             :key="order[0].id"
             :order-data="order"
-            :show-price="false">
+            :show-price="false"
+            @click="onClickStore">
             <GoodsItem 
                 :goods-list="order" 
                 @click="onClickGoods"></GoodsItem>
@@ -255,6 +256,12 @@
                 this.$router.push({
                     path: '/goods/details',
                     query: {id: goods.id}
+                })
+            },
+            onClickStore(store) {
+                this.$router.push({
+                    path: '/shop',
+                    query: {id: store.store_id}
                 })
             },
             onPasswordInput(key) {

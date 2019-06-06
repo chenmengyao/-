@@ -19,7 +19,7 @@
     <div class="goods-box"
       v-for="shop in shopList"
       :key='shop.id'>
-      <div class="shop-info">
+      <div class="shop-info" @click="onClickStore(shop[0])">
         <img class="shop-logo"
           :src="shop[0].logo || defaultShopLogo"
           alt="店铺头像"
@@ -310,6 +310,12 @@ export default {
           id: goods.id
         }
       })
+    },
+    onClickStore(store) {
+        this.$router.push({
+            path: '/shop',
+            query: {id: store.store_id}
+        })
     },
     onCouponClick(coupon) {
       this.coupon = coupon
