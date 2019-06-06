@@ -78,6 +78,10 @@ export const routes = [
     name: '竞拍捡漏',
     component: () => import('./pages/special/auction-sale.vue')
 }, {
+    path: '/special/auctionrlue',
+    name: '竞拍规则',
+    component: () => import('./pages/special/auctionrlue.vue')
+}, {
     path: '/special/clearance',
     name: '低价清仓',
     component: () => import('./pages/special/clearance-sale.vue')

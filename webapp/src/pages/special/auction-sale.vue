@@ -128,35 +128,35 @@ export default {
   },
   created() {
     this.getBanner()
-//     this.$store.commit('core/header', {
-//   // 标题
-//   title: '竞拍捡漏',
-//   // 按钮组
-//   buttons: {
-//     // 左边按钮配置
-//     left: {
-//       // 字号
-//       fontSize: '27px',
-//       // 字体路径
-//       fontSrc: '_www/fonts/iconfont.ttf',
-//       // 按钮文字
-//       text: '分享',
-//       // 监听点击
-//       onclick(){
-
-//       }
-//     },
-//     // 右边图标
-//     right: {
-//       // 按钮文字
-//       text: '竞拍规则',
-//       // 监听点击
-//       onclick(){
-
-//       }
-//     }
-//   }
-// })
+    this.$store.commit('core/header', {
+      // 标题
+      title: '竞拍捡漏',
+      // 按钮组
+      buttons: {
+        // 左边按钮配置
+        left: {
+          // 字号
+          fontSize: '27px',
+          // 字体路径
+          fontSrc: '_www/fonts/iconfont.ttf',
+          // 按钮文字
+          text: '分享',
+          // 监听点击
+          onclick(){
+              this.$router.push({ path: '/special/auctionrlue' })
+          }
+        },
+        // 右边图标
+        right: {
+          // 按钮文字
+          text: '竞拍规则',
+          // 监听点击
+          onclick(){
+        
+          }
+        }
+      }
+    })
     // this.$axios.post('goods/lists',{
     //     type:2,
     //     page:1,
@@ -296,6 +296,7 @@ export default {
 .suwis-auction-date
 {
   font-size: 12px;
+  line-height: 12px;
   background-image: linear-gradient(to right , #FAA537, #F06B25);color:#fff;display:inline-block;width:12px;height:13px;text-align:center;border-radius:1px;
 }
 .suwis-auction-date:nth-child(2n){
