@@ -11,7 +11,8 @@
                 <OrderCard
                         v-for="order in list"
                         :key="order.id"
-                        :order-data="order">
+                        :order-data="order"
+                        @click="onClickStore">
                     <GoodsItem :goods-list="[order]" @click="onClickGoods"></GoodsItem>
                     <template #footer>
                         <ButtonLine
@@ -80,6 +81,12 @@
                 this.$router.push({
                     path: '/uc/orders/refund-details',
                     query: {id: goods.id}
+                })
+            },
+            onClickStore(store) {
+                this.$router.push({
+                    path: '/shop',
+                    query: {id: store.store_id}
                 })
             },
             onButtonClick(key, orderId) {

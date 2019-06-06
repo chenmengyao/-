@@ -372,15 +372,30 @@ export default {
     },
     async toPay() {
       this.payTypeShow = true
-      let res = await this.$axios.post('/goods/topay', {
-        stand_id: this.stand_id,
-        num: this.num,
-        coupon_id: this.useCoupon ? this.coupon.id : undefined,
-        is_vip: this.useDiscount ? 1 : undefined,
-        score_sum: this.useScore ? this.score : undefined,
-        address_id: this.address_id,
-        express_remark: 'test'
-      })
+      let url, params;
+      if (this.orderFrom === 'single') {
+        url = '/goods/topay'
+        params = {
+          stand_id: this.stand_id,
+          num: this.num,
+          coupon_id: this.useCoupon ? this.coupon.id : undefined,
+          is_vip: this.useDiscount ? 1 : undefined,
+          score_sum: this.useScore ? this.score : undefined,
+          address_id: this.address_id,
+          express_remark: this.express_remark
+        }
+      } else if (this.orderFrom === 'car') {
+        url = '/car/topay'
+        params = {
+          car_id: this.car_id,
+          coupon_id: this.useCoupon ? this.coupon.id : undefined,
+          is_vip: this.useDiscount ? 1 : undefined,
+          score_sum: this.useScore ? this.score : undefined,
+          address_id: this.address_id,
+          express_remark: this.express_remark
+        }
+      }
+      let res = await this.$axios.post(url, params)
       // 记录订单号
       this.orderId = res.data.data
     }

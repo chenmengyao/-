@@ -1,7 +1,7 @@
 <template>
     <div class="suwis-order-shop">
         <div class="header">
-            <div class="shop-info">
+            <div class="shop-info" @click="onClick">
                 <img class="shop-logo" src="@/assets/orders/shop-logo.png" alt="店铺头像" width="20" height="20">
                 <span class="shop-name">{{resultData.store_name}}</span>
                 <van-icon name="arrow"/>
@@ -76,6 +76,9 @@
             }
         },
         methods: {
+            onClick() {
+                this.$emit('click', this.resultData)
+            }
         }
     }
 </script>

@@ -410,7 +410,7 @@
                         if (data.data) {
                             this.orderData = data.data
                             this.shopData = Array.isArray(data.data) ? data.data[0] : data.data
-                            this.orderlist = this.handleOrderData(data.data)
+                            this.orderlist = this.handleOrderData(Array.isArray(data.data) ? data.data : [data.data])
                         }
                     } else {
                         this.$toast(data.msg);
