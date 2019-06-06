@@ -32,6 +32,7 @@
       全选
     </van-checkbox>
     <div>
+      <span class="sum">合计：<em>￥{{total.toFixed(2)}}</em></span>
       <van-button class="btn" v-if="selecteds.length>0" type="warning" @click="deleteGoods">删除</van-button>
       <van-button class="btn" type="primary" @click="makeOrder">结算({{selecteds.length}})</van-button>
     </div>
@@ -49,7 +50,8 @@ export default {
       shops: null,
       checkall: false,
       // 已选商品
-      selecteds: []
+      selecteds: [],
+      total: 0
     }
   },
   created() {
@@ -89,11 +91,13 @@ export default {
     },
     calcCheckNums() {
       this.selecteds = []
+      this.total = 0
       for (let key in this.shops) {
         let shop = this.shops[key]
         for (let good of shop.goods) {
           if (good.checked) {
             this.selecteds.push(good.id)
+            this.total += good.price
           }
         }
       }
@@ -190,8 +194,17 @@ export default {
             height: 6.9vw;
             line-height: 6.9vw;
             min-width: 20vw;
-            margin-left: 6vw;
+            margin-left: 3.9vw;
             border-radius: 50px;
+        }
+
+        em {
+            font-style: normal;
+            color: $red;
+        }
+
+        .sum{
+          font-size: 12px;
         }
     }
 

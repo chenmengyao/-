@@ -25,7 +25,7 @@
               <span style="padding-left:15px;">{{itm.title}}</span>
               <div class="d-title">
                   <span class="d-tips" v-for="(it,ids) in itm.children">
-                     <router-link :to="{ path: '/goods/list',query:{catefory:it.title}}" tag="span">
+                     <router-link :to="{ path: '/goods/list',query:{category:it.id}}" tag="span">
                     {{it.title}}
                      </router-link>
                   </span>

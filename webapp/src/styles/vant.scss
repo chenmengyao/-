@@ -17,8 +17,8 @@
 
 .van-sku__close-icon {
   font-size: 29px;
-  top: 2vw;
-  right: 2vw;
+  top: -3vw;
+  right: 3.6vw;
 }
 // 设置我的推广的样式
 
@@ -45,4 +45,14 @@
 
 .van-actionsheet__close {
   font-size: 29px;
+}
+//
+
+.van-sku-container {
+  padding-top: 28px;
+  border-radius: 8px 8px 0 0;
+}
+
+.van-sku-header__img-wrap img {
+  border-radius: 4px;
 }

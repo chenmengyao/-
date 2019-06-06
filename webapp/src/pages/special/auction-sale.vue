@@ -20,14 +20,14 @@
    <div class="suwis-news-list" v-for="(item,index) in list">
          <div class="suwis-news-right">
            <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'auction'}}">
-              <img src="./../../assets/test3.png" width="100%">
+              <img :src="item.img" width="100%">
            </router-link>
          </div>
          <div class="suwis-news-left">
              <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'auction'}}">
             <div>{{item.title}}</div>
             <div class='suwis-news-tips'>
-               <div><span class="suwis-current-price">当前价 : </span><span class="suwis-current-pri">16666.00</span></div>
+               <div><span class="suwis-current-price">当前价 : </span><span class="suwis-current-pri">{{item.price_max}}</span></div>
                <div>
                   <span class="suwis-current-price">距离结束仅剩下 </span>
                   <span v-if="item.endTime=='结束'">{{item.endTime}}</span>
@@ -38,7 +38,7 @@
                     <span class="suwis-auction-date"> {{item.endTime[3]}}</span> 
                   </span>
                 </div>
-               <div style="text-align:right;font-size:12px"><span style="color:#E83F44 ">16</span><span class="suwis-current-price">次出价</span></div>
+               <div style="text-align:right;font-size:12px"><span style="color:#E83F44 ">{{item.price_count}}</span><span class="suwis-current-price">次出价</span></div>
             </div>
            </router-link>
          </div>
@@ -51,8 +51,7 @@
 
 function InitTime(endtime){
     var dd,hh,mm,ss = null;
-    var time = parseInt(endtime) - new Date().getTime();
-   
+    var time = parseInt(endtime*1000) - new Date().getTime();
     if(Number(time)<=0){
         return '结束'
        
@@ -129,6 +128,35 @@ export default {
   },
   created() {
     this.getBanner()
+//     this.$store.commit('core/header', {
+//   // 标题
+//   title: '竞拍捡漏',
+//   // 按钮组
+//   buttons: {
+//     // 左边按钮配置
+//     left: {
+//       // 字号
+//       fontSize: '27px',
+//       // 字体路径
+//       fontSrc: '_www/fonts/iconfont.ttf',
+//       // 按钮文字
+//       text: '分享',
+//       // 监听点击
+//       onclick(){
+
+//       }
+//     },
+//     // 右边图标
+//     right: {
+//       // 按钮文字
+//       text: '竞拍规则',
+//       // 监听点击
+//       onclick(){
+
+//       }
+//     }
+//   }
+// })
     // this.$axios.post('goods/lists',{
     //     type:2,
     //     page:1,
@@ -150,13 +178,14 @@ export default {
             for (var key in this.list) {
                 var aaa = parseInt( this.list[key]["activity_end_time"] );
                 var bbb = new Date().getTime();
-                var rightTime = aaa - bbb;
+                var rightTime = (aaa*1000) - bbb;
                 if (rightTime > 0) {
                     var dd = Math.floor(rightTime / 1000 / 60 / 60 / 24);
                     var hh = Math.floor((rightTime / 1000 / 60 / 60) % 24);
                     var mm = Math.floor((rightTime / 1000 / 60) % 60);
                     var ss = Math.floor((rightTime / 1000) % 60);
                 if(mm<10&&ss<10){
+                
                   this.list[key]["endTime"] ='0'+mm+'0'+ss;
                 }else if(mm<10){
                   this.list[key]["endTime"]='0'+mm+ss;
@@ -168,6 +197,7 @@ export default {
                 }else{
                   this.list[key]["endTime"]='结束'
                 }
+              
             }
         }, 1000);
  
