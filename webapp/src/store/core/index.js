@@ -14,7 +14,8 @@ export default {
     header: {
       left: {},
       right: {}
-    }
+    },
+    routerUpdateTime: 0
   },
   mutations: {
     // 登录
@@ -39,6 +40,7 @@ export default {
     },
     // 头部状态修改
     header(state, params) {
+      state.routerUpdateTime = Date.now()
       let left = (params.buttons && params.buttons.left) || {
         float: 'left',
         fontSize: '27px',
@@ -61,9 +63,7 @@ export default {
             buttons: [left, right]
           }
         })
-      } catch (e) {
-        // console.log(e)
-      }
+      } catch (e) {}
       // 左侧按钮点击
       window.headerLeftClick = (name) => {
         if (params.buttons && params.buttons.left) {
@@ -71,6 +71,21 @@ export default {
         } else {
           // 返回
           window.app.$vm.$router.history.go(-1)
+          // 判断是否返回到顶部
+          setTimeout(() => {
+            if (Date.now() - state.routerUpdateTime > 300) {
+              try {
+                plus.webview.currentWebview().setStyle({
+                  titleNView: {
+                    titleText: params.title,
+                    buttons: []
+                  }
+                })
+              } catch (e) {
+                console.log(e)
+              }
+            }
+          }, 300)
         }
       }
       // 右键点击
