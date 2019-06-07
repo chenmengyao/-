@@ -53,7 +53,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 .suwis-feedback-con {
   display: flex;
   justify-content: center;

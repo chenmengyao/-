@@ -89,7 +89,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="css" scoped>
 .suwis-details-con {
   display: flex;
   font-size: 12px;

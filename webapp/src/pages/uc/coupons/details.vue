@@ -126,7 +126,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 .bg {
   padding: 5.5vw 5vw 8vw 5vw;
   /* color: #fff; */

@@ -103,7 +103,7 @@ export default {
   }
 }
 </script>
-<style lang="css">
+<style lang="css" scoped>
 #news .van-swipe__indicator {
   background: #fff;
   left: none !important;
