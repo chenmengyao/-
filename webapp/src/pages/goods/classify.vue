@@ -1,6 +1,7 @@
 <template>
+<div>
   <div>
-    <div>
+    <!-- <div>
       <van-search
         @search="goList"
         placeholder="请输入搜索关键词"
@@ -57,19 +58,58 @@
                   </router-link>
                 </span>
 
-              </div>
+              </div> -->
+    <van-search @search="goList"
+      placeholder="请输入搜索关键词"
+      v-model="keyWord"
+      style="text-align:center" />
+  </div>
+  <div v-for="(items,index) in tabList">
+    <div class="suwis-classify-con">
+      <div class="suwis-classify-btn">
+        <div v-for="(item,idxs) in items">
+          <div class="suwis-classify-active"
+            :class="idxs==num?'d_background':''"
+            @click="classifyBtn(idxs)">
+            <span :class="idxs==num?'d_active':'d_active1'"></span>{{item.title}}</div>
+        </div>
+      </div>
+      <div class="suwis-classify-list">
+        <div v-if="banner.length"
+          style="width:calc(100vw - 114px);padding:15px 13px 0 13px">
+          <van-swipe :autoplay="3000"
+            indicator-color="white">
+            <van-swipe-item v-for="item in banner">
+              <img :src="item.img"
+                width="100%">
+            </van-swipe-item>
+          </van-swipe>
+        </div>
+        <div v-for="(itm,id) in tabList[0][num].children"
+          style="margin-top:15px;">
+          <div>
+            <span style="padding-left:15px;">{{itm.title}}</span>
+            <div class="d-title">
+              <span class="d-tips"
+                v-for="(it,ids) in itm.children">
+                <router-link :to="{ path: '/goods/list',query:{category:it.id}}"
+                  tag="span">
+                  {{it.title}}
+                </router-link>
+              </span>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 </template>
 <script>
 export default {
   data() {
     return {
-      keyWord: '',//搜索关键词
+      keyWord: '', //搜索关键词
       classifyBan: '',
       tabList: [],
       num: 0,
@@ -101,9 +141,8 @@ export default {
   }
 }
 </script>
-
-<style lang="css">
-.suwis-classify-con {
+<style lang="css" scoped>
+.suwis-classify-con{
   display: flex;
   display: -webkit-flex;
   width: 100%;

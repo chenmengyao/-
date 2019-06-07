@@ -109,9 +109,9 @@
             "description" : "原生对象"
         },
         "Push" : {},
-        "Share" : {},
         "Statistic" : {},
-        "Payment" : {}
+        "Payment" : {},
+        "Share" : {}
     },
     "plus" : {
         "launchwebview" : {
@@ -475,7 +475,13 @@
                     "alipay" : {},
                     "appleiap" : {}
                 },
-                "share" : {}
+                "share" : {
+                    "sina" : {
+                        "appkey" : "634638248",
+                        "appsecret" : "63571eb7bbe2c1c7b71af66f5ce052ae",
+                        "redirect_uri" : "http://test.suwis.com/1905_tideway_shop/webapp/dist"
+                    }
+                }
             }
         }
     },

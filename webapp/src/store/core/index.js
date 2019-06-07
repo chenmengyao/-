@@ -1,3 +1,4 @@
+import _ from 'lodash'
 export default {
   namespaced: true,
   // 状态
@@ -8,7 +9,13 @@ export default {
     app: {
       // 底部导航条是否显示
       tabbarVisible: true
-    }
+    },
+    // 头部状态
+    header: {
+      left: {},
+      right: {}
+    },
+    routerUpdateTime: 0
   },
   mutations: {
     // 登录
@@ -30,6 +37,61 @@ export default {
     // 切换底部导航条
     toggleTabbar(state, params) {
       state.app.tabbarVisible = params
+    },
+    // 头部状态修改
+    header(state, params) {
+      state.routerUpdateTime = Date.now()
+      let left = (params.buttons && params.buttons.left) || {
+        float: 'left',
+        fontSize: '27px',
+        fontSrc: '_www/fonts/iconfont.ttf',
+        text: '\ue6b6'
+      }
+      left.onclick = `javascript:plus.webview.currentWebview().evalJS('headerLeftClick("${params.title}");')`
+      let right = _.defaultsDeep(params.buttons && params.buttons.right ? { ...params.buttons.right
+      } : {}, {
+        float: 'right',
+        fontSize: '16px',
+        fontSrc: '_www/fonts/iconfont.ttf'
+      })
+      right.onclick = `javascript:plus.webview.currentWebview().evalJS('headerRightClick("${params.title}");')`
+      // 动态设置页面标题
+      try {
+        plus.webview.currentWebview().setStyle({
+          titleNView: {
+            titleText: params.title,
+            buttons: [left, right]
+          }
+        })
+      } catch (e) {}
+      // 左侧按钮点击
+      window.headerLeftClick = (name) => {
+        if (params.buttons && params.buttons.left) {
+          params.buttons.left.onclick()
+        } else {
+          // 返回
+          window.app.$vm.$router.history.go(-1)
+          // 判断是否返回到顶部
+          setTimeout(() => {
+            if (Date.now() - state.routerUpdateTime > 300) {
+              try {
+                plus.webview.currentWebview().setStyle({
+                  titleNView: {
+                    titleText: params.title,
+                    buttons: []
+                  }
+                })
+              } catch (e) {
+                console.log(e)
+              }
+            }
+          }, 300)
+        }
+      }
+      // 右键点击
+      window.headerRightClick = (name) => {
+        params.buttons.right.onclick()
+      }
     }
   },
   getters: {

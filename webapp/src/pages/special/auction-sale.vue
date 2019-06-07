@@ -4,7 +4,7 @@
       <van-swipe :autoplay="3000" indicator-color="#E83F44" style="width:100vw;text-align:center">
         <van-swipe-item v-for="item in banner">
            <div  v-lazy-container="{ selector: 'img' }">
-            <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%"> 
+            <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%">
           </div>
         </van-swipe-item>
       </van-swipe>
@@ -31,11 +31,11 @@
                <div>
                   <span class="suwis-current-price">距离结束仅剩下 </span>
                   <span v-if="item.endTime=='结束'">{{item.endTime}}</span>
-                  <span v-else> 
-                    <span class="suwis-auction-date"> {{item.endTime[0]}}</span> 
+                  <span v-else>
+                    <span class="suwis-auction-date"> {{item.endTime[0]}}</span>
                     <span class="suwis-auction-date"> {{item.endTime[1]}}</span> :
-                    <span class="suwis-auction-date"> {{item.endTime[2]}}</span> 
-                    <span class="suwis-auction-date"> {{item.endTime[3]}}</span> 
+                    <span class="suwis-auction-date"> {{item.endTime[2]}}</span>
+                    <span class="suwis-auction-date"> {{item.endTime[3]}}</span>
                   </span>
                 </div>
                <div style="text-align:right;font-size:12px"><span style="color:#E83F44 ">{{item.price_count}}</span><span class="suwis-current-price">次出价</span></div>
@@ -48,13 +48,17 @@
 </template>
 
 <script>
+// function InitTime(endtime) {
+//   var dd, hh, mm, ss = null;
+//   var time = parseInt(endtime * 1000) - new Date().getTime();
+//   if (Number(time) <= 0) {
+//     return '结束'
 
 function InitTime(endtime) {
   var dd, hh, mm, ss = null;
   var time = parseInt(endtime * 1000) - new Date().getTime();
   if (Number(time) <= 0) {
     return '结束'
-
   } else {
     dd = Math.floor(time / 60 / 60 / 24);
     hh = Math.floor((time / 60 / 60) % 24);
@@ -150,9 +154,15 @@ export default {
         right: {
           // 按钮文字
           text: '竞拍规则',
+          width: '96',
           // 监听点击
-          onclick() {
-            this.$router.push({ path: '/special/auctionrlue' })
+          // onclick() {
+          //   this.$router.push({ path: '/special/auctionrlue' })
+
+          onclick: () => {
+            this.$router.push({
+              path: '/special/auctionrlue'
+            })
           }
         }
       }
@@ -289,9 +299,12 @@ export default {
   line-height: 30px;
   font-size: 14px;
   display: block;
-  border: 1px solid #e83f44;
+  /* border: 1px solid #e83f44;
   border-radius: 15px;
-  color: #e83f44;
+  color: #e83f44; */
+  border: 1px solid #E83F44;
+  border-radius:15px;
+  color: #E83F44
 }
 .d-tags {
   color: #f0914b;
@@ -324,14 +337,22 @@ export default {
 .suwis-auction-date:nth-child(2n) {
   margin-left: 3px;
 }
-.suwis-news-tips > div:nth-child(1) {
+/* .suwis-news-tips > div:nth-child(1) {
   margin-top: 15px;
 }
 .suwis-news-tips > div:nth-child(2) {
   margin-top: 10px;
 }
 .suwis-news-tips > div:nth-child(3) {
-  margin-top: 25px;
+  margin-top: 25px; */
+.suwis-news-tips>div:nth-child(1){
+  margin-top:15px;
+}
+.suwis-news-tips>div:nth-child(2){
+  margin-top:10px;
+}
+.suwis-news-tips>div:nth-child(3){
+  margin-top:25px;
 }
 .van-swipe__indicators {
   left: none;
