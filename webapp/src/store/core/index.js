@@ -1,3 +1,4 @@
+import _ from 'lodash'
 export default {
   namespaced: true,
   // 状态
@@ -45,7 +46,7 @@ export default {
         text: '\ue6b6'
       }
       left.onclick = `javascript:plus.webview.currentWebview().evalJS('headerLeftClick("${params.title}");')`
-      let right = Object.assign(params.buttons && params.buttons.right ? { ...params.buttons.right
+      let right = _.defaultsDeep(params.buttons && params.buttons.right ? { ...params.buttons.right
       } : {}, {
         float: 'right',
         fontSize: '16px',

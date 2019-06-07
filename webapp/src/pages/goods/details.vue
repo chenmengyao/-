@@ -159,6 +159,9 @@
       </coupon-item>
     </coupon-list>
     <!-- 优惠券 -->
+    <!-- 分享 -->
+    <share v-model="shareVisible"></share>
+    <!-- 分享 //-->
     <!-- 底部操作条 -->
     <van-goods-action>
       <van-goods-action-mini-btn
@@ -272,13 +275,27 @@ export default {
         }
       },
       // 优惠券显示内容
-      couponsVisible: false
+      couponsVisible: false,
+      shareVisible: false
     }
   },
   created() {
     this.getDetails()
     this.getCoupons()
     this.getCarList()
+    // 添加分享按钮
+    this.$store.commit('core/header', {
+      title: '商品详情',
+      buttons: {
+        right: {
+          fontSize: '27px',
+          text: '\ue655',
+          onclick: () => {
+            this.shareVisible = true
+          }
+        }
+      }
+    })
   },
   mounted() {
     window.addEventListener('scroll', this.checkScroll, this)
