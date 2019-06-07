@@ -21,7 +21,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .suwis-user-agreement {
     padding: 15px;
     font-size: 14px;

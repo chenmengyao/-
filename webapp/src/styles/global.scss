@@ -9,3 +9,7 @@ img {
 *:active {
   outline: none;
 }
+
+[lazy="loading"] {
+  object-fit: none !important;
+}

@@ -131,7 +131,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .suwis-shopping-cart {
     padding: 15px;
     background: $bg;
