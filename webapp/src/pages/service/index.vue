@@ -216,7 +216,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 .d-keyword {
   height: 22px;
   width: 80px;

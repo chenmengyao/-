@@ -165,7 +165,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 .van-hairline--top-bottom::after {
   border: none;
 }
