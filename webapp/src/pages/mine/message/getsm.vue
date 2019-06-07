@@ -110,129 +110,129 @@ import Vue from 'vue'
 import { Toast } from 'vant';
 Vue.use(Toast);
 export default {
-  data(){
-    return{
-     isDis:false,
-     list:[],
-     sendMessage:'',
-     setInter:null,
-     messageList:[],
-     count: 0,
-     isLoading: false,
-     store_logo:'',
-     user_photo:''
+  data() {
+    return {
+      isDis: false,
+      list: [],
+      sendMessage: '',
+      setInter: null,
+      messageList: [],
+      count: 0,
+      isLoading: false,
+      store_logo: '',
+      user_photo: ''
     }
   },
-  methods:{
-      onRefresh() {
-        if(sessionStorage.getItem("message")){
-            this.messageList=JSON.parse(sessionStorage.getItem("message"))
-            
-            this.$axios.post('message/getsm',{
-                store_id:this.$route.query.store_id,
-                id:this.messageList[0].id
-            }).then(res => { 
-                this.isLoading=false
-                var arr=[]
-                if(!res.data.data.msg.length){
-                    console.log('0000')
-                    this.isDis=true
-                }
-                    for(let i in res.data.data.msg){
-                        this.messageList.unshift(res.data.data.msg[i])
-                    }
-                    sessionStorage.setItem("message", JSON.stringify(this.messageList)); 
-                
-            })
-        }
-       
+  methods: {
+    onRefresh() {
+      if (sessionStorage.getItem("message")) {
+        this.messageList = JSON.parse(sessionStorage.getItem("message"))
+
+        this.$axios.post('message/getsm', {
+          store_id: this.$route.query.store_id,
+          id: this.messageList[0].id
+        }).then(res => {
+          this.isLoading = false
+          var arr = []
+          if (!res.data.data.msg.length) {
+            console.log('0000')
+            this.isDis = true
+          }
+          for (let i in res.data.data.msg) {
+            this.messageList.unshift(res.data.data.msg[i])
+          }
+          sessionStorage.setItem("message", JSON.stringify(this.messageList));
+
+        })
+      }
+
     },
-    randomNum(minNum,maxNum){ 
-    switch(arguments.length){ 
-        case 1: 
-            return parseInt(Math.random()*minNum+1,10); 
-        break; 
-        case 2: 
-            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
-        break; 
-            default: 
-                return 0; 
-            break; 
-    } 
-} ,
-    getList(){
-        var uuid=this.randomNum(1000,9999)+''+this.randomNum(1000,9999)
-      this.$axios.post('message/sendsm',{
-          store_id:this.$route.query.store_id,
-          uuid:uuid,
-          content:this.sendMessage
+    randomNum(minNum, maxNum) {
+      switch (arguments.length) {
+        case 1:
+          return parseInt(Math.random() * minNum + 1, 10);
+          break;
+        case 2:
+          return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+          break;
+        default:
+          return 0;
+          break;
+      }
+    },
+    getList() {
+      var uuid = this.randomNum(1000, 9999) + '' + this.randomNum(1000, 9999)
+      this.$axios.post('message/sendsm', {
+        store_id: this.$route.query.store_id,
+        uuid: uuid,
+        content: this.sendMessage
       }).then(res => {
         Toast(res.data.msg);
-          var div = document.getElementById('d-content-scroll')
-          var con={content:this.sendMessage,uuid:uuid,pid:null}
-          this.messageList.push(con)
-          sessionStorage.setItem("message", JSON.stringify(this.messageList)); 
-          this.sendMessage=''
+        var div = document.getElementById('d-content-scroll')
+        var con = { content: this.sendMessage, uuid: uuid, pid: null }
+        this.messageList.push(con)
+        sessionStorage.setItem("message", JSON.stringify(this.messageList));
+        this.sendMessage = ''
       })
     },
-     getMessage(){
-         if(sessionStorage.getItem("message")){
-      this.messageList=JSON.parse(sessionStorage.getItem("message"))
-      this.$axios.post('message/getsm',{
-          store_id:this.$route.query.store_id
-      }).then(res => {
-          this.store_logo=res.data.data.store_logo
-          this.user_photo=res.data.data.user_photo
-            var list=JSON.parse(sessionStorage.getItem("message"))
-            var listArr=list.map(function (user) { return user.uuid; })
-            var msgArr=res.data.data.msg.map(function (user) { return user.uuid; })
-            var arr=[]
-            for(let i in msgArr){
-                var item=msgArr[i]
-                if(listArr.indexOf(item)>-1){
-                //    console.log(listArr)
-                }else{
-                    if(msgArr.indexOf(Number(item))){
-                     var items=res.data.data.msg[msgArr.indexOf(msgArr[i])]
-                     list.push(items)
-                    }
-                    // arr.push(res.data.data.msg[msgArr.indexOf(msgArr[i])])
-                }
+    getMessage() {
+      if (sessionStorage.getItem("message")) {
+        this.messageList = JSON.parse(sessionStorage.getItem("message"))
+        this.$axios.post('message/getsm', {
+          store_id: this.$route.query.store_id
+        }).then(res => {
+          this.store_logo = res.data.data.store_logo
+          this.user_photo = res.data.data.user_photo
+          var list = JSON.parse(sessionStorage.getItem("message"))
+          var listArr = list.map(function (user) { return user.uuid; })
+          var msgArr = res.data.data.msg.map(function (user) { return user.uuid; })
+          var arr = []
+          for (let i in msgArr) {
+            var item = msgArr[i]
+            if (listArr.indexOf(item) > -1) {
+              //    console.log(listArr)
+            } else {
+              if (msgArr.indexOf(Number(item))) {
+                var items = res.data.data.msg[msgArr.indexOf(msgArr[i])]
+                list.push(items)
+              }
+              // arr.push(res.data.data.msg[msgArr.indexOf(msgArr[i])])
             }
-            // this.messageList=JSON.parse(sessionStorage.getItem("message")).reverse()
-            sessionStorage.setItem("message", JSON.stringify(list)); 
-        
-      })
-    }else{
-         this.$axios.post('message/getsm',{
-          store_id:this.$route.query.store_id
-      }).then(res => {
-          this.messageList=res.data.data.msg.reverse()
-            sessionStorage.setItem("message", JSON.stringify(res.data.data.msg));
-      })
+          }
+          // this.messageList=JSON.parse(sessionStorage.getItem("message")).reverse()
+          sessionStorage.setItem("message", JSON.stringify(list));
+
+        })
+      } else {
+        this.$axios.post('message/getsm', {
+          store_id: this.$route.query.store_id
+        }).then(res => {
+          this.messageList = res.data.data.msg.reverse()
+          sessionStorage.setItem("message", JSON.stringify(res.data.data.msg));
+        })
+      }
     }
-     }
   },
   mounted() {
-      document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5')
-      this.setInter=setInterval(() => {
-          this.getMessage()
-      }, 2000);
-      
+    document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5')
+    this.setInter = setInterval(() => {
+      this.getMessage()
+    }, 2000);
+
   },
-  destroyed(){
-        clearInterval(this.setInter); 
-        sessionStorage.removeItem("message");
-    }
+  destroyed() {
+    clearInterval(this.setInter);
+    sessionStorage.removeItem("message");
+  }
 }
 </script>
 
 <style lang="css" scoped>
-#d-content-scroll{
-  height:100vh;
-  overflow:scroll;
+#d-content-scroll {
+  height: 100vh;
+  overflow: scroll;
 }
-.active{
-    color:red;
+.active {
+  color: red;
 }
 </style>

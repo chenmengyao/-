@@ -41,56 +41,56 @@
 
 <script>
 export default {
-  data(){
-    return{
-     stsyemList:[],
-     loading: false,
-     finished: false,
-     error: false,
-     page:1,
+  data() {
+    return {
+      stsyemList: [],
+      loading: false,
+      finished: false,
+      error: false,
+      page: 1,
     }
   },
-  methods:{
+  methods: {
     loadlist() {
-         this.$axios.post('message/system',{
-            page:this.page,
-            num:10
-          }).then(res => {
-            if (res.data.code === 1) {
-              if(res.data.data&&res.data.data.system){
-                 this.stsyemList=this.stsyemList.concat(res.data.data.system)
-                if (this.page * 10 > res.data.data.total) this.finished = true
-              }
-            } else {
-                this.$toast(res.data.msg);
-            }
-            this.page++
-            this.loading = false
-          }).catch(() => {
-              this.error = true
-          })
-    },
-    getStsyem(){
-      this.$axios.post('message/system',{
-        page:1,
-        num:10
+      this.$axios.post('message/system', {
+        page: this.page,
+        num: 10
       }).then(res => {
-        if(res.data.data){
-          this.stsyemList=res.data.data
+        if (res.data.code === 1) {
+          if (res.data.data && res.data.data.system) {
+            this.stsyemList = this.stsyemList.concat(res.data.data.system)
+            if (this.page * 10 > res.data.data.total) this.finished = true
+          }
+        } else {
+          this.$toast(res.data.msg);
+        }
+        this.page++
+        this.loading = false
+      }).catch(() => {
+        this.error = true
+      })
+    },
+    getStsyem() {
+      this.$axios.post('message/system', {
+        page: 1,
+        num: 10
+      }).then(res => {
+        if (res.data.data) {
+          this.stsyemList = res.data.data
         }
       })
     }
   },
   mounted() {
     // this.getStsyem()
-     document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5')
+    document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5')
 
   }
 }
 </script>
 
 <style lang="css" scoped>
-.suwis-system-con{
+.suwis-system-con {
   display: flex;
   margin-top: 10px;
   line-height: 23px;
@@ -98,33 +98,33 @@ export default {
   color: #999;
   padding-left: 31px;
 }
-.suwis-system-con span{
-  padding:10px 13px;
-  background: #FAFAFA;
+.suwis-system-con span {
+  padding: 10px 13px;
+  background: #fafafa;
   flex: 1;
 }
-.suwis-system-titie{
-  font-size:16px;
+.suwis-system-titie {
+  font-size: 16px;
 }
-.suwis-system-date{
+.suwis-system-date {
   padding-left: 31px;
   color: #999;
   font-size: 12px;
 }
-.suwis-system-titie img{
+.suwis-system-titie img {
   width: 26px;
   vertical-align: middle;
   margin-right: 8px;
   margin-top: -2px;
 }
-.suwis-system-list{
+.suwis-system-list {
   text-align: left;
   display: flex;
-  padding:15px; 
-  border-bottom: 1px solid #EFEFEF;
+  padding: 15px;
+  border-bottom: 1px solid #efefef;
   background: #fff;
 }
-.suwis-system-list>div{
+.suwis-system-list > div {
   flex: 1;
   width: 100%;
 }

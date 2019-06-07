@@ -1,7 +1,7 @@
 <template lang="html">
-  <div> 
+  <div id="news"> 
     <div class="suwis-news-ban" style="height:27vw;overflow:hidden">
-      <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;text-align:center">
+      <van-swipe :autoplay="3000" indicator-color="#E83F44" style="width:100vw;text-align:center">
         <van-swipe-item v-for="item in banner">
           <div  v-lazy-container="{ selector: 'img' }">
            <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%"> 
@@ -45,67 +45,82 @@
 export default {
   data() {
     return {
-      newsList:[],
-      banner:[],
+      newsList: [],
+      banner: [],
       loading: false,
       finished: false,
       error: false,
-      page:1,
-      total:null
+      page: 1,
+      total: null
     }
   },
-   methods: {
-     loadlist() {
-         this.$axios.post('news/index',{
-            page:this.page,
-            num:10
-          }).then(res => {
-            if (res.data.code === 1) {
-              if(res.data&&res.data.data){
-                this.banner=res.data.data.banner
-                this.total=res.data.data.total
-                delete res.data.data.total
-                  delete res.data.data.banner
-                  var arr=[]
-                  for(let i in res.data.data){
-                    arr.push(res.data.data[i])
-                  }
-                  this.newsList=this.newsList.concat(arr)
-                if (this.page * 10 > this.total) this.finished = true
-              }
-            } else {
-                this.$toast(res.data.msg);
+  methods: {
+    loadlist() {
+      this.$axios.post('news/index', {
+        page: this.page,
+        num: 10
+      }).then(res => {
+        if (res.data.code === 1) {
+          if (res.data && res.data.data) {
+            this.banner = res.data.data.banner
+            this.total = res.data.data.total
+            delete res.data.data.total
+            delete res.data.data.banner
+            var arr = []
+            for (let i in res.data.data) {
+              arr.push(res.data.data[i])
             }
-            this.page++
-            this.loading = false
-          }).catch(() => {
-              this.error = true
-          })
+            this.newsList = this.newsList.concat(arr)
+            if (this.page * 10 > this.total) this.finished = true
+          }
+        } else {
+          this.$toast(res.data.msg);
+        }
+        this.page++
+        this.loading = false
+      }).catch(() => {
+        this.error = true
+      })
     },
-     //获取资讯列表
-      // getNewsList(page,num){     
-      //   this.$axios.post('news/index',{
-      //     page:page,
-      //     num:num
-      //   }).then(res => {
-      //     this.banner=res.data.data.banner
-      //     delete res.data.data.banner
-      //     var list=[]
-      //     for(let i in res.data.data){
-      //       list.push(res.data.data[i])
-      //     }
-      //     this.newsList=list
-      // })
-      // }
-    },
-    created(){
-      // this.getNewsList(1,10)
-    }
+    //获取资讯列表
+    // getNewsList(page,num){     
+    //   this.$axios.post('news/index',{
+    //     page:page,
+    //     num:num
+    //   }).then(res => {
+    //     this.banner=res.data.data.banner
+    //     delete res.data.data.banner
+    //     var list=[]
+    //     for(let i in res.data.data){
+    //       list.push(res.data.data[i])
+    //     }
+    //     this.newsList=list
+    // })
+    // }
+  },
+  created() {
+    // this.getNewsList(1,10)
+  }
 }
 </script>
-
 <style lang="css">
-ul,li{
+#news .van-swipe__indicator {
+  background: #fff;
+  left: none !important;
+  right: 11px !important;
+  opacity: 1;
+}
+#news .van-swipe {
+  border-radius: 4px;
+}
+#news .van-swipe__indicators {
+  left: 85vw;
+}
+</style>
+
+<style lang="css" scoped>
+ul,
+li {
   list-style: none;
 }
 .suwis-news-ban {
@@ -131,7 +146,14 @@ ul,li{
 .suwis-news-left {
   padding-right: 15px;
 }
-.suwis-news-right>div{
+.suwis-news-left > li {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  height: 41.6px;
+}
+.suwis-news-right > div {
   width: 80px;
   height: 80px;
 }
@@ -165,7 +187,7 @@ ul,li{
   clear: both;
   content: "";
 }
-.van-swipe__indicators{
+.van-swipe__indicators {
   left: none;
   right: 10px !important;
 }

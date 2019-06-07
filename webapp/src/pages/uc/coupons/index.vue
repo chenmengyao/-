@@ -129,130 +129,130 @@
 
 <script>
 export default {
-  data(){
-    return{
-      couponsValue:'',
-      tobeused:[],
-      used:[],
-      pass:[],
-      couponsVisible:true
+  data() {
+    return {
+      couponsValue: '',
+      tobeused: [],
+      used: [],
+      pass: [],
+      couponsVisible: true
     }
   },
-  methods:{
-    getTobeusedList(index){
-      var url=''
-      if(index=='0'){
-        url='coupon/tobeused'
-      }else if(index=='1'){
-        url='coupon/used'
-      }else if(index=='2'){
-        url="coupon/pass"
+  methods: {
+    getTobeusedList(index) {
+      var url = ''
+      if (index == '0') {
+        url = 'coupon/tobeused'
+      } else if (index == '1') {
+        url = 'coupon/used'
+      } else if (index == '2') {
+        url = "coupon/pass"
       }
-      this.$axios.post(url,{
+      this.$axios.post(url, {
       }).then(res => {
         //  待使用优惠券
-         if(!res.data.data){
-           this.tobeused=[]
-         }else{
-           this.tobeused=res.data.data
-         }
+        if (!res.data.data) {
+          this.tobeused = []
+        } else {
+          this.tobeused = res.data.data
+        }
       })
     }
   },
-  created(){
+  created() {
     this.getTobeusedList('0')
   }
 }
 </script>
 
 <style lang="css">
-.van-hairline--top-bottom::after{
+.van-hairline--top-bottom::after {
   border: none;
 }
-.suwis-coupons-con{
+.suwis-coupons-con {
   display: flex;
   padding: 0 15px 5px 15px;
 }
-.suwis-coupons-con:nth-child(1){
+.suwis-coupons-con:nth-child(1) {
   /* padding-top: 20px; */
 }
-.suwis-coupons-con>div{
-  flex:1;
+.suwis-coupons-con > div {
+  flex: 1;
 }
-.suwis-coupons-list{
+.suwis-coupons-list {
   text-align: left;
   width: 100%;
   border-radius: 4px;
   -webkit-border-radius: 4px;
-  background-image: linear-gradient(to right , #F35A5A, #DD0B11);
+  background-image: linear-gradient(to right, #f35a5a, #dd0b11);
 }
-.van-tab{
+.van-tab {
   max-width: 65px;
   text-align: left;
   padding-left: 15px;
 }
-.suwis-coupons-listtop{
+.suwis-coupons-listtop {
   display: flex;
   padding: 10px 22px;
   color: #fff;
 }
-.suwis-coupons-listtop>div{
+.suwis-coupons-listtop > div {
   flex: 1;
 }
-.suwis-listtop-left{
+.suwis-listtop-left {
   float: left;
 }
-.suwis-listtop-right{
-  float:right;
+.suwis-listtop-right {
+  float: right;
   line-height: 60px;
   font-size: 35px;
   padding-left: 15px;
-  border-left: 0.5px dashed #ccc
+  border-left: 0.5px dashed #ccc;
 }
-.d-icon{
+.d-icon {
   width: 47px;
   margin-top: 6px;
 }
 .d-title {
   padding-left: 14px;
 }
-.d-title div:nth-child(1){
- font-size: 15px;
- margin: 5px 0;
- line-height: 26px;
+.d-title div:nth-child(1) {
+  font-size: 15px;
+  margin: 5px 0;
+  line-height: 26px;
 }
-.d-title div:nth-child(2){
- font-size: 10px;
+.d-title div:nth-child(2) {
+  font-size: 10px;
 }
-.suwis-coupons-listbtm{
-   -webkit-box-shadow:0 3px 6px rgba(255, 63, 69, .17);  
-   -moz-box-shadow:0 3px 6px rgba(255, 63, 69, .17);  
-    box-shadow:0 3px 6px rgba(255, 63, 69, .17);  
-   height: 40px;
-   line-height: 40px;
+.suwis-coupons-listbtm {
+  -webkit-box-shadow: 0 3px 6px rgba(255, 63, 69, 0.17);
+  -moz-box-shadow: 0 3px 6px rgba(255, 63, 69, 0.17);
+  box-shadow: 0 3px 6px rgba(255, 63, 69, 0.17);
+  height: 40px;
+  line-height: 40px;
 }
-.suwis-coupons-listbtm>div:nth-child(1){
+.suwis-coupons-listbtm > div:nth-child(1) {
   float: left;
   margin-left: 14px;
   font-size: 10px;
   color: #999;
 }
-.suwis-coupons-listbtm>div:nth-child(2){
+.suwis-coupons-listbtm > div:nth-child(2) {
   float: right;
   margin-right: 14px;
   font-size: 12px;
-  color: #E83F44
+  color: #e83f44;
 }
-.suwis-coupons-listbtm img{
+.suwis-coupons-listbtm img {
   width: 13px;
   vertical-align: middle;
   margin-top: -1px;
   margin-right: 5px;
 }
-.d-bgcolor{
-  background:#C9C8C8
+.d-bgcolor {
+  background: #c9c8c8;
 }
-.van-tabs__line{
+.van-tabs__line {
   width: 40px !important;
 }
 </style>

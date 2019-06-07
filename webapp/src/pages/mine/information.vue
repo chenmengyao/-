@@ -40,37 +40,37 @@
 
 <script>
 export default {
-  data(){
-    return{
-      content:'',
+  data() {
+    return {
+      content: '',
     }
   },
   mounted() {
     document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5')
-    	this.$axios.post('message/mymsg',{
-	  		}).then(res=>{
-          if(res.data&&res.data.data){
-            this.content=res.data.data
-          }
-        })
+    this.$axios.post('message/mymsg', {
+    }).then(res => {
+      if (res.data && res.data.data) {
+        this.content = res.data.data
+      }
+    })
   }
 }
 </script>
 
 <style lang="css" scoped>
- body {
-        background-color: red !important;
-    }
-.suwis-infor-tags{
+body {
+  background-color: red !important;
+}
+.suwis-infor-tags {
   line-height: 12px;
   padding: 1px 4px;
   font-size: 10px;
   color: #fff;
   border-radius: 6px;
-  background: #FF6468
+  background: #ff6468;
 }
-.suwis-infor-list{
-  border-bottom: 1px solid #EFEFEF;
+.suwis-infor-list {
+  border-bottom: 1px solid #efefef;
   display: flex;
   font-size: 16px;
   color: #333;
@@ -78,19 +78,19 @@ export default {
   padding: 0 35px 0 15px;
   line-height: 53px;
 }
-.suwis-infor-list>div{
+.suwis-infor-list > div {
   flex: 1;
   background: #fff !important;
 }
-.suwis-infor-list>div img{
+.suwis-infor-list > div img {
   vertical-align: middle;
   margin-top: -2px;
   margin-right: 8px;
 }
-.suwis-infor-list>div:nth-child(1){
+.suwis-infor-list > div:nth-child(1) {
   text-align: left;
 }
-.suwis-infor-list>div:nth-child(2){
+.suwis-infor-list > div:nth-child(2) {
   text-align: right;
 }
 </style>

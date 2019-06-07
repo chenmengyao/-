@@ -13,90 +13,92 @@
 </template>
 
 <script>
-	import Vue from 'vue'
+import Vue from 'vue'
 import { Toast } from 'vant';
 Vue.use(Toast);
 export default {
-  data(){
-    return{
-    	token:'', //token
-      contact_way:'', //联系方式
-      content:'', //详情内容
-      code:'', //状态码
-      msg	:'' //消息
+  data() {
+    return {
+      token: '', //token
+      contact_way: '', //联系方式
+      content: '', //详情内容
+      code: '', //状态码
+      msg: '' //消息
     }
   },
-  methods:{
-  	submit(){
-  		if(this.content==null || this.content==""){
-  			Toast("详情内容不能为空！！")
-  			return;
-  		}else if(this.contact_way==null || this.contact_way==""){
-  			Toast("联系方式不能为空！！")
-  			return;
-  		}else{
-  			this.$axios.post('message/feedback',{
-    		contact_way:this.contact_way,
-    		content:this.content
-    	}).then(res=>{
-				if(res.data.code==1){
-          this.contact_way="";
-					this.content="";
-					this.$router.push({path:'/mine/details'});
-				}
-    		Toast(res.data.msg);
-    	})
-  		}
-    	
+  methods: {
+    submit() {
+      if (this.content == null || this.content == "") {
+        Toast("详情内容不能为空！！")
+        return;
+      } else if (this.contact_way == null || this.contact_way == "") {
+        Toast("联系方式不能为空！！")
+        return;
+      } else {
+        this.$axios.post('message/feedback', {
+          contact_way: this.contact_way,
+          content: this.content
+        }).then(res => {
+          if (res.data.code == 1) {
+            this.contact_way = "";
+            this.content = "";
+            this.$router.push({ path: '/mine/details' });
+          }
+          Toast(res.data.msg);
+        })
+      }
+
     }
   }
 }
 </script>
 
 <style lang="css">
-	.suwis-feedback-con{
-		display: flex;
-		justify-content: center;
-    align-items: center;
-    font-size: 12px;
-    padding:21px 24px 13px 24px;
-    
-	}
-	.suwis-feedback-txt{
-		display: block;
-		background-color:#F5F5F5;
-		padding: 15px 18px;
-		border-radius: 4px;
-		height: 163px;
-		border: none;
-		flex: 1;
-		color: #999999;
-		resize:none;
-		
-	}
-	.suwis-feedback-inp{
-		flex: 1;
-		background-color: #F5F5F5;
-		border: none;
-		height: 40px;
-		color: #999999;
-		font-size: 12px;
-		padding-left: 18px;
-		border-radius: 4px; 
-	}
-	.suwis-feedback-con:nth-child(2) {
-		padding: 0px 24px;
-		
-	}
-	.suwis-feedback-con{
-		display: flex;
-	}
-	.van-button{
-		flex: 1;
-		height:45px;
-		background:linear-gradient(54deg,rgba(245,92,60,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
-		opacity:1;
-		border-radius:23px;
-		font-size: 16px;
-	}
+.suwis-feedback-con {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  padding: 21px 24px 13px 24px;
+}
+.suwis-feedback-txt {
+  display: block;
+  background-color: #f5f5f5;
+  padding: 15px 18px;
+  border-radius: 4px;
+  height: 163px;
+  border: none;
+  flex: 1;
+  color: #999999;
+  resize: none;
+}
+.suwis-feedback-inp {
+  flex: 1;
+  background-color: #f5f5f5;
+  border: none;
+  height: 40px;
+  color: #999999;
+  font-size: 12px;
+  padding-left: 18px;
+  border-radius: 4px;
+}
+.suwis-feedback-con:nth-child(2) {
+  padding: 0px 24px;
+}
+.suwis-feedback-con {
+  display: flex;
+}
+.van-button {
+  flex: 1;
+  height: 45px;
+  background: linear-gradient(
+    54deg,
+    rgba(245, 92, 60, 1) 0%,
+    rgba(246, 96, 62, 1) 17%,
+    rgba(221, 11, 17, 1) 100%
+  );
+  opacity: 1;
+  border-radius: 23px;
+  font-size: 16px;
+}
 </style>

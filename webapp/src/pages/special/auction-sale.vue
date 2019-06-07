@@ -1,7 +1,7 @@
 <template lang="html">
-  <div> 
+  <div id="auction"> 
     <div class="suwis-news-ban" style="height:27vw;overflow:hidden">
-      <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;text-align:center">
+      <van-swipe :autoplay="3000" indicator-color="#E83F44" style="width:100vw;text-align:center">
         <van-swipe-item v-for="item in banner">
            <div  v-lazy-container="{ selector: 'img' }">
             <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%"> 
@@ -49,80 +49,80 @@
 
 <script>
 
-function InitTime(endtime){
-    var dd,hh,mm,ss = null;
-    var time = parseInt(endtime*1000) - new Date().getTime();
-    if(Number(time)<=0){
-        return '结束'
-       
-    }else{
-        dd = Math.floor(time / 60 / 60 / 24);
-        hh = Math.floor((time / 60 / 60) % 24);
-        mm = Math.floor((time / 60) % 60);
-        ss = Math.floor(time  % 60);
-        if(mm<10&&ss<10){
-          var str ='0'+mm+'0'+ss;
-        }else if(mm<10){
-          var str ='0'+mm+ss;
-        }else if(ss<10){
-          var str =mm+'0'+ss;
-        }else{
-          var str=mm+''+ss
-        }
-        
-        return str;
+function InitTime(endtime) {
+  var dd, hh, mm, ss = null;
+  var time = parseInt(endtime * 1000) - new Date().getTime();
+  if (Number(time) <= 0) {
+    return '结束'
+
+  } else {
+    dd = Math.floor(time / 60 / 60 / 24);
+    hh = Math.floor((time / 60 / 60) % 24);
+    mm = Math.floor((time / 60) % 60);
+    ss = Math.floor(time % 60);
+    if (mm < 10 && ss < 10) {
+      var str = '0' + mm + '0' + ss;
+    } else if (mm < 10) {
+      var str = '0' + mm + ss;
+    } else if (ss < 10) {
+      var str = mm + '0' + ss;
+    } else {
+      var str = mm + '' + ss
     }
+
+    return str;
+  }
 }
 export default {
   data() {
     return {
-      flashList:[],
+      flashList: [],
       active: 'tab-container1',
-      pinkFont:true,
+      pinkFont: true,
       // 上拉刷新、下拉加载
       allLoaded: false, //如果为true,禁止上拉刷新
       autoFill: false, //取消自动填充，
       list: [],
-      banner:[],
-      page:1,
+      banner: [],
+      page: 1,
       loading: false,
       finished: false,
       error: false,
     }
   },
-  methods:{
+  methods: {
     loadlist() {
-         this.$axios.post('goods/lists',{
-           type:2,
-           page:1,
-           num:10
-          }).then(res => {
-            if (res.data.code === 1) {
-              if(res.data.data&&res.data.data.goods){
-                var list=res.data.data.goods
-                 list.map( (obj,index)=>{
-                    this.$set(
-                        obj,"endTime",InitTime(obj.activity_end_time)
-                    );
-                })
-                this.list=this.list.concat(list);
-                //  this.flashList=this.flashList.concat(res.data.data.goods)
-                if (this.page * 10 > res.data.data.total) this.finished = true
-              }
-            } else {
-                this.$toast(res.data.msg);
-            }
-            this.page++
-            this.loading = false
-          }).catch(() => {
-              this.error = true
-          })
-    },
-     getBanner(){
-      this.$axios.post('goods/goodsbanner',{
-        type:2,
+      this.$axios.post('goods/lists', {
+        type: 2,
+        page: 1,
+        num: 10
       }).then(res => {
-        this.banner=res.data.data
+        if (res.data.code === 1) {
+          if (res.data.data && res.data.data.goods) {
+            var list = res.data.data.goods
+            list.map((obj, index) => {
+              this.$set(
+                obj, "endTime", InitTime(obj.activity_end_time)
+              );
+            })
+            this.list = this.list.concat(list);
+            //  this.flashList=this.flashList.concat(res.data.data.goods)
+            if (this.page * 10 > res.data.data.total) this.finished = true
+          }
+        } else {
+          this.$toast(res.data.msg);
+        }
+        this.page++
+        this.loading = false
+      }).catch(() => {
+        this.error = true
+      })
+    },
+    getBanner() {
+      this.$axios.post('goods/goodsbanner', {
+        type: 2,
+      }).then(res => {
+        this.banner = res.data.data
       })
     }
   },
@@ -142,8 +142,8 @@ export default {
           // 按钮文字
           text: '分享',
           // 监听点击
-          onclick(){
-              
+          onclick() {
+
           }
         },
         // 右边图标
@@ -151,7 +151,7 @@ export default {
           // 按钮文字
           text: '竞拍规则',
           // 监听点击
-          onclick(){
+          onclick() {
             this.$router.push({ path: '/special/auctionrlue' })
           }
         }
@@ -171,41 +171,53 @@ export default {
     //     console.log(list )
     //     this.list = list;
     //   })
-        
-    },
-    mounted() {
-        setInterval( ()=> {
-            for (var key in this.list) {
-                var aaa = parseInt( this.list[key]["activity_end_time"] );
-                var bbb = new Date().getTime();
-                var rightTime = (aaa*1000) - bbb;
-                if (rightTime > 0) {
-                    var dd = Math.floor(rightTime / 1000 / 60 / 60 / 24);
-                    var hh = Math.floor((rightTime / 1000 / 60 / 60) % 24);
-                    var mm = Math.floor((rightTime / 1000 / 60) % 60);
-                    var ss = Math.floor((rightTime / 1000) % 60);
-                if(mm<10&&ss<10){
-                
-                  this.list[key]["endTime"] ='0'+mm+'0'+ss;
-                }else if(mm<10){
-                  this.list[key]["endTime"]='0'+mm+ss;
-                }else if(ss<10){
-                  this.list[key]["endTime"] =mm+'0'+ss;
-                }else{
-                  this.list[key]["endTime"]=mm+''+ss
-                }
-                }else{
-                  this.list[key]["endTime"]='结束'
-                }
-              
-            }
-        }, 1000);
- 
-    }
+
+  },
+  mounted() {
+    setInterval(() => {
+      for (var key in this.list) {
+        var aaa = parseInt(this.list[key]["activity_end_time"]);
+        var bbb = new Date().getTime();
+        var rightTime = (aaa * 1000) - bbb;
+        if (rightTime > 0) {
+          var dd = Math.floor(rightTime / 1000 / 60 / 60 / 24);
+          var hh = Math.floor((rightTime / 1000 / 60 / 60) % 24);
+          var mm = Math.floor((rightTime / 1000 / 60) % 60);
+          var ss = Math.floor((rightTime / 1000) % 60);
+          if (mm < 10 && ss < 10) {
+
+            this.list[key]["endTime"] = '0' + mm + '0' + ss;
+          } else if (mm < 10) {
+            this.list[key]["endTime"] = '0' + mm + ss;
+          } else if (ss < 10) {
+            this.list[key]["endTime"] = mm + '0' + ss;
+          } else {
+            this.list[key]["endTime"] = mm + '' + ss
+          }
+        } else {
+          this.list[key]["endTime"] = '结束'
+        }
+
+      }
+    }, 1000);
+
+  }
 }
 </script>
-
 <style lang="css">
+#auction .van-swipe__indicator {
+  background: #fff;
+  opacity: 1;
+}
+#auction .van-swipe {
+  border-radius: 4px;
+}
+#auction .van-swipe__indicators {
+  left: 85vw;
+}
+</style>
+
+<style lang="css" scoped>
 .suwis-news-ban {
   display: flex;
   padding: 15px;
@@ -228,10 +240,10 @@ export default {
 }
 .suwis-news-left {
   padding-left: 15px;
-  font-size: 14px
+  font-size: 14px;
 }
 .suwis-news-right {
-  max-width:140px;
+  max-width: 140px;
   /* min-width: 140px; */
   height: 140px;
   border-radius: 6px;
@@ -261,57 +273,67 @@ export default {
   height: 30px;
   margin-top: 8px;
 }
-.d-yuan-price{
+.d-yuan-price {
   text-decoration: line-through;
-  border-right: 1px solid #E6E6E6;
+  border-right: 1px solid #e6e6e6;
   padding-right: 5px;
 }
-.d-basis-price{
+.d-basis-price {
   font-size: 15px;
-  color: #E83F44;
-  padding:0 5px 0 3px;
+  color: #e83f44;
+  padding: 0 5px 0 3px;
 }
-.d-sale-btn{
+.d-sale-btn {
   padding: 0 5px;
   height: 30px;
   line-height: 30px;
   font-size: 14px;
   display: block;
-  border: 1px solid #E83F44;
-  border-radius:15px; 
-  color: #E83F44
+  border: 1px solid #e83f44;
+  border-radius: 15px;
+  color: #e83f44;
 }
-.d-tags{
-  color:#F0914B;border:1px solid #F0914B;font-size:6px;padding:2px 3px;border-top-right-radius:6px;border-bottom-left-radius:6px;
+.d-tags {
+  color: #f0914b;
+  border: 1px solid #f0914b;
+  font-size: 6px;
+  padding: 2px 3px;
+  border-top-right-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
-.suwis-current-price{
+.suwis-current-price {
   font-size: 12px;
   line-height: 13px;
   color: #666;
 }
-.suwis-current-pri{
-  color: #E83F44 ;
+.suwis-current-pri {
+  color: #e83f44;
   font-size: 15px !important;
 }
-.suwis-auction-date
-{
+.suwis-auction-date {
   font-size: 12px;
   line-height: 12px;
-  background-image: linear-gradient(to right , #FAA537, #F06B25);color:#fff;display:inline-block;width:12px;height:13px;text-align:center;border-radius:1px;
+  background-image: linear-gradient(to right, #faa537, #f06b25);
+  color: #fff;
+  display: inline-block;
+  width: 12px;
+  height: 13px;
+  text-align: center;
+  border-radius: 1px;
 }
-.suwis-auction-date:nth-child(2n){
-  margin-left: 3px
+.suwis-auction-date:nth-child(2n) {
+  margin-left: 3px;
 }
-.suwis-news-tips>div:nth-child(1){
-  margin-top:15px; 
+.suwis-news-tips > div:nth-child(1) {
+  margin-top: 15px;
 }
-.suwis-news-tips>div:nth-child(2){
-  margin-top:10px; 
+.suwis-news-tips > div:nth-child(2) {
+  margin-top: 10px;
 }
-.suwis-news-tips>div:nth-child(3){
-  margin-top:25px; 
+.suwis-news-tips > div:nth-child(3) {
+  margin-top: 25px;
 }
-.van-swipe__indicators{
+.van-swipe__indicators {
   left: none;
   right: 10px !important;
 }

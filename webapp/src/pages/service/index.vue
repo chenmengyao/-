@@ -78,183 +78,190 @@
 
 <script>
 import area from '../../assets/area.json'
-import { Cell, CellGroup, Popup, Field,  Area, Picker } from 'vant'
+import { Cell, CellGroup, Popup, Field, Area, Picker } from 'vant'
 export default {
   components: {
-      VanCell: Cell,
-      VanCellGroup: CellGroup,
-      VanPopup: Popup,
-      VanField: Field,
-      VanArea: Area,
-      VanPicker: Picker
+    VanCell: Cell,
+    VanCellGroup: CellGroup,
+    VanPopup: Popup,
+    VanField: Field,
+    VanArea: Area,
+    VanPicker: Picker
   },
-  data(){
+  data() {
     let self = this;
-    return{
-       error:false,
-       loading: false,
-       finished: true,
-       center: [121.59996, 31.197646],
-          lng:'',
-          lat: '',
-          loaded: false,
-          plugin: [{
-            pName: 'Geolocation',
-            events: {
-              init(o) {
-                // o 是高德地图定位插件实例
-                o.getCurrentPosition((status, result) => {
-                  console.log(result)
-                  if (result && result.position) {
-                    self.carmodel=result.addressComponent.city+''+result.addressComponent.district
-                    self.valueList=[{
-                      name:result.addressComponent.province
-                    },{
-                      name:result.addressComponent.city
-                    },{
-                      name:result.addressComponent.district
-                    }]
-                    self.lng = result.position.lng;
-                    self.lat = result.position.lat;
-                  }else{
-                    self.carmodel='武汉市'+''+'江夏区'
-                    self.lng = '30.60';
-                    self.lat ='114.30';
-                  }
-                });
+    return {
+      error: false,
+      loading: false,
+      finished: true,
+      center: [121.59996, 31.197646],
+      lng: '',
+      lat: '',
+      loaded: false,
+      plugin: [{
+        pName: 'Geolocation',
+        events: {
+          init(o) {
+            // o 是高德地图定位插件实例
+            o.getCurrentPosition((status, result) => {
+              console.log(result)
+              if (result && result.position) {
+                self.carmodel = result.addressComponent.city + '' + result.addressComponent.district
+                self.valueList = [{
+                  name: result.addressComponent.province
+                }, {
+                  name: result.addressComponent.city
+                }, {
+                  name: result.addressComponent.district
+                }]
+                self.lng = result.position.lng;
+                self.lat = result.position.lat;
+              } else {
+                self.carmodel = '武汉市' + '' + '江夏区'
+                self.lng = '30.60';
+                self.lat = '114.30';
               }
-            }
-          }],
-      areaList:area,
-      switchTabId:null,
-      isArea:true,
-      areaValue:'',
-      carmodel:'',
-      show:false,
-      cagetory:[],
-      convenient:[],
-      page:1,
-      keyword:'',
-      valueList:[]
+            });
+          }
+        }
+      }],
+      areaList: area,
+      switchTabId: null,
+      isArea: true,
+      areaValue: '',
+      carmodel: '',
+      show: false,
+      cagetory: [],
+      convenient: [],
+      page: 1,
+      keyword: '',
+      valueList: []
     }
   },
   watch: {
-      lat(val) {
-        this.finished=false
-      }
-    },
-  methods:{
+    lat(val) {
+      this.finished = false
+    }
+  },
+  methods: {
     //拨打电话
-    callPhone(tel){
-      window.location.href = 'tel://'+tel
+    callPhone(tel) {
+      window.location.href = 'tel://' + tel
     },
     //切换按钮
-    switchTab(id){
-      this.switchTabId=id
-      this.keyword=''
-      this.page=1
-      this.convenient=[]
-      this.finished=false
+    switchTab(id) {
+      this.switchTabId = id
+      this.keyword = ''
+      this.page = 1
+      this.convenient = []
+      this.finished = false
     },
     //关闭地址选择框
-    closeArea(){
-      this.isArea=false
+    closeArea() {
+      this.isArea = false
     },
     //确认选择的地址
-    confirmArea(){
-      console.log(this.areaValue,'areaValue')
+    confirmArea() {
+      console.log(this.areaValue, 'areaValue')
     },
-    onChange (picker, value, index) {
+    onChange(picker, value, index) {
       let areaName = ''
       for (var i = 1; i < value.length; i++) {
         areaName = areaName + value[i].name + ' '
       }
-      this.valueList=value
+      this.valueList = value
       this.carmodel = areaName
     },
-    goSearch(){
+    goSearch() {
       this.getData()
     },
-    	loadList(){
-        let pro='湖北省'
-        let city='武汉市'
-        let town='江夏区'
-        if(this.valueList.length){
-          pro=this.valueList[0].name
-          city=this.valueList[1].name
-          town=this.valueList[2].name
+    loadList() {
+      let pro = '湖北省'
+      let city = '武汉市'
+      let town = '江夏区'
+      if (this.valueList.length) {
+        pro = this.valueList[0].name
+        city = this.valueList[1].name
+        town = this.valueList[2].name
+      }
+      this.$axios.post('goods/convenient', {
+        category: this.switchTabId,
+        search: this.keyword,
+        page: this.page,
+        province: pro,
+        city: city,
+        area: town,
+        num: 10,
+        pointx: this.lat,
+        pointy: this.lng
+      }).then(res => {
+        if (res.data.code == 1) {
+          if (this.switchTabId == null) {
+            this.switchTabId = res.data.data.cagetory[0].id
+          }
+          this.cagetory = res.data.data.cagetory
+          this.convenient = this.convenient.concat(res.data.data.convenient)
+          if (this.page * 10 > res.data.data.total) this.finished = true
         }
-        this.$axios.post('goods/convenient',{
-          category:this.switchTabId,
-          search:this.keyword,
-          page:this.page,
-          province:pro,
-          city:city,
-          area:town,
-          num:10,
-          pointx:this.lat,
-          pointy:this.lng
-        }).then(res => {
-          	if(res.data.code==1){
-               if(this.switchTabId==null){
-                  this.switchTabId=res.data.data.cagetory[0].id
-                }
-                this.cagetory=res.data.data.cagetory
-                this.convenient=this.convenient.concat(res.data.data.convenient)
-                if (this.page * 10 >res.data.data.total) this.finished = true
-            }
-            this.page++
-            this.loading = false
-          
-        }).catch(()=>{
-	  			this.error = true
-	  		})
-	  	},
+        this.page++
+        this.loading = false
+
+      }).catch(() => {
+        this.error = true
+      })
+    },
   },
-  created(){
+  created() {
   }
 }
 </script>
 
 <style lang="css">
-.d-keyword{
+.d-keyword {
   height: 22px;
   width: 80px;
   border: none;
   font-size: 12px;
 }
-.suwis-service-search{
+.suwis-service-search {
   line-height: 40px;
   height: 40px;
   padding: 0 15px;
   margin-bottom: 10px;
-  border-bottom: 1px solid #EFEFEF
+  border-bottom: 1px solid #efefef;
 }
-.van-hairline--top-bottom::after{
-  border: none
+.van-hairline--top-bottom::after {
+  border: none;
 }
-.suwis-service-search>div:nth-child(1){
+.suwis-service-search > div:nth-child(1) {
   float: left;
 }
-.suwis-service-search>div:nth-child(2){
+.suwis-service-search > div:nth-child(2) {
   float: right;
   /* padding-top:7px; */
 }
-.suwis-right-con{
-  float:left;font-size:12px;color:#666;text-align:left
-}
-.suwis-con-icon{
-  width:14px;vertical-align: middle;margin-top:-2px;
-}
-.suwis-con-icon1{
-  height:15px;vertical-align: middle;margin-top:-2px;
-}
-.suwis-con{
-  margin-bottom:15px;
+.suwis-right-con {
+  float: left;
+  font-size: 12px;
+  color: #666;
   text-align: left;
 }
-.suwis-con-right>div:nth-child(1){
-   font-size: 14px;
+.suwis-con-icon {
+  width: 14px;
+  vertical-align: middle;
+  margin-top: -2px;
+}
+.suwis-con-icon1 {
+  height: 15px;
+  vertical-align: middle;
+  margin-top: -2px;
+}
+.suwis-con {
+  margin-bottom: 15px;
+  text-align: left;
+}
+.suwis-con-right > div:nth-child(1) {
+  font-size: 14px;
   line-height: 20px;
   color: #333;
   display: -webkit-box;
@@ -262,12 +269,12 @@ export default {
   -webkit-line-clamp: 2;
   overflow: hidden;
 }
-.suwis-con{
+.suwis-con {
   display: flex;
   padding: 0 15px;
 }
-.suwis-con-left{
-  flex:1;
+.suwis-con-left {
+  flex: 1;
   max-width: 100px;
   min-width: 100px;
   max-height: 100px;
@@ -275,27 +282,28 @@ export default {
   overflow: hidden;
   border-radius: 4px;
   -webkit-border-radius: 4px;
-  
 }
-.suwis-con-right{
+.suwis-con-right {
   flex: 1;
   padding-left: 15px;
 }
-.suwis-service-btn{
+.suwis-service-btn {
   list-style: none;
 }
 .suwis-service-btn {
-  padding:0 0 15px 15px;
+  padding: 0 0 15px 15px;
 }
-.suwis-service-btn ul li{
+.suwis-service-btn ul li {
   float: left;
   margin-top: 5px;
-  padding: 0 9px;line-height: 26px;font-size: 16px;
+  padding: 0 9px;
+  line-height: 26px;
+  font-size: 16px;
 }
-.d-btn-active{
-  background-image: linear-gradient(to right , #F06B25, #FAA537);
+.d-btn-active {
+  background-image: linear-gradient(to right, #f06b25, #faa537);
   color: #fff;
   border-radius: 13px;
-  -webkit-border-radius:13px;
+  -webkit-border-radius: 13px;
 }
 </style>

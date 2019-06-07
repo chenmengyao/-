@@ -1,7 +1,7 @@
 <template lang="html">
-  <div> 
+  <div id="clear"> 
     <div class="suwis-news-ban" style="height:27vw;overflow:hidden">
-      <van-swipe :autoplay="3000" indicator-color="white" style="width:100vw;text-align:center">
+      <van-swipe :autoplay="3000" indicator-color="#E83F44" style="width:100vw;text-align:center">
         <van-swipe-item v-for="item in banner">
            <div  v-lazy-container="{ selector: 'img' }">
               <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')"  style="width:100%"> 
@@ -104,22 +104,22 @@
 export default {
   data() {
     return {
-      clearList:[],
-      banner:[],
-      page:1,
+      clearList: [],
+      banner: [],
+      page: 1,
       list: [],
       loading: false,
       finished: false,
       error: false,
     }
   },
-  methods:{
+  methods: {
     // onLoad(){
     //  if(this.page<this.total){
     //     this.page++
     //     this.getClearList()
     //  }
-    
+
     // },
     // getClearList(){
     //   this.$axios.post('goods/lists',{
@@ -134,46 +134,57 @@ export default {
     //     }else{
     //        this.finished=false
     //     }
-        
+
     //   })
     // },
-     loadlist() {
-         this.$axios.post('goods/lists',{
-            type:4,
-            page:this.page,
-            num:10
-          }).then(res => {
-            if (res.data.code === 1) {
-            
-              if(res.data.data&&res.data.data.goods){
-                 this.clearList=this.clearList.concat(res.data.data.goods)
-                if (this.page * 10 > res.data.data.total) this.finished = true
-              }
-            } else {
-                this.$toast(res.data.msg);
-            }
-            this.page++
-            this.loading = false
-          }).catch(() => {
-              this.error = true
-          })
-    },
-     getBanner(){
-      this.$axios.post('goods/goodsbanner',{
-        type:4,
+    loadlist() {
+      this.$axios.post('goods/lists', {
+        type: 4,
+        page: this.page,
+        num: 10
       }).then(res => {
-        this.banner=res.data.data
+        if (res.data.code === 1) {
+
+          if (res.data.data && res.data.data.goods) {
+            this.clearList = this.clearList.concat(res.data.data.goods)
+            if (this.page * 10 > res.data.data.total) this.finished = true
+          }
+        } else {
+          this.$toast(res.data.msg);
+        }
+        this.page++
+        this.loading = false
+      }).catch(() => {
+        this.error = true
+      })
+    },
+    getBanner() {
+      this.$axios.post('goods/goodsbanner', {
+        type: 4,
+      }).then(res => {
+        this.banner = res.data.data
       })
     }
   },
-  created(){
+  created() {
     // this.getClearList() 
     this.getBanner()
   }
 }
 </script>
-
 <style lang="css">
+#clear .van-swipe__indicators {
+  left: 85vw;
+}
+#clear .van-swipe__indicator {
+  background: #fff;
+  opacity: 1;
+}
+#clear .van-swipe {
+  border-radius: 4px;
+}
+</style>
+<style lang="css" scoped>
 .suwis-news-ban {
   display: flex;
   padding: 15px;
@@ -199,15 +210,22 @@ export default {
 }
 .suwis-news-right {
   max-width: 80px;
+  min-width: 80px;
   /* min-width: 80px; */
-  height: 80px;
+  max-height: 80px;
+  min-width: 80px;
   border-radius: 5px;
   overflow: hidden;
+}
+.suwis-news-right img {
+  object-fit: cover;
+  width: 80px;
+  height: 80px;
 }
 .suwis-news-left > span {
   font-size: 14px;
   line-height: 20px;
-  height:40px;
+  height: 40px;
   color: #333;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -229,17 +247,17 @@ export default {
   height: 30px;
   margin-top: 8px;
 }
-.d-yuan-price{
+.d-yuan-price {
   text-decoration: line-through;
-  border-right: 1px solid #E6E6E6;
+  border-right: 1px solid #e6e6e6;
   padding-right: 5px;
 }
-.d-basis-price{
+.d-basis-price {
   font-size: 15px;
-  color: #E83F44;
-  padding:0 5px 0 3px;
+  color: #e83f44;
+  padding: 0 5px 0 3px;
 }
-.d-sale-btn img{
+.d-sale-btn img {
   /* padding: 0 4px;
   height: 30px;
   line-height: 30px;
@@ -251,14 +269,14 @@ export default {
   width: 66px;
   margin-top: 1px;
 }
-.d-tags{
+.d-tags {
   /* color:#F0914B;border:1px solid #F0914B;font-size:6px;padding:2px 3px;border-top-right-radius:6px;border-bottom-left-radius:6px; */
-  width:26px;
+  width: 26px;
   vertical-align: middle;
   margin-top: -2px;
   margin-left: 2px;
 }
-.van-swipe__indicators{
+.van-swipe__indicators {
   left: none;
   right: 10px !important;
 }

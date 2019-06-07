@@ -19,34 +19,34 @@
 
 <script>
 export default {
-  data(){
-    return{
-        newDateils:[],
-        text:[],
-        good:[]
+  data() {
+    return {
+      newDateils: [],
+      text: [],
+      good: []
     }
   },
   methods: {
     //获取资讯详情
-    getDetail(id){     
-      this.$axios.post('news/find',{
-        id:id
+    getDetail(id) {
+      this.$axios.post('news/find', {
+        id: id
       }).then(res => {
-        this.newDateils=res.data.data;
-        this.text=res.data.data.content.text
-        this.good=res.data.data.content.good
+        this.newDateils = res.data.data;
+        this.text = res.data.data.content.text
+        this.good = res.data.data.content.good
         try {
           plus.webview.currentWebview().setStyle({
             titleNView: {
               titleText: res.data.data.title
-          }
-        })
-      } catch (e) {}
-        })
+            }
+          })
+        } catch (e) { }
+      })
     }
   },
-  created(){
-    var id=this.$route.query.id
+  created() {
+    var id = this.$route.query.id
     this.getDetail(id)
   }
 }

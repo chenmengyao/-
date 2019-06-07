@@ -100,123 +100,128 @@
 
 <script>
 export default {
-  data(){
-    return{
-      detailContent:{
-        start_time:'1558252637',
-        end_time:'1558252637',
-        title:'端午节优惠券',
-        remark:'优惠券仅端午节三天使用',
-        sum:'100',
-        total:'满1000减100'
+  data() {
+    return {
+      detailContent: {
+        start_time: '1558252637',
+        end_time: '1558252637',
+        title: '端午节优惠券',
+        remark: '优惠券仅端午节三天使用',
+        sum: '100',
+        total: '满1000减100'
       }
     }
   },
-  methods:{
+  methods: {
 
   },
-   mounted() {
-     var id =this.$route.query.id
-     this.$axios.post('coupon/detail',{
-       id:id
-     }).then(res => {
-        //  this.detailContent=res.data.data
-      })
+  mounted() {
+    var id = this.$route.query.id
+    this.$axios.post('coupon/detail', {
+      id: id
+    }).then(res => {
+      //  this.detailContent=res.data.data
+    })
   }
 }
 </script>
 
 <style lang="css">
 .bg {
-        padding:5.5vw 5vw 8vw 5vw;
-        /* color: #fff; */
-        background: url("../../../assets/couponBg.png") no-repeat center bottom/cover;
-    }
-.d-stutas{
-  position:absolute;
-  left:23px;
+  padding: 5.5vw 5vw 8vw 5vw;
+  /* color: #fff; */
+  background: url("../../../assets/couponBg.png") no-repeat center bottom/cover;
+}
+.d-stutas {
+  position: absolute;
+  left: 23px;
   border-radius: 9px;
   -webkit-border-radius: 9px;
-  font-size:9px;
+  font-size: 9px;
   padding: 2px 6px;
-  top:12px;
-  }
-  .d-stutas1{
-    color: #E83F44;
-    border:1px solid #E83F44;
-  }
-  .d-stutas2{
-    border:1px solid #999;
-   color:rgba(153,153,153,1);
-  }
-  .d-btn{
-    background: #B4B4B4
-  }
-.suwis-btn{
+  top: 12px;
+}
+.d-stutas1 {
+  color: #e83f44;
+  border: 1px solid #e83f44;
+}
+.d-stutas2 {
+  border: 1px solid #999;
+  color: rgba(153, 153, 153, 1);
+}
+.d-btn {
+  background: #b4b4b4;
+}
+.suwis-btn {
   margin-top: 80px;
   margin-bottom: 25px;
-  width: 100%; 
+  width: 100%;
 }
-.suwis-btn>div{
+.suwis-btn > div {
   display: flex;
   margin: 0 26px;
   line-height: 45px;
   text-align: center;
-  background:linear-gradient(54deg,rgba(245,92,60,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
-  border-radius:25px;
-  color: #fff
+  background: linear-gradient(
+    54deg,
+    rgba(245, 92, 60, 1) 0%,
+    rgba(246, 96, 62, 1) 17%,
+    rgba(221, 11, 17, 1) 100%
+  );
+  border-radius: 25px;
+  color: #fff;
 }
- .suwis-conditions-left{
-    float: left;
-    margin-right: 5px;
- }
- .suwis-conditions-right{
-    float: left;
-    line-height: 23px;
- }
-  .suwis-conditions-right>div:nth-child(1){
-    margin-bottom: 13px;
-    color: #333;
-    font-size: 16px;
-  }
-   .suwis-conditions-right>div:nth-child(2){
-    margin-bottom: 16px;
-    font-size: 14px;
-    color: #666;
-  }
- .suwis-conditions{
-   text-align: left;
-    margin: 7px 0 0 0;
- }
- .d-circle{
-   margin-top: 8px;
-   width: 6px;
-   height: 6px;
-   background: #E83F44;
-   border-radius: 50%;
- }
- .d-cnt{
-   display: flex;
-    border-bottom: 1px solid #F5F5F5;
-    padding: 0 15px;
-    margin-bottom: 15px;
- }
- .d-cnt>div{
-   flex: 1
- }
- .suwis-conditions1{
-   display: flex
- }
- .suwis-conditions1>div:nth-child(1){
-   flex: 1;
-   max-width: 5px;
- }
- .suwis-conditions1>div:nth-child(2){
-   flex: 1;
-   line-height: 24px;
- }
- .d-status2{
-   color: #999;
-   border:1px solid #999 !important;
- }
+.suwis-conditions-left {
+  float: left;
+  margin-right: 5px;
+}
+.suwis-conditions-right {
+  float: left;
+  line-height: 23px;
+}
+.suwis-conditions-right > div:nth-child(1) {
+  margin-bottom: 13px;
+  color: #333;
+  font-size: 16px;
+}
+.suwis-conditions-right > div:nth-child(2) {
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #666;
+}
+.suwis-conditions {
+  text-align: left;
+  margin: 7px 0 0 0;
+}
+.d-circle {
+  margin-top: 8px;
+  width: 6px;
+  height: 6px;
+  background: #e83f44;
+  border-radius: 50%;
+}
+.d-cnt {
+  display: flex;
+  border-bottom: 1px solid #f5f5f5;
+  padding: 0 15px;
+  margin-bottom: 15px;
+}
+.d-cnt > div {
+  flex: 1;
+}
+.suwis-conditions1 {
+  display: flex;
+}
+.suwis-conditions1 > div:nth-child(1) {
+  flex: 1;
+  max-width: 5px;
+}
+.suwis-conditions1 > div:nth-child(2) {
+  flex: 1;
+  line-height: 24px;
+}
+.d-status2 {
+  color: #999;
+  border: 1px solid #999 !important;
+}
 </style>
