@@ -4,7 +4,7 @@
       <van-col v-for="nav in navlist" span="8" :class="{active:nav.selected}" @click.native="skip(nav)">{{nav.name}}</van-col>
     </van-row>
     <!--  -->
-    <van-swipe class="banner" ref="banner" :autoplay="3000" indicator-color="white">
+    <van-swipe class="banner" ref="banner" :autoplay="3000" indicator-color="#E83F44">
       <van-swipe-item>
         <img :src="details.img" alt="">
       </van-swipe-item>
@@ -12,6 +12,9 @@
         <img :src="item.img" alt="">
       </van-swipe-item>
     </van-swipe>
+    <!-- 状态条 -->
+    <good-status :details="details" :type="$route.query.type||''"></good-status>
+    <!-- 状态条 //-->
     <!--  -->
     <van-row>
       <van-col span="24" class="title">
@@ -208,10 +211,15 @@ import {
   Toast
 } from 'vant'
 import _ from 'lodash'
+// 商品状态条
+import goodStatus from './good-status'
 const $raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
   window.setTimeout(callback, 1000 / 60)
 }
 export default {
+  components: {
+    goodStatus
+  },
   data() {
     return {
       navlist: [{
@@ -529,6 +537,8 @@ export default {
         overflow: hidden;
         img {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     }
 
