@@ -11,6 +11,9 @@
                     <div class="desc-item" v-if="goods.header_two">{{goods.header_two}}</div>
                     <div class="desc-item" v-if="goods.header_three">{{goods.header_three}}</div>
                 </div>
+                <div class="tag-line">
+                    <span class="tag">7天无理由退款</span>
+                </div>
             </div>
             <div class="right">
                 <div class="price">￥{{goods.goods_price}}</div>
@@ -70,7 +73,18 @@
                 font-size: 10px;
                 line-height: 14px;
                 .desc-item {
-                    margin-left: 8px;
+                    margin: 0 4px
+                }
+            }
+            .tag-line {
+                color: #f0914b;
+                line-height: 1;
+                .tag {
+                    display: inline-block;
+                    padding: 3px 4px;
+                    background: rgba(240,145,75,.15);
+                    border-radius: 2px;
+                    font-size: 10px;
                 }
             }
         }

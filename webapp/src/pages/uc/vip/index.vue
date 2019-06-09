@@ -9,7 +9,7 @@
                         {{detail.name}}
                         <span class="level">
                             <img src="@/assets/myvip.png" alt="vip" class="vip">
-                            LV.{{detail.vip}}
+                            VIP
                         </span>
                     </div>
                     <div class="register-time">
@@ -17,7 +17,8 @@
                     </div>
                 </div>
             </div>
-            <div class="score-line">
+            <!-- 暂时隐藏 VIP升级条 -->
+            <!-- <div class="score-line">
                 <div class="progress-line">
                     <div class="progress" :style="{ width: location }"></div>
                     <div class="total-score" :style="{ left: location }">37500</div>
@@ -26,7 +27,8 @@
                     <span>LV.{{detail.vip}}</span>
                     <span>LV.{{detail.vip + 1}}</span>
                 </div>
-            </div>
+            </div> -->
+            <!-- 暂时隐藏 // -->
         </div>
 
         <ul class="illustration">

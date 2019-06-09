@@ -12,9 +12,9 @@
                 <div class="login-info">
                     <template v-if="logined">
                         {{user.nickname}}user
-                        <span class="level">
+                        <span class="level" v-if='user_type === 1'>
                             <img src="@/assets/myvip.png" alt="vip" class="vip">
-                            LV.{{user.vip}}
+                            VIP
                         </span>
                     </template>
                     <template v-else>
