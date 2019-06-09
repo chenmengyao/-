@@ -168,6 +168,14 @@ export default {
             background: transparent;
             padding-left: 0;
             width: 80vw;
+
+            .van-card__thumb {
+                img {
+                    width: 90px;
+                    height: 90px;
+                    object-fit: cover;
+                }
+            }
         }
     }
 
@@ -203,8 +211,8 @@ export default {
             color: $red;
         }
 
-        .sum{
-          font-size: 12px;
+        .sum {
+            font-size: 12px;
         }
     }
 
