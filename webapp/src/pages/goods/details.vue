@@ -21,22 +21,29 @@
         {{details.title}}
       </van-col>
     </van-row>
-    <van-row class="price">
-      <van-col>
-        <em class="gray">¥{{details.price_max}}</em><em>¥{{details.price_min}}</em>
-      </van-col>
-      <van-col>
-        <span>
-          {{details.sell}}人已付款
-        </span>
-      </van-col>
-    </van-row>
-    <van-row class="coupon">
-      <van-col span="24">
-        优惠券&nbsp;&nbsp;<span @click="couponsVisible=true" v-for="item in coupons" v-if="item.number_can>0&&item.sta==1">{{item.title}}</span>
-        <i v-if="coupons.length==0">暂无可用优惠券</i>
-      </van-col>
-    </van-row>
+    <template v-if="details.type!=2">
+      <van-row class="price" v-if="details.type!=4">
+        <van-col>
+          <em class="gray">¥{{details.price_max}}</em><em>¥{{details.price_min}}</em>
+        </van-col>
+        <van-col>
+          <span>
+            {{details.sell}}人已付款
+          </span>
+        </van-col>
+      </van-row>
+      <van-row class="coupon">
+        <van-col span="24">
+          优惠券&nbsp;&nbsp;<span @click="couponsVisible=true" v-for="item in coupons" v-if="item.number_can>0&&item.sta==1">{{item.title}}</span>
+          <i v-if="coupons.length==0">暂无可用优惠券</i>
+        </van-col>
+      </van-row>
+    </template>
+    <template v-else>
+      <van-row>
+        <van-col style="color:#E83F44;">*该商品最低出价{{details.auction_start_sum}}元</van-col>
+      </van-row>
+    </template>
     <van-cell class="interval" title="型号" is-link :value="current.selectedSkuComb.name" @click="showSku('hideSku')"/>
     <van-cell class="interval" title="店铺地址" :value="details.store&&details.store.site" />
     <van-cell title="运费"  :value="details.postage==0?'免邮':details.postage+'元'" />
@@ -172,34 +179,36 @@
         text="客服"
         @click.native="$router.push({path: '/mine/message/getsm', query: {store_id: $route.query.id}})"
       />
-      <van-goods-action-mini-btn
-        v-if="carNum>0"
-        :info="carNum"
-        icon="cart-o"
-        text="购物车"
-        @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
+      <template v-if="details.type!=2">
+        <van-goods-action-mini-btn
+          v-if="carNum>0"
+          :info="carNum"
+          icon="cart-o"
+          text="购物车"
+          @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
+        />
+        <van-goods-action-mini-btn
+          v-else
+          icon="cart-o"
+          text="购物车"
+          @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
+        />
+        <van-goods-action-big-btn
+          text="加入购物车"
+          @click.native="showSku('addcar')"
+        />
+      </template>
+      <van-goods-action-big-btn
+        v-if="details.type==2"
+        primary
+        text="立即出价"
+        @click.native="!current.selectedSkuComb.id?showSku('buy'):buy(current)"
       />
-      <van-goods-action-mini-btn
+      <van-goods-action-big-btn
         v-else
-        icon="cart-o"
-        text="购物车"
-        @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
-      />
-      <van-goods-action-big-btn
-        text="加入购物车"
-        @click.native="showSku('addcar')"
-      />
-      <van-goods-action-big-btn
-        v-if="!current.selectedSkuComb.id"
         primary
         text="立即购买"
-        @click.native="showSku('buy')"
-      />
-      <van-goods-action-big-btn
-        v-else
-        primary
-        text="立即购买"
-        @click.native="buy(current)"
+        @click.native="!current.selectedSkuComb.id?showSku('buy'):buy(current)"
       />
     </van-goods-action>
     <!-- 底部操作条 //-->
