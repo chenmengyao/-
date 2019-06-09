@@ -31,7 +31,7 @@
               </p>
           </div>
           <div class="suwis-news-right">
-            <router-link tag="div" to="{path: '/news/details', query: {id: item.id}}">
+            <router-link tag="div" :to="{path: '/news/details', query: {id: item.id}}">
               <img :src="item.content.good[0].img" width="100%" height="100%" style="object-fit:cover;">
             </router-link>
           </div>

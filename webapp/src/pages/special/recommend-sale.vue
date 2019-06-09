@@ -2,7 +2,7 @@
   <div id="rec">
     <div>
       <div class="suwis-recom-head">
-      <div style="background:#fff;display:flex;margin:0 15px;height:120px;border-radius: 4px;-webkit-border-radius:4px;">
+      <div style="background:#fff;display:flex;margin:0 10px;height:120px;border-radius: 4px;-webkit-border-radius:4px;">
           <span class="d-banntitle-left"><span><img src="../../assets/hIcon.png">为您挑选人间好物</span></span>
           <span class="d-banntitle-right">共<span>{{total}}</span>件商品</span>
       </div>
@@ -125,6 +125,9 @@ export default {
   background: #fff;
   opacity: 1;
 }
+#rec .van-swipe-item{
+  width: 100vw;
+}
 </style>
 
 <style lang="css" scoped>
@@ -142,9 +145,15 @@ export default {
   align-items: center;
   background: #fff;
 }
+.d-dt img{
+  object-fit: cover;
+  min-height: calc(50vw - 18px);
+  max-height: calc(50vw - 18px);
+  min-width: 100%;
+}
 .suwis-news-ban {
   display: flex;
-  padding: 0 20px;
+  padding: 0 15px;
   margin-top: -35px;
   padding-bottom: 10px;
 }
