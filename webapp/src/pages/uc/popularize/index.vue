@@ -29,7 +29,7 @@
                                             <img :src="item.sex | sexUrl" class="profile">
                                             <span class="name">{{item.nickname}}</span>
                                             <img src="@/assets/myvip.png" class="vip">
-                                            <span class="level">LV.{{item.vip}}</span>
+                                            <span class="level">VIP</span>
                                         </div>
                                         <div class="info">{{item.city || '---'}} / {{item.tel}}</div>
                                         <div class="date">{{item.time | dateFmt}}</div>

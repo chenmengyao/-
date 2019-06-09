@@ -9,7 +9,7 @@
                 </div>
                 <div class="level">
                     <img src="@/assets/myvip.png" class="vip">
-                    LV.{{user.vip}}
+                    VIP
                 </div>
             </div>
             <div class="sum-box">
@@ -185,6 +185,7 @@
             .vip {
                 width: 18px;
                 height: 16px;
+                margin-right: 4px;
             }
         }
         .sum-box {

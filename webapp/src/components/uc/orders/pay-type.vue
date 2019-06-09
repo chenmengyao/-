@@ -16,7 +16,7 @@
 						<img :src="pay.icon" class="pay-image">
 						{{pay.description}}支付
 					</span>
-					<span class="balance-sum">可用佣金{{balanceSum}}</span>
+					<span class="balance-sum" v-show="pay.id === 'balancepay'">可用佣金{{balanceSum}}</span>
 				</div>
 			</van-radio>
 		</van-radio-group>
