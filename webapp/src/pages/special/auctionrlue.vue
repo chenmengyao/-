@@ -25,5 +25,6 @@ export default {
 .suwis-auction-rule {
   padding: 15px;
   font-size: 14px;
+  padding-bottom: 60px;
 }
 </style>

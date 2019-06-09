@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-     <div style="display:flex;padding:0 16px;">
+     <div style="display:flex;padding:0 16px;padding-bottom:60px;">
        <div style="flex:1">
          <div style="padding:15px 0 9px 0">{{newDateils.title}}</div>
          <div style="color:#999;font-size:12px;">{{newDateils.time|dateFmt}}

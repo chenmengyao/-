@@ -62,6 +62,7 @@
          </div>
       </div>
     </van-list> -->
+  <div style="padding-bottom:60px;">
     <van-list
   v-model="loading"
   :finished="finished"
@@ -97,6 +98,7 @@
          
       </div>
 </van-list>
+</div>
   </div>
 </template>
 
