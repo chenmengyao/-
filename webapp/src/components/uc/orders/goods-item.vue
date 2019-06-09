@@ -11,7 +11,7 @@
                     <div class="desc-item" v-if="goods.header_two">{{goods.header_two}}</div>
                     <div class="desc-item" v-if="goods.header_three">{{goods.header_three}}</div>
                 </div>
-                <div class="tag-line">
+                <div class="tag-line" v-if="goods.is7 === 'true'">
                     <span class="tag">7天无理由退款</span>
                 </div>
             </div>
