@@ -9,6 +9,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@chenfengyuan/vue-countdown": "^1.1.2",
     "axios": "^0.18.0",
     "babel-plugin-import": "^1.11.0",
     "chart.js": "^2.8.0",

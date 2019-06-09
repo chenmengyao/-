@@ -4,7 +4,7 @@
     <template v-if="details.type==1">
       <dl>
         <dt>
-          底价<br>清仓
+          限时<br>抢购
         </dt>
         <dd>
           距离活动开启还剩&nbsp;&nbsp;
@@ -25,12 +25,15 @@
           <div class="price">
             <span>
               <i>当前价格：</i>
-              <em>¥49.9</em>
+              <em>¥{{details.price_max}}</em>
             </span>
-            <var>128次出价</var>
+            <var>{{details.price_count||0}}次出价</var>
           </div>
           <span class="time">
-            <img src="@/assets/details/timer.png" alt="">12:20:00
+            <img src="@/assets/details/timer.png" alt="">
+            <countdown :time="details.activity_end_time">
+              <template slot-scope="props"> {{ props.hours }} : {{ props.minutes }} : {{ props.seconds }}</template>
+            </countdown>
           </span>
         </dd>
       </dl>
@@ -56,10 +59,10 @@
         </dt>
         <dd>
           <span>
-            <i>¥59.9</i><em>¥49.9</em>
+            <i>¥{{details.price_max}}</i><em>¥{{details.price_min}}</em>
           </span>
           <span>
-            <img src="@/assets/details/timer.png" alt="">剩余123件
+            <img src="@/assets/details/timer.png" alt="">剩余{{details.inventory}}件
           </span>
         </dd>
       </dl>
