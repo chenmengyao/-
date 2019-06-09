@@ -1,24 +1,22 @@
 <template lang="html">
-  <div class="suwis-good-status" v-if="type" :class="type">
-    <!-- 底价清仓 -->
-    <template v-if="type=='clearance'">
+  <div class="suwis-good-status" v-if="details.type" :class="modules[details.type]">
+    <!-- 限时抢购 -->
+    <template v-if="details.type==1">
       <dl>
         <dt>
           底价<br>清仓
         </dt>
         <dd>
-          <span>
-            <i>¥59.9</i><em>¥49.9</em>
-          </span>
-          <span>
-            <img src="@/assets/details/timer.png" alt="">剩余123件
-          </span>
+          距离活动开启还剩&nbsp;&nbsp;
+          <i>12</i>:
+          <i>12</i>:
+          <i>01</i>
         </dd>
       </dl>
     </template>
-    <!-- 底价清仓 //-->
+    <!-- 限时抢购 //-->
     <!-- 竞拍捡漏 -->
-    <template v-if="type=='auction'">
+    <template v-if="details.type==2">
       <dl>
         <dt>
           竞拍<br>捡漏
@@ -38,42 +36,44 @@
       </dl>
     </template>
     <!-- 竞拍捡漏 //-->
-    <!-- 限时抢购 -->
-    <template v-if="type=='flash'">
-      <dl>
-        <dt>
-          底价<br>清仓
-        </dt>
-        <dd>
-          距离活动开启还剩&nbsp;&nbsp;
-          <i>12</i>:
-          <i>12</i>:
-          <i>01</i>
-        </dd>
-      </dl>
-    </template>
-    <!-- 限时抢购 //-->
     <!-- 好物推荐 -->
-    <template v-if="type=='recommend'">
+    <template v-if="details.type==3">
       <dl>
         <dt>
           好物<br>推荐
         </dt>
         <dd>
-          推荐指数 <van-rate v-model="test" color="#fff" void-color="#fff" :size="16" />
+          推荐指数 <van-rate v-model="details.star" color="#fff" void-color="#fff" :size="16" />
         </dd>
       </dl>
     </template>
     <!-- 好物推荐 //-->
+    <!-- 底价清仓 -->
+    <template v-if="details.type==4">
+      <dl>
+        <dt>
+          底价<br>清仓
+        </dt>
+        <dd>
+          <span>
+            <i>¥59.9</i><em>¥49.9</em>
+          </span>
+          <span>
+            <img src="@/assets/details/timer.png" alt="">剩余123件
+          </span>
+        </dd>
+      </dl>
+    </template>
+    <!-- 底价清仓 //-->
   </div>
 </template>
 
 <script>
 export default {
-  props: ['type'],
+  props: ['details'],
   data() {
     return {
-      test: 4
+      modules: ['', 'flash', 'auction', 'recommend', 'clearance']
     }
   }
 }
