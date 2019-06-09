@@ -50,6 +50,7 @@
             </div>
             <div>
               <!-- <div class="d-more" v-if="flashList[0].goods.length==0">暂无数据</div> -->
+              <div style="padding-bottom:60px;">
               <van-list
                 v-model="loading"
                 :finished="finished"
@@ -111,6 +112,7 @@
                   </div>
                 </div>
               </van-list>
+              </div>
             </div>
 
           </div>
@@ -153,6 +155,7 @@
           </div>
           <div>
             <!-- <div v-if="flashList[1].goods.length==0" class="d-more">暂无数据</div> -->
+            <div style="padding-bottom:60px;">
             <van-list
               v-model="loading"
               :finished="finished"
@@ -208,6 +211,7 @@
 
               </div>
             </van-list>
+            </div>
           </div>
         </van-tab>
         <van-tab>
@@ -247,6 +251,7 @@
           </div>
           <div>
             <!-- <div v-if="flashList[2].goods.length==0" class="d-more">暂无数据</div> -->
+            <div style="padding-bottom:60px;">
             <van-list
               v-model="loading"
               :finished="finished"
@@ -302,6 +307,7 @@
 
               </div>
             </van-list>
+            </div>
           </div>
         </van-tab>
         <van-tab>
@@ -341,6 +347,7 @@
           </div>
           <div>
             <!-- <div v-if="flashList[3].goods.length==0" class="d-more">暂无数据</div> -->
+            <div style="padding-bottom:60px;">
             <van-list
               v-model="loading"
               :finished="finished"
@@ -395,6 +402,7 @@
                 </div>
               </div>
             </van-list>
+            </div>
           </div>
         </van-tab>
         <van-tab>
@@ -434,6 +442,7 @@
           </div>
           <div>
             <!-- <div v-if="flashList[4].goods.length==0" class="d-more">暂无数据</div> -->
+            <div style="padding-bottom:60px;">
             <van-list
               v-model="loading"
               :finished="finished"
@@ -488,6 +497,7 @@
                 </div>
               </div>
             </van-list>
+            </div>
           </div>
         </van-tab>
       </van-tabs>

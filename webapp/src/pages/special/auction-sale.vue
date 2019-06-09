@@ -9,6 +9,7 @@
         </van-swipe-item>
       </van-swipe>
     </div>
+    <div style="padding-bottom:60px;">
      <van-list
   v-model="loading"
   :finished="finished"
@@ -44,6 +45,7 @@
          </div>
       </div>
 </van-list>
+</div>
   </div>
 </template>
 
