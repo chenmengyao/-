@@ -8,9 +8,9 @@
         </dt>
         <dd>
           距离活动开启还剩&nbsp;&nbsp;
-          <i>12</i>:
-          <i>12</i>:
-          <i>01</i>
+          <countdown :time="details.activity_end_time">
+            <template slot-scope="props"> <i>{{ props.hours }}</i> : <i>{{ props.minutes }}</i> : <i>{{ props.seconds }}</i></template>
+          </countdown>
         </dd>
       </dl>
     </template>
