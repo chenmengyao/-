@@ -41,7 +41,7 @@
     </template>
     <template v-else>
       <van-row>
-        <van-col style="color:#E83F44;">*该商品最低出价{{details.auction_start_sum}}元</van-col>
+        <van-col style="color:#E83F44;">*该商品最低出价{{details.stand[0].lowest_price}}元</van-col>
       </van-row>
     </template>
     <van-cell class="interval" title="型号" is-link :value="current.selectedSkuComb.name" @click="showSku('hideSku')"/>
@@ -217,281 +217,285 @@
 
 <script>
 import {
-  Toast
+	Toast
 } from 'vant'
 import _ from 'lodash'
 // 商品状态条
 import goodStatus from './good-status'
 const $raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
-  window.setTimeout(callback, 1000 / 60)
+	window.setTimeout(callback, 1000 / 60)
 }
 export default {
-  components: {
-    goodStatus
-  },
-  data() {
-    return {
-      navlist: [{
-        name: '商品',
-        key: 'good',
-        selected: true
-      }, {
-        name: '评论',
-        key: 'comment',
-        selected: false
-      }, {
-        name: '详情',
-        key: 'content',
-        selected: false
-      }],
-      timer: {},
-      lockscroll: false,
-      // 打开规格方式
-      actionType: '',
-      goodTabIdx: 0,
-      // 商品详情
-      details: {},
-      // 优惠券信息
-      coupons: [],
-      // 规格弹窗
-      skuVisible: false,
-      // 默认选中的sku，具体参考高级用法
-      initialSku: {
-        // 键：skuKeyStr（sku 组合列表中当前类目对应的 key 值）
-        // 值：skuValueId（规格值 id）
-        s1: '30349',
-        s2: '1193',
-        // 初始选中数量
-        selectedNum: 1
-      },
-      // 规格弹窗图片
-      skugoods: {
-        title: '',
-        picture: ''
-      },
-      // 规格对象
-      sku: {
-        // 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
-        // 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
-        tree: [],
-        // 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
-        list: [],
-        price: 0, // 默认价格（单位元）
-        stock_num: 0, // 商品总库存
-        collection_id: 2261, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
-        none_sku: false, // 是否无规格商品
-        messages: [],
-        hide_stock: false // 是否隐藏剩余库存
-      },
-      // 购物车数量
-      carNum: 0,
-      // 当前商品
-      current: {
-        selectedSkuComb: {
-          name: '请选择商品型号'
-        }
-      },
-      // 优惠券显示内容
-      couponsVisible: false,
-      shareVisible: false
-    }
-  },
-  created() {
-    this.getDetails()
-    this.getCoupons()
-    this.getCarList()
-    // 添加分享按钮
-    this.$store.commit('core/header', {
-      title: '商品详情',
-      buttons: {
-        right: {
-          fontSize: '27px',
-          text: '\ue655',
-          onclick: () => {
-            this.shareVisible = true
-          }
-        }
-      }
-    })
-  },
-  mounted() {
-    window.addEventListener('scroll', this.checkScroll, this)
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.checkScroll, this)
-  },
-  watch: {
-    // 监听详情变化
-    details(val) {
-      // 'header_two_label', 'header_three_label'
-      let keys = ['header_one_label']
-      for (let key of keys) {
-        if (val.stand.length == 0) break
-        if (val.stand[0][key] != '空' && val.stand[0][key]) {
-          this.sku.tree.push({
-            k: val.stand[0][key],
-            v: [],
-            k_s: 's1'
-          })
-        }
-      }
-      for (let item of val.stand) {
-        for (let idx in this.sku.tree) {
-          this.sku.tree[idx].v.push({
-            id: item.id,
-            name: item.header_one + ' ' + item.header_two,
-            imgUrl: item.img
-          })
-          this.sku.list.push({
-            id: this.details.id,
-            price: item.price * 100,
-            s1: item.id,
-            stock_num: item.count,
-            name: item.header_one + ' ' + item.header_two
-          })
-        }
-      }
-      // 设置价格
-      this.sku.price = this.details.price_min
-      this.sku.stock_num = this.details.inventory
-      this.skugoods.title = this.details.title
-      this.skugoods.picture = this.details.img
-    }
-  },
-  methods: {
-    // 跳转
-    skip(nav) {
-      if (this.lockscroll) return
-      this.lockscroll = true
-      this.scrollTo(this.$refs[nav.key])
-    },
-    // 滚动到相应位置
-    scrollTo(el) {
-      window.cancelAnimationFrame(this.timer)
-      let ot = el.offsetTop - 50
-      let sy = window.scrollY
-      let speed = 39
-      let distance = sy > ot ? sy - speed : sy + speed
-      if (distance >= ot - speed && distance <= ot) distance = ot
-      if (distance <= ot + speed && distance >= ot) distance = ot
-      window.scrollTo(0, distance)
-      if (sy != ot) {
-        this.timer = $raf(() => {
-          this.scrollTo(el)
-        })
-      }
-      this.unlockScroll()
-    },
-    unlockScroll: _.debounce(function() {
-      this.lockscroll = false
-    }, 186),
-    // 检查滚动
-    checkScroll() {
-      let sy = window.scrollY
-      let offsetTops = []
-      let idx = 0
-      for (let nav of this.navlist) {
-        nav.selected = false
-        offsetTops.push(this.$refs[nav.key].offsetTop - 51)
-      }
-      if (sy < offsetTops[1]) idx = 0
-      if (sy > offsetTops[1] && sy < offsetTops[2]) idx = 1
-      if (sy > offsetTops[2]) idx = 2
-      if (idx == 0) {
-        setTimeout(() => {
-          window.cancelAnimationFrame(this.timer)
-        }, 680)
-      }
-      this.navlist[idx].selected = true
-    },
-    // 获取详情
-    async getDetails() {
-      let res = await this.$axios.post('goods/find', {
-        id: this.$route.query.id
-      })
-      this.details = res.data.data || {}
-    },
-    // 获取优惠券详情
-    async getCoupons() {
-      let res = await this.$axios.post('goods/coupons', {
-        goods_id: this.$route.query.id
-      })
-      this.coupons = res.data.data || []
-    },
-    // 领取优惠券
-    async receiveCoupon(item) {
-      let res = await this.$axios.post('goods/getcoupon', {
-        coupon_id: item.id
-      })
-      if (res.data.code == 1) {
-        Toast('领取成功')
-      } else {
-        Toast(res.data.msg)
-      }
-      this.couponsVisible = false
-    },
-    // 显示商品规格
-    showSku(type) {
-      // 检查登录状态
-      if (!this.$store.getters['core/logined']) {
-        Toast('请您先登录')
-        this.$router.push('/login')
-        return
-      }
-      this.skuVisible = true
-      this.actionType = type
-    },
-    // 关闭规格弹窗
-    hideSku(evt) {
-      this.skuVisible = false
-      // 设置当前型号
-      this.current = evt
-    },
-    // 购买前
-    async skuConfirm(evt) {
-      this[this.actionType](evt)
-    },
-    // 购买
-    async buy(evt) {
-      this.$router.push({
-        path: '/uc/orders/confirm-order',
-        query: {
-          stand_id: evt.selectedSkuComb.s1,
-          num: evt.selectedNum
-        }
-      })
-    },
-    // 添加购物车
-    async addcar(evt) {
-      let res = await this.$axios.post('car/add', {
-        stand_id: evt.selectedSkuComb.s1,
-        num: evt.selectedNum,
-        goods_id: this.$route.query.id,
-        store_id: this.details.store.id
-      })
-      if (res.data.code == 1) {
-        Toast('添加购物车成功')
-        this.hideSku(evt)
-        // 刷新购物车数量
-        this.getCarList()
-      } else {
-        Toast(res.data.msg)
-      }
-    },
-    // 获取购物车数量
-    async getCarList(evt) {
-      let res = await this.$axios.post('car/list')
-      // 购物车数量
-      let shops = res.data.data || {}
-      this.carNum = 0
-      for (let key in shops) {
-        let shop = shops[key]
-        for (let good of shop.goods) {
-          this.carNum += 1
-        }
-      }
-    }
-  }
+	components: {
+		goodStatus
+	},
+	data() {
+		return {
+			navlist: [{
+				name: '商品',
+				key: 'good',
+				selected: true
+			}, {
+				name: '评论',
+				key: 'comment',
+				selected: false
+			}, {
+				name: '详情',
+				key: 'content',
+				selected: false
+			}],
+			timer: {},
+			lockscroll: false,
+			// 打开规格方式
+			actionType: '',
+			goodTabIdx: 0,
+			// 商品详情
+			details: {},
+			// 优惠券信息
+			coupons: [],
+			// 规格弹窗
+			skuVisible: false,
+			// 默认选中的sku，具体参考高级用法
+			initialSku: {
+				// 键：skuKeyStr（sku 组合列表中当前类目对应的 key 值）
+				// 值：skuValueId（规格值 id）
+				s1: '30349',
+				s2: '1193',
+				// 初始选中数量
+				selectedNum: 1
+			},
+			// 规格弹窗图片
+			skugoods: {
+				title: '',
+				picture: ''
+			},
+			// 规格对象
+			sku: {
+				// 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
+				// 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
+				tree: [],
+				// 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
+				list: [],
+				price: 0, // 默认价格（单位元）
+				stock_num: 0, // 商品总库存
+				collection_id: 0, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
+				none_sku: false, // 是否无规格商品
+				messages: [],
+				hide_stock: false // 是否隐藏剩余库存
+			},
+			// 购物车数量
+			carNum: 0,
+			// 当前商品
+			current: {
+				selectedSkuComb: {
+					name: '请选择商品型号'
+				}
+			},
+			// 优惠券显示内容
+			couponsVisible: false,
+			shareVisible: false
+		}
+	},
+	created() {
+		this.getDetails()
+		this.getCoupons()
+		this.getCarList()
+		// 添加分享按钮
+		this.$store.commit('core/header', {
+			title: '商品详情',
+			buttons: {
+				right: {
+					fontSize: '27px',
+					text: '\ue655',
+					onclick: () => {
+						this.shareVisible = true
+					}
+				}
+			}
+		})
+	},
+	mounted() {
+		window.addEventListener('scroll', this.checkScroll, this)
+	},
+	beforeDestroy() {
+		window.removeEventListener('scroll', this.checkScroll, this)
+	},
+	watch: {
+		// 监听详情变化
+		details(val) {
+			// 'header_two_label', 'header_three_label'
+			let keys = ['header_one_label']
+			for (let key of keys) {
+				if (val.stand.length == 0) break
+				if (val.stand[0][key] != '空' && val.stand[0][key]) {
+					this.sku.tree.push({
+						k: val.stand[0][key],
+						v: [],
+						k_s: 's1'
+					})
+				}
+			}
+			// 不同类型的商品价格字段
+			let priceKey = ['price', 'push_price', 'auction_price', 'price', 'clearance_price']
+			for (let item of val.stand) {
+				for (let idx in this.sku.tree) {
+					item.header_one ? '' : item.header_one = ''
+					item.header_two ? '' : item.header_two = ''
+					this.sku.tree[idx].v.push({
+						id: item.id,
+						name: item.header_one + ' ' + item.header_two,
+						imgUrl: item.img
+					})
+					this.sku.list.push({
+						id: this.details.id,
+						price: item[priceKey[val.type || 0]] * 100,
+						s1: item.id,
+						stock_num: item.count,
+						name: item.header_one + ' ' + item.header_two
+					})
+				}
+			}
+			// 设置价格
+			this.sku.price = this.details.price_min
+			this.sku.stock_num = this.details.inventory
+			this.skugoods.title = this.details.title
+			this.skugoods.picture = this.details.img
+		}
+	},
+	methods: {
+		// 跳转
+		skip(nav) {
+			if (this.lockscroll) return
+			this.lockscroll = true
+			this.scrollTo(this.$refs[nav.key])
+		},
+		// 滚动到相应位置
+		scrollTo(el) {
+			window.cancelAnimationFrame(this.timer)
+			let ot = el.offsetTop - 50
+			let sy = window.scrollY
+			let speed = 39
+			let distance = sy > ot ? sy - speed : sy + speed
+			if (distance >= ot - speed && distance <= ot) distance = ot
+			if (distance <= ot + speed && distance >= ot) distance = ot
+			window.scrollTo(0, distance)
+			if (sy != ot) {
+				this.timer = $raf(() => {
+					this.scrollTo(el)
+				})
+			}
+			this.unlockScroll()
+		},
+		unlockScroll: _.debounce(function() {
+			this.lockscroll = false
+		}, 186),
+		// 检查滚动
+		checkScroll() {
+			let sy = window.scrollY
+			let offsetTops = []
+			let idx = 0
+			for (let nav of this.navlist) {
+				nav.selected = false
+				offsetTops.push(this.$refs[nav.key].offsetTop - 51)
+			}
+			if (sy < offsetTops[1]) idx = 0
+			if (sy > offsetTops[1] && sy < offsetTops[2]) idx = 1
+			if (sy > offsetTops[2]) idx = 2
+			if (idx == 0) {
+				setTimeout(() => {
+					window.cancelAnimationFrame(this.timer)
+				}, 680)
+			}
+			this.navlist[idx].selected = true
+		},
+		// 获取详情
+		async getDetails() {
+			let res = await this.$axios.post('goods/find', {
+				id: this.$route.query.id
+			})
+			this.details = res.data.data || {}
+		},
+		// 获取优惠券详情
+		async getCoupons() {
+			let res = await this.$axios.post('goods/coupons', {
+				goods_id: this.$route.query.id
+			})
+			this.coupons = res.data.data || []
+		},
+		// 领取优惠券
+		async receiveCoupon(item) {
+			let res = await this.$axios.post('goods/getcoupon', {
+				coupon_id: item.id
+			})
+			if (res.data.code == 1) {
+				Toast('领取成功')
+			} else {
+				Toast(res.data.msg)
+			}
+			this.couponsVisible = false
+		},
+		// 显示商品规格
+		showSku(type) {
+			// 检查登录状态
+			if (!this.$store.getters['core/logined']) {
+				Toast('请您先登录')
+				this.$router.push('/login')
+				return
+			}
+			this.skuVisible = true
+			this.actionType = type
+		},
+		// 关闭规格弹窗
+		hideSku(evt) {
+			this.skuVisible = false
+			// 设置当前型号
+			this.current = evt
+		},
+		// 购买前
+		async skuConfirm(evt) {
+			this[this.actionType](evt)
+		},
+		// 购买
+		async buy(evt) {
+			this.$router.push({
+				path: '/uc/orders/confirm-order',
+				query: {
+					stand_id: evt.selectedSkuComb.s1,
+					num: evt.selectedNum
+				}
+			})
+		},
+		// 添加购物车
+		async addcar(evt) {
+			let res = await this.$axios.post('car/add', {
+				stand_id: evt.selectedSkuComb.s1,
+				num: evt.selectedNum,
+				goods_id: this.$route.query.id,
+				store_id: this.details.store.id
+			})
+			if (res.data.code == 1) {
+				Toast('添加购物车成功')
+				this.hideSku(evt)
+				// 刷新购物车数量
+				this.getCarList()
+			} else {
+				Toast(res.data.msg)
+			}
+		},
+		// 获取购物车数量
+		async getCarList(evt) {
+			let res = await this.$axios.post('car/list')
+			// 购物车数量
+			let shops = res.data.data || {}
+			this.carNum = 0
+			for (let key in shops) {
+				let shop = shops[key]
+				for (let good of shop.goods) {
+					this.carNum += 1
+				}
+			}
+		}
+	}
 }
 </script>
 <style lang="scss">
