@@ -1,120 +1,125 @@
 <template>
 <div class="suwis-index">
-  <van-swipe class="banner"
-    :autoplay="3000"
-    indicator-color="#E83F44">
-    <van-swipe-item v-for="item in banners">
-      <router-link :to="{ path: '/goods/details', query: {id: item.goods_id} }">
-        <img :src="item.img">
-        <!-- 临时占位 -->
-        <!-- <img src="images/index/banner_01.jpg"> -->
-      </router-link>
-    </van-swipe-item>
-  </van-swipe>
-  <!--  -->
-  <div class="menus">
-    <router-link to="/special/flash"
-      class="col">
-      <img src="@/assets/index/flash@3x.png"
-        alt="">
-      <span>限时抢购</span>
-    </router-link>
-    <router-link to="/special/clearance"
-      class="col">
-      <img src="@/assets/index/clearance@3x.png"
-        alt="">
-      <span>低价清仓</span>
-    </router-link>
-    <router-link to="/special/auction"
-      class="col">
-      <img src="@/assets/index/auction@3x.png"
-        alt="">
-      <span>竞拍捡漏</span>
-    </router-link>
-    <router-link to="/special/recommend"
-      class="col">
-      <img src="@/assets/index/recommend@3x.png"
-        alt="">
-      <span>好物推荐</span>
-    </router-link>
-    <router-link to="/service"
-      class="col">
-      <img src="@/assets/index/service@3x.png"
-        alt="">
-      <span>便民服务</span>
-    </router-link>
-  </div>
-  <!--  -->
-  <dl class="news">
-    <dt>
-      <router-link to="/news">
-        <img src="@/assets/index/news@3x.png"
-          alt="">
-      </router-link>
-    </dt>
-    <dd>
-      <van-row>
-        <van-col span="24"
-          v-for="(item,idx) in news"
-          v-if="idx<2">
-          <router-link :to="{ path: '/news/details', query: {id: item.id} }">
-            <img src="@/assets/index/now@3x.png">{{item.title}}
-          </router-link>
-        </van-col>
-      </van-row>
-    </dd>
-  </dl>
-  <!--  -->
-  <!--  -->
-  <h3 class="title">猜你喜欢</h3>
-  <good-list>
-    <good-item v-for="item in goods"
-      :img="item.img"
-      :title="item.title"
-      :price="item.price_min"
-      :sell="item.sell"
-      @click.native="$router.push({path:'/goods/details', query: {id: item.id}})">
-    </good-item>
-  </good-list>
-  <!--  -->
+	<van-swipe class="banner"
+	  :autoplay="3000"
+	  indicator-color="#E83F44">
+		<van-swipe-item v-for="item in banners">
+			<router-link :to="{ path: '/goods/details', query: {id: item.goods_id} }">
+				<img :src="item.img">
+				<!-- 临时占位 -->
+				<!-- <img src="images/index/banner_01.jpg"> -->
+			</router-link>
+		</van-swipe-item>
+	</van-swipe>
+	<!--  -->
+	<div class="menus">
+		<router-link to="/special/flash"
+		  class="col">
+			<img src="@/assets/index/flash@3x.png"
+			  alt="">
+			<span>限时抢购</span>
+		</router-link>
+		<router-link to="/special/clearance"
+		  class="col">
+			<img src="@/assets/index/clearance@3x.png"
+			  alt="">
+			<span>低价清仓</span>
+		</router-link>
+		<router-link to="/special/auction"
+		  class="col">
+			<img src="@/assets/index/auction@3x.png"
+			  alt="">
+			<span>竞拍捡漏</span>
+		</router-link>
+		<router-link to="/special/recommend"
+		  class="col">
+			<img src="@/assets/index/recommend@3x.png"
+			  alt="">
+			<span>好物推荐</span>
+		</router-link>
+		<router-link to="/service"
+		  class="col">
+			<img src="@/assets/index/service@3x.png"
+			  alt="">
+			<span>便民服务</span>
+		</router-link>
+	</div>
+	<!--  -->
+	<dl class="news">
+		<dt>
+			<router-link to="/news">
+				<img src="@/assets/index/news@3x.png"
+				  alt="">
+			</router-link>
+		</dt>
+		<dd>
+			<van-row>
+				<van-col span="24"
+				  v-for="(item,idx) in news"
+				  v-if="idx<2">
+					<router-link :to="{ path: '/news/details', query: {id: item.id} }">
+						<img src="@/assets/index/now@3x.png">{{item.title}}
+					</router-link>
+				</van-col>
+			</van-row>
+		</dd>
+	</dl>
+	<!--  -->
+	<!--  -->
+	<h3 class="title">猜你喜欢</h3>
+	<good-list>
+		<good-item v-for="item in goods"
+		  :img="item.img"
+		  :title="item.title"
+		  :price="item.price_min"
+		  :sell="item.sell"
+		  @click.native="$router.push({path:'/goods/details', query: {id: item.id}})">
+		</good-item>
+	</good-list>
+	<!--  -->
 </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      banners: [],
-      goods: [],
-      news: []
-    }
-  },
-  components: {},
-  created() {
-    this.getBanner()
-    this.getGoods()
-    this.getNews()
-  },
-  methods: {
-    // 获取banner
-    async getBanner() {
-      let res = await this.$axios.get('index/index')
-      res = res.data.data || {}
-      this.banners = res.banner || []
-    },
-    // 商品列表
-    async getGoods() {
-      let res = await this.$axios.get('index/goods')
-      res = res.data || {}
-      this.goods = res.data || []
-    },
-    // 新闻资讯
-    async getNews() {
-      let res = await this.$axios.get('index/news')
-      res = res.data || {}
-      this.news = res.data || []
-    }
-  }
+	data() {
+		return {
+			banners: [],
+			goods: [],
+			news: []
+		}
+	},
+	components: {},
+	created() {
+		this.getBanner()
+		this.getGoods()
+		this.getNews()
+		this.onPlusReady(() => {
+			this.$store.commit('core/header', {
+				title: '惠回来'
+			})
+		})
+	},
+	methods: {
+		// 获取banner
+		async getBanner() {
+			let res = await this.$axios.get('index/index')
+			res = res.data.data || {}
+			this.banners = res.banner || []
+		},
+		// 商品列表
+		async getGoods() {
+			let res = await this.$axios.get('index/goods')
+			res = res.data || {}
+			this.goods = res.data || []
+		},
+		// 新闻资讯
+		async getNews() {
+			let res = await this.$axios.get('index/news')
+			res = res.data || {}
+			this.news = res.data || []
+		}
+	}
 }
 </script>
 <style lang="scss" scoped>
