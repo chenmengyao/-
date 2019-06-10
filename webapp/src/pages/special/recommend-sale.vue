@@ -11,7 +11,9 @@
         <van-swipe :autoplay="3000" indicator-color="#E83F44" style="width:100vw;text-align:center">
           <van-swipe-item v-for="item in banner">
              <div  v-lazy-container="{ selector: 'img' }">
-            <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%;"> 
+               <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'recommend'}}">
+                <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%;"> 
+               </router-link>
             </div>
           </van-swipe-item>
         </van-swipe>
@@ -245,7 +247,7 @@ export default {
   -webkit-line-clamp: 2;
   overflow: hidden;
   margin: 5px 0;
-  height: 40px;
+  max-height: 40px;
 }
 .d-flex1 {
   display: flex;

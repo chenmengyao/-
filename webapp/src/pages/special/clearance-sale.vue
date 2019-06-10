@@ -4,7 +4,9 @@
       <van-swipe :autoplay="3000" indicator-color="#E83F44" style="width:100vw;text-align:center">
         <van-swipe-item v-for="item in banner">
            <div  v-lazy-container="{ selector: 'img' }">
+             <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'clearance'}}">
               <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')"  style="width:100%"> 
+            </router-link>
            </div>
         </van-swipe-item>
         
@@ -71,31 +73,29 @@
   :error.sync="error"
   @load="loadlist"
 >
-  <div class="suwis-news-list" v-for="(item,index) in clearList">
-    
+
+  <div v-for="(item,index) in clearList">
+    <router-link class="suwis-news-list" tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'clearance'}}">
          <div class="suwis-news-right">
-           <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'clearance'}}">
            <img :src="item.img" width="100%">
-           </router-link>
          </div>
          <div class="suwis-news-left">
-            <span><router-link tag="span" :to="{path: '/goods/details', query: {id: item.id,type:'clearance'}}">{{item.title}}</router-link></span>
+            <span>{{item.title}}</span>
             <div class='suwis-news-tips'>
               <span class='suwis-news-date'>
-                <span class="d-yuan-price">￥59.9</span>
-                <span class="d-basis-price">￥59.9</span>
+                <span class="d-yuan-price">￥{{item.price_max}}</span>
+                <span class="d-basis-price">￥{{item.price_min}}</span>
                 <img src="../../assets/clear.png" class="d-tags">
               </span>
               <span class='suwis-news-num'>
                 <span class="d-sale-btn">
-                  <router-link tag="span" :to="{path: '/goods/details', query: {id: item.id,type:'clearance'}}">
                    <img src="../../assets/gm.png">
-                   </router-link>
+                 
                 </span>
               </span>
             </div>
          </div>
-         
+        </router-link>
       </div>
 </van-list>
 </div>

@@ -4,7 +4,9 @@
       <van-swipe :autoplay="3000" indicator-color="#E83F44" style="width:100vw;text-align:center">
         <van-swipe-item v-for="item in banner">
           <div  v-lazy-container="{ selector: 'img' }">
-           <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%"> 
+            <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'news'}}">
+             <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%"> 
+            </router-link>
           </div>
         </van-swipe-item>
       </van-swipe>
@@ -19,23 +21,20 @@
   @load="loadlist"
 >
   <div>
-
-        <div class="suwis-news-list" v-for="item in newsList">
+      <div v-for="item in newsList">
+        <router-link class="suwis-news-list"  tag="div" :to="{path: '/news/details', query: {id: item.id}}">
           <div class="suwis-news-left">
-              <router-link tag="li" :to="{path: '/news/details', query: {id: item.id}}">
-                <span>{{item.title}}</span>
-              </router-link>
+              <span>{{item.title}}</span>
               <p class='suwis-news-tips'>
                 <span class='suwis-news-date'>{{item.time|dateFmt}}</span>
                 <span class='suwis-news-num'><img src="../../assets/slices.png" style="width:15px;"> {{item.clicks}}</span>
               </p>
           </div>
           <div class="suwis-news-right">
-            <router-link tag="div" :to="{path: '/news/details', query: {id: item.id}}">
-              <img :src="item.content.good[0].img" width="100%" height="100%" style="object-fit:cover;">
-            </router-link>
+            <img :src="item.content.good[0].img" width="100%" height="100%" style="object-fit:cover;">
           </div>
-        </div>
+        </router-link>
+      </div>
     </div>
 </van-list>
 </div>
