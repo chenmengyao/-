@@ -31,7 +31,7 @@
           </div>
           <span class="time">
             <img src="@/assets/details/timer.png" alt="">
-            <countdown :time="details.activity_end_time">
+            <countdown v-if="details.activity_end_time" :time="details.activity_end_time">
               <template slot-scope="props"> {{ props.hours }} : {{ props.minutes }} : {{ props.seconds }}</template>
             </countdown>
           </span>

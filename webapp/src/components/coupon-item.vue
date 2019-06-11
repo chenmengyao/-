@@ -1,6 +1,6 @@
 <template lang="html">
-  <div class="suwis-coupon-item" @click="click">
-    <dl :class="type=='1'?'bg':'bg1'">
+  <div class="suwis-coupon-item" :class="{invalid:type!=1}" @click="click">
+    <dl class="bg" :class="{invalid:type!=1}">
       <dt>
         <img class="money" src="@/assets/coupons/money@3x.png" alt="">
         <div>
@@ -17,8 +17,10 @@
         <img class="time" src="@/assets/coupons/time@3x.png" alt="">有效期至：{{time|dateFmt}}
       </dt>
       <dd>
-        <span :class="type=='1'?'btn':'btn1'">
-          {{btnText||'领取'}}
+        <span class="btn" :class="{invalid:type!=1}">
+          <slot name="btn-text">
+            {{btnText||'领取'}}
+          </slot>
         </span>
       </dd>
     </dl>
@@ -27,19 +29,19 @@
 
 <script>
 export default {
-	props: ['title', 'desc', 'price', 'time', 'btnText','type'],
-	methods: {
-		click() {
-			// 单击
-			this.$emit('click', {
-				title: this.title,
-				desc: this.desc,
-				price: this.price,
+  props: ['title', 'desc', 'price', 'time', 'btnText', 'type'],
+  methods: {
+    click() {
+      // 单击
+      this.$emit('click', {
+        title: this.title,
+        desc: this.desc,
+        price: this.price,
         time: this.time,
-        type:this.type
-			})
-		}
-	}
+        type: this.type
+      })
+    }
+  }
 }
 </script>
 
@@ -51,17 +53,19 @@ export default {
     border-radius: 4px;
     font-size: 12px;
 
+    &.invalid {
+        pointer-events: none;
+    }
+
     .bg {
         padding: 3vw 0 3vw 3vw;
         color: #fff;
         background: #fff url("./../assets/coupons/bg@3x.png") no-repeat center bottom/cover;
         line-height: 23px;
-    }
-    .bg1 {
-        padding: 3vw 0 3vw 3vw;
-        color: #fff;
-        background: #fff url("./../assets/coupons/gray.png") no-repeat center bottom/cover;
-        line-height: 23px;
+
+        &.invalid {
+            background: #fff url("./../assets/coupons/gray.png") no-repeat center bottom/cover;
+        }
     }
 
     dl {
@@ -108,9 +112,10 @@ export default {
         }
         .btn {
             color: rgba(232, 63, 68, 1);
-        }
-        .btn1 {
-            color: #999;
+
+            &.invalid {
+                color: #999;
+            }
         }
     }
 }

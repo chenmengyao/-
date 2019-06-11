@@ -165,8 +165,15 @@
         :desc="`满${item.total}减${item.sum}`"
         :price="item.sum"
         :time="item.end_time"
-        btn-text="领取"
+        :type="item.number_can>0&&Date.now()<item.end_time*1000?1:0"
         @click="receiveCoupon(item)">
+        <span slot="btn-text">
+          <template v-if="item.number_can<=0">已领取完</template>
+          <template v-else>
+            <template v-if="Date.now()>item.end_time*1000">已到期</template>
+          </template>
+          <template v-if="item.number_can>0&&Date.now()<item.end_time*1000">领取</template>
+        </span>
       </coupon-item>
     </coupon-list>
     <!-- 优惠券 -->
@@ -203,7 +210,7 @@
         v-if="details.type==2"
         primary
         text="立即出价"
-        @click.native="!current.selectedSkuComb.id?showSku('buy'):buy(current)"
+        @click.native="!current.selectedSkuComb.id?showSku('showKeyboard'):showKeyboard()"
       />
       <van-goods-action-big-btn
         v-else
@@ -213,6 +220,62 @@
       />
     </van-goods-action>
     <!-- 底部操作条 //-->
+    <van-actionsheet
+    	v-model="payTypeShow"
+      title="确认付款"
+    	class="suwis-pay-type"
+      :close-on-click-overlay="false">
+    	<van-cell-group>
+    		<van-cell title="请选择付款方式"></van-cell>
+    		<van-radio-group v-model="payType">
+    			<van-radio v-for="pay in typeList"
+    			  :name="pay.id"
+    			  :key="pay.id">
+    				<div class="paytype-check-line">
+    					<span class="option">
+    						<img :src="pay.icon" class="pay-image">
+    						{{pay.description}}支付
+    					</span>
+    					<span class="balance-sum" v-show="pay.id === 'balancepay'">可用佣金{{balanceSum}}</span>
+    				</div>
+    			</van-radio>
+    		</van-radio-group>
+    		<div class="paytype-button-line">
+    			<div class="deploy" @click="showPayboard">立即付款</div>
+    		</div>
+    	</van-cell-group>
+    </van-actionsheet>
+    <!--  -->
+    <div :class="{show:keyboardShow}" class="keyboard-text" @click.stop>
+      <van-field v-model="keyboardText" input-align="center" readonly placeholder="请输入出价价格" />
+    </div>
+    <van-number-keyboard
+      :show="keyboardShow"
+      extra-key="."
+      theme="custom"
+      close-button-text="确定"
+      @blur="keyboardShow = false"
+      @input="keyboardInput"
+      @delete="keyboardDelete"
+      @hide="choosePaytype"
+    />
+   </van-number-keyboard>
+   <van-actionsheet
+     title="请输入支付密码"
+     v-model="payboardShow"
+     :close-on-click-overlay="false"
+     @cancel="payboardShow = false">
+       <van-password-input :value="paypass"/>
+       <div class="link-line">
+           <router-link to="/resetpaypwd" class="forget-password">忘记支付密码？</router-link>
+       </div>
+       <van-number-keyboard
+           :show="true"
+           @input="passwordInput"
+           @delete="passwordDelete"
+       />
+   </van-actionsheet>
+   <!--  -->
   </div>
 </template>
 
@@ -223,12 +286,15 @@ import {
 import _ from 'lodash'
 // 商品状态条
 import goodStatus from './good-status'
+import payType from '@/components/uc/orders/pay-type'
 const $raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
   window.setTimeout(callback, 1000 / 60)
 }
+import md5 from 'md5'
 export default {
   components: {
-    goodStatus
+    goodStatus,
+    payType
   },
   data() {
     return {
@@ -292,9 +358,24 @@ export default {
           name: '请选择商品型号'
         }
       },
+      typeList: [{
+        id: 'balancepay',
+        description: '佣金余额',
+        icon: require('./../../assets/orders/score-pay@2x.png')
+      }],
       // 优惠券显示内容
+      keyboardText: '',
+      keyboardArray: [],
+      payType: '',
+      paypass: '',
+      paypassArray: [],
+      // 可用余额
+      balanceSum: 0,
       couponsVisible: false,
-      shareVisible: false
+      shareVisible: false,
+      payTypeShow: false,
+      keyboardShow: false,
+      payboardShow: false
     }
   },
   created() {
@@ -361,6 +442,18 @@ export default {
       this.sku.stock_num = this.details.inventory
       this.skugoods.title = this.details.title
       this.skugoods.picture = this.details.img
+    },
+    keyboardArray(val) {
+      this.keyboardText = val.join('')
+    },
+    paypassArray(val) {
+      this.paypass = val.join('')
+    },
+    payboardShow(val) {
+      if (val) this.paypassArray = []
+    },
+    keyboardShow(val) {
+      if (val) this.keyboardArray = []
     }
   },
   methods: {
@@ -449,12 +542,12 @@ export default {
     // 关闭规格弹窗
     hideSku(evt) {
       this.skuVisible = false
-      // 设置当前型号
-      this.current = evt
     },
     // 购买前
     async skuConfirm(evt) {
       this[this.actionType](evt)
+      // 设置当前型号
+      this.current = evt
     },
     // 购买
     async buy(evt) {
@@ -494,6 +587,64 @@ export default {
         for (let good of shop.goods) {
           this.carNum += 1
         }
+      }
+    },
+    // 显示输入弹窗
+    showKeyboard() {
+      this.skuVisible = false
+      this.keyboardShow = true
+      this.getBalance()
+    },
+    // 输入价格
+    keyboardInput(num) {
+      this.keyboardArray.push(num)
+    },
+    // 删除价格
+    keyboardDelete() {
+      this.keyboardArray.pop()
+    },
+    // 密码输入
+    passwordInput(num) {
+      this.paypassArray.push(num)
+      if (this.paypassArray.length == 6) {
+        this.payboardShow = false
+        setTimeout(() => {
+          this.auction()
+        }, 399)
+      }
+    },
+    // 密码删除
+    passwordDelete() {
+      this.paypassArray.pop()
+    },
+    // 选择支付方式
+    choosePaytype() {
+      this.payTypeShow = true
+    },
+    // 显示密码弹窗
+    showPayboard() {
+      this.payboardShow = true
+      this.payTypeShow = false
+    },
+    // 查询可用金额
+    async getBalance() {
+      // 查询可用佣金
+      let res = await this.$axios.post('/mine/mycommission')
+      this.balanceSum = res.data.data || 0
+    },
+    // 出价
+    async auction(evt) {
+      let res = await this.$axios.post('goods/auction', {
+        goods_id: this.current.goodsId,
+        stand_id: this.current.selectedSkuComb.s1,
+        pay_tpye: 'balancepay',
+        sum: this.keyboardText,
+        paypass: md5(this.paypass)
+      })
+      if (res.data.code == 1) {
+        Toast('出价成功')
+      } else {
+        Toast(res.data.msg)
       }
     }
   }
@@ -775,6 +926,73 @@ export default {
             height: 100%;
             left: 0;
             top: 2px;
+        }
+    }
+
+    .keyboard-text {
+        position: fixed;
+        left: 0;
+        width: 100vw;
+        bottom: 216px;
+        z-index: 9999;
+        background: #fff;
+        padding: 10px;
+        transform: translateY(280px);
+        transition: all 0.3s ease-out;
+
+        &.show {
+            transform: none;
+        }
+    }
+
+    .van-number-keyboard {
+        z-index: 9999 !important;
+    }
+    //
+    .paytype-check-line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        line-height: 50px;
+        .pay-image {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+        .balance-sum {
+            color: #f0914b;
+            font-size: 12px;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .paytype-button-line {
+        padding: 30px 26px 24px;
+        border-top: 1px solid #f5f5f5;
+        .deploy {
+            height: 45px;
+            margin: 0 auto;
+            background: linear-gradient(54deg,rgba(245,92,60,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 45px;
+            text-align: center;
+        }
+    }
+
+    .link-line {
+        margin: 0 20px 250px;
+        text-align: right;
+
+        a {
+            color: #f0914b;
+            position: relative;
+            top: 18px;
         }
     }
 
