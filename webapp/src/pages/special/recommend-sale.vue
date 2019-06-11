@@ -2,7 +2,7 @@
   <div id="rec">
     <div>
       <div class="suwis-recom-head">
-      <div style="background:#fff;display:flex;margin:0 15px;height:120px;border-radius: 4px;-webkit-border-radius:4px;">
+      <div style="background:#fff;display:flex;margin:0 10px;height:120px;border-radius: 4px;-webkit-border-radius:4px;">
           <span class="d-banntitle-left"><span><img src="../../assets/hIcon.png">为您挑选人间好物</span></span>
           <span class="d-banntitle-right">共<span>{{total}}</span>件商品</span>
       </div>
@@ -11,7 +11,9 @@
         <van-swipe :autoplay="3000" indicator-color="#E83F44" style="width:100vw;text-align:center">
           <van-swipe-item v-for="item in banner">
              <div  v-lazy-container="{ selector: 'img' }">
-            <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%;"> 
+               <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'recommend'}}">
+                <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%;"> 
+               </router-link>
             </div>
           </van-swipe-item>
         </van-swipe>
@@ -125,6 +127,9 @@ export default {
   background: #fff;
   opacity: 1;
 }
+#rec .van-swipe-item{
+  width: 100vw;
+}
 </style>
 
 <style lang="css" scoped>
@@ -142,9 +147,15 @@ export default {
   align-items: center;
   background: #fff;
 }
+.d-dt img{
+  object-fit: cover;
+  min-height: calc(50vw - 18px);
+  max-height: calc(50vw - 18px);
+  min-width: 100%;
+}
 .suwis-news-ban {
   display: flex;
-  padding: 0 20px;
+  padding: 0 15px;
   margin-top: -35px;
   padding-bottom: 10px;
 }
@@ -236,7 +247,7 @@ export default {
   -webkit-line-clamp: 2;
   overflow: hidden;
   margin: 5px 0;
-  height: 40px;
+  max-height: 40px;
 }
 .d-flex1 {
   display: flex;

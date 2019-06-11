@@ -22,7 +22,10 @@
             @click="getNumber('0')"
           >
             <div class="suwis-tab-title">14:00</div>
-            <div class="suwis-tab-title1">抢购中</div>
+            <div class="suwis-tab-title1">
+              <span v-if="flashList[0].goods.length">抢购中</span>
+              <span v-else>等待中</span>
+            </div>
           </div>
           <div>
             <div>
@@ -37,12 +40,14 @@
                 >
                   <van-swipe-item v-for="item in banner">
                     <div v-lazy-container="{ selector: 'img' }">
-                      <img
+                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
+                       <img
                         :data-src="item.img"
                         :data-error="require('../../assets/more.jpg')"
                         :data-loading="require('../../assets/loading_alpha.png')"
                         style="width:100%;height:27vw;"
-                      >
+                       >
+                      </router-link>
                     </div>
                   </van-swipe-item>
                 </van-swipe>
@@ -141,12 +146,14 @@
                 >
                   <van-swipe-item v-for="item in banner">
                     <div v-lazy-container="{ selector: 'img' }">
-                      <img
+                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
+                       <img
                         :data-src="item.img"
                         :data-error="require('../../assets/more.jpg')"
                         :data-loading="require('../../assets/loading_alpha.png')"
                         style="width:100%;height:27vw;"
-                      >
+                       >
+                      </router-link>
                     </div>
                   </van-swipe-item>
                 </van-swipe>
@@ -237,12 +244,14 @@
                 >
                   <van-swipe-item v-for="item in banner">
                     <div v-lazy-container="{ selector: 'img' }">
-                      <img
+                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
+                       <img
                         :data-src="item.img"
                         :data-error="require('../../assets/more.jpg')"
                         :data-loading="require('../../assets/loading_alpha.png')"
                         style="width:100%;height:27vw;"
-                      >
+                       >
+                      </router-link>
                     </div>
                   </van-swipe-item>
                 </van-swipe>
@@ -333,12 +342,14 @@
                 >
                   <van-swipe-item v-for="item in banner">
                     <div v-lazy-container="{ selector: 'img' }">
-                      <img
+                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
+                       <img
                         :data-src="item.img"
                         :data-error="require('../../assets/more.jpg')"
                         :data-loading="require('../../assets/loading_alpha.png')"
                         style="width:100%;height:27vw;"
-                      >
+                       >
+                      </router-link>
                     </div>
                   </van-swipe-item>
                 </van-swipe>
@@ -428,12 +439,14 @@
                 >
                   <van-swipe-item v-for="item in banner">
                     <div v-lazy-container="{ selector: 'img' }">
-                      <img
+                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
+                       <img
                         :data-src="item.img"
                         :data-error="require('../../assets/more.jpg')"
                         :data-loading="require('../../assets/loading_alpha.png')"
                         style="width:100%;height:27vw;"
-                      >
+                       >
+                      </router-link>
                     </div>
                   </van-swipe-item>
                 </van-swipe>

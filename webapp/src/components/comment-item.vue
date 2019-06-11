@@ -8,8 +8,8 @@
         <span>
           <slot name="name">{{name}}</slot><br>
           <van-rate
-            v-model="star"
-            disabled
+            v-model="score"
+            readonly
             :size="12"
             color="#f44"
             void-icon="star"
@@ -39,7 +39,7 @@ import {
   ImagePreview
 } from 'vant'
 export default {
-  props: ['name', 'date', 'avatar', 'content', 'medias', 'star'],
+  props: ['name', 'date', 'avatar', 'content', 'medias', 'score'],
   watch: {
     medias(val) {}
   },

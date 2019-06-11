@@ -4,7 +4,9 @@
       <van-swipe :autoplay="3000" indicator-color="#E83F44" style="width:100vw;text-align:center">
         <van-swipe-item v-for="item in banner">
            <div  v-lazy-container="{ selector: 'img' }">
-            <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%">
+              <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'auction'}}">
+                <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%">
+              </router-link>
           </div>
         </van-swipe-item>
       </van-swipe>
@@ -28,7 +30,7 @@
              <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'auction'}}">
             <div>{{item.title}}</div>
             <div class='suwis-news-tips'>
-               <div><span class="suwis-current-price">当前价 : </span><span class="suwis-current-pri">￥{{item.price_max}}</span></div>
+               <div><span class="suwis-current-price">当前价 : </span><span class="suwis-current-pri">￥{{item.price_min}}</span></div>
                <div>
                   <span class="suwis-current-price">距离结束仅剩下 </span>
                   <span v-if="item.endTime=='结束'">{{item.endTime}}</span>
@@ -139,19 +141,6 @@ export default {
       title: '竞拍捡漏',
       // 按钮组
       buttons: {
-        // 左边按钮配置
-        left: {
-          // 字号
-          fontSize: '27px',
-          // 字体路径
-          fontSrc: '_www/fonts/iconfont.ttf',
-          // 按钮文字
-          text: '分享',
-          // 监听点击
-          onclick() {
-
-          }
-        },
         // 右边图标
         right: {
           // 按钮文字

@@ -41,7 +41,7 @@
     </template>
     <template v-else>
       <van-row>
-        <van-col style="color:#E83F44;">*该商品最低出价{{details.auction_start_sum}}元</van-col>
+        <van-col style="color:#E83F44;">*该商品最低出价{{details.stand[0].lowest_price}}元</van-col>
       </van-row>
     </template>
     <van-cell class="interval" title="型号" is-link :value="current.selectedSkuComb.name" @click="showSku('hideSku')"/>
@@ -53,16 +53,17 @@
     <!-- 评论 -->
     <van-cell ref="comment" class="interval comment">
       <span slot="title">评价（{{details.evaluate_count}}）</span>
-      <span>好评率&nbsp;<em>0%</em></span>
+      <span>好评率&nbsp;<em>{{details.feedback}}%</em></span>
     </van-cell>
     <comment-list v-if="details.evaluate">
       <comment-item v-for="(item,idx) in details.evaluate"
         v-if="idx<3"
-        name="橘猫****到我家"
-        date="2019-03-01 12:01"
-        avatar="touiocn.png"
-        content="拿到手了，拿着不错，蛮透明，贴合度也高，摄像头的位置刚刚好。"
-        :medias="['images/details/media.jpg','images/details/media.jpg','images/details/media.jpg','images/details/media.jpg','images/details/media.jpg']">
+        :name="item.nickname"
+        :date="$moment(item.evaluate_time).format('YYYY-mm-DD HH:MM:SS')"
+        :avatar="item.photo"
+        :score="((item.evaluate_express + item.evaluate_serve + item.evaluate_quality) / 15) * 5"
+        :content="item.evaluate"
+        :medias="item.evaluate_img||[]">
       </comment-item>
       <van-row v-if="details.evaluate.length==0" type="flex" align="center" justify="center">
         <van-col style="color:#999999;">
@@ -71,7 +72,7 @@
       </van-row>
     </comment-list>
     <!-- 评论 //-->
-    <router-link v-if="details.evaluate&&details.evaluate.length>3" class="comment-more" :to="{ path: '/', params: {} }">查看更多评价<img src="@/assets/details/more@3x.png" alt=""></router-link>
+    <router-link v-if="details.evaluate&&details.evaluate.length>3" class="comment-more" :to="{ path: '/goods/comment-list', query: {id: details.id} }">查看更多评价<img src="@/assets/details/more@3x.png" alt=""></router-link>
     <!-- 店铺详情 -->
     <div ref="content">
       <van-tabs class="good-tabs" v-model="goodTabIdx">
@@ -278,7 +279,7 @@ export default {
         list: [],
         price: 0, // 默认价格（单位元）
         stock_num: 0, // 商品总库存
-        collection_id: 2261, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
+        collection_id: 0, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
         none_sku: false, // 是否无规格商品
         messages: [],
         hide_stock: false // 是否隐藏剩余库存
@@ -335,8 +336,12 @@ export default {
           })
         }
       }
+      // 不同类型的商品价格字段
+      let priceKey = ['price', 'push_price', 'auction_price', 'price', 'clearance_price']
       for (let item of val.stand) {
         for (let idx in this.sku.tree) {
+          item.header_one ? '' : item.header_one = ''
+          item.header_two ? '' : item.header_two = ''
           this.sku.tree[idx].v.push({
             id: item.id,
             name: item.header_one + ' ' + item.header_two,
@@ -344,7 +349,7 @@ export default {
           })
           this.sku.list.push({
             id: this.details.id,
-            price: item.price * 100,
+            price: item[priceKey[val.type || 0]] * 100,
             s1: item.id,
             stock_num: item.count,
             name: item.header_one + ' ' + item.header_two
