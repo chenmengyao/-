@@ -149,7 +149,8 @@
       :title="coupon.title"
       :desc="`满${coupon.total}元即可使用`"
       :price="coupon.sum"
-      :time="coupon.end_time | dateFmt"
+      :time="coupon.end_time"
+      type="1"
       btn-text="使用"
       @click="onCouponClick(coupon)">
     </couponItem>
@@ -386,7 +387,7 @@ export default {
           num: this.num,
           coupon_id: this.useCoupon ? this.coupon.id : undefined,
           is_vip: this.useDiscount ? 1 : undefined,
-          score_sum: this.useScore ? this.score : undefined,
+          is_score: this.useScore ? this.score : undefined,
           address_id: this.address_id,
           express_remark: this.express_remark
         }
@@ -396,7 +397,7 @@ export default {
           car_id: this.car_id,
           coupon_id: this.useCoupon ? this.coupon.id : undefined,
           is_vip: this.useDiscount ? 1 : undefined,
-          score_sum: this.useScore ? this.score : undefined,
+          is_score: this.useScore ? this.score : undefined,
           address_id: this.address_id,
           express_remark: this.express_remark
         }

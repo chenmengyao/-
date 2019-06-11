@@ -20,7 +20,7 @@
                                 <ButtonLine
                                     :button-list="order[0].sta | buttonList"
                                     :order-id="order[0].id"
-                                    :order-numer="+order[0].number"
+                                    :order-numer="order[0].number"
                                     @on-click="onButtonClick"></ButtonLine>
                             </template>
                         </OrderCard>
@@ -212,10 +212,10 @@
             onButtonClick(key, orderId, orderNumer) {
                 switch (key) {
                     case 'cancel':
-                        this.cancelOrder(orderId)
+                        this.cancelOrder(orderNumer)
                         break
                     case 'pay':
-                        this.payOrder(orderNumer)
+                        this.payOrder(orderId, orderNumer)
                         break
                     case 'logistics':
                         this.checkLogistics(orderId)
@@ -284,14 +284,14 @@
             onPasswordDelete() {
                 this.password = this.password.slice(0, this.password.length - 1);
             },
-            cancelOrder(orderId) {
+            cancelOrder(orderNumer) {
                 this.$dialog.confirm({
                     title: '取消订单',
                     message: '该订单还未付款，您确定要取消吗？'
                 }).then(() => {
                     this.$axios
                         .post('/order/cancel', {
-                            number: orderId
+                            number: orderNumer
                         })
                         .then(({ data }) => {
                             if (data.code === 1) {
@@ -312,11 +312,28 @@
                     }
                 })
             },
-            payOrder(orderNumer) {
-                this.getBalance()
-                this.payTypeShow = true
-                this.passwordModalType = 'pay'
-                this.currentOrderNumber = orderNumer
+            async payOrder(orderId, orderNumer) {
+                const { data } = await this.$axios.post('/order/combination', { order: orderNumer })
+                if (data.data === 1) { // 是组合订单
+                    this.$dialog
+                    .confirm({
+                        title: '订单支付确认',
+                        message: '该订单是组合订单,确认一起支付吗?'
+                    })
+                    .then(() => {
+                        this.$router.push({
+                            path: '/uc/orders/details',
+                            query: {id: orderId}
+                        })
+                    })
+                } else if (data.data === 2) { // 不是组合订单
+                    this.getBalance()
+                    this.payTypeShow = true
+                    this.passwordModalType = 'pay'
+                    this.currentOrderNumber = orderNumer
+                }
+                
+                
             },
             refundOrder(orderId) {
                 this.$router.push({
@@ -372,7 +389,7 @@
             }
         },
         created() {
-            // this.activeTabIndex = this.$route.query.activeTabIndex || 0
+            this.activeTabIndex = this.$route.query.activeTabIndex || 0
             this.sta = this.tabList[this.activeTabIndex].sta
         }
     }

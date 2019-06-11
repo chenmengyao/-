@@ -18,7 +18,7 @@
         props: {
             buttonList: Array,
             orderId: Number,
-            orderNumer: Number,
+            orderNumer: [String, Number],
         },
         methods: {
             onClick(key) {

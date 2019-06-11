@@ -255,7 +255,7 @@
             onClickGoods(goods) {
                 this.$router.push({
                     path: '/goods/details',
-                    query: {id: goods.id}
+                    query: {id: goods.goods_id}
                 })
             },
             onClickStore(store) {
