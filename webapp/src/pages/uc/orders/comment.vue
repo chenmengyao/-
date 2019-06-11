@@ -4,7 +4,7 @@
             <SimpleGood
                 :name="detail.goods_name"
                 :desc="[detail.header_one, detail.header_two, detail.header_three]"
-                :store-logo="detail.store_logo"
+                :store-logo="detail.goods_img"
             ></SimpleGood>
             <ul class="comment-list">
                 <li class="comment-item">
