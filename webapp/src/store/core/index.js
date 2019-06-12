@@ -41,12 +41,13 @@ export default {
     // 头部状态修改
     header(state, params) {
       state.routerUpdateTime = Date.now()
-      let left = (params.buttons && params.buttons.left) || {
+      let left = _.defaultsDeep(params.buttons && params.buttons.left ? { ...params.buttons.left
+      } : {}, {
         float: 'left',
         fontSize: '27px',
         fontSrc: '_www/fonts/iconfont.ttf',
         text: '\ue6b6'
-      }
+      })
       left.onclick = `javascript:plus.webview.currentWebview().evalJS('headerLeftClick("${params.title}");')`
       let right = _.defaultsDeep(params.buttons && params.buttons.right ? { ...params.buttons.right
       } : {}, {
