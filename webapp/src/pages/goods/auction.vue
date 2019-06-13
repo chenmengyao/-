@@ -9,7 +9,7 @@
     <van-goods-action-big-btn
       primary
       text="立即出价"
-      @click.native="!current.selectedSkuComb.id?showSku('showKeyboard'):showKeyboard()"
+      @click.native="!current.selectedSkuComb.id?$parent.showSku('showKeyboard'):showKeyboard()"
     />
   </van-goods-action>
   <!--  -->
@@ -59,22 +59,123 @@
    v-model="payboardShow"
    :close-on-click-overlay="false"
    @cancel="payboardShow = false">
-     <van-password-input :value="paypass"/>
-     <div class="link-line">
-         <router-link to="/resetpaypwd" class="forget-password">忘记支付密码？</router-link>
-     </div>
-     <van-number-keyboard
-         :show="true"
-         @input="passwordInput"
-         @delete="passwordDelete"
-     />
+   <van-password-input :value="paypass"/>
+   <div class="link-line">
+       <router-link to="/resetpaypwd" class="forget-password">忘记支付密码？</router-link>
+   </div>
+   <van-number-keyboard
+       :show="true"
+       @input="passwordInput"
+       @delete="passwordDelete"
+   />
  </van-actionsheet>
 </div>
 </template>
 
 <script>
-export default {}
+export default {
+  props: ['details', 'current'],
+  data() {
+    return {
+      typeList: [{
+        id: 'balancepay',
+        description: '佣金余额',
+        icon: require('./../../assets/orders/score-pay@2x.png')
+      }],
+      // 优惠券显示内容
+      keyboardText: '',
+      keyboardArray: [],
+      payType: '',
+      paypass: '',
+      paypassArray: [],
+      // 可用余额
+      balanceSum: 0,
+      payTypeShow: false,
+      keyboardShow: false,
+      payboardShow: false
+    }
+  },
+  watch: {
+    keyboardArray(val) {
+      this.keyboardText = val.join('')
+    },
+    paypassArray(val) {
+      this.paypass = val.join('')
+    },
+    payboardShow(val) {
+      if (val) this.paypassArray = []
+    },
+    keyboardShow(val) {
+      if (val) this.keyboardArray = []
+    }
+  },
+  methods: {
+    // 显示输入弹窗
+    showKeyboard() {
+      this.skuVisible = false
+      this.keyboardShow = true
+      this.getBalance()
+    },
+    // 输入价格
+    keyboardInput(num) {
+      this.keyboardArray.push(num)
+    },
+    // 删除价格
+    keyboardDelete() {
+      this.keyboardArray.pop()
+    },
+    // 密码输入
+    passwordInput(num) {
+      this.paypassArray.push(num)
+      if (this.paypassArray.length == 6) {
+        this.payboardShow = false
+        setTimeout(() => {
+          this.auction()
+        }, 399)
+      }
+    },
+    // 密码删除
+    passwordDelete() {
+      this.paypassArray.pop()
+    },
+    // 选择支付方式
+    choosePaytype() {
+      this.payTypeShow = true
+    },
+    // 显示密码弹窗
+    showPayboard() {
+      this.payboardShow = true
+      this.payTypeShow = false
+    },
+    // 查询可用金额
+    async getBalance() {
+      // 查询可用佣金
+      let res = await this.$axios.post('/mine/mycommission')
+      this.balanceSum = res.data.data || 0
+    },
+    // 出价
+    async auction(evt) {
+      let res = await this.$axios.post('goods/auction', {
+        goods_id: this.current.goodsId,
+        stand_id: this.current.selectedSkuComb.s1,
+        pay_tpye: 'balancepay',
+        sum: this.keyboardText,
+        paypass: md5(this.paypass)
+      })
+      if (res.data.code == 1) {
+        Toast('出价成功')
+      } else {
+        Toast(res.data.msg)
+      }
+    }
+  }
+}
 </script>
 
 <style lang="scss">
+.suwis-auction {
+    position: absolute;
+    z-index: 999;
+    left: 0;
+}
 </style>

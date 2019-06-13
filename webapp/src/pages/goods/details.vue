@@ -211,7 +211,7 @@
       />
     </van-goods-action>
     <!-- 竞拍 -->
-    <auction v-else></auction>
+    <auction v-else :details="details" :current="current"></auction>
    <!--  -->
   </div>
 </template>
@@ -295,24 +295,8 @@ export default {
           name: '请选择商品型号'
         }
       },
-      typeList: [{
-        id: 'balancepay',
-        description: '佣金余额',
-        icon: require('./../../assets/orders/score-pay@2x.png')
-      }],
-      // 优惠券显示内容
-      keyboardText: '',
-      keyboardArray: [],
-      payType: '',
-      paypass: '',
-      paypassArray: [],
-      // 可用余额
-      balanceSum: 0,
       couponsVisible: false,
-      shareVisible: false,
-      payTypeShow: false,
-      keyboardShow: false,
-      payboardShow: false
+      shareVisible: false
     }
   },
   created() {
@@ -379,18 +363,6 @@ export default {
       this.sku.stock_num = this.details.inventory
       this.skugoods.title = this.details.title
       this.skugoods.picture = this.details.img
-    },
-    keyboardArray(val) {
-      this.keyboardText = val.join('')
-    },
-    paypassArray(val) {
-      this.paypass = val.join('')
-    },
-    payboardShow(val) {
-      if (val) this.paypassArray = []
-    },
-    keyboardShow(val) {
-      if (val) this.keyboardArray = []
     }
   },
   methods: {
@@ -524,64 +496,6 @@ export default {
         for (let good of shop.goods) {
           this.carNum += 1
         }
-      }
-    },
-    // 显示输入弹窗
-    showKeyboard() {
-      this.skuVisible = false
-      this.keyboardShow = true
-      this.getBalance()
-    },
-    // 输入价格
-    keyboardInput(num) {
-      this.keyboardArray.push(num)
-    },
-    // 删除价格
-    keyboardDelete() {
-      this.keyboardArray.pop()
-    },
-    // 密码输入
-    passwordInput(num) {
-      this.paypassArray.push(num)
-      if (this.paypassArray.length == 6) {
-        this.payboardShow = false
-        setTimeout(() => {
-          this.auction()
-        }, 399)
-      }
-    },
-    // 密码删除
-    passwordDelete() {
-      this.paypassArray.pop()
-    },
-    // 选择支付方式
-    choosePaytype() {
-      this.payTypeShow = true
-    },
-    // 显示密码弹窗
-    showPayboard() {
-      this.payboardShow = true
-      this.payTypeShow = false
-    },
-    // 查询可用金额
-    async getBalance() {
-      // 查询可用佣金
-      let res = await this.$axios.post('/mine/mycommission')
-      this.balanceSum = res.data.data || 0
-    },
-    // 出价
-    async auction(evt) {
-      let res = await this.$axios.post('goods/auction', {
-        goods_id: this.current.goodsId,
-        stand_id: this.current.selectedSkuComb.s1,
-        pay_tpye: 'balancepay',
-        sum: this.keyboardText,
-        paypass: md5(this.paypass)
-      })
-      if (res.data.code == 1) {
-        Toast('出价成功')
-      } else {
-        Toast(res.data.msg)
       }
     }
   }

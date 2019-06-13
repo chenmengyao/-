@@ -8,7 +8,7 @@
         </dt>
         <dd>
           距离活动开启还剩&nbsp;&nbsp;
-          <countdown :time="details.activity_end_time">
+          <countdown :time="Number(details.activity_end_time)">
             <template slot-scope="props"> <i>{{ props.hours }}</i> : <i>{{ props.minutes }}</i> : <i>{{ props.seconds }}</i></template>
           </countdown>
         </dd>
@@ -31,7 +31,7 @@
           </div>
           <span class="time">
             <img src="@/assets/details/timer.png" alt="">
-            <countdown v-if="details.activity_end_time" :time="details.activity_end_time">
+            <countdown v-if="details.activity_end_time" :time="Number(details.activity_end_time)">
               <template slot-scope="props"> {{ props.hours }} : {{ props.minutes }} : {{ props.seconds }}</template>
             </countdown>
           </span>
