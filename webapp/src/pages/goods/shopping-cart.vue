@@ -8,6 +8,7 @@
       </van-checkbox>
       <van-checkbox v-model="good.checked" v-for="good in shop.goods" @change="calcCheckNums">
         <van-card
+          @click.native.stop
           :price="good.price"
           :desc="good.header_one + ' ' + good.header_two"
           :title="good.title"
@@ -97,7 +98,7 @@ export default {
         for (let good of shop.goods) {
           if (good.checked) {
             this.selecteds.push(good.id)
-            this.total += good.price
+            this.total += good.price * good.num
           }
         }
       }

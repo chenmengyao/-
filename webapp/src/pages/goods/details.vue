@@ -181,100 +181,37 @@
     <share v-model="shareVisible"></share>
     <!-- 分享 //-->
     <!-- 底部操作条 -->
-    <van-goods-action>
+    <van-goods-action v-if="details.type!=2">
       <van-goods-action-mini-btn
         icon="chat-o"
         text="客服"
         @click.native="$router.push({path: '/mine/message/getsm', query: {store_id: $route.query.id}})"
       />
-      <template v-if="details.type!=2">
-        <van-goods-action-mini-btn
-          v-if="carNum>0"
-          :info="carNum"
-          icon="cart-o"
-          text="购物车"
-          @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
-        />
-        <van-goods-action-mini-btn
-          v-else
-          icon="cart-o"
-          text="购物车"
-          @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
-        />
-        <van-goods-action-big-btn
-          text="加入购物车"
-          @click.native="showSku('addcar')"
-        />
-      </template>
-      <van-goods-action-big-btn
-        v-if="details.type==2"
-        primary
-        text="立即出价"
-        @click.native="!current.selectedSkuComb.id?showSku('showKeyboard'):showKeyboard()"
+       <van-goods-action-mini-btn
+        v-if="carNum>0"
+        :info="carNum"
+        icon="cart-o"
+        text="购物车"
+        @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
+      />
+      <van-goods-action-mini-btn
+        v-else
+        icon="cart-o"
+        text="购物车"
+        @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
       />
       <van-goods-action-big-btn
-        v-else
+        text="加入购物车"
+        @click.native="showSku('addcar')"
+      />
+      <van-goods-action-big-btn
         primary
         text="立即购买"
         @click.native="!current.selectedSkuComb.id?showSku('buy'):buy(current)"
       />
     </van-goods-action>
-    <!-- 底部操作条 //-->
-    <van-actionsheet
-    	v-model="payTypeShow"
-      title="确认付款"
-    	class="suwis-pay-type"
-      :close-on-click-overlay="false">
-    	<van-cell-group>
-    		<van-cell title="请选择付款方式"></van-cell>
-    		<van-radio-group v-model="payType">
-    			<van-radio v-for="pay in typeList"
-    			  :name="pay.id"
-    			  :key="pay.id">
-    				<div class="paytype-check-line">
-    					<span class="option">
-    						<img :src="pay.icon" class="pay-image">
-    						{{pay.description}}支付
-    					</span>
-    					<span class="balance-sum" v-show="pay.id === 'balancepay'">可用佣金{{balanceSum}}</span>
-    				</div>
-    			</van-radio>
-    		</van-radio-group>
-    		<div class="paytype-button-line">
-    			<div class="deploy" @click="showPayboard">立即付款</div>
-    		</div>
-    	</van-cell-group>
-    </van-actionsheet>
-    <!--  -->
-    <div :class="{show:keyboardShow}" class="keyboard-text" @click.stop>
-      <van-field v-model="keyboardText" input-align="center" readonly placeholder="请输入出价价格" />
-    </div>
-    <van-number-keyboard
-      :show="keyboardShow"
-      extra-key="."
-      theme="custom"
-      close-button-text="确定"
-      @blur="keyboardShow = false"
-      @input="keyboardInput"
-      @delete="keyboardDelete"
-      @hide="choosePaytype"
-    />
-   </van-number-keyboard>
-   <van-actionsheet
-     title="请输入支付密码"
-     v-model="payboardShow"
-     :close-on-click-overlay="false"
-     @cancel="payboardShow = false">
-       <van-password-input :value="paypass"/>
-       <div class="link-line">
-           <router-link to="/resetpaypwd" class="forget-password">忘记支付密码？</router-link>
-       </div>
-       <van-number-keyboard
-           :show="true"
-           @input="passwordInput"
-           @delete="passwordDelete"
-       />
-   </van-actionsheet>
+    <!-- 竞拍 -->
+    <auction v-else></auction>
    <!--  -->
   </div>
 </template>
@@ -286,7 +223,7 @@ import {
 import _ from 'lodash'
 // 商品状态条
 import goodStatus from './good-status'
-import payType from '@/components/uc/orders/pay-type'
+import auction from './auction'
 const $raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
   window.setTimeout(callback, 1000 / 60)
 }
@@ -294,7 +231,7 @@ import md5 from 'md5'
 export default {
   components: {
     goodStatus,
-    payType
+    auction
   },
   data() {
     return {
