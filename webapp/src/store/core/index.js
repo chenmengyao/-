@@ -8,7 +8,8 @@ export default {
     // app状态
     app: {
       // 底部导航条是否显示
-      tabbarVisible: true
+      tabbarVisible: true,
+      headerVisible: true
     },
     // 头部状态
     header: {
@@ -37,6 +38,11 @@ export default {
     // 切换底部导航条
     toggleTabbar(state, params) {
       state.app.tabbarVisible = params
+    },
+    // 切换标题栏
+    toggleHeader(state, params) {
+      state.app.headerVisible = params
+      console.log(plus.webview.currentWebview(), 'current')
     },
     // 头部状态修改
     header(state, params) {

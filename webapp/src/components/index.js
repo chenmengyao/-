@@ -7,6 +7,7 @@ import commentList from './comment-list'
 import commentItem from './comment-item'
 import couponList from './coupon-list'
 import couponItem from './coupon-item'
+import barCode from './bar-code'
 // 商品列表
 Vue.component('tabbar', tabbar)
 Vue.component('share', share)
@@ -16,3 +17,4 @@ Vue.component('comment-list', commentList)
 Vue.component('comment-item', commentItem)
 Vue.component('coupon-list', couponList)
 Vue.component('coupon-item', couponItem)
+Vue.component('bar-code', barCode)

@@ -16,3 +16,4 @@
     -   [商品列表](components/good-list.md)
     -   [评论列表](components/comment-list.md)
     -   [优惠券列表](components/coupon-list.md)
+    -   [扫一扫组件](components/bar-code.md)
