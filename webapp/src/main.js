@@ -57,6 +57,25 @@ router.afterEach((to, from) => {
   })
   // 切换底部状态栏
   store.commit('core/toggleTabbar', hideTabbar)
+
+  //获取原始窗口的高度
+  setTimeout(() => {
+    // var originalHeight = window.innerHeight;
+    // window.onresize = function() {
+    //   //软键盘弹起与隐藏 都会引起窗口的高度发生变化
+    //   var resizeHeight = window.innerHeight;
+    //   if (resizeHeight * 1 < originalHeight * 1) {
+    //     //resizeHeight<originalHeight证明窗口被挤压了
+    //     plus.webview.currentWebview().setStyle({
+    //       height: resizeHeight
+    //     });
+    //   } else {
+    //     plus.webview.currentWebview().setStyle({
+    //       height: originalHeight
+    //     });
+    //   }
+    // }
+  }, 1000)
 })
 
 // 挂载到app变量上
