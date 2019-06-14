@@ -80,7 +80,7 @@ export default {
     async getList() {
       this.params.id = this.$route.query.id
       let res = await this.$axios.post('goods/comment', this.params)
-      this.list = res.data.data || []
+      this.list = res.data.data.comment || []
     }
   }
 }

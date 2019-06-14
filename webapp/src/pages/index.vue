@@ -23,7 +23,7 @@
 		  class="col">
 			<img src="@/assets/index/clearance@3x.png"
 			  alt="">
-			<span>低价清仓</span>
+			<span>底价清仓</span>
 		</router-link>
 		<router-link to="/special/auction"
 		  class="col">

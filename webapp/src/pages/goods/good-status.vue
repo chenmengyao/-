@@ -8,7 +8,7 @@
         </dt>
         <dd>
           距离活动开启还剩&nbsp;&nbsp;
-          <countdown :time="details.activity_end_time">
+          <countdown :time="Number(details.activity_end_time)">
             <template slot-scope="props"> <i>{{ props.hours }}</i> : <i>{{ props.minutes }}</i> : <i>{{ props.seconds }}</i></template>
           </countdown>
         </dd>
@@ -24,14 +24,14 @@
         <dd>
           <div class="price">
             <span>
-              <i>当前价格：</i>
+              <i>当前价格</i>
               <em>¥{{details.price_min}}</em>
             </span>
-            <var>{{details.price_count||0}}次出价</var>
+            &nbsp;&nbsp;&nbsp;&nbsp;<var>{{details.price_count||0}}次出价</var>
           </div>
           <span class="time">
             <img src="@/assets/details/timer.png" alt="">
-            <countdown v-if="details.activity_end_time" :time="details.activity_end_time">
+            <countdown v-if="details.activity_end_time" :time="Number(details.activity_end_time)">
               <template slot-scope="props"> {{ props.hours }} : {{ props.minutes }} : {{ props.seconds }}</template>
             </countdown>
           </span>

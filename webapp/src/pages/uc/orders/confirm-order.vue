@@ -205,7 +205,10 @@ export default {
   data() {
     return {
       address_id: '',
-      address: {},
+      address: {
+        name: '',
+        tel: ''
+      },
       balance_sum: 0, // 可用佣金
       car_id: '',
       couponList: [],
