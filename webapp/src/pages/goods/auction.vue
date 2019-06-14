@@ -40,20 +40,27 @@
     </van-cell-group>
   </van-actionsheet>
   <!--  -->
-  <div :class="{show:keyboardShow}" class="keyboard-text" @click.stop>
-    <van-field v-model="keyboardText" input-align="center" readonly placeholder="请输入出价价格" />
-  </div>
-  <van-number-keyboard
-    :show="keyboardShow"
-    extra-key="."
-    theme="custom"
-    close-button-text="确定"
-    @blur="keyboardShow = false"
-    @input="keyboardInput"
-    @delete="keyboardDelete"
-    @hide="choosePaytype"
-  />
- </van-number-keyboard>
+  <van-actionsheet
+    title="请输入支付密码"
+    v-model="keyboardShow"
+    :close-on-click-overlay="false"
+    @cancel="keyboardShow = false">
+    <div class="keyboard-text" @click.stop>
+      <van-field v-model="keyboardText" input-align="center" readonly placeholder="请输入出价价格" />
+    </div>
+    <van-number-keyboard
+      :show="true"
+      extra-key="."
+      theme="custom"
+      close-button-text="确定"
+      @blur="keyboardShow = false"
+      @input="keyboardInput"
+      @delete="keyboardDelete"
+      @hide="choosePaytype"
+    />
+   </van-number-keyboard>
+ </van-actionsheet>
+ <!--  -->
  <van-actionsheet
    title="请输入支付密码"
    v-model="payboardShow"

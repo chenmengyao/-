@@ -211,7 +211,7 @@
       />
     </van-goods-action>
     <!-- 竞拍 -->
-    <auction v-else :details="details" :current="current"></auction>
+    <auction v-else ref="auction" :details="details" :current="current"></auction>
    <!--  -->
   </div>
 </template>
@@ -497,6 +497,11 @@ export default {
           this.carNum += 1
         }
       }
+    },
+    // 显示出价
+    showKeyboard() {
+      //
+      this.$refs.auction.showKeyboard()
     }
   }
 }
