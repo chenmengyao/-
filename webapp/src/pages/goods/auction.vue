@@ -14,6 +14,7 @@
   </van-goods-action>
   <!--  -->
   <!-- 底部操作条 //-->
+  <!-- 请选择付款方式 -->
   <van-actionsheet
     v-model="payTypeShow"
     title="确认付款"
@@ -39,6 +40,7 @@
       </div>
     </van-cell-group>
   </van-actionsheet>
+  <!-- 请选择付款方式 //-->
   <!--  出价价格 -->
   <van-actionsheet
     title="请输入出价价格"
@@ -60,6 +62,7 @@
    </van-number-keyboard>
  </van-actionsheet>
  <!-- 出价价格 //-->
+ <!-- 请输入支付密码 -->
  <van-actionsheet
    title="请输入支付密码"
    v-model="payboardShow"
@@ -75,13 +78,14 @@
      @delete="passwordDelete"
    />
  </van-actionsheet>
+ <!-- 请输入支付密码 //-->
 </div>
 </template>
 
 <script>
 import md5 from 'md5'
 export default {
-  props: ['details', 'current'],
+  props: ['details', 'current', 'paydeposit'],
   data() {
     return {
       typeList: [{
@@ -123,8 +127,22 @@ export default {
   methods: {
     // 显示输入弹窗
     showKeyboard() {
-      this.keyboardShow = true
       this.getBalance()
+      // 是否已经交押金
+      if (this.paydeposit) {
+        this.keyboardShow = true
+      } else {
+        // 设置押金
+        this.keyboardText = this.details.stand[0].price
+        this.$dialog.alert({
+          title: '押金支付提示',
+          message: `您需要支付${this.keyboardText}元作为竟拍押金<br/>是否确认支付？`,
+          showCancelButton: true
+        }).then(() => {
+          // 支付押金
+          this.choosePaytype()
+        }).catch((e) => {})
+      }
     },
     // 输入价格
     keyboardInput(num) {
@@ -172,7 +190,25 @@ export default {
         paypass: md5(this.paypass)
       })
       if (res.data.code == 1) {
-        Toast('出价成功')
+        Toast('押金支付成功')
+        setTimeout(() => {
+          window.location.reload()
+        }, 1200)
+      } else {
+        Toast(res.data.msg)
+      }
+    },
+    // 加价
+    async addprice() {
+      let res = await this.$axios.post('goods/auction_addprice', {
+        goods_id: this.current.goodsId,
+        stand_id: this.current.selectedSkuComb.s1,
+        pay_tpye: 'balancepay',
+        price: this.keyboardText,
+        paypass: md5(this.paypass)
+      })
+      if (res.data.code == 1) {
+        Toast('加价成功')
       } else {
         Toast(res.data.msg)
       }
