@@ -39,28 +39,27 @@
       </div>
     </van-cell-group>
   </van-actionsheet>
-  <!--  -->
+  <!--  出价价格 -->
   <van-actionsheet
-    title="请输入支付密码"
+    title="请输入出价价格"
     v-model="keyboardShow"
     :close-on-click-overlay="false"
     @cancel="keyboardShow = false">
     <div class="keyboard-text" @click.stop>
-      <van-field v-model="keyboardText" input-align="center" readonly placeholder="请输入出价价格" />
+      <van-field v-model="keyboardText" input-align="center" readonly />
     </div>
     <van-number-keyboard
       :show="true"
       extra-key="."
       theme="custom"
       close-button-text="确定"
-      @blur="keyboardShow = false"
       @input="keyboardInput"
       @delete="keyboardDelete"
-      @hide="choosePaytype"
+      @close="choosePaytype"
     />
    </van-number-keyboard>
  </van-actionsheet>
- <!--  -->
+ <!-- 出价价格 //-->
  <van-actionsheet
    title="请输入支付密码"
    v-model="payboardShow"
@@ -68,18 +67,19 @@
    @cancel="payboardShow = false">
    <van-password-input :value="paypass"/>
    <div class="link-line">
-       <router-link to="/resetpaypwd" class="forget-password">忘记支付密码？</router-link>
+     <router-link to="/resetpaypwd" class="forget-password">忘记支付密码？</router-link>
    </div>
    <van-number-keyboard
-       :show="true"
-       @input="passwordInput"
-       @delete="passwordDelete"
+     :show="true"
+     @input="passwordInput"
+     @delete="passwordDelete"
    />
  </van-actionsheet>
 </div>
 </template>
 
 <script>
+import md5 from 'md5'
 export default {
   props: ['details', 'current'],
   data() {
@@ -111,6 +111,10 @@ export default {
     },
     payboardShow(val) {
       if (val) this.paypassArray = []
+      this.payTypeShow = false
+    },
+    payTypeShow(val) {
+      if (val) this.keyboardShow = false
     },
     keyboardShow(val) {
       if (val) this.keyboardArray = []
@@ -119,7 +123,6 @@ export default {
   methods: {
     // 显示输入弹窗
     showKeyboard() {
-      this.skuVisible = false
       this.keyboardShow = true
       this.getBalance()
     },
@@ -152,7 +155,6 @@ export default {
     // 显示密码弹窗
     showPayboard() {
       this.payboardShow = true
-      this.payTypeShow = false
     },
     // 查询可用金额
     async getBalance() {
@@ -184,5 +186,63 @@ export default {
     position: absolute;
     z-index: 999;
     left: 0;
+
+    .keyboard-text {
+        width: 100vw;
+        margin-bottom: 216px;
+        background: #fff;
+        padding: 10px;
+    }
+
+    .van-number-keyboard {
+        z-index: 9999 !important;
+    }
+    //
+    .paytype-check-line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        line-height: 50px;
+        .pay-image {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+        .balance-sum {
+            color: #f0914b;
+            font-size: 12px;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .paytype-button-line {
+        padding: 30px 26px 24px;
+        border-top: 1px solid #f5f5f5;
+        .deploy {
+            height: 45px;
+            margin: 0 auto;
+            background: linear-gradient(54deg,rgba(245,92,60,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 45px;
+            text-align: center;
+        }
+    }
+
+    .link-line {
+        margin: 0 20px 250px;
+        text-align: right;
+
+        a {
+            color: #f0914b;
+            position: relative;
+            top: 18px;
+        }
+    }
 }
 </style>

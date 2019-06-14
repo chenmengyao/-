@@ -500,7 +500,7 @@ export default {
     },
     // 显示出价
     showKeyboard() {
-      //
+      this.hideSku()
       this.$refs.auction.showKeyboard()
     }
   }
@@ -784,73 +784,5 @@ export default {
             top: 2px;
         }
     }
-
-    .keyboard-text {
-        position: fixed;
-        left: 0;
-        width: 100vw;
-        bottom: 216px;
-        z-index: 9999;
-        background: #fff;
-        padding: 10px;
-        transform: translateY(280px);
-        transition: all 0.3s ease-out;
-
-        &.show {
-            transform: none;
-        }
-    }
-
-    .van-number-keyboard {
-        z-index: 9999 !important;
-    }
-    //
-    .paytype-check-line {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        line-height: 50px;
-        .pay-image {
-            width: 24px;
-            height: 24px;
-            margin-right: 10px;
-        }
-        .balance-sum {
-            color: #f0914b;
-            font-size: 12px;
-        }
-        .option {
-            display: flex;
-            align-items: center;
-        }
-    }
-
-    .paytype-button-line {
-        padding: 30px 26px 24px;
-        border-top: 1px solid #f5f5f5;
-        .deploy {
-            height: 45px;
-            margin: 0 auto;
-            background: linear-gradient(54deg,rgba(245,92,60,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
-            border-radius: 25px;
-            color: #fff;
-            cursor: pointer;
-            font-size: 16px;
-            line-height: 45px;
-            text-align: center;
-        }
-    }
-
-    .link-line {
-        margin: 0 20px 250px;
-        text-align: right;
-
-        a {
-            color: #f0914b;
-            position: relative;
-            top: 18px;
-        }
-    }
-
 }
 </style>
