@@ -7,8 +7,8 @@
       {{title||''}}
     </dd>
     <dd>
-      <em>¥{{price||0.0}}</em>
-      <span class="bought">{{sell||0}}人已付款</span>
+      <em><slot name="price">¥{{price||0.0}}</slot></em>
+      <span class="bought"><slot name="sell">{{sell||0}}人已付款</slot></span>
     </dd>
   </dl>
 </template>

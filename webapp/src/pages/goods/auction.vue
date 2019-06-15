@@ -18,9 +18,11 @@
       <van-cell value="收货人：胡然（18062439081）" />
       <van-cell value="收地址：湖北省武汉市洪山区光谷大道光谷现代世贸中心I栋1102" />
     </van-cell-group>
-    <van-cell value="查看协议" icon="shop-o" is-link>
+    <van-cell value="查看协议" is-link @click="$router.push('/special/auctionrlue')">
       <template slot="title">
-        <span class="custom-text">竞拍需要同意惠回来竞拍协议</span>
+        <div style="white-space: nowrap;" @click.stop>
+          <van-checkbox v-model="agreeAgreement">竞拍需要同意惠回来竞拍协议</van-checkbox>
+        </div>
       </template>
     </van-cell>
     <van-cell>
@@ -29,8 +31,8 @@
     <van-goods-action>
       <van-goods-action-big-btn
         primary
-        :text="details.isauction==1?'立即出价':`支付定金${current.selectedSkuComb.price*0.1}`"
-        @click.native="!current.selectedSkuComb.id?$parent.showSku('showKeyboard'):showKeyboard()"
+        text="立即出价"
+        @click.native="showPayTypeShow"
       />
      </van-goods-action>
   </div>
@@ -43,7 +45,7 @@
     />
     <van-goods-action-big-btn
       primary
-      :text="details.isauction==1?'立即出价': `支付定金 (￥${current.selectedSkuComb.price*0.1} )`"
+      :text="details.isauction==1?'立即出价': `支付定金 (￥${current.selectedSkuComb.price*0.1||0} )`"
       @click.native="!current.selectedSkuComb.id?$parent.showSku('showKeyboard'):showKeyboard()"
     />
    </van-goods-action>
@@ -128,6 +130,7 @@ export default {
         description: '佣金余额',
         icon: require('./../../assets/orders/score-pay@2x.png')
       }],
+      agreeAgreement: false,
       // 加价金额
       keyboardText: '',
       keyboardArray: [],
@@ -163,6 +166,15 @@ export default {
     },
     keyboardShow(val) {
       if (val) this.keyboardArray = []
+    },
+    auctionShow(val) {
+      // if (val) {
+      //   document.body.style.overflow = 'hidden'
+      //   document.body.style.height = '100vh'
+      // } else {
+      //   document.body.style.overflow = 'auto'
+      //   document.body.style.height = 'auto'
+      // }
     }
   },
   methods: {
@@ -205,6 +217,14 @@ export default {
       this.details.isauction == 1 ? this.addprice() : this.payTypeShow = true
       this.keyboardShow = false
     },
+    // 显示支付方式
+    showPayTypeShow() {
+      if (!this.agreeAgreement) {
+        this.$toast('请同意竞拍协议')
+        return
+      }
+      this.payTypeShow = true
+    },
     // 显示密码弹窗
     showPayboard() {
       this.payboardShow = true
@@ -226,6 +246,7 @@ export default {
       })
       if (res.data.code == 1) {
         this.$toast('押金支付成功')
+        this.auctionShow = false
         setTimeout(() => {
           window.location.reload()
         }, 1200)

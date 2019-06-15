@@ -33,9 +33,16 @@
         <good-item v-for="item in goods"
           :img="item.img"
           :title="item.title"
-          :price="item.price"
           :sell="item.sell"
           @click.native="$router.push({path:'/goods/details', query: {id: item.id}})">
+          <template v-if="item.type!=2">
+            <template slot="price">￥{{item.price}}</template>
+            <template slot="sell">{{item.sell||0}}人已付款</template>
+          </template>
+          <template v-else>
+            <template slot="price"><span style="color:#333333;">当前价格</span>￥{{item.price}}</template>
+            <template slot="sell">{{item.price_count||0}}次出价</template>
+          </template>
         </good-item>
       </good-list>
     </van-list>
