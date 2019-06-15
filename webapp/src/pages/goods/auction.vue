@@ -1,5 +1,40 @@
 <template lang="html">
-<div class="suwis-auction">
+<div class="suwis-auction" >
+  <!-- 支付押金 -->
+  <div class="deposit-info" v-if="auctionShow">
+    <dl class="price">
+      <dt>
+        <span>定金</span>
+        <span>
+          ￥<em>{{(current.selectedSkuComb.price*0.1).toFixed(2)}}</em>
+        </span>
+      </dt>
+      <dd>
+        <img src="@/assets/details/hnit@2x.png" alt="">竞拍不成功时，缴纳的保证金将退回到原支付渠道
+      </dd>
+    </dl>
+    <van-cell value="该拍品需缴纳保证金15.0。建议您使用支付宝、微信、余额，确保账户有足够的钱款哦" />
+    <van-cell-group>
+      <van-cell value="收货人：胡然（18062439081）" />
+      <van-cell value="收地址：湖北省武汉市洪山区光谷大道光谷现代世贸中心I栋1102" />
+    </van-cell-group>
+    <van-cell value="查看协议" icon="shop-o" is-link>
+      <template slot="title">
+        <span class="custom-text">竞拍需要同意惠回来竞拍协议</span>
+      </template>
+    </van-cell>
+    <van-cell>
+      拍品多为孤品性质类商品，“7天退货”服务为卖家可选择服务保障，不强制商家提供，竞拍前请充分考虑
+    </van-cell>
+    <van-goods-action>
+      <van-goods-action-big-btn
+        primary
+        :text="details.isauction==1?'立即出价':`支付定金${current.selectedSkuComb.price*0.1}`"
+        @click.native="!current.selectedSkuComb.id?$parent.showSku('showKeyboard'):showKeyboard()"
+      />
+     </van-goods-action>
+  </div>
+  <!--  -->
   <van-goods-action>
     <van-goods-action-mini-btn
       icon="chat-o"
@@ -8,10 +43,10 @@
     />
     <van-goods-action-big-btn
       primary
-      text="立即出价"
+      :text="details.isauction==1?'立即出价': `支付定金 (￥${current.selectedSkuComb.price*0.1} )`"
       @click.native="!current.selectedSkuComb.id?$parent.showSku('showKeyboard'):showKeyboard()"
     />
-  </van-goods-action>
+   </van-goods-action>
   <!--  -->
   <!-- 底部操作条 //-->
   <!-- 请选择付款方式 -->
@@ -85,7 +120,7 @@
 <script>
 import md5 from 'md5'
 export default {
-  props: ['details', 'current', 'paydeposit'],
+  props: ['details', 'current'],
   data() {
     return {
       typeList: [{
@@ -93,17 +128,23 @@ export default {
         description: '佣金余额',
         icon: require('./../../assets/orders/score-pay@2x.png')
       }],
-      // 优惠券显示内容
+      // 加价金额
       keyboardText: '',
       keyboardArray: [],
       payType: '',
+      // 支付密码
       paypass: '',
       paypassArray: [],
       // 可用余额
       balanceSum: 0,
+      // 支付方式显示
       payTypeShow: false,
+      // 加价金额显示
       keyboardShow: false,
-      payboardShow: false
+      // 支付密码显示
+      payboardShow: false,
+      // 支付定金界面显示
+      auctionShow: false
     }
   },
   watch: {
@@ -129,19 +170,12 @@ export default {
     showKeyboard() {
       this.getBalance()
       // 是否已经交押金
-      if (this.paydeposit) {
+      if (this.details.isauction == 1) {
         this.keyboardShow = true
       } else {
         // 设置押金
         this.keyboardText = this.details.stand[0].price
-        this.$dialog.alert({
-          title: '押金支付提示',
-          message: `您需要支付${this.keyboardText}元作为竟拍押金<br/>是否确认支付？`,
-          showCancelButton: true
-        }).then(() => {
-          // 支付押金
-          this.choosePaytype()
-        }).catch((e) => {})
+        this.auctionShow = true
       }
     },
     // 输入价格
@@ -168,7 +202,8 @@ export default {
     },
     // 选择支付方式
     choosePaytype() {
-      this.payTypeShow = true
+      this.details.isauction == 1 ? this.addprice() : this.payTypeShow = true
+      this.keyboardShow = false
     },
     // 显示密码弹窗
     showPayboard() {
@@ -186,16 +221,16 @@ export default {
         goods_id: this.current.goodsId,
         stand_id: this.current.selectedSkuComb.s1,
         pay_tpye: 'balancepay',
-        sum: this.keyboardText,
+        address_id: 5,
         paypass: md5(this.paypass)
       })
       if (res.data.code == 1) {
-        Toast('押金支付成功')
+        this.$toast('押金支付成功')
         setTimeout(() => {
           window.location.reload()
         }, 1200)
       } else {
-        Toast(res.data.msg)
+        this.$toast(res.data.msg)
       }
     },
     // 加价
@@ -203,14 +238,14 @@ export default {
       let res = await this.$axios.post('goods/auction_addprice', {
         goods_id: this.current.goodsId,
         stand_id: this.current.selectedSkuComb.s1,
-        pay_tpye: 'balancepay',
+        // pay_tpye: 'balancepay',
         price: this.keyboardText,
-        paypass: md5(this.paypass)
+        // paypass: md5(this.paypass)
       })
       if (res.data.code == 1) {
-        Toast('加价成功')
+        this.$toast('加价成功')
       } else {
-        Toast(res.data.msg)
+        this.$toast(res.data.msg)
       }
     }
   }
@@ -222,6 +257,54 @@ export default {
     position: absolute;
     z-index: 999;
     left: 0;
+
+    .deposit-info {
+        position: fixed;
+        background: #fff;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 999;
+        padding: 0;
+        .price {
+            margin: 0;
+            background: linear-gradient(54deg,rgba(243,90,90,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
+            color: #fff;
+            padding: 15px;
+
+            dt {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                border-bottom: 1px solid #fff;
+                padding-bottom: 2vw;
+                margin-bottom: 3vw;
+                span {
+                    font-size: 1.2rem;
+                }
+                em {
+                    font-style: normal;
+                    font-size: 2.6rem;
+                    font-weight: bold;
+                }
+            }
+
+            dd {
+                padding: 0;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+
+                img {
+                    display: block;
+                    max-width: 18px;
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
 
     .keyboard-text {
         width: 100vw;

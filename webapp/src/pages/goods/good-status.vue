@@ -27,7 +27,7 @@
               <i>当前价格</i>
               <em>¥{{details.price_min}}</em>
             </span>
-            &nbsp;&nbsp;&nbsp;&nbsp;<var>{{details.price_count||0}}次出价</var>
+            &nbsp;&nbsp;&nbsp;&nbsp;<var>{{details.sell||0}}次出价</var>
           </div>
           <span class="time">
             <img src="@/assets/details/timer.png" alt="">

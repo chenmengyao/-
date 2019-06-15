@@ -130,6 +130,7 @@
       :quota="0"
       :quota-used="0"
       reset-stepper-on-hide
+      :show-soldout-sku="true"
       :initial-sku="initialSku"
       @buy-clicked="skuConfirm"
     >
@@ -210,8 +211,7 @@
         @click.native="!current.selectedSkuComb.id?showSku('buy'):buy(current)"
       />
     </van-goods-action>
-    <!-- 竞拍 -->
-    <auction v-else ref="auction" :details="details" :current="current"></auction>
+    <auction ref="auction" v-else :details="details" :current="current"></auction>
    <!--  -->
   </div>
 </template>
