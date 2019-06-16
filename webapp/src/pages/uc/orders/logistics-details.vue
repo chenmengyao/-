@@ -18,25 +18,18 @@
                 </ul>
             </div>
             <van-steps direction="vertical" :active="0">
-            <van-icon slot="inactive-icon" name="success"/>
-            <van-step>
-                <div class="step-box">
-                    <div class="top-bar">
-                        <span class="status">物流状态1</span>
-                        <span>2016-07-12 12:40</span>
+                <van-icon slot="inactive-icon" name="success"/>
+                <van-step v-for="(trace, index) in logisticsInfo.Traces" v-show="checkTraceShow(index)">
+                    <div class="step-box">
+                        <div class="top-bar">
+                            <span class="status">{{trace.status}}</span>
+                            <span>{{trace.AcceptTime}}</span>
+                        </div>
+                        <div class="detail">{{trace.AcceptStation}}</div>
                     </div>
-                    <div class="detail">描述信息</div>
-                </div>
-            </van-step>
-            <van-step>
-                <div class="top-bar">【城市】物流状态1</div>
-                <div class="detail">2016-07-12 12:40</div>
-            </van-step>
-            <van-step>
-                <div class="top-bar">【城市】物流状态1</div>
-                <div class="detail">2016-07-12 12:40</div>
-            </van-step>
-        </van-steps>
+                </van-step>
+            </van-steps>
+            <div class="show-more" v-show="viewMoreVisilbe" @click="viewMoreVisilbe = false">查看更多物流状态</div>
         </div>
     </div>
 </template>
@@ -59,7 +52,13 @@
             return {
                 goodInfo: {},
                 logisticsInfo: [],
-                order_id: ''
+                order_id: '',
+                viewMoreVisilbe: false,  // 查看更多按钮是否显示
+            }
+        },
+        methods: {
+            checkTraceShow(index) {
+                return this.viewMoreVisilbe ? index < 4 : true
             }
         },
         created() {
@@ -73,6 +72,7 @@
                         if (data.data) {
                             this.goodInfo = data.data.goods
                             this.logisticsInfo = data.data.logistics
+                            if (this.logisticsInfo.Traces && this.logisticsInfo.Traces.length > 4) this.viewMoreVisilbe = true
                         }
                     } else {
                         this.$toast(data.msg);
@@ -152,6 +152,25 @@
                 line-height: 24px;
                 list-style: disc;
                 text-decoration: dotted;
+            }
+            .show-more {
+                margin: 10px 0 32px;
+                color: #666;
+                text-align: center;
+                &::after {
+                    content: '···';
+                    display: inline-block;
+                    position: relative;
+                    width: 14px;
+                    height: 14px;
+                    line-height: 14px;
+                    margin-left: 10px;
+                    border-radius: 50%;
+                    border: 1px solid #e83f44;
+                    color: #e83f44;
+
+
+                }
             }
         }
         .step-box {

@@ -70,6 +70,11 @@
 
         <ul class="option-list">
             <li class="option-li">
+                <router-link to="/uc/auction" class="option-item link">
+                    <img src="@/assets/orders/auction@2x.png" alt="" class="option-image">
+                    <span class="option-name">我的竞拍</span>
+                </router-link>
+
                 <router-link to="/uc/coupons" class="option-item link">
                     <img src="@/assets/uc/my-coupon@2x.png" alt="" class="option-image">
                     <span class="option-name">我的卡券</span>
@@ -80,12 +85,13 @@
                     <span class="option-name">我的足迹</span>
                 </router-link>
 
+            </li>
+            <li class="option-li">
                 <a href="javascript:;" class="option-item link" @click="toVip">
                     <img src="@/assets/uc/my-vip@2x.png" class="option-image">
                     <span class="option-name">我的VIP</span>
                 </a>
-            </li>
-            <li class="option-li">
+
                 <router-link to="/uc/score" class="option-item link">
                     <img src="@/assets/uc/my-score@2x.png" alt="" class="option-image">
                     <span class="option-name">我的积分</span>
@@ -95,13 +101,13 @@
                     <img src="@/assets/uc/my-extend@2x.png" alt="" class="option-image">
                     <span class="option-name">我的推广</span>
                 </router-link>
-
+            </li>
+            <li class="option-li">
                 <router-link to="/mine/commission" class="option-item link">
                     <img src="@/assets/uc/my-charge@2x.png" alt="" class="option-image">
                     <span class="option-name">我的佣金</span>
                 </router-link>
-            </li>
-            <li class="option-li">
+
                 <router-link to="/mine/information" class="option-item link">
                     <img src="@/assets/uc/my-message@2x.png" alt="" class="option-image">
                     <span class="option-name">我的消息</span>
@@ -111,8 +117,6 @@
                     <img src="@/assets/uc/response@2x.png" alt="" class="option-image">
                     <span class="option-name">意见反馈</span>
                 </router-link>
-
-                <span class="option-item"></span>
             </li>
         </ul>
         <BarCode :show="qrCodeShow" @close="closeBarCode" @success='scanSuccess'></BarCode>

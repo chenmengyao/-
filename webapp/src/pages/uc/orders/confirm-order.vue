@@ -77,12 +77,11 @@
         <van-checkbox v-model="useCoupon"
           @change="getData">
           卖家优惠券
-          <div v-show="coupon.sum"> 可优惠{{coupon.sum}}元</div>
         </van-checkbox>
       </template>
       <template>
         <div @click="selectCoupon">
-          去使用
+          <span>{{coupon.coupon_id ? coupon.title : '去使用'}}</span>
           <van-icon name="arrow"
             size="10px"
             color="#b4b4b4" />
@@ -206,7 +205,7 @@ export default {
     return {
       address_id: '',
       address: {
-        name: '',
+        name: '', 
         tel: ''
       },
       balance_sum: 0, // 可用佣金
@@ -323,6 +322,7 @@ export default {
     },
     onCouponClick(coupon) {
       this.coupon = coupon
+      this.getData()
       this.couponShow = false
     },
     onPasswordInput(key) {

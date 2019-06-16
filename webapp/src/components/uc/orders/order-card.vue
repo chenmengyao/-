@@ -69,9 +69,9 @@
             totalSum() {
                 const { orderData } = this
                 if (Array.isArray(orderData)) {
-                    return this.orderData.reduce((result, goods) => result + goods.num * goods.goods_price, 0)
+                    return this.orderData.reduce((result, goods) => result + Number(goods.start_sum), 0)
                 } else {
-                    return orderData.num * orderData.goods_price
+                    return Number(orderData.start_sum)
                 }
             }
         },
