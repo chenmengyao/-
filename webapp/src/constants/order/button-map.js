@@ -54,7 +54,7 @@ export default [
         key: 'logistics',
         name: '查看物流',
         type: 'default',
-        sta: [2, 4]
+        sta: [2, 4, 5]
     },
     {
         key: 'receive',
