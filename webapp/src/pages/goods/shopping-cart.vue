@@ -15,7 +15,7 @@
           :thumb="good.img"
         >
         <div slot="footer" style="margin-top:-30px;" @click.stop>
-          <van-stepper @change="numChange(good)" v-model="good.num" />
+          <van-stepper @plus="numChange(good,1)" @minus="numChange(good,-1)" async-change :min="1" :value="good.num" />
         </div>
       </van-card>
     </van-checkbox>
@@ -52,7 +52,8 @@ export default {
       checkall: false,
       // 已选商品
       selecteds: [],
-      total: 0
+      total: 0,
+      changing: false
     }
   },
   created() {
@@ -73,14 +74,19 @@ export default {
       this.calcCheckNums()
     },
     // 数量改变
-    async numChange(good) {
+    async numChange(good, val) {
+      if (this.changing) return
+      this.changing = true
+      good.num += val
       let res = await this.$axios.post('car/changenum', {
         id: good.id,
         num: good.num
       })
       if (res.data.code != 1) {
+        good.num--
         Toast(res.data.msg)
       }
+      this.changing = false
     },
     // 全选
     allChange() {
@@ -193,6 +199,8 @@ export default {
         padding: 15px;
         box-sizing: border-box;
         border-top: 1px solid $border;
+        white-space: nowrap;
+        font-size: 12px;
 
         img {
             display: block;
@@ -202,7 +210,7 @@ export default {
         .btn {
             height: 6.9vw;
             line-height: 6.9vw;
-            min-width: 20vw;
+            min-width: 18vw;
             margin-left: 3.9vw;
             border-radius: 50px;
         }
