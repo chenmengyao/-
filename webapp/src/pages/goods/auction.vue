@@ -16,7 +16,7 @@
     <van-cell value="该拍品需缴纳保证金15.0。建议您使用支付宝、微信、余额，确保账户有足够的钱款哦" />
     <van-cell-group>
       <van-cell value="收货人：胡然（18062439081）" />
-      <van-cell value="收地址：湖北省武汉市洪山区光谷大道光谷现代世贸中心I栋1102" />
+      <van-cell value="收地址：湖北省武汉市洪山区光谷大道光谷现代世贸中心I栋1102" is-link />
     </van-cell-group>
     <van-cell value="查看协议" is-link @click="$router.push('/special/auctionrlue')">
       <template slot="title">

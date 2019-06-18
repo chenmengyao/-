@@ -65,24 +65,29 @@
             onAddressClick(address_id) {
                 const { from } = this.query
                 let query = null
-                if (from === '/uc/orders/confirm-order') {
-                    const { car_id, num, stand_id, score } = this.query
-                    query = {
-                        address_id,
-                        car_id,
-                        num,
-                        stand_id,
-                        score
-                    }
-
-                } else if (from === '/uc/orders/apply') {
-                    const { id, type } = this.query
-                    query = {
-                        address_id,
-                        id,
-                        type
-                    }
+                // if (from === '/uc/orders/confirm-order') {
+                //     const { car_id, num, stand_id, score } = this.query
+                //     query = {
+                //         address_id,
+                //         car_id,
+                //         num,
+                //         stand_id,
+                //         score
+                //     }
+                //
+                // } else if (from === '/uc/orders/apply') {
+                //     const { id, type } = this.query
+                //     query = {
+                //         address_id,
+                //         id,
+                //         type
+                //     }
+                // }
+                query = {
+                    address_id,
+                    ...this.query
                 }
+                delete query.from
                 this.$router.push({
                     path: from,
                     query
