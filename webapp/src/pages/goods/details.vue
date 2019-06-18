@@ -273,6 +273,7 @@ export default {
         title: '',
         picture: ''
       },
+      priceKey: ['price', 'push_price', 'auction_price', 'price', 'clearance_price'],
       // 规格对象
       sku: {
         // 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
@@ -339,7 +340,6 @@ export default {
         }
       }
       // 不同类型的商品价格字段
-      let priceKey = ['price', 'push_price', 'auction_price', 'price', 'clearance_price']
       for (let item of val.stand) {
         for (let idx in this.sku.tree) {
           item.header_one ? '' : item.header_one = ''
@@ -351,7 +351,7 @@ export default {
           })
           this.sku.list.push({
             id: this.details.id,
-            price: item[priceKey[val.type || 0]] * 100,
+            price: item[this.priceKey[val.type || 0]] * 100,
             s1: item.id,
             stock_num: item.count,
             name: item.header_one + ' ' + item.header_two

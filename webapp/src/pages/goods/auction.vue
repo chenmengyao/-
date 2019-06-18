@@ -45,7 +45,7 @@
     />
     <van-goods-action-big-btn
       primary
-      :text="details.isauction==1?'立即出价': `支付定金 (￥${current.selectedSkuComb.price*0.1||0} )`"
+      :text="details.isauction==1?'立即出价': `支付定金 (￥${details.price_max*0.1||0} )`"
       @click.native="!current.selectedSkuComb.id?$parent.showSku('showKeyboard'):showKeyboard()"
     />
    </van-goods-action>
@@ -175,6 +175,9 @@ export default {
       //   document.body.style.overflow = 'auto'
       //   document.body.style.height = 'auto'
       // }
+    },
+    current(val) {
+      val.selectedSkuComb.price = val.selectedSkuComb.price / 100
     }
   },
   methods: {
