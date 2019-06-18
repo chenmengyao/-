@@ -6,7 +6,7 @@
       <dt>
         <span>定金</span>
         <span>
-          ￥<em>{{(current.selectedSkuComb.price*0.1).toFixed(2)}}</em>
+          ￥<em>{{(current.selectedSkuComb.price*0.001).toFixed(2)}}</em>
         </span>
       </dt>
       <dd>
@@ -15,8 +15,8 @@
     </dl>
     <van-cell value="该拍品需缴纳保证金15.0。建议您使用支付宝、微信、余额，确保账户有足够的钱款哦" />
     <van-cell-group>
-      <van-cell value="收货人：胡然（18062439081）" />
-      <van-cell value="收地址：湖北省武汉市洪山区光谷大道光谷现代世贸中心I栋1102" is-link />
+      <van-cell :value="`收货人：${adres.name||''}(${adres.tel||''})`" />
+      <van-cell :value="`收地址：${adres.city||''}${adres.area||''}${adres.address||''}`" @click="chooseAdres" is-link />
     </van-cell-group>
     <van-cell value="查看协议" is-link @click="$router.push('/special/auctionrlue')">
       <template slot="title">
@@ -125,6 +125,7 @@ export default {
   props: ['details', 'current'],
   data() {
     return {
+      adres: {},
       typeList: [{
         id: 'balancepay',
         description: '佣金余额',
@@ -168,19 +169,30 @@ export default {
       if (val) this.keyboardArray = []
     },
     auctionShow(val) {
-      // if (val) {
-      //   document.body.style.overflow = 'hidden'
-      //   document.body.style.height = '100vh'
-      // } else {
-      //   document.body.style.overflow = 'auto'
-      //   document.body.style.height = 'auto'
-      // }
+      //
     },
     current(val) {
-      val.selectedSkuComb.price = val.selectedSkuComb.price / 100
+      // 存储到sessionStorage
     }
   },
+  mounted() {
+    // 尝试获取sessionStorage的值
+    let current = JSON.parse(window.sessionStorage.getItem('details_sku_current'))
+    if (current && this.details.type == 2) {
+      this.$parent.current = current
+      this.showKeyboard()
+    }
+    this.getAdres()
+  },
   methods: {
+    // 获取地址信息
+    async getAdres() {
+      if (!this.$route.query.address_id) return
+      let res = await this.$axios.post('/user/address', {
+        id: this.$route.query.address_id
+      })
+      this.adres = res.data.data || {}
+    },
     // 显示输入弹窗
     showKeyboard() {
       this.getBalance()
@@ -189,7 +201,7 @@ export default {
         this.keyboardShow = true
       } else {
         // 设置押金
-        this.keyboardText = this.details.stand[0].price
+        this.keyboardText = this.current.selectedSkuComb.price * 0.001
         this.auctionShow = true
       }
     },
@@ -220,8 +232,25 @@ export default {
       this.details.isauction == 1 ? this.addprice() : this.payTypeShow = true
       this.keyboardShow = false
     },
+    // 选择地址
+    chooseAdres() {
+      // 将地址信息存储到sessionStorage中
+      window.sessionStorage.setItem('details_sku_current', JSON.stringify(this.current))
+      // 跳转地址选择器界面
+      this.$router.push({
+        path: '/uc/setting/address',
+        query: {
+          from: '/goods/details?id=96&showauction=true',
+          ...this.$route.query
+        }
+      })
+    },
     // 显示支付方式
     showPayTypeShow() {
+      if (!this.adres.id) {
+        this.$toast('请选择收货地址')
+        return
+      }
       if (!this.agreeAgreement) {
         this.$toast('请同意竞拍协议')
         return
@@ -247,6 +276,8 @@ export default {
         address_id: 5,
         paypass: md5(this.paypass)
       })
+      // 清理缓存
+      window.sessionStorage.removeItem('details_sku_current')
       if (res.data.code == 1) {
         this.$toast('押金支付成功')
         this.auctionShow = false

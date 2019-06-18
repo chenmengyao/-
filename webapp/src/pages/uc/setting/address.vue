@@ -89,7 +89,7 @@
                     ...this.query
                 }
                 delete query.from
-                this.$router.push({
+                this.$router.replace({
                     path: from,
                     query
                 })
