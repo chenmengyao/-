@@ -83,6 +83,7 @@
                 //         type
                 //     }
                 // }
+                if(!from) return
                 query = {
                     address_id,
                     ...this.query
