@@ -41,7 +41,7 @@
     </template>
     <template v-else>
       <van-row>
-        <van-col style="color:#E83F44;">*该商品最低出价{{details.stand[0].lowest_price}}元</van-col>
+        <van-col style="color:#E83F44;">*该商品最低出价{{details.lowest_price}}元</van-col>
       </van-row>
     </template>
     <van-cell class="interval" title="型号" is-link :value="current.selectedSkuComb.name" @click="showSku('hideSku')"/>
@@ -139,6 +139,13 @@
         <div class="van-sku__goods-price">
           <span class="van-sku__price-symbol">￥</span><span class="van-sku__price-num">{{ props.price }}</span>
         </div>
+      </template>
+      <!-- 数量 -->
+      <template slot="sku-stepper" v-if="details.type==2" slot-scope="props">
+        <van-row type="flex" justify="space-between" align="center">
+          <van-col>数量：</van-col>
+          <van-col><van-stepper v-model="current.selectedNum" disabled /></van-col>
+        </van-row>
       </template>
       <!--  -->
       <div slot="sku-messages"></div>
@@ -354,7 +361,8 @@ export default {
             price: item[this.priceKey[val.type || 0]] * 100,
             s1: item.id,
             stock_num: item.count,
-            name: item.header_one + ' ' + item.header_two
+            name: item.header_one + ' ' + item.header_two,
+            ...item
           })
         }
       }

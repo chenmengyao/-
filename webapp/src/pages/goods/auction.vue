@@ -85,7 +85,7 @@
     :close-on-click-overlay="false"
     @cancel="keyboardShow = false">
     <div class="keyboard-text" @click.stop>
-      <van-field v-model="keyboardText" input-align="center" readonly />
+      <van-field v-model="keyboardText" input-align="center" :placeholder="`当前出价${details.price_max+current.selectedSkuComb.lowest_price||0}元起`" readonly />
     </div>
     <van-number-keyboard
       :show="true"
@@ -290,6 +290,10 @@ export default {
     },
     // 加价
     async addprice() {
+      if (this.keyboardText < this.current.selectedSkuComb.lowest_price) {
+        this.$toast(`当前商品最低出价不得低于${this.current.selectedSkuComb.lowest_price}元`)
+        return false
+      }
       let res = await this.$axios.post('goods/auction_addprice', {
         goods_id: this.current.goodsId,
         stand_id: this.current.selectedSkuComb.s1,
