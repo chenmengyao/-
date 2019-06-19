@@ -1,10 +1,10 @@
 <template lang="html">
   <div ref="good" class="suwis-good-details">
     <van-row justify="center" align="center" class="nav">
-      <van-col v-for="nav in navlist" span="8" :class="{active:nav.selected}" @click.native="skip(nav)">{{nav.name}}</van-col>
+      <van-col v-for="nav in navlist" span="8" :class="{active:nav.selected}" v-scroll-to="`#${nav.key}`">{{nav.name}}</van-col>
     </van-row>
     <!--  -->
-    <van-swipe class="banner" ref="banner" :autoplay="3000" indicator-color="#E83F44">
+    <van-swipe :id="navlist[0].key" class="banner" ref="banner" :autoplay="3000" indicator-color="#E83F44">
       <van-swipe-item>
         <img :src="details.img" alt="">
       </van-swipe-item>
@@ -51,7 +51,7 @@
       <span slot="title"><img class="security" src="@/assets/details/security@3x.png" alt="">该商品支持7天无理由退款</span>
     </van-cell>
     <!-- 评论 -->
-    <van-cell ref="comment" class="interval comment">
+    <van-cell ref="comment" :id="navlist[1].key" class="interval comment">
       <span slot="title">评价（{{details.evaluate_count}}）</span>
       <span>好评率&nbsp;<em>{{details.feedback}}%</em></span>
     </van-cell>
@@ -74,7 +74,7 @@
     <!-- 评论 //-->
     <router-link v-if="details.evaluate&&details.evaluate.length>3" class="comment-more" :to="{ path: '/goods/comment-list', query: {id: details.id} }">查看更多评价<img src="@/assets/details/more@3x.png" alt=""></router-link>
     <!-- 店铺详情 -->
-    <div ref="content">
+    <div ref="content" :id="navlist[2].key">
       <van-tabs class="good-tabs" v-model="goodTabIdx">
         <van-tab title="商品介绍">
           <div v-if="details.details" class="good-info interval">
@@ -374,32 +374,6 @@ export default {
     }
   },
   methods: {
-    // 跳转
-    skip(nav) {
-      if (this.lockscroll) return
-      this.lockscroll = true
-      this.scrollTo(this.$refs[nav.key])
-    },
-    // 滚动到相应位置
-    scrollTo(el) {
-      window.cancelAnimationFrame(this.timer)
-      let ot = el.offsetTop - 50
-      let sy = window.scrollY
-      let speed = 39
-      let distance = sy > ot ? sy - speed : sy + speed
-      if (distance >= ot - speed && distance <= ot) distance = ot
-      if (distance <= ot + speed && distance >= ot) distance = ot
-      window.scrollTo(0, distance)
-      if (sy != ot) {
-        this.timer = $raf(() => {
-          this.scrollTo(el)
-        })
-      }
-      this.unlockScroll()
-    },
-    unlockScroll: _.debounce(function() {
-      this.lockscroll = false
-    }, 186),
     // 检查滚动
     checkScroll() {
       let sy = window.scrollY
