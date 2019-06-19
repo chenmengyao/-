@@ -43,8 +43,13 @@
                 <span class="row-value text-right">￥ {{orderSum}}</span>
             </div>
 
+            <div class="card-row thick-row" v-if="shopData.source === '2'">
+                <span class="row-key">定金</span>
+                <span class="row-value text-right">￥ {{shopData.earnest}}</span>
+            </div>
+
             <div class="card-row thick-row">
-                <span class="row-key">实际付款</span>
+                <span class="row-key">{{ shopData.source === '2' ? '需付款' : '实际付款' }}</span>
                 <span class="row-value text-right color-red">￥ {{startSum}}</span>
             </div>
         </div>
@@ -63,7 +68,7 @@
             </div>
             <div class="card-row">
                 <span class="row-key">获得积分</span>
-                <span class="row-value">{{shopData.get_score}}</span>
+                <span class="row-value">{{shopData.get_score || 0}}</span>
             </div>
             <div class="card-row">
                 <span class="row-key">下单时间</span>
@@ -226,7 +231,7 @@
             onButtonClick(key, orderId, orderNumer) {
                 switch (key) {
                     case 'cancel':
-                        this.cancelOrder(orderId)
+                        this.cancelOrder(orderNumer)
                         break
                     case 'pay':
                         this.payOrder(orderNumer)
@@ -306,18 +311,19 @@
             onPasswordDelete() {
                 this.password = this.password.slice(0, this.password.length - 1);
             },
-            cancelOrder(orderId) {
+            cancelOrder(orderNumer) {
                 this.$dialog.confirm({
                     title: '取消订单',
                     message: '该订单还未付款，您确定要取消吗？'
                 }).then(() => {
                     this.$axios
                         .post('/order/cancel', {
-                            number: orderId
+                            number: orderNumer
                         })
                         .then(({ data }) => {
                             if (data.code === 1) {
                                 this.$toast('取消订单成功');
+                                this.$router.push('/uc/orders')
                             } else {
                                 this.$toast(data.msg);
                             }
@@ -466,6 +472,7 @@
             }
             .address {
                 line-height: 24px;
+                word-break: break-all
             }
         }
         .card-row {
