@@ -25,6 +25,27 @@ export const RefundButton = [
     },
 ]
 
+export const AuctionButton = [
+    {
+        key: 'bid',
+        name: '立即出价',
+        type: 'warning',
+        sta: [0]
+    },
+    {
+        key: 'logistics',
+        name: '查看物流',
+        type: 'default',
+        sta: [1]
+    },
+    {
+        key: 'delete',
+        name: '删除',
+        type: 'default',
+        sta: [1, 2]
+    }
+]
+
 export default [
     {
         key: 'cancel',
@@ -48,7 +69,7 @@ export default [
         key: 'return',
         name: '退/换货',
         type: 'default',
-        sta: [2]
+        sta: [2, 4]
     },
     {
         key: 'logistics',

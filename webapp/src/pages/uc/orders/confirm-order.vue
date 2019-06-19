@@ -74,12 +74,15 @@
     <van-cell center
       value-class="cell-content">
       <template slot="title">
-        <van-checkbox v-model="useCoupon"
+        <van-checkbox
+          v-model="useCoupon"
+          v-if="couponList.length"
           @change="getData">
           卖家优惠券
         </van-checkbox>
+        <div v-else>暂无可用优惠券</div>
       </template>
-      <template>
+      <template v-if="couponList.length">
         <div @click="selectCoupon">
           <span>{{coupon.coupon_id ? coupon.title : '去使用'}}</span>
           <van-icon name="arrow"
@@ -87,12 +90,13 @@
             color="#b4b4b4" />
         </div>
       </template>
+      
     </van-cell>
     <van-cell center
       value-class="cell-content short-content">
       <template slot="title">
         <van-checkbox v-model="useDiscount"
-          @change="getData">会员优惠 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;">（会员折扣9.5折）</span></van-checkbox>
+          @change="getData">会员优惠 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;" v-if="shopList.length === 1">（会员折扣{{shopList[0][0].vipdiscount}}折）</span></van-checkbox>
       </template>
       <template>
         -{{discount}}

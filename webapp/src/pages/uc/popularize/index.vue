@@ -154,7 +154,7 @@
                                 this.list = this.list.concat(data.data.user)
                                 if (page * num > data.data.total) this.finished = true
                             } else {
-                                this.error = true
+                                this.finished = true
                             }
                         } else {
                             this.error = true
@@ -175,6 +175,9 @@
             },
             onClickTab(index) {
                 this.tabStatus = this.tabList[index].key
+                this.loading = true
+                this.finished = false
+                this.error = false
                 this.getList()
             }
         },

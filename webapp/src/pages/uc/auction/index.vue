@@ -1,10 +1,10 @@
 <template>
-    <div class="suwis-order-list">
+    <div class="suwis-uc-auction">
         <van-tabs animated v-model="activeTabIndex" @change="onClickTab">
             <van-tab v-for="tab in tabList" :title="tab.name" :key="tab.key">
                 <van-list
                     v-model="loading"
-                    finished-text="没有订单记录了"
+                    finished-text="没有记录了"
                     error-text="请求失败，点击重新加载"
                     :error.sync="error"
                     :finished="finished"
@@ -12,15 +12,26 @@
                     <template v-if="list && list.length">
                         <OrderCard
                             v-for="order in list"
+                            orderType="auction"
                             :key="order[0].id"
+                            :showPrice="false"
                             :order-data="order"
                             @click="onClickStore">
                             <GoodsItem :goods-list="order" @click="onClickGoods"></GoodsItem>
                             <template #footer>
+                                <div class="info-line" v-if="order[0].sta === 0">
+                                  <span>我的出价：<span class="color-red">￥{{order[0].price_me}}</span></span>
+                                  <span>最高出价：<span class="color-red">￥{{order[0].price_max}}</span></span>
+                                </div>
+                                <div class="info-line" v-else-if="order[0].sta === 2">
+                                  <span>结束日期：{{order[0].activity_end_time | dateFmt}}</span>
+                                  <span>最高出价：<span class="color-red">￥{{order[0].price_max}}</span></span>
+                                </div>
                                 <ButtonLine
                                     :button-list="order[0].sta | buttonList"
                                     :order-id="order[0].id"
                                     :order-numer="order[0].number"
+                                    :order-data="order[0]"
                                     @on-click="onButtonClick"></ButtonLine>
                             </template>
                         </OrderCard>
@@ -48,6 +59,29 @@
                 @delete="onPasswordDelete"
             />
         </van-actionsheet>
+
+          <!--  出价价格 -->
+          <van-actionsheet
+            title="请输入出价价格"
+            class="number-keyword"
+            v-model="keyboardShow"
+            :close-on-click-overlay="false"
+            @cancel="closeNumberKeyword">
+            <div class="keyboard-text" @click.stop>
+              <van-field v-model="keyboardText" input-align="center" readonly />
+            </div>
+            <van-number-keyboard
+                :show="true"
+                extra-key="."
+                theme="custom"
+                close-button-text="确定"
+                @input="keyboardInput"
+                @delete="keyboardDelete"
+                @close="addprice"
+              />
+            </van-number-keyboard>
+        </van-actionsheet>
+        <!-- 出价价格 //-->
     </div>
 </template>
 
@@ -56,13 +90,13 @@
     import GoodsItem from '@/components/uc/orders/goods-item'
     import ButtonLine from '@/components/uc/orders/button-line'
     import PayType from '@/components/uc/orders/pay-type'
-    import ButtonMap from '@/constants/order/button-map'
+    import { AuctionButton } from '@/constants/order/button-map'
     import payTypeMap from '@/constants/order/payType'
 
     import md5 from'md5'
 
     export default {
-        name: "OrderList",
+        name: "Auction",
         components: {
             ButtonLine,
             GoodsItem,
@@ -70,7 +104,7 @@
             PayType
         },
         filters: {
-            buttonList: v => ButtonMap.filter(item => item.sta.includes(v))
+            buttonList: v => AuctionButton.filter(item => item.sta.includes(v))
         },
         data() {
             return {
@@ -78,47 +112,64 @@
                 balance_sum: 0, // 可用佣金
                 currentOrderId: '',
                 currentOrderNumber: '',
+                currentOrderStandId: '',
                 error: false,
                 finished: false,
                 loading: false,
+                keyboardArray: [],
+                keyboardShow: false,  // 数字键盘显示
+                keyboardText: '',
                 list: [],
                 num: 20,            // 每页的数量
                 page: 1,            // 页码
-                sta: undefined,     // 不传sta为全部订单 0 待付款 1 待发货 2 待收货 3 退款/售后 4 待评价 5 已完成 6 已关闭
+                sta: 0,     // 0 正在竞拍 1 已成功 2 已关闭
                 payTypeShow: false,
                 password: '',               // 支付密码
                 passwordModalShow: false,   // 输入弹框显示
                 passwordModalType: 'receive',    // 密码弹框类型
                 tabList: [
                     {
-                        key: 'all',
-                        name: '全部订单',
-                        sta: undefined
-                    },
-                    {
-                        key: 'toPay',
-                        name: '待付款',
+                        key: 'auctioning',
+                        name: '正在竞拍',
                         sta: 0
                     },
                     {
-                        key: 'toSend',
-                        name: '待发货',
-                        sta: 1
-                    },
-                    {
-                        key: 'toReceive',
-                        name: '待收货',
+                        key: 'auctionFail',
+                        name: '已关闭',
                         sta: 2
                     },
                     {
-                        key: 'toEvaluate',
-                        name: '待评价',
-                        sta: 4
+                        key: 'auction',
+                        name: '已成功',
+                        sta: 1
                     }
                 ]
             }
         },
         methods: {
+            // 加价
+            async addprice() {
+                let res = await this.$axios.post('goods/auction_addprice', {
+                    stand_id: this.currentOrderStandId,
+                    price: this.keyboardText,
+                })
+                if (res.data.code == 1) {
+                    this.$toast('加价成功')
+                    this.getList()
+                    this.closeNumberKeyword()
+                } else {
+                    this.$toast(res.data.msg)
+                }
+            },
+            // 显示出价键盘
+            bidOrder(stand_id) {
+                this.keyboardShow = true
+                this.currentOrderStandId = stand_id
+            },
+            closeNumberKeyword() {
+                this.keyboardShow = false
+                this.keyboardArray = []
+            },
             closePasswordModal() {
                 this.password = ''
             },
@@ -147,20 +198,28 @@
                   this.page = 1
                 }
                 const { num, page, sta } = this
+                let url, params = { num, page }
+                switch (sta) {
+                  case 0:
+                    url = 'mine/auctioning'
+                    break
+                  case 1:
+                    url = 'order/index'
+                    params.sta = 0
+                    break
+                  case 2:
+                    url = 'mine/auctionfail'
+                }
                 this.$axios
-                    .post('/order/index', {
-                        sta,
-                        num,
-                        page
-                    })
+                    .post(url, params)
                     .then(({ data }) => {
                         if (data.code === 1) {
-                            if (data.data && data.data.order) {
-                                const orderData = this.handleOrderData(data.data.order)
+                            if (data.data && (data.data.order || data.data.list)) {
+                                const orderData = this.handleOrderData(data.data.order || data.data.list)
                                 this.list = this.list.concat(orderData)
                                 if (page * num > data.data.total) this.finished = true
                             } else {
-                                this.finished = true
+                              this.finished = true
                             }
                         } else {
                             this.error = true
@@ -189,10 +248,22 @@
                     return result
                 }, [])
             },
+            // 输入价格
+            keyboardInput(num) {
+                this.keyboardArray.push(num)
+            },
+            // 删除价格
+            keyboardDelete() {
+                this.keyboardArray.pop()
+            },
+            // TAB点击时触发
             onClickGoods(goods) {
                 this.$router.push({
-                    path: '/uc/orders/details',
-                    query: {id: goods.id}
+                    path: '/goods/details',
+                    query: {
+                        id: goods.goods_id,
+                        type: 'auction'
+                    }
                 })
             },
             onClickStore(store) {
@@ -203,39 +274,21 @@
             },
             onClickTab(index) {
                 this.sta = this.tabList[index].sta
+                if (this.sta === 1) this.$router.push({
+                  path: '/uc/orders',
+                  query: {
+                    activeTabIndex: 1
+                  }
+                })
                 this.loading = true
                 this.finished = false
                 this.error = false
                 this.getList()
             },
-            onClickOrder(goods) {
-                this.$router.push({
-                    path: '/uc/orders/details',
-                    query: {id: goods.id}
-                })
-            },
-            onButtonClick(key, orderId, orderNumer) {
+            onButtonClick(key, orderId, orderNumer, orderData) {
                 switch (key) {
-                    case 'cancel':
-                        this.cancelOrder(orderNumer)
-                        break
-                    case 'pay':
-                        this.payOrder(orderId, orderNumer)
-                        break
-                    case 'logistics':
-                        this.checkLogistics(orderId)
-                        break
-                    case 'refund':
-                        this.refundOrder(orderId)
-                        break
-                    case 'return':
-                        this.returnOrder(orderId)
-                        break
-                    case 'receive':
-                        this.confirmReceive(orderId)
-                        break
-                    case 'evaluate':
-                        this.evaluateOrder(orderId)
+                    case 'bid':
+                        this.bidOrder(orderData.stand_id)
                         break
                     case 'delete':
                         this.deleteOrder(orderId)
@@ -289,102 +342,21 @@
             onPasswordDelete() {
                 this.password = this.password.slice(0, this.password.length - 1);
             },
-            cancelOrder(orderNumer) {
-                this.$dialog.confirm({
-                    title: '取消订单',
-                    message: '该订单还未付款，您确定要取消吗？'
-                }).then(() => {
-                    this.$axios
-                        .post('/order/cancel', {
-                            number: orderNumer
-                        })
-                        .then(({ data }) => {
-                            if (data.code === 1) {
-                                this.$toast('取消订单成功');
-                                this.getList()
-                            } else {
-                                this.$toast(data.msg);
-                            }
-                        })
-                })
-            },
-
-            checkLogistics(orderId) {
-                this.$router.push({
-                    path: '/uc/orders/logistics-details',
-                    query: {
-                        id: orderId
-                    }
-                })
-            },
-            async payOrder(orderId, orderNumer) {
-                const { data } = await this.$axios.post('/order/combination', { order: orderNumer })
-                if (data.data === 1) { // 是组合订单
-                    this.$dialog
-                    .confirm({
-                        title: '订单支付确认',
-                        message: '该订单是组合订单,确认一起支付吗?'
-                    })
-                    .then(() => {
-                        this.$router.push({
-                            path: '/uc/orders/details',
-                            query: {id: orderId}
-                        })
-                    })
-                } else if (data.data === 2) { // 不是组合订单
-                    this.getBalance()
-                    this.payTypeShow = true
-                    this.passwordModalType = 'pay'
-                    this.currentOrderNumber = orderNumer
-                }
-                
-                
-            },
-            refundOrder(orderId) {
-                this.$router.push({
-                    path: '/uc/orders/apply',
-                    query: {
-                        id: orderId,
-                        type: 'refund'
-                    }
-                })
-            },
-            returnOrder(orderId) {
-                this.$router.push({
-                    path: '/uc/orders/servicetype',
-                    query: {
-                        id: orderId
-                    }
-                })
-            },
             selectPayType(key) {
                 this.payTypeShow = false
             },
-            confirmReceive(orderId) {
-                this.passwordModalShow = true
-                this.passwordModalType = 'receive'
-                this.currentOrderId = orderId
-            },
-            evaluateOrder(orderId) {
-                this.$router.push({
-                    path: '/uc/orders/comment',
-                    query: {
-                        id: orderId
-                    }
-                })
-            },
             deleteOrder(orderId) {
                 this.$dialog.confirm({
-                    title: '删除订单',
-                    message: '您确定要删除该订单吗？'
+                    title: '删除',
+                    message: '您确定要删除吗？'
                 }).then(() => {
                     this.$axios
-                        .post('/order/delete', {
+                        .post('/mine/deleteauction', {
                             id: orderId
                         })
                         .then(({ data }) => {
                             if (data.code === 1) {
-                                this.$toast('删除订单成功');
+                                this.$toast('删除成功');
                                 this.getList()
                             } else {
                                 this.$toast(data.msg);
@@ -393,15 +365,19 @@
                 })
             }
         },
+        watch: {
+            keyboardArray(val) {
+                this.keyboardText = val.join('')
+            },
+        },
         created() {
-            this.activeTabIndex = this.$route.query.activeTabIndex || 0
             this.sta = this.tabList[this.activeTabIndex].sta
         }
     }
 </script>
 
 <style scoped lang="scss">
-    .suwis-order-list {
+    .suwis-uc-auction {
         min-height: 100vh;
         background-color: rgb(245, 245, 245);
         .van-password-input {
@@ -413,6 +389,18 @@
         .link-line {
             margin: 0 20px 250px;
             text-align: right;
+        }
+        .info-line {
+          display: flex;
+          justify-content: space-between;
+          margin: 8px 0;
+          font-size: 14px
+        }
+        .color-red {
+          color: #e83f44
+        }
+        .number-keyword {
+            height: 324px;
         }
     }
 </style>

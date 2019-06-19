@@ -16,8 +16,8 @@
                 </div>
             </div>
             <div class="right">
-                <div class="price">￥{{goods.goods_price}}</div>
-                <div class="num">×{{goods.num}}</div>
+                <div class="price" v-if='goods.goods_price'>￥{{goods.goods_price}}</div>
+                <div class="num" v-if="goods.num">×{{goods.num}}</div>
             </div>
         </div>
     </div>

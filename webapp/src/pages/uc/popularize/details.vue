@@ -115,7 +115,7 @@
                                 this.list = this.list.concat(data.data.order)
                                 if (page * num > data.data.total) this.finished = true
                             } else {
-                                this.error = true
+                                this.finished = true
                             }
                         } else {
                             this.error = true

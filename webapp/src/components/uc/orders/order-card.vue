@@ -6,7 +6,7 @@
                 <span class="shop-name">{{resultData.store_name}}</span>
                 <van-icon name="arrow"/>
             </div>
-            <span class="shop-status">{{ resultData.sta | status }}</span>
+            <span class="shop-status">{{ statusText }}</span>
         </div>
 
         <slot></slot>
@@ -30,6 +30,12 @@
         6: '交易关闭'
     }
 
+    const auctionStatusMap = {
+        0: '正在竞拍',
+        1: '已成功',
+        2: '已关闭'
+    }
+
     export default {
         props: {
             goodsList: {
@@ -47,15 +53,24 @@
             order: {
                 type: [Array, Object],
                 default: () => []
+            },
+            orderType: {
+                type: String,
+                default: 'normal'   // normal: 普通商品  auction: 竞拍商品
             }
-        },
-        filters: {
-            status: v => statusMap[v]
         },
         computed: {
             resultData() {
                 const { orderData } = this
                 return Array.isArray(orderData) ? orderData[0] : orderData
+            },
+            statusText() {
+                const sta = this.resultData.sta
+                if (this.orderType === 'normal') {
+                    return statusMap[sta]
+                } else if (this.orderType === 'auction') {
+                    return auctionStatusMap[sta]
+                }
             },
             totalNum() {
                 const { orderData } = this
