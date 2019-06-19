@@ -25,7 +25,7 @@
           <div class="price">
             <span>
               <i>当前价格</i>
-              <em>¥{{details.price_min}}</em>
+              <em>¥{{details.price_max}}</em>
             </span>
             &nbsp;&nbsp;&nbsp;&nbsp;<var>{{details.sell||0}}次出价</var>
           </div>
