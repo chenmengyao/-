@@ -53,7 +53,7 @@
     <!-- 评论 -->
     <van-cell ref="comment" :id="navlist[1].key" class="interval comment">
       <span slot="title">评价（{{details.evaluate_count}}）</span>
-      <span>好评率&nbsp;<em>{{details.feedback}}%</em></span>
+      <span v-if="details.evaluate_count>0">好评率&nbsp;<em>{{details.feedback * 100}}%</em></span>
     </van-cell>
     <comment-list v-if="details.evaluate">
       <comment-item v-for="(item,idx) in details.evaluate"
