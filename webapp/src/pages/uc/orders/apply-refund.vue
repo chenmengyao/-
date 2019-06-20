@@ -14,6 +14,12 @@
                         <van-icon name="arrow" size="10px" color="rgb(180, 180, 180)"/>
                     </div>
                 </li>
+                <li class="item" v-if="goodInfo.num > 1">
+                    <div class="name">退货数量</div>
+                    <div class="value">
+                        <van-stepper v-model="refundNum" :max="goodInfo.num"/>
+                    </div>
+                </li>
                 <li class="item" @click="showReason">
                     <div class="name">{{type === 'exchange' ? '换货' : '退款'}}原因：</div>
                     <div class="value">
@@ -143,6 +149,7 @@
                 address: {},
                 address_id: '',
                 goodInfo: {},
+                refundNum: 1,
                 id: '',
                 maxSize: 500 * 1024,    // 上传图片的最大kb
                 imgList: [],
@@ -218,9 +225,11 @@
             submit() {
                 if (!this.imgList.length) {
                     this.$toast('请至少上传一张图片凭证')
+                    return
                 }
                 if (!this.reason) {
                     this.$toast('请选择原因')
+                    return
                 }
                 this.$axios
                     .post('/order/aftersale', {
@@ -228,6 +237,7 @@
                         type: typeMap[this.type],
                         reason: reasonMap[this.reason],
                         remark: this.remark,
+                        num: this.refundNum,
                         address_id : this.type === 'exchange' ? this.address.id : undefined,
                         imgs: this.imgList
                     })
