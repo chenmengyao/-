@@ -357,12 +357,12 @@ export default {
             imgUrl: item.img
           })
           this.sku.list.push({
+            ...item,
             id: this.details.id,
             price: item[this.priceKey[val.type || 0]] * 100,
             s1: item.id,
             stock_num: item.count,
             name: item.header_one + ' ' + item.header_two,
-            ...item
           })
         }
       }
