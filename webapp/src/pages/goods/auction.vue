@@ -184,6 +184,8 @@ export default {
     if (current && this.details.type == 2) {
       this.$parent.current = current
       this.showKeyboard()
+      // 清理缓存
+      window.sessionStorage.removeItem('details_sku_current')
     }
     // 获取地址
     this.$route.query.address_id ? this.getAdres() : this.getAdresList()
@@ -290,8 +292,6 @@ export default {
         address_id: 5,
         paypass: md5(this.paypass)
       })
-      // 清理缓存
-      window.sessionStorage.removeItem('details_sku_current')
       if (res.data.code == 1) {
         this.$toast('押金支付成功')
         this.auctionShow = false
