@@ -6,7 +6,7 @@
     "name" : "惠回来",
     "version" : {
         /*应用版本名称*/
-        "name" : "1.0.2",
+        "name" : "1.0.3",
         "code" : ""
     },
     /*应用描述信息*/
@@ -108,7 +108,6 @@
         "NativeObj" : {
             "description" : "原生对象"
         },
-        "Push" : {},
         "Statistic" : {},
         "Payment" : {}
     },
@@ -331,6 +330,7 @@
                     "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\"/>",
                     "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+                    "<uses-permission android:name=\"android.permission.SYSTEM_ALERT_WINDOW\"/>",
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
@@ -473,7 +473,8 @@
                 "payment" : {
                     "alipay" : {}
                 },
-                "share" : {}
+                "share" : {},
+                "push" : {}
             }
         }
     },
