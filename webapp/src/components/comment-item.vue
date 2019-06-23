@@ -27,7 +27,7 @@
       </van-col>
     </van-row>
     <van-row class="medias">
-      <van-col v-for="(url,idx) in medias">
+      <van-col v-for="(url,idx) in medias" v-if="idx<5">
         <img :src="url" @click="preview(idx)" alt="">
       </van-col>
     </van-row>

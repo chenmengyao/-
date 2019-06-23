@@ -78,21 +78,6 @@ export default {
         } else {
           // 返回
           window.app.$vm.$router.history.go(-1)
-          // 判断是否返回到顶部
-          // setTimeout(() => {
-          //   if (Date.now() - state.routerUpdateTime > 300) {
-          //     try {
-          //       plus.webview.currentWebview().setStyle({
-          //         titleNView: {
-          //           titleText: params.title,
-          //           buttons: []
-          //         }
-          //       })
-          //     } catch (e) {
-          //       console.log(e)
-          //     }
-          //   }
-          // }, 300)
         }
       }
       // 右键点击

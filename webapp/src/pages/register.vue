@@ -205,11 +205,9 @@ export default {
         }
 
         .footer-link {
-            bottom: 60px;
-            position: fixed;
-            left: 0;
+            top: 20vw;
+            position: relative;
             text-align: center;
-            width: 100%;
             font-style: normal;
             line-height: 26px;
             font-size: 14px;
