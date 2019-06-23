@@ -100,6 +100,8 @@ export default {
             img {
                 border-radius: 4px;
                 width: 60px;
+                height: 60px;
+                object-fit: cover;
             }
         }
     }

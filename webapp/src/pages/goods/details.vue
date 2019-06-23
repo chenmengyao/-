@@ -63,7 +63,7 @@
         :avatar="item.photo"
         :score="((item.evaluate_express + item.evaluate_serve + item.evaluate_quality) / 15) * 5"
         :content="item.evaluate"
-        :medias="item.evaluate_img||[]">
+        :medias="JSON.parse(item.evaluate_img)||[]">
       </comment-item>
       <van-row v-if="details.evaluate.length==0" type="flex" align="center" justify="center">
         <van-col style="color:#999999;">
