@@ -1,5 +1,5 @@
 <template lang="html">
-<div class="suwis-auction" >
+<div class="suwis-auction" :class="{disable:details.activity_end_time*1000<Date.now()}">
   <!-- 支付押金 -->
   <div class="deposit-info" v-if="auctionShow">
     <dl class="price">
@@ -434,6 +434,14 @@ export default {
             color: #f0914b;
             position: relative;
             top: 18px;
+        }
+    }
+    // 禁用按钮
+    &.disable {
+        .van-button {
+            pointer-events: none;
+            background: #ccc;
+            border-color: #ccc;
         }
     }
 }
