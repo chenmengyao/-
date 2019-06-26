@@ -53,7 +53,7 @@
     <!-- 评论 -->
     <van-cell ref="comment" :id="navlist[1].key" class="interval comment">
       <span slot="title">评价（{{details.evaluate_count}}）</span>
-      <span>好评率&nbsp;<em>{{details.feedback}}%</em></span>
+      <span v-if="details.evaluate_count>0">好评率&nbsp;<em>{{details.feedback * 100}}%</em></span>
     </van-cell>
     <comment-list v-if="details.evaluate">
       <comment-item v-for="(item,idx) in details.evaluate"
@@ -63,7 +63,7 @@
         :avatar="item.photo"
         :score="((item.evaluate_express + item.evaluate_serve + item.evaluate_quality) / 15) * 5"
         :content="item.evaluate"
-        :medias="item.evaluate_img||[]">
+        :medias="JSON.parse(item.evaluate_img)||[]">
       </comment-item>
       <van-row v-if="details.evaluate.length==0" type="flex" align="center" justify="center">
         <van-col style="color:#999999;">
@@ -357,12 +357,12 @@ export default {
             imgUrl: item.img
           })
           this.sku.list.push({
+            ...item,
             id: this.details.id,
             price: item[this.priceKey[val.type || 0]] * 100,
             s1: item.id,
             stock_num: item.count,
             name: item.header_one + ' ' + item.header_two,
-            ...item
           })
         }
       }

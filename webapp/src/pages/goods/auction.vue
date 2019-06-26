@@ -1,5 +1,5 @@
 <template lang="html">
-<div class="suwis-auction" >
+<div class="suwis-auction" :class="{disable:details.activity_end_time*1000<Date.now()}">
   <!-- 支付押金 -->
   <div class="deposit-info" v-if="auctionShow">
     <dl class="price">
@@ -14,9 +14,12 @@
       </dd>
     </dl>
     <van-cell value="该拍品需缴纳保证金15.0。建议您使用支付宝、微信、余额，确保账户有足够的钱款哦" />
-    <van-cell-group>
+    <van-cell-group v-if="adres.id">
       <van-cell :value="`收货人：${adres.name||''}(${adres.tel||''})`" />
       <van-cell :value="`收地址：${adres.city||''}${adres.area||''}${adres.address||''}`" @click="chooseAdres" is-link />
+    </van-cell-group>
+    <van-cell-group v-else>
+      <van-cell value="请选择收货地址" is-link @click="chooseAdres"></van-cell>
     </van-cell-group>
     <van-cell value="查看协议" is-link @click="$router.push('/special/auctionrlue')">
       <template slot="title">
@@ -45,7 +48,7 @@
     />
     <van-goods-action-big-btn
       primary
-      :text="details.isauction==1?'立即出价': `支付定金 (￥${details.price_max*0.1||0} )`"
+      :text="details.isauction==1?'立即出价': `支付定金 (￥${details.stand[0].auction_price * 0.1 || 0} )`"
       @click.native="!current.selectedSkuComb.id?$parent.showSku('showKeyboard'):showKeyboard()"
     />
    </van-goods-action>
@@ -181,13 +184,24 @@ export default {
     if (current && this.details.type == 2) {
       this.$parent.current = current
       this.showKeyboard()
+      // 清理缓存
+      window.sessionStorage.removeItem('details_sku_current')
     }
-    this.getAdres()
+    // 获取地址
+    this.$route.query.address_id ? this.getAdres() : this.getAdresList()
   },
   methods: {
+    async getAdresList() {
+      let res = await this.$axios.post('/user/alladdress')
+      let list = res.data.data || []
+      for (let item of list) {
+        if (item.sta) this.adres = item
+      }
+      // 如果没有默认的
+      if (!this.adres.id) this.adres = list[0]
+    },
     // 获取地址信息
     async getAdres() {
-      if (!this.$route.query.address_id) return
       let res = await this.$axios.post('/user/address', {
         id: this.$route.query.address_id
       })
@@ -236,12 +250,14 @@ export default {
     chooseAdres() {
       // 将地址信息存储到sessionStorage中
       window.sessionStorage.setItem('details_sku_current', JSON.stringify(this.current))
+      let query = this.$route.query
+      delete query.address_id
       // 跳转地址选择器界面
       this.$router.push({
         path: '/uc/setting/address',
         query: {
           from: '/goods/details?id=96&showauction=true',
-          ...this.$route.query
+          ...query
         }
       })
     },
@@ -276,8 +292,6 @@ export default {
         address_id: 5,
         paypass: md5(this.paypass)
       })
-      // 清理缓存
-      window.sessionStorage.removeItem('details_sku_current')
       if (res.data.code == 1) {
         this.$toast('押金支付成功')
         this.auctionShow = false
@@ -420,6 +434,14 @@ export default {
             color: #f0914b;
             position: relative;
             top: 18px;
+        }
+    }
+    // 禁用按钮
+    &.disable {
+        .van-button {
+            pointer-events: none;
+            background: #ccc;
+            border-color: #ccc;
         }
     }
 }
