@@ -107,14 +107,20 @@ export default {
       if (w) {
         return;
       }
-			//检查是否请求订单中
+      //检查是否请求订单中
       if (id === 'appleiap') {
         clicked('payment_iap.html');
         return;
       }
       console.log('----- 请求支付 -----');
       if (id == 'yunpay') {
-				// 银联支付
+        // 银联支付
+        let res = await this.$axios.post('/pay/pay', {
+          pay_type: id,
+          order: this.orderId
+        })
+        location.href = res.data.url
+        return
         // todo
       } else {
         plus.nativeUI.alert('当前环境不支持此支付通道！', null, '捐赠');
@@ -132,7 +138,7 @@ export default {
       w.close();
       w = null;
       console.log(res.data, 'res.data')
-      alert(res.data)
+      // alert(res.data)
       plus.payment.request(this.pays[id], res.data, (result) => {
         console.log('----- 支付成功 -----');
         console.log(JSON.stringify(result));
