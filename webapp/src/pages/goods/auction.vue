@@ -1,5 +1,5 @@
 <template lang="html">
-<div class="suwis-auction" :class="{disable:details.activity_end_time*1000<Date.now()}">
+<div class="suwis-auction" :class="{disable}">
   <!-- 支付押金 -->
   <div class="deposit-info" v-if="auctionShow">
     <dl class="price">
@@ -128,6 +128,8 @@ export default {
   props: ['details', 'current'],
   data() {
     return {
+      disable: false,
+      timer: {},
       adres: {},
       typeList: [{
         id: 'balancepay',
@@ -189,6 +191,14 @@ export default {
     }
     // 获取地址
     this.$route.query.address_id ? this.getAdres() : this.getAdresList()
+    // 启动定时器检查拍卖时间是否结束
+    this.timer = setInterval(() => {
+      this.disable = this.details.activity_end_time * 1000 < Date.now()
+    }, 1000)
+  },
+  beforeDestroy() {
+    // 清理定时器
+    window.clearInterval(this.timer)
   },
   methods: {
     async getAdresList() {
