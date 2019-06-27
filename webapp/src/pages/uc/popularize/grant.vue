@@ -51,7 +51,10 @@
     export default {
         filters: {
             location(v) {
-                return (v.province + v.city + v.area) || '---'
+                const province = v.province || ''
+                const city = v.city || ''
+                const area = v.area || ''
+                return (province + city + area) || '---'
             }
         },
         data() {

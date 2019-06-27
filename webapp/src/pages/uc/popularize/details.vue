@@ -78,7 +78,10 @@
         computed: {
             location() {
                 const { user } = this
-                return user.province + user.city + user.area
+                const province = user.province || ''
+                const city = user.city || ''
+                const area = user.area || ''
+                return province + city + area
             }
         },
         data() {
