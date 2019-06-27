@@ -39,11 +39,6 @@ Vue.mixin({
   }
 })
 
-// 路由拦截-前置
-router.beforeEach((to, from, next) => {
-  next()
-})
-
 // 路由拦截-后置
 router.afterEach((to, from) => {
   let hideTabbar = true
