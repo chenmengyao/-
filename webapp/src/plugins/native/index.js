@@ -6,6 +6,10 @@ document.addEventListener('plusready', () => {
   var webview = plus.webview.currentWebview()
   window.app.$vm.$router.beforeEach((to, from, next) => {
     prevPath = from.path
+    // 触发窗口大小事件
+    webview.setStyle({
+      top: '44px'
+    })
     next()
   })
   plus.key.addEventListener('backbutton', function() {
@@ -28,8 +32,7 @@ document.addEventListener('plusready', () => {
         if (e.canBack) {
           webview.back()
         } else {
-          webview.close() // hide,quit
-          // plus.runtime.quit()
+          webview.close()
         }
       })
     }
