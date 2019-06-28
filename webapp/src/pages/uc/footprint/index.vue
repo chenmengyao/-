@@ -1,16 +1,16 @@
 <template>
     <div class="suwis-footprint">
         <ul class="date-list">
-            <li class="date-item" v-for="item in week">
+            <li class="date-item" v-for="item in week" :key="item.day">
                 <div class="day">{{item.day}}</div>
                 <div class="date" :class="{today: item.isToday}">{{item.date}}</div>
             </li>
         </ul>
-        <template v-for="item in list">
-            <div class="footprint-item" v-if="item.length">
+        <template v-for="(item, index) in list">
+            <div class="footprint-item" v-if="item.length" :key="index">
                 <div class="title">{{item[0].time | date}}</div>
                 <ul class="goods-list">
-                    <li class="goods-item" v-for="goods in item" :key="goods.goods_id">
+                    <li class="goods-item" v-for="goods in item" :key="goods.time">
                         <img :src="goods.img" v-lazy="goods.img" class="img">
                         <div class="bottom-line">
                             <span class="price">￥{{goods.price_min}}</span>
@@ -31,7 +31,7 @@
     export default {
         filters: {
             date(v) {
-                return moment(v).format('M月-D日')
+                return moment(v * 1000).format('M月-D日')
             }
         },
         data() {

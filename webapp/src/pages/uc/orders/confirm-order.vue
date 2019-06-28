@@ -194,7 +194,11 @@ export default {
   },
   filters: {
     location(v) {
-      return (v.province + v.city + v.area + v.address) || '---'
+        const province = v.province || ''
+        const city = v.city || ''
+        const area = v.area || ''
+        const address = v.address || ''
+        return (province + city + area + address) || '---'
     }
   },
   computed: {

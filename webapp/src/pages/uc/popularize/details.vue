@@ -5,7 +5,7 @@
                 <img :src="user.photo || require('@/assets/login/avatar@3x.png')" alt="" class="profile">
                 <div class="info">
                     <div class="name">{{user.nickname}}</div>
-                    <div class="location">{{user | location}} / {{user.name}}</div>
+                    <div class="location" v-if="location || user.name">{{location || '---'}} / {{user.name}}</div>
                 </div>
                 <div class="level">
                     <img src="@/assets/myvip.png" class="vip">
@@ -67,9 +67,6 @@
 
     export default {
         filters: {
-            location(v) {
-                return (v.province + v.city + v.area) || '---'
-            },
             orderStatus(v) {
                 return orderStatus[v]
             },
@@ -77,6 +74,15 @@
                 return payType[v].name
             }
 
+        },
+        computed: {
+            location() {
+                const { user } = this
+                const province = user.province || ''
+                const city = user.city || ''
+                const area = user.area || ''
+                return province + city + area
+            }
         },
         data() {
             return {
@@ -162,6 +168,7 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
+                height: 42px;
                 margin-left: 10px;
                 color: #fff;
             }
