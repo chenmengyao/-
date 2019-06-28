@@ -263,6 +263,7 @@
             ],
             "titleNView" : {
                 "backgroundcolor" : "rgba(221,11,17,1)",
+                "backgroundimage" : "linear-gradient(to right, #a80077, #66ff00)",
                 "titletext" : "惠回来",
                 "titlecolor" : "#fff",
                 "buttons" : []
