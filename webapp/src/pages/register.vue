@@ -175,7 +175,7 @@ export default {
         background: #fff;
         border-radius: 4px;
         position: absolute;
-        bottom: 15px;
+        height: 139vw;
         top: 15px;
         width: calc(100% - 30px);
         box-sizing: border-box;

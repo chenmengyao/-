@@ -186,7 +186,7 @@ export default {
         background: #fff;
         border-radius: 4px;
         position: absolute;
-        bottom: 15px;
+        height: 128vw;
         top: 80px;
         width: calc(100% - 30px);
         box-sizing: border-box;
