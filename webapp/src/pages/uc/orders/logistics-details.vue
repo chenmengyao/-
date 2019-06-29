@@ -13,7 +13,7 @@
                     物流动态
                 </div>
                 <ul class="logistics-info">
-                    <li class="logistics-item">订单编号：{{logisticsInfo.EBusinessID}}</li>
+                    <li class="logistics-item">订单编号：{{logisticsInfo.order_number}}</li>
                     <li class="logistics-item">物流单号：{{logisticsInfo.LogisticCode}}</li>
                 </ul>
             </div>
