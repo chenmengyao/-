@@ -25,6 +25,9 @@
           </van-tab>
         </van-tabs>
         <div class="footer-link">
+          <router-link to="/register">
+            注册新账号
+          </router-link>&nbsp;&nbsp;&nbsp;&nbsp;
           <router-link to="/resetpwd">
             忘记密码？
           </router-link>

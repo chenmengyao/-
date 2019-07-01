@@ -56,10 +56,10 @@
       <span v-if="details.evaluate_count>0">好评率&nbsp;<em>{{details.feedback * 100}}%</em></span>
     </van-cell>
     <comment-list v-if="details.evaluate">
+      <!-- :date="$moment(item.evaluate_time+1000).format('YYYY-mm-DD HH:MM:SS')" -->
       <comment-item v-for="(item,idx) in details.evaluate"
         v-if="idx<3"
         :name="item.nickname"
-        :date="$moment(item.evaluate_time).format('YYYY-mm-DD HH:MM:SS')"
         :avatar="item.photo"
         :score="((item.evaluate_express + item.evaluate_serve + item.evaluate_quality) / 15) * 5"
         :content="item.evaluate"
@@ -72,7 +72,7 @@
       </van-row>
     </comment-list>
     <!-- 评论 //-->
-    <router-link v-if="details.evaluate&&details.evaluate.length>3" class="comment-more" :to="{ path: '/goods/comment-list', query: {id: details.id} }">查看更多评价<img src="@/assets/details/more@3x.png" alt=""></router-link>
+    <router-link v-if="details.evaluate&&details.evaluate.length>=2" class="comment-more" :to="{ path: '/goods/comment-list', query: {id: details.id} }">查看更多评价<img src="@/assets/details/more@3x.png" alt=""></router-link>
     <!-- 店铺详情 -->
     <div ref="content" :id="navlist[2].key">
       <van-tabs class="good-tabs" v-model="goodTabIdx">

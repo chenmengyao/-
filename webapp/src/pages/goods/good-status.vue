@@ -54,7 +54,7 @@
           好物<br>推荐
         </dt>
         <dd>
-          推荐指数 <van-rate v-model="details.star" color="#fff" void-color="#fff" :size="16" />
+          推荐指数 <van-rate v-model="details.star" disabled disabled-color="#fff" color="#fff" void-color="#fff" :size="16" />
         </dd>
       </dl>
     </template>

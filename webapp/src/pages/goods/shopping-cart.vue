@@ -59,6 +59,15 @@ export default {
   created() {
     this.getCarList()
   },
+  watch: {
+    shops: {
+      deep: true,
+      handler() {
+        // 计算
+        this.calcCheckNums()
+      }
+    }
+  },
   methods: {
     // 获取购物车数量
     async getCarList(evt) {
