@@ -8,8 +8,8 @@
             </van-cell>
             <van-cell center value-class="cell-content">
                 <template slot="title">
-                    可用积分：{{score_balance}}分
-                    <span class="use-all" @click="score = score_balance">全部使用</span>
+                    可用积分：{{score_need}}分
+                    <span class="use-all" @click="score = score_need">全部使用</span>
                 </template>
             </van-cell>
             <van-field
@@ -32,21 +32,23 @@
             return {
                 query: {},
                 score: '',
+                score_need: 0,  // 该订单最大可用积分
                 score_balance: ''   // 积分余额
             }
         },
         methods: {
             confirm() {
-                if (+this.score > +this.score_balance) {
+                if (+this.score > +this.score_need) {
                     this.$toast('输入的积分不能大于可用积分');
                     return
                 }
-                const { address_id, car_id, num, stand_id } = this.query
-                this.$router.push({
+                const { address_id, car_id, express_remark, num, stand_id } = this.query
+                this.$router.replace({
                     path: '/uc/orders/confirm-order',
                     query: {
                         address_id,
                         car_id,
+                        express_remark,
                         num,
                         stand_id,
                         score: this.score
@@ -56,6 +58,7 @@
         },
         created() {
             Object.assign(this.query, this.$route.query)
+            this.score_need = this.query.score_need
             this.$axios
                 .post('/mine/myscore')
                 .then(({ data }) => {

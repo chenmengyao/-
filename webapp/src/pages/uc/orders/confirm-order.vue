@@ -64,7 +64,8 @@
         普通快递 <span style="font-size: 10px">（运费：￥{{postage}}）</span>
       </template>
     </van-cell>
-    <van-field v-model="express_remark"
+    <van-field v-model.trim="express_remark"
+      maxlength="100"
       clearable
       label="买家留言"
       placeholder="请填写备注信息" />
@@ -107,7 +108,7 @@
       <template slot="title">
         <van-checkbox v-model="useScore"
           @change="getData">
-          积分抵扣 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;">（可用积分：{{score_balance}}）</span>
+          积分抵扣 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;">（可用积分：{{score_need}}）</span>
           <div v-show="score">使用{{score}}分</div>
         </van-checkbox>
       </template>
@@ -230,6 +231,7 @@ export default {
       password: '',               // 支付密码
       passwordModalShow: false,   // 输入弹框显示
       score_balance: 0, // 可用积分总额
+      score_need: 0, // 当前订单可用的积分上限
       score: 0, // 使用的积分
       stand_id: '',
       shopList: [],
@@ -291,6 +293,7 @@ export default {
               this.total = data.data.total
               this.discount = data.data.use_vipdiscount
               this.couponList = data.data.coupon
+              this.score_need = data.data.score_need || 0,
               this.address = data.data.address.find(item => this.address_id ? item.id === +this.address_id : item.sta === 1)
               if (!this.address_id) {
                 this.address_id = this.address.id
@@ -318,15 +321,15 @@ export default {
       this.$router.push({
         path: '/goods/details',
         query: {
-          id: goods.id
+          id: goods.goods_id
         }
       })
     },
     onClickStore(store) {
-        this.$router.push({
-            path: '/shop',
-            query: {id: store.store_id}
-        })
+      this.$router.push({
+        path: '/shop',
+        query: {id: store.store_id}
+      })
     },
     onCouponClick(coupon) {
       this.coupon = coupon
@@ -364,6 +367,7 @@ export default {
         query: {
           from: this.$route.path,
           car_id: this.orderFrom === 'single' ? undefined : this.car_id,
+          express_remark: this.express_remark,
           stand_id: this.orderFrom === 'single' ? this.stand_id : undefined,
           num: this.orderFrom === 'single' ? this.num : undefined,
           score: this.score
@@ -383,6 +387,8 @@ export default {
         query: {
           address_id: this.address_id,
           car_id: this.orderFrom === 'single' ? undefined : this.car_id,
+          express_remark: this.express_remark,
+          score_need: this.score_need,
           stand_id: this.orderFrom === 'single' ? this.stand_id : undefined,
           num: this.orderFrom === 'single' ? this.num : undefined,
         }
@@ -418,6 +424,13 @@ export default {
       this.orderId = res.data.data
     }
   },
+  watch: {
+    $route(to, from) {
+      if (this.$route.path === to.path) {
+        this.$router.go(-1)
+      }
+    }
+  },
   created() {
     if (this.$route.query.stand_id) {
       this.orderFrom = 'single'
@@ -448,6 +461,7 @@ export default {
 
     this.score = this.$route.query.score
     this.address_id = this.$route.query.address_id
+    this.express_remark = this.$route.query.express_remark
     this.getData()
   }
 }
