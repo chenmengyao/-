@@ -38,7 +38,9 @@
                     <span class="suwis-auction-date"> {{item.endTime[0]}}</span>
                     <span class="suwis-auction-date"> {{item.endTime[1]}}</span> :
                     <span class="suwis-auction-date"> {{item.endTime[2]}}</span>
-                    <span class="suwis-auction-date"> {{item.endTime[3]}}</span>
+                    <span class="suwis-auction-date"> {{item.endTime[3]}}</span> :
+                    <span class="suwis-auction-date"> {{item.endTime[4]}}</span>
+                    <span class="suwis-auction-date"> {{item.endTime[5]}}</span>
                   </span>
                 </div>
                <div style="text-align:right;font-size:12px"><span style="color:#E83F44 ">{{item.price_count}}</span><span class="suwis-current-price">次出价</span></div>
@@ -69,13 +71,13 @@ function InitTime(endtime) {
     mm = Math.floor((time / 60) % 60);
     ss = Math.floor(time % 60);
     if (mm < 10 && ss < 10) {
-      var str = '0' + mm + '0' + ss;
+      var str = dd+'0' + mm + '0' + ss;
     } else if (mm < 10) {
-      var str = '0' + mm + ss;
+      var str = dd+'0' + mm + ss;
     } else if (ss < 10) {
-      var str = mm + '0' + ss;
+      var str = dd+mm + '0' + ss;
     } else {
-      var str = mm + '' + ss
+      var str = dd+mm + '' + ss
     }
 
     return str;
@@ -187,13 +189,13 @@ export default {
           var ss = Math.floor((rightTime / 1000) % 60);
           if (mm < 10 && ss < 10) {
 
-            this.list[key]["endTime"] = '0' + mm + '0' + ss;
+            this.list[key]["endTime"] = dd +'0' + mm + '0' + ss;
           } else if (mm < 10) {
-            this.list[key]["endTime"] = '0' + mm + ss;
+            this.list[key]["endTime"] = dd +'0' + mm + ss;
           } else if (ss < 10) {
-            this.list[key]["endTime"] = mm + '0' + ss;
+            this.list[key]["endTime"] = dd + '' + mm + '0' + ss;
           } else {
-            this.list[key]["endTime"] = mm + '' + ss
+            this.list[key]["endTime"] = dd + '' + mm + '' + ss
           }
         } else {
           this.list[key]["endTime"] = '结束'
@@ -201,7 +203,7 @@ export default {
 
       }
     }, 1000);
-
+   
   }
 }
 </script>
@@ -244,9 +246,9 @@ export default {
   font-size: 14px;
 }
 .suwis-news-right {
-  max-width: 140px;
+  max-width: 80px;
   /* min-width: 140px; */
-  height: 140px;
+  height: 80px;
   border-radius: 6px;
   overflow: hidden;
 }
@@ -272,7 +274,7 @@ export default {
 }
 .suwis-news-tips {
   height: 30px;
-  margin-top: 8px;
+  /* margin-top: 3px; */
 }
 .d-yuan-price {
   text-decoration: line-through;
@@ -337,13 +339,13 @@ export default {
 .suwis-news-tips > div:nth-child(3) {
   margin-top: 25px; */
 .suwis-news-tips>div:nth-child(1){
-  margin-top:15px;
+  /* margin-top:15px; */
 }
 .suwis-news-tips>div:nth-child(2){
-  margin-top:10px;
+  /* margin-top:10px; */
 }
 .suwis-news-tips>div:nth-child(3){
-  margin-top:25px;
+  margin-top:5px;
 }
 .van-swipe__indicators {
   left: none;
