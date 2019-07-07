@@ -8,7 +8,7 @@
       </van-checkbox>
       <van-checkbox v-model="good.checked" v-for="good in shop.goods" @change="calcCheckNums">
         <van-card
-          @click.native.stop
+          @click.native.stop="$router.push({path:'/goods/details', query:{id:good.goods_id}})"
           :price="good.price"
           :desc="good.header_one + ' ' + good.header_two"
           :title="good.title"
