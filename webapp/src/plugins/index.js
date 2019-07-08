@@ -1,3 +1,4 @@
+import './config'
 import './axios'
 import './vant'
 import './moment'
