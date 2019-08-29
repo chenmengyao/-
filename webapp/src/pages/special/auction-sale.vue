@@ -34,13 +34,14 @@
                <div>
                   <span class="suwis-current-price">距离结束仅剩下 </span>
                   <span v-if="item.endTime=='结束'">{{item.endTime}}</span>
-                  <span v-else>
-                    <span class="suwis-auction-date"> {{item.endTime[0]}}</span>
+                  <span v-else class="suwis-auction-date">
+                    {{item.endTime}}
+                    <!-- <span class="suwis-auction-date"> {{item.endTime[0]}}</span>
                     <span class="suwis-auction-date"> {{item.endTime[1]}}</span> :
                     <span class="suwis-auction-date"> {{item.endTime[2]}}</span>
                     <span class="suwis-auction-date"> {{item.endTime[3]}}</span> :
                     <span class="suwis-auction-date"> {{item.endTime[4]}}</span>
-                    <span class="suwis-auction-date"> {{item.endTime[5]}}</span>
+                    <span class="suwis-auction-date"> {{item.endTime[5]}}</span> -->
                   </span>
                 </div>
                <div style="text-align:right;font-size:12px"><span style="color:#E83F44 ">{{item.price_count}}</span><span class="suwis-current-price">次出价</span></div>
@@ -188,14 +189,13 @@ export default {
           var mm = Math.floor((rightTime / 1000 / 60) % 60);
           var ss = Math.floor((rightTime / 1000) % 60);
           if (mm < 10 && ss < 10) {
-
-            this.list[key]["endTime"] = dd +'0' + mm + '0' + ss;
+            this.list[key]["endTime"] =dd+'天 '+hh+'时:0'+mm+'分:0'+ss+'秒'
           } else if (mm < 10) {
-            this.list[key]["endTime"] = dd +'0' + mm + ss;
+            this.list[key]["endTime"] =dd+'天 '+hh+'时:0'+mm+'分:'+ss+'秒'
           } else if (ss < 10) {
-            this.list[key]["endTime"] = dd + '' + mm + '0' + ss;
+            this.list[key]["endTime"] =dd+'天 '+hh+'时:'+mm+'分:0'+ss+'秒'
           } else {
-            this.list[key]["endTime"] = dd + '' + mm + '' + ss
+            this.list[key]["endTime"] =dd+'天 '+hh+'时:'+mm+'分:'+ss+'秒'
           }
         } else {
           this.list[key]["endTime"] = '结束'
@@ -319,13 +319,13 @@ export default {
 .suwis-auction-date {
   font-size: 12px;
   line-height: 12px;
-  background-image: linear-gradient(to right, #faa537, #f06b25);
+  /* background-image: linear-gradient(to right, #faa537, #f06b25);
   color: #fff;
   display: inline-block;
   width: 12px;
   height: 13px;
   text-align: center;
-  border-radius: 1px;
+  border-radius: 1px; */
 }
 .suwis-auction-date:nth-child(2n) {
   margin-left: 3px;
