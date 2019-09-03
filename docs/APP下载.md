@@ -6,4 +6,4 @@
 
 |                                                 安卓版                                                 | IOS |
 | :-------------------------------------------------------------------------------------------------: | :-: |
-| ![](http://qr.topscan.com/api.php?text=http://test.suwis.com/1905_tideway_shop/product/android.apk) | 待打包 |
+| ![](http://qr.topscan.com/api.php?text=http://test.suwis.com/1905_tideway_shop/product/android.apk?v34) | 待打包 |
