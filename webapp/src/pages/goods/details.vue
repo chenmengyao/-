@@ -169,18 +169,28 @@
     <coupon-list v-model="couponsVisible" title="请领取优惠券">
       <coupon-item
         v-for="item in coupons"
+        :item="item"
         :title="item.title"
         :desc="`满${item.total}减${item.sum}`"
         :price="item.sum"
         :time="item.end_time"
-        :type="item.number_can>0&&Date.now()<item.end_time*1000?1:0"
+        :type="(item.number_can>0&&Date.now()<item.end_time*1000)||item.type==0?1:0"
         @click="receiveCoupon(item)">
-        <span slot="btn-text">
+        <span slot="btn-text" v-if="item.type==0">
+          <template v-if="item.number_can<=0">已领取完</template>
+          <template v-else>
+            领取
+          </template>
+        </span>
+        <span slot="btn-text" v-else>
           <template v-if="item.number_can<=0">已领取完</template>
           <template v-else>
             <template v-if="Date.now()>item.end_time*1000">已到期</template>
           </template>
           <template v-if="item.number_can>0&&Date.now()<item.end_time*1000">领取</template>
+        </span>
+        <span slot="time" v-if="item.type==0">
+          领取后{{item.day}}天内有效
         </span>
       </coupon-item>
     </coupon-list>

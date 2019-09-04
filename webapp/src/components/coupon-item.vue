@@ -14,7 +14,10 @@
     </dl>
     <dl>
       <dt>
-        <img class="time" src="@/assets/coupons/time@3x.png" alt="">有效期至：{{time|dateFmt}}
+        <img class="time" src="@/assets/coupons/time@3x.png" alt="">
+        <slot name="time">
+          有效期至：{{time|dateFmt}}
+        </slot>
       </dt>
       <dd>
         <span class="btn" :class="{invalid:type!=1}">
@@ -29,7 +32,7 @@
 
 <script>
 export default {
-  props: ['title', 'desc', 'price', 'time', 'btnText', 'type'],
+  props: ['title', 'desc', 'price', 'time', 'btnText', 'type', 'day'],
   methods: {
     click() {
       // 单击

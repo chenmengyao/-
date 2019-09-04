@@ -1,5 +1,5 @@
 <template lang="html">
-  <van-popup v-model="value" position="bottom">
+  <van-popup v-model="value" :close-on-click-overlay="false" position="bottom">
     <div class="suwis-coupon-list">
       <img class="btn-close" @click="close" src="@/assets/coupons/close.png" alt="">
       <h5>
