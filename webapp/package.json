@@ -26,7 +26,7 @@
     "vue": "^2.6.10",
     "vue-amap": "^0.5.9",
     "vue-echarts-v3": "^2.0.1",
-    "vue-form": "^1.0.1",
+    "vue-form": "^4.10.1",
     "vue-lazyload": "^1.2.6",
     "vue-router": "^3.0.3",
     "vue-scrollto": "^2.15.0",

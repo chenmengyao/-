@@ -7,13 +7,6 @@
                 :store-logo="goodInfo.goods_img"
             ></SimpleGood>
             <ul class="list">
-                <li class="item" @click="showStatus" v-if="type === 'refund'">
-                    <div class="name">货物状态</div>
-                    <div class="value">
-                        {{status | goodsStatus}}
-                        <van-icon name="arrow" size="10px" color="rgb(180, 180, 180)"/>
-                    </div>
-                </li>
                 <li class="item" v-if="goodInfo.num > 1">
                     <div class="name">退货数量</div>
                     <div class="value">
@@ -155,7 +148,7 @@
                 goodInfo: {},
                 refundNum: 1,
                 id: '',
-                maxSize: 500 * 1024,    // 上传图片的最大kb
+                maxSize: 5 * 1024 * 1024,    // 上传图片的最大kb
                 imgList: [],
                 remark: '',
                 reason: '',
@@ -213,8 +206,8 @@
                     })
             },
             oversize() {
-                const maxSize = Math.floor(this.maxSize / 1024)
-                this.$toast(`上传图片最大不能超过${maxSize}KB`)
+                const maxSize = Math.floor(this.maxSize / 1024 / 1024)
+                this.$toast(`上传图片最大不能超过${maxSize}MB`)
             },
             removeImg(index) {
                 this.$dialog

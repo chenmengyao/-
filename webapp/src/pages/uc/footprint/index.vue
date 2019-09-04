@@ -10,7 +10,7 @@
             <div class="footprint-item" v-if="item.length" :key="index">
                 <div class="title">{{item[0].time | date}}</div>
                 <ul class="goods-list">
-                    <li class="goods-item" v-for="goods in item" :key="goods.time">
+                    <li class="goods-item" v-for="goods in item" :key="goods.time" @click="onClick(goods)">
                         <img :src="goods.img" v-lazy="goods.img" class="img">
                         <div class="bottom-line">
                             <span class="price">￥{{goods.price_min}}</span>
@@ -68,6 +68,14 @@
                             this.$toast(data.msg);
                         }
                     })
+            },
+            onClick(goods) {
+                this.$router.push({
+                    path: '/goods/details',
+                    query: {
+                    id: goods.goods_id
+                }
+            })
             }
         },
         created() {

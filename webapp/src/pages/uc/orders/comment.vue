@@ -81,7 +81,7 @@
                 evaluate_quality: 5,
                 evaluate_serve: 5,
                 evaluate_express: 5,
-                maxSize: 500 * 1024,    // 上传图片的最大kb
+                maxSize: 5 * 1024 * 1024,    // 上传图片的最大kb
                 imgList: [],
                 orderId: ''
             }
@@ -109,8 +109,8 @@
                     })
             },
             oversize() {
-                const maxSize = Math.floor(this.maxSize / 1024)
-                this.$toast(`上传图片最大不能超过${maxSize}KB`)
+                const maxSize = Math.floor(this.maxSize / 1024 / 1024)
+                this.$toast(`上传图片最大不能超过${maxSize}MB`)
             },
             removeImg(index) {
                 this.$dialog

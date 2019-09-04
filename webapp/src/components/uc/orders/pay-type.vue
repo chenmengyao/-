@@ -115,11 +115,8 @@ export default {
       console.log('----- 请求支付 -----');
       if (id == 'yunpay') {
         // 银联支付
-        let res = await this.$axios.post('/pay/pay', {
-          pay_type: id,
-          order: this.orderId
-        })
-        location.href = res.data.url
+        let token = app.$vm.$store.getters['core/token']
+        location.href = `${this.$config.apihost}pay/pay/order/${this.orderId}/token/${token}/pay_type/yunpay/yunpay_notify/http://10.16.40.49:8080/#/uc/orders/yunpaycallbak`
         return
         // todo
       } else {
