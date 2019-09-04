@@ -1,6 +1,6 @@
 <template lang="html">
     <div class="suwis-refund-detail">
-        <div class="top-tip">您已成功发起退款申请，请耐心等待商家处理 </div>
+        <div class="top-tip">{{refundInfo.sta | refundStatus}}</div>
         <div class="main-content">
             <SimpleGood
                 :name="goodInfo.title"

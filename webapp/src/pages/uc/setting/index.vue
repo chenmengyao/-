@@ -100,7 +100,7 @@
             return {
                 areaList,
                 name: '',       // 弹框昵称
-                maxSize: 500 * 1024,    // 上传图片的最大kb
+                maxSize: 5 * 1024 * 1024,    // 上传图片的最大kb
                 profileUrl: '',
                 locationValue: '',
                 profileShow: false,
@@ -238,8 +238,8 @@
                     })
             },
             oversize() {
-                const maxSize = Math.floor(this.maxSize / 1024)
-                this.$toast(`上传图片最大不能超过${maxSize}KB`)
+                const maxSize = Math.floor(this.maxSize / 1024 / 1024)
+                this.$toast(`上传图片最大不能超过${maxSize}MB`)
             },
             scanSuccess(codeUrl) {
                 this.qrCodeShow = false
