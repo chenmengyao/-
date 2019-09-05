@@ -13,7 +13,10 @@ export const routes = [{
 }, {
   path: '/login',
   name: '登录',
-  component: () => import('./pages/login.vue')
+  component: () => import('./pages/login.vue'),
+  meta: {
+    keepAlive: true
+  }
 }, {
   path: '/register',
   name: '注册',
