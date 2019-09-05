@@ -90,7 +90,7 @@ export const routes = [{
   path: '/special/auctionrlue',
   name: '竞拍规则',
   component: () => import('./pages/special/auctionrlue.vue')
-},{
+}, {
   path: '/uc/auction',
   name: '我的竞拍',
   component: () => import('./pages/uc/auction/index.vue')
@@ -256,5 +256,11 @@ export const routes = [{
 }]
 
 export default new Router({
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    return {
+      x: 0,
+      y: 0
+    }
+  }
 })

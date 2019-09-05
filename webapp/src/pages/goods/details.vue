@@ -77,7 +77,7 @@
     <div ref="content" :id="navlist[2].key">
       <van-tabs class="good-tabs" v-model="goodTabIdx">
         <van-tab title="商品介绍">
-          <div v-if="details.details" class="good-info interval">
+          <div v-if="details.details" class="good-info interval content">
             <video x5-video-player-type="h5" x5-video-player-fullscreen="true" x-webkit-airplay="allow" webkit-playsinline playsinline v-if="details.details[0].content.video" :src="details.details[0].content.video" autoplay controls></video>
             <img :src="details.details[0].content.img" alt="">
             <div v-html="details.details[0].content.editor"></div>
@@ -85,13 +85,13 @@
           </div>
         </van-tab>
         <van-tab title="规格参数">
-          <div v-if="details.details" class="specification">
+          <div v-if="details.details" class="specification content">
             <img :src="details.details[1].content.img" alt="">
             <div v-html="details.details[1].content.editor"></div>
           </div>
         </van-tab>
         <van-tab title="售后保障">
-          <div v-if="details.details" class="guarantee">
+          <div v-if="details.details" class="guarantee content">
             <img :src="details.details[2].content.img" alt="">
             <div v-html="details.details[2].content.editor"></div>
           </div>
@@ -547,6 +547,7 @@ export default {
 
     .banner {
         height: 100vw;
+        max-width: 100vw;
         overflow: hidden;
         img {
             width: 100%;
@@ -750,6 +751,10 @@ export default {
         padding: $interval;
         line-height: 26px;
         min-height: calc(100vh - 239px);
+    }
+    .content {
+        max-width: 100vw;
+        overflow: hidden;
     }
     //
     .van-goods-action {
