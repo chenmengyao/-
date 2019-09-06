@@ -27,7 +27,10 @@
           <em class="gray">¥{{details.price_max}}</em><em>¥{{details.price_min}}</em>
         </van-col>
         <van-col>
-          <span>
+          <span v-if="details.type==2">
+            {{details.price_count}}人已出价
+          </span>
+          <span v-else>
             {{details.sell}}人已付款
           </span>
         </van-col>

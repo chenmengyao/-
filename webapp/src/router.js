@@ -8,7 +8,8 @@ export const routes = [{
   name: '惠回来',
   component: () => import('./pages/index.vue'),
   meta: {
-    keepAlive: true
+    keepAlive: true,
+    idx: 0
   }
 }, {
   path: '/login',
@@ -46,7 +47,8 @@ export const routes = [{
   name: '商品分类',
   component: () => import('./pages/goods/classify.vue'),
   meta: {
-    keepAlive: true
+    keepAlive: true,
+    idx: 1
   }
 }, {
   path: '/goods/details',
@@ -73,7 +75,10 @@ export const routes = [{
 }, {
   path: '/goods/shopping-cart',
   name: '购物车',
-  component: () => import('./pages/goods/shopping-cart.vue')
+  component: () => import('./pages/goods/shopping-cart.vue'),
+  meta: {
+    idx: 2
+  }
 }, {
   path: '/shop',
   name: '店铺',
@@ -109,7 +114,10 @@ export const routes = [{
 }, {
   path: '/uc',
   name: '个人中心',
-  component: () => import('./pages/uc/index.vue')
+  component: () => import('./pages/uc/index.vue'),
+  meta: {
+    idx: 3
+  }
 }, {
   path: '/uc/setting',
   name: '设置',

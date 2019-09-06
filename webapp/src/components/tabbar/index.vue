@@ -53,6 +53,14 @@ export default {
         // 切换状态
         this.toggleState()
       }
+    },
+    $route(val) {
+      // 切换状态
+      let idx = val.meta.idx || -1
+      if (val.path == '/') idx = 0
+      if (idx < 0) return
+      let current = this.navlist[idx]
+      this.toggleTab(current)
     }
   },
   methods: {
@@ -80,6 +88,9 @@ export default {
         this.toggleTab(current)
       })
       this.plusready = true
+
+      // 默认选中首页
+      this.toggleTab(this.navlist[0])
     },
     toggleTab(current) {
       // 深拷贝
