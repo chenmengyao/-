@@ -34,8 +34,8 @@
                                         <div class="date">{{item.time | dateFmt}}</div>
                                     </div>
                                     <div class="right" :style="{'justify-content': tabStatus === 'new' ? 'center' : 'flex-end'}">
-                                        <button v-if="tabStatus === 'new'" class="button" @click="grant(item.id)">发放额度</button>
-                                        <span v-else-if="tabStatus === 'all'" class="sum">{{item.sum || 0}}</span>
+                                        <!-- <button v-if="tabStatus === 'new'" class="button" @click="grant(item.id)">发放额度</button>
+                                        <span v-else-if="tabStatus === 'all'" class="sum">{{item.sum || 0}}</span> -->
                                     </div>
                                 </div>
                             </template>
@@ -109,10 +109,10 @@
                 status: 'list',
                 tabStatus: 'new',
                 tabList: [
-                    {
-                        key: 'new',
-                        name: '新注册',
-                    },
+                    // {
+                    //     key: 'new',
+                    //     name: '新注册',
+                    // },
                     {
                         key: 'all',
                         name: '全部'
