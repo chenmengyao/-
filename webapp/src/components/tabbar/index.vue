@@ -61,6 +61,16 @@ export default {
       if (idx < 0) return
       let current = this.navlist[idx]
       this.toggleTab(current)
+      setTimeout(() => {
+        // 修复页面聚焦时底部tab高度失效问题
+        let inputs = document.querySelectorAll('input')
+        inputs.forEach((input, idx) => {
+          input.addEventListener('blur', this.resetWebview)
+          input.addEventListener('blur', this.resetWebview)
+          input.addEventListener('focus', this.resetWebview)
+          input.addEventListener('focus', this.resetWebview)
+        })
+      }, 198)
     }
   },
   methods: {
@@ -102,7 +112,9 @@ export default {
       }
       this.$router.push(current.path)
       // 设置颜色
-      this.ntab.draw(tags)
+      try {
+        this.ntab.draw(tags)
+      } catch (e) {}
     },
     /**
      *  简单封装了绘制原生view控件的方法
@@ -117,6 +129,13 @@ export default {
       try {
         this.app.tabbarVisible ? this.ntab.show() : this.ntab.hide()
       } catch (e) {}
+    },
+    // 重置webview高度
+    resetWebview() {
+      let webview = plus.webview.currentWebview()
+      webview.setStyle({
+        height: '100%'
+      })
     }
   }
 }
