@@ -58,9 +58,9 @@
       </template>
 
     </van-cell>
-    <van-cell center value-class="cell-content short-content">
+    <van-cell center value-class="cell-content short-content" v-if="user_type === 1 || user_type === 2">
       <template slot="title">
-        <van-checkbox v-model="useDiscount" @change="getData">会员优惠 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;" v-if="shopList.length === 1">（会员折扣{{shopList[0][0].vipdiscount}}折）</span></van-checkbox>
+        <van-checkbox v-model="useDiscount" @change="useDiscount = true">会员优惠 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;" v-if="shopList.length === 1">（会员折扣{{shopList[0][0].vipdiscount}}折）</span></van-checkbox>
       </template>
       <template>
         -{{discount}}
@@ -175,7 +175,8 @@ export default {
       orderFrom: '', // 订单来源：single: 直接购买    car：购物车
       payTypeShow: false,
       // 订单id
-      orderId: ''
+      orderId: '',
+      user_type: 0
     }
   },
   methods: {
@@ -229,8 +230,9 @@ export default {
               this.total = data.data.total
               this.discount = data.data.use_vipdiscount
               this.couponList = data.data.coupon
-              this.score_need = data.data.score_need || 0,
-                this.address = data.data.address.find(item => this.address_id ? item.id === +this.address_id : item.sta === 1)
+              this.score_need = data.data.score_need || 0
+              this.user_type = data.data.user_type
+              this.address = data.data.address.find(item => this.address_id ? item.id === +this.address_id : item.sta === 1)
               if (!this.address_id) {
                 this.address_id = this.address.id
               }
