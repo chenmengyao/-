@@ -144,6 +144,7 @@
 
   <PayType :show="payTypeShow"
     @close="paySuccess"
+    @fail="payFail"
     @pay="confirmPay"
     :balance-sum="balance_sum"
     :order-id="orderId"></PayType>
@@ -354,7 +355,13 @@ export default {
             this.$toast('支付成功');
             this.passwordModalShow = false
             setTimeout(() => {
-              this.$router.replace('/uc/orders')
+              // 跳转代发货
+              this.$router.replace({
+                path: '/uc/orders',
+                query: {
+                  activeTabIndex: 2
+                }
+              })
             }, 699)
           } else {
             this.password = ''
@@ -389,7 +396,24 @@ export default {
     // 支付成功
     paySuccess() {
       this.payTypeShow = false
-      this.$router.replace('/uc/orders')
+      // 跳转代发货
+      this.$router.replace({
+        path: '/uc/orders',
+        query: {
+          activeTabIndex: 2
+        }
+      })
+    },
+    // 支付失败
+    payFail() {
+      this.payTypeShow = false
+      // 跳转待付款
+      this.$router.replace({
+        path: '/uc/orders',
+        query: {
+          activeTabIndex: 1
+        }
+      })
     },
     setScore() {
       this.$router.push({
