@@ -124,229 +124,237 @@
 </template>
 
 <script>
-    import BarCode from '@/components/bar-code'
-    import { mapGetters } from 'vuex'
+import BarCode from '@/components/bar-code'
+import {
+  mapGetters
+} from 'vuex'
 
-    export default {
-        components: {
-            BarCode
-        },
-        computed: {
-            ...mapGetters({
-                logined: 'core/logined'
-            })
-        },
-        data() {
-            return {
-                barCodeActivity: '',
-                qrCodeShow: false,
-                sta_0: 0,
-                sta_1: 0,
-                sta_2: 0,
-                sta_3: 0,
-                sta_4: 0,
-                user: {},
-                user_type: 0    // 0:普通用户,1:vip,2:团长
-            }
-        },
-        methods: {
-            closeBarCode() {
-                this.qrCodeShow = false
-            },
-            getUserInfo() {
-                this.$axios.post('/mine/index')
-                .then(({ data }) => {
-                    if (data.code === 1) {
-                        data && Object.assign(this, data.data)
-                    } else {
-                        this.$toast(data.msg);
-                    }
-                })
-            },
-            barCodeScan() {
-                const { user_type } = this
-                if (user_type === 0) {
-                    this.qrCodeShow = true
-                    this.barCodeActivity = 'start'
-
-                } else if (user_type === 2) {
-                    this.$router.push({
-                        path: '/uc/setting/card',
-                    })
-                }
-            },
-            scanSuccess(codeUrl) {
-                this.qrCodeShow = false
-                this.$axios
-                    .post('/user/captainqrcode', {
-                        region_id: codeUrl
-                    })
-                    .then(({ data }) => {
-                        if(data.code === 1) {
-                            this.$toast('绑定成功')
-                        } else {
-                            this.$toast(data.msg);
-                        }
-                    })
-            },
-            toVip() {
-                if (this.user_type === 0) {
-                    this.$toast('抱歉，您还不是VIP');
-                } else {
-                    this.$router.push('/uc/vip')
-                }
-            }
-        },
-        created() {
-            this.getUserInfo()
-        }
+export default {
+  components: {
+    BarCode
+  },
+  computed: {
+    ...mapGetters({
+      logined: 'core/logined'
+    })
+  },
+  data() {
+    return {
+      barCodeActivity: '',
+      qrCodeShow: false,
+      sta_0: 0,
+      sta_1: 0,
+      sta_2: 0,
+      sta_3: 0,
+      sta_4: 0,
+      user: {},
+      user_type: 0 // 0:普通用户,1:vip,2:团长
     }
+  },
+  methods: {
+    closeBarCode() {
+      this.qrCodeShow = false
+    },
+    getUserInfo() {
+      this.$axios.post('/mine/index')
+        .then(({
+          data
+        }) => {
+          if (data.code === 1) {
+            data && Object.assign(this, data.data)
+          } else {
+            this.$toast(data.msg);
+          }
+        })
+    },
+    barCodeScan() {
+      const {
+        user_type
+      } = this
+      if (user_type === 0) {
+        this.qrCodeShow = true
+        this.barCodeActivity = 'start'
+
+      } else if (user_type === 2) {
+        this.$router.push({
+          path: '/uc/setting/card',
+        })
+      }
+    },
+    scanSuccess(codeUrl) {
+      this.qrCodeShow = false
+      this.$axios
+        .post('/user/captainqrcode', {
+          region_id: codeUrl
+        })
+        .then(({
+          data
+        }) => {
+          if (data.code === 1) {
+            this.$toast('绑定成功')
+          } else {
+            this.$toast(data.msg);
+          }
+        })
+    },
+    toVip() {
+      if (this.user_type === 0) {
+        this.$toast('抱歉，您还不是VIP');
+      } else {
+        this.$router.push('/uc/vip')
+      }
+    }
+  },
+  created() {
+    this.getUserInfo()
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-    .suwis-uc {
-        box-sizing: border-box;
-        min-height: 100vh;
-        padding-bottom: 50px;
-        background: #fff url('../../assets/uc/uc-bg@2x.png') top center no-repeat;
-        background-size: contain;
-        .link {
-            color: inherit;
+.suwis-uc {
+    box-sizing: border-box;
+    min-height: 100vh;
+    padding-bottom: 50px;
+    background: #fff url("../../assets/uc/uc-bg@2x.png") top center no-repeat;
+    background-size: contain;
+    .link {
+        color: inherit;
+    }
+    .uc-top-button {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 2vh;
+        padding: 2vh 5vw 0;
+        .button {
+            width: 24px;
+            height: 24px;
+            margin-left: 10px;
         }
-        .uc-top-button {
+    }
+    .uc-info {
+        display: flex;
+        margin: 0 16px;
+        .profile {
+            width: 18vw;
+            height: 18vw;
+            margin-right: 16px;
+            border-radius: 50%;
+        }
+        .info {
             display: flex;
-            justify-content: flex-end;
-            margin-bottom: 2vh;
-            padding: 2vh 5vw 0;
-            .button {
-                width: 24px;
-                height: 24px;
-                margin-left: 10px;
-            }
-        }
-        .uc-info {
-            display: flex;
-            margin: 0 16px;
-            .profile {
-                width: 18vw;
-                height: 18vw;
-                margin-right: 16px;
-                border-radius: 50%;
-            }
-            .info {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                flex: 1;
-                color: rgb(255, 255, 255);
-                text-align: left;
-                .login-info {
-                    display: flex;
-                    align-items: center;
-                    font-size: 16px;
-                    font-weight: 600;
-                }
-                .level {
-                    display: flex;
-                    align-items: center;
-                    height: 20px;
-                    margin-left: 10px;
-                    padding: 0 8px;
-                    border-radius: 12px;
-                    background: #fff;
-                    color: #e3b156;
-                    font-size: 12px;
-                }
-                .vip {
-                    width: 18px;
-                    height: 16px;
-                    margin-right: 2px;
-                }
-                .van-icon-arrow {
-                    margin-left: 6px;
-                }
-                .location {
-                    font-size: 14px;
-                }
-            }
-        }
-        .my-order {
-            box-sizing: border-box;
-            height: 22vh;
-            margin: 6vw 16px 0;
-            padding: 1.5vh 4vw;
-            background-color: #fff;
-            box-shadow: 0 3px 6px rgba(232, 63, 68, 0.19);
-            border-radius: 4px;
-            .title {
+            flex-direction: column;
+            justify-content: space-around;
+            flex: 1;
+            color: rgb(255, 255, 255);
+            text-align: left;
+            .login-info {
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
-                padding-bottom: 1.65vh;
-                border-bottom: 1px solid rgb(239, 239, 239);
                 font-size: 16px;
+                font-weight: 600;
             }
-            .link {
-                color: rgb(153, 153, 153);
+            .level {
+                display: flex;
+                align-items: center;
+                height: 20px;
+                margin-left: 10px;
+                padding: 0 8px;
+                border-radius: 12px;
+                background: #fff;
+                color: #e3b156;
                 font-size: 12px;
             }
-            .order-list {
-                margin-top: 0.6vh;
-                display: flex;
-                justify-content: space-between;
-                .order-item {
-                    display: flex;
-                    align-items: center;
-                    flex-direction: column;
-                }
-                .order-image {
-                    width: 8vw;
-                    height: 8vw;
-                    margin-bottom: 1vh;
-                }
-                .item-name {
-                    margin-bottom: 1vh;
-                    color: #4d4d4d;
-                    font-size: 12px;
-
-                }
-                .item-num {
-                    color: #4d4d4d;
-                    font-size: 16px;
-                }
+            .vip {
+                width: 18px;
+                height: 16px;
+                margin-right: 2px;
             }
-        }
-
-        .option-list {
-            margin: .8vh 4vw 0;
-            align-items: center;
-            justify-content: center;
-            background: #f5f5f5;
-            .option-li {
-                display: flex;
-                height: 12.4vh;
-                border-bottom: 1px solid #f5f5f5;
-                &:last-child {
-                    border: none;
-                }
+            .van-icon-arrow {
+                margin-left: 6px;
             }
-            .option-item {
-                display: flex;
-                flex: 1;
-                align-items: center;
-                flex-direction: column;
-                height: 100%;
-                background: #fff;
-                border-right: 1px solid #f5f5f5;
-                &:last-child {
-                    border: none;
-                }
-            }
-            .option-image {
-                width: 8vw;
-                height: 8vw;
-                margin: 1.5vh 0 1vh;
+            .location {
+                font-size: 14px;
             }
         }
     }
+    .my-order {
+        box-sizing: border-box;
+        height: 22vh;
+        margin: 6vw 16px 0;
+        padding: 1.5vh 4vw;
+        background-color: #fff;
+        box-shadow: 0 3px 6px rgba(232, 63, 68, 0.19);
+        border-radius: 4px;
+        .title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 1.65vh;
+            border-bottom: 1px solid rgb(239, 239, 239);
+            font-size: 16px;
+        }
+        .link {
+            color: rgb(153, 153, 153);
+            font-size: 12px;
+        }
+        .order-list {
+            margin-top: 0.6vh;
+            display: flex;
+            justify-content: space-between;
+            .order-item {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+            }
+            .order-image {
+                width: 8vw;
+                height: 8vw;
+                margin-bottom: 1vh;
+            }
+            .item-name {
+                margin-bottom: 1vh;
+                color: #4d4d4d;
+                font-size: 12px;
+
+            }
+            .item-num {
+                color: #4d4d4d;
+                font-size: 16px;
+            }
+        }
+    }
+
+    .option-list {
+        margin: 1.2vh 4vw 0;
+        align-items: center;
+        justify-content: center;
+        background: #f5f5f5;
+        .option-li {
+            display: flex;
+            height: 12.4vh;
+            border-bottom: 1px solid #f5f5f5;
+            &:last-child {
+                border: none;
+            }
+        }
+        .option-item {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            flex-direction: column;
+            height: 100%;
+            background: #fff;
+            border-right: 1px solid #f5f5f5;
+            &:last-child {
+                border: none;
+            }
+        }
+        .option-image {
+            width: 8vw;
+            height: 8vw;
+            margin: 1.5vh 0 1vh;
+        }
+    }
+}
 </style>
