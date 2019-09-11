@@ -135,6 +135,12 @@ export default {
       })
       w.close();
       w = null;
+
+      // test
+      // res = await this.$axios.get('http://demo.dcloud.net.cn/helloh5/payment/wxpay.php?total=')
+      // alert('v')
+      // alert(JSON.stringify(res.data))
+
       let params
       // 支付宝
       if (id == 'alipay') params = res.data

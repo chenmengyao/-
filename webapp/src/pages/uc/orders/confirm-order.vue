@@ -2,26 +2,47 @@
 <div class="suwis-confirm-order">
   <van-cell-group class="address">
     <van-cell :title="`收货人：${address.name}（${address.tel}）`" />
-    <van-cell title-class="cell-flex" clickable @click="selectAddress">
+    <van-cell title-class="cell-flex"
+      clickable
+      @click="selectAddress">
       <template slot="title">
         收货地址：{{address | location}}
-        <van-icon name="arrow" size="10px" color="#b4b4b4" style="margin-left: 28px;" />
+        <van-icon name="arrow"
+          size="10px"
+          color="#b4b4b4"
+          style="margin-left: 28px;" />
       </template>
     </van-cell>
   </van-cell-group>
 
   <template v-if="shopList && shopList.length">
-    <div class="goods-box" v-for="shop in shopList" :key='shop.id'>
-      <div class="shop-info" @click="onClickStore(shop[0])">
-        <img class="shop-logo" :src="shop[0].logo || defaultShopLogo" alt="店铺头像" width="20" height="20">
+    <div class="goods-box"
+      v-for="shop in shopList"
+      :key='shop.id'>
+      <div class="shop-info"
+        @click="onClickStore(shop[0])">
+        <img class="shop-logo"
+          :src="shop[0].logo || defaultShopLogo"
+          alt="店铺头像"
+          width="20"
+          height="20">
         <span class="shop-name">{{shop[0].name}}</span>
       </div>
-      <van-card v-for="goods in shop" :key="goods.goods_id" :num="orderFrom === 'single' ? num : goods.num" :price="goods.price" :title="goods.title" :thumb="goods.img" @click="onClick(goods)">
+      <van-card v-for="goods in shop"
+        :key="goods.goods_id"
+        :num="orderFrom === 'single' ? num : goods.num"
+        :price="goods.price"
+        :title="goods.title"
+        :thumb="goods.img"
+        @click="onClick(goods)">
         <template #desc>
           <div class="desc-line">
-            <div class="desc-item" v-if="goods.header_one">{{goods.header_one}}</div>
-            <div class="desc-item" v-if="goods.header_two">{{goods.header_two}}</div>
-            <div class="desc-item" v-if="goods.header_three">{{goods.header_three}}</div>
+            <div class="desc-item"
+              v-if="goods.header_one">{{goods.header_one}}</div>
+            <div class="desc-item"
+              v-if="goods.header_two">{{goods.header_two}}</div>
+            <div class="desc-item"
+              v-if="goods.header_three">{{goods.header_three}}</div>
           </div>
         </template>
       </van-card>
@@ -29,23 +50,36 @@
   </template>
 
   <van-cell-group class="personal-box">
-    <van-cell title="购买数量" v-if="orderFrom === 'single'" center value-class="cell-content">
+    <van-cell title="购买数量"
+      v-if="orderFrom === 'single'"
+      center
+      value-class="cell-content">
       <template>
-        <van-stepper v-model="num" @change="getData" />
+        <van-stepper v-model="num"
+          @change="getData" />
       </template>
     </van-cell>
-    <van-cell title="配送方式" center value-class="content">
+    <van-cell title="配送方式"
+      center
+      value-class="content">
       <template>
         普通快递 <span style="font-size: 10px">（运费：￥{{postage}}）</span>
       </template>
     </van-cell>
-    <van-field v-model.trim="express_remark" maxlength="100" clearable label="买家留言" placeholder="请填写备注信息" />
+    <van-field v-model.trim="express_remark"
+      maxlength="100"
+      clearable
+      label="买家留言"
+      placeholder="请填写备注信息" />
   </van-cell-group>
 
   <van-cell-group class="discount-box">
-    <van-cell center value-class="cell-content">
+    <van-cell center
+      value-class="cell-content">
       <template slot="title">
-        <van-checkbox v-model="useCoupon" v-if="couponList.length" @change="getData">
+        <van-checkbox v-model="useCoupon"
+          v-if="couponList.length"
+          @change="getData">
           卖家优惠券
         </van-checkbox>
         <div v-else>暂无可用优惠券</div>
@@ -53,22 +87,30 @@
       <template v-if="couponList.length">
         <div @click="selectCoupon">
           <span>{{coupon.coupon_id ? coupon.title : '去使用'}}</span>
-          <van-icon name="arrow" size="10px" color="#b4b4b4" />
+          <van-icon name="arrow"
+            size="10px"
+            color="#b4b4b4" />
         </div>
       </template>
 
     </van-cell>
-    <van-cell center value-class="cell-content short-content" v-if="user_type === 1 || user_type === 2">
+    <van-cell center
+      value-class="cell-content short-content"
+      v-if="user_type === 1 || user_type === 2">
       <template slot="title">
-        <van-checkbox v-model="useDiscount" @change="useDiscount = true">会员优惠 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;" v-if="shopList.length === 1">（会员折扣{{shopList[0][0].vipdiscount}}折）</span></van-checkbox>
+        <van-checkbox v-model="useDiscount"
+          @change="useDiscount = true">会员优惠 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;"
+            v-if="shopList.length === 1">（会员折扣{{shopList[0][0].vipdiscount}}折）</span></van-checkbox>
       </template>
       <template>
         -{{discount}}
       </template>
     </van-cell>
-    <van-cell center value-class="cell-content short-content">
+    <van-cell center
+      value-class="cell-content short-content">
       <template slot="title">
-        <van-checkbox v-model="useScore" @change="getData">
+        <van-checkbox v-model="useScore"
+          @change="getData">
           积分抵扣 <span style="color: #b4b4b4;font-size: 12px;line-height: 24px;">（可用积分：{{score_need}}）</span>
           <div v-show="score">使用{{score}}分</div>
         </van-checkbox>
@@ -76,14 +118,18 @@
       <template>
         <div @click="setScore">
           去使用
-          <van-icon name="arrow" size="10px" color="#b4b4b4" />
+          <van-icon name="arrow"
+            size="10px"
+            color="#b4b4b4" />
         </div>
       </template>
     </van-cell>
   </van-cell-group>
 
   <van-cell-group class="result-box">
-    <van-cell title="还需支付" center value-class="cell-content">
+    <van-cell title="还需支付"
+      center
+      value-class="cell-content">
       <template>
         <span style="color: #e83f44">￥{{total}}</span>
       </template>
@@ -92,22 +138,42 @@
 
   <div class="submit-box">
     <span>合计：<span style="color: #e83f44">{{total}}</span></span>
-    <button class="submit" @click="toPay">提交订单</button>
+    <button class="submit"
+      @click="toPay">提交订单</button>
   </div>
 
-  <PayType :show="payTypeShow" @close="payTypeShow = false" @pay="confirmPay" :balance-sum="balance_sum" :order-id="orderId"></PayType>
+  <PayType :show="payTypeShow"
+    @close="paySuccess"
+    @pay="confirmPay"
+    :balance-sum="balance_sum"
+    :order-id="orderId"></PayType>
 
-  <CouponList v-model="couponShow" title="选择优惠券">
-    <couponItem v-for="coupon in couponList" :key="coupon.id" :title="coupon.title" :desc="`满${coupon.total}元即可使用`" :price="coupon.sum" :time="coupon.end_time" type="1" btn-text="使用" @click="onCouponClick(coupon)">
+  <CouponList v-model="couponShow"
+    title="选择优惠券">
+    <couponItem v-for="coupon in couponList"
+      :key="coupon.id"
+      :title="coupon.title"
+      :desc="`满${coupon.total}元即可使用`"
+      :price="coupon.sum"
+      :time="coupon.end_time"
+      type="1"
+      btn-text="使用"
+      @click="onCouponClick(coupon)">
     </couponItem>
   </CouponList>
 
-  <van-actionsheet title="请输入支付密码" v-model="passwordModalShow" :close-on-click-overlay="false" @cancel="closePasswordModal">
+  <van-actionsheet title="请输入支付密码"
+    v-model="passwordModalShow"
+    :close-on-click-overlay="false"
+    @cancel="closePasswordModal">
     <van-password-input :value="password" />
     <div class="link-line">
-      <router-link to="/resetpaypwd" class="forget-password">忘记支付密码？</router-link>
+      <router-link to="/resetpaypwd"
+        class="forget-password">忘记支付密码？</router-link>
     </div>
-    <van-number-keyboard :show="true" @input="onPasswordInput" @delete="onPasswordDelete" />
+    <van-number-keyboard :show="true"
+      @input="onPasswordInput"
+      @delete="onPasswordDelete" />
   </van-actionsheet>
 </div>
 </template>
@@ -185,19 +251,17 @@ export default {
     },
     getBalance() {
       // 查询可用佣金
-      this.$axios
-        .post('/mine/mycommission')
-        .then(({
-          data
-        }) => {
-          if (data.code === 1) {
-            if (data.data) {
-              this.balance_sum = data.data
-            }
-          } else {
-            this.$toast(data.msg);
+      this.$axios.post('/mine/mycommission').then(({
+        data
+      }) => {
+        if (data.code === 1) {
+          if (data.data) {
+            this.balance_sum = data.data
           }
-        })
+        } else {
+          this.$toast(data.msg);
+        }
+      })
     },
     getData() {
       let url, params
@@ -219,28 +283,26 @@ export default {
           score_sum: this.useScore ? this.score : undefined
         }
       }
-      this.$axios
-        .post(url, params)
-        .then(({
-          data
-        }) => {
-          if (data.code === 1) {
-            if (data.data) {
-              this.handleData(this.orderFrom === 'single' ? [data.data.goods] : data.data.car)
-              this.total = data.data.total
-              this.discount = data.data.use_vipdiscount
-              this.couponList = data.data.coupon
-              this.score_need = data.data.score_need || 0
-              this.user_type = data.data.user_type
-              this.address = data.data.address.find(item => this.address_id ? item.id === +this.address_id : item.sta === 1)
-              if (!this.address_id) {
-                this.address_id = this.address.id
-              }
+      this.$axios.post(url, params).then(({
+        data
+      }) => {
+        if (data.code === 1) {
+          if (data.data) {
+            this.handleData(this.orderFrom === 'single' ? [data.data.goods] : data.data.car)
+            this.total = data.data.total
+            this.discount = data.data.use_vipdiscount
+            this.couponList = data.data.coupon
+            this.score_need = data.data.score_need || 0
+            this.user_type = data.data.user_type
+            this.address = data.data.address.find(item => this.address_id ? item.id === +this.address_id : item.sta === 1)
+            if (!this.address_id) {
+              this.address_id = this.address.id
             }
-          } else {
-            this.$toast(data.msg);
           }
-        })
+        } else {
+          this.$toast(data.msg);
+        }
+      })
     },
     // 将商品数据格式化为一个数组，该数组的项是以店铺为单元的商品数组
     handleData(data) {
@@ -281,23 +343,24 @@ export default {
         this.password = this.password + key
       }
       if (this.password.length === 6) {
-        this.$axios
-          .post('/pay/pay', {
-            order: this.orderId,
-            pay_type: this.currentPayType.key,
-            paypass: this.currentPayType.key === 'balancepay' ? md5(this.password) : undefined
-          })
-          .then(({
-            data
-          }) => {
-            if (data.code === 1) {
-              this.$toast('支付成功');
-              this.$router.push('/uc/orders')
-            } else {
-              this.password = ''
-              this.$toast(data.msg);
-            }
-          })
+        this.$axios.post('/pay/pay', {
+          order: this.orderId,
+          pay_type: this.currentPayType.key,
+          paypass: this.currentPayType.key === 'balancepay' ? md5(this.password) : undefined
+        }).then(({
+          data
+        }) => {
+          if (data.code === 1) {
+            this.$toast('支付成功');
+            this.passwordModalShow = false
+            setTimeout(() => {
+              this.$router.replace('/uc/orders')
+            }, 699)
+          } else {
+            this.password = ''
+            this.$toast(data.msg);
+          }
+        })
       }
     },
     onPasswordDelete() {
@@ -322,6 +385,11 @@ export default {
     confirmPay(key) {
       this.passwordModalShow = true
       this.currentPayType = payTypeMap.find(type => type.key === key)
+    },
+    // 支付成功
+    paySuccess() {
+      this.payTypeShow = false
+      this.$router.replace('/uc/orders')
     },
     setScore() {
       this.$router.push({
