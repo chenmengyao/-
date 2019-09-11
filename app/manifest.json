@@ -108,7 +108,8 @@
         "Messaging" : {},
         "LivePusher" : {},
         "VideoPlayer" : {},
-        "Fingerprint" : {}
+        "Fingerprint" : {},
+        "Share" : {}
     },
     "plus" : {
         "launchwebview" : {
@@ -470,7 +471,10 @@
                     "ifly" : {}
                 },
                 "payment" : {
-                    "alipay" : {}
+                    "alipay" : {},
+                    "weixin" : {
+                        "appid" : "wx6c32abcd65d1413c"
+                    }
                 },
                 "share" : {},
                 "push" : {}

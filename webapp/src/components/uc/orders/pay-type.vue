@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       pays: {},
-      payType: '',
+      payType: 'balancepay',
       popupShow: false,
       typeList: [{
           id: 'balancepay',
@@ -112,6 +112,10 @@ export default {
         clicked('payment_iap.html');
         return;
       }
+      if (!id) {
+        plus.nativeUI.alert('请选择支付渠道', null, '提示');
+        return;
+      }
       console.log('----- 请求支付 -----');
       if (id == 'yunpay') {
         // 银联支付
@@ -119,24 +123,40 @@ export default {
         location.href = `${this.$config.apihost}pay/pay/order/${this.orderId}/token/${token}/pay_type/yunpay/yunpay_notify/http://10.16.40.49:8080/#/uc/orders/yunpaycallbak`
         return
         // todo
-      } else {
-        plus.nativeUI.alert('当前环境不支持此支付通道！', null, '捐赠');
-        return;
       }
       var appid = plus.runtime.appid;
       if (navigator.userAgent.indexOf('StreamApp') >= 0) {
         appid = 'Stream';
       }
       w = plus.nativeUI.showWaiting();
+      alert(JSON.stringify({
+        pay_type: id,
+        order: this.orderId
+      }))
       let res = await this.$axios.post('/pay/pay', {
         pay_type: id,
         order: this.orderId
       })
       w.close();
       w = null;
-      console.log(res.data, 'res.data')
-      // alert(res.data)
-      plus.payment.request(this.pays[id], res.data, (result) => {
+      let params
+      // 支付宝
+      if (id == 'alipay') params = res.data
+      // 微信
+      if (id == 'wxpay') {
+        // alert(JSON.stringify(res.data))
+        params = {
+          appid: res.data.appid,
+          noncestr: res.data.nonce_str,
+          package: "Sign=WXPay",
+          partnerid: res.data.mch_id,
+          prepayid: res.data.prepay_id,
+          timestamp: Date.now(),
+          sign: res.data.sign
+        }
+      }
+
+      plus.payment.request(this.pays[id], params, (result) => {
         console.log('----- 支付成功 -----');
         console.log(JSON.stringify(result));
         plus.nativeUI.alert('支付成功', () => {
