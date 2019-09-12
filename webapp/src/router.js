@@ -59,7 +59,7 @@ export const routes = [{
   name: '商品列表',
   component: () => import('./pages/goods/list.vue'),
   meta: {
-    keepAlive: true
+    keepAlive: false
   }
 }, {
   path: '/goods/comment-list',

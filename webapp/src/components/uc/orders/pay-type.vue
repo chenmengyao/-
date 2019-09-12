@@ -120,16 +120,18 @@ export default {
         appid = 'Stream';
       }
       w = plus.nativeUI.showWaiting();
-      alert(JSON.stringify({
-        pay_type: id,
-        order: this.orderId
-      }))
       let res = await this.$axios.post('/pay/pay', {
         pay_type: id,
         order: this.orderId
       })
       w.close();
       w = null;
+
+      // test
+      // res = await this.$axios.get('http://demo.dcloud.net.cn/helloh5/payment/wxpay.php?total=')
+      // alert('v')
+      // alert(JSON.stringify(res.data))
+
       let params
       // 支付宝
       if (id == 'alipay') params = res.data
@@ -160,6 +162,7 @@ export default {
         console.log('[' + e.code + ']：' + e.message);
         alert(e.message)
         this.$emit('fail', true)
+        alert(e.message)
         plus.nativeUI.alert('更多错误信息请参考支付(Payment)规范文档：http://www.html5plus.org/#specification#/specification/Payment.html', null, '支付失败：' + e.code);
       })
     },
