@@ -1,29 +1,20 @@
 <template>
-<van-actionsheet v-model="popupShow"
-  title="确认付款"
-  class="suwis-pay-type"
-  :close-on-click-overlay="false"
-  @cancel="cancel">
+<van-actionsheet v-model="popupShow" title="确认付款" class="suwis-pay-type" :close-on-click-overlay="false" @cancel="cancel">
   <van-cell-group>
     <van-cell title="请选择付款方式"></van-cell>
     <van-radio-group v-model="payType">
-      <van-radio v-for="pay in typeList"
-        :name="pay.id"
-        :key="pay.id">
+      <van-radio v-for="pay in typeList" :name="pay.id" :key="pay.id">
         <div class="check-line">
           <span class="option">
-            <img :src="pay.icon"
-              class="pay-image">
+            <img :src="pay.icon" class="pay-image">
             {{pay.description}}支付
           </span>
-          <span class="balance-sum"
-            v-show="pay.id === 'balancepay'">可用佣金{{balanceSum}}</span>
+          <span class="balance-sum" v-show="pay.id === 'balancepay'">可用佣金{{balanceSum}}</span>
         </div>
       </van-radio>
     </van-radio-group>
     <div class="button-line">
-      <div class="deploy"
-        @click="pay">立即付款</div>
+      <div class="deploy" @click="pay">立即付款</div>
     </div>
   </van-cell-group>
 </van-actionsheet>
@@ -144,18 +135,18 @@ export default {
       if (id == 'alipay') params = res.data
       // 微信
       if (id == 'wxpay') {
-        // alert(JSON.stringify(res.data))
         params = {
           appid: res.data.appid,
           noncestr: res.data.nonce_str,
-          package: "Sign=WXPay",
+          package: 'Sign=WXPay',
           partnerid: res.data.mch_id,
           prepayid: res.data.prepay_id,
-          timestamp: Date.now(),
+          timestamp: Math.round(new Date().getTime() / 1000).toString(),
           sign: res.data.sign
         }
+        alert(JSON.stringify(params))
       }
-
+      alert(JSON.stringify(this.pays[id]))
       plus.payment.request(this.pays[id], params, (result) => {
         console.log('----- 支付成功 -----');
         console.log(JSON.stringify(result));
@@ -167,6 +158,7 @@ export default {
       }, (e) => {
         console.log('----- 支付失败 -----');
         console.log('[' + e.code + ']：' + e.message);
+        alert(e.message)
         this.$emit('fail', true)
         plus.nativeUI.alert('更多错误信息请参考支付(Payment)规范文档：http://www.html5plus.org/#specification#/specification/Payment.html', null, '支付失败：' + e.code);
       })
