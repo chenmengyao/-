@@ -4,12 +4,12 @@
   @opened="openPopup">
   <div class="suwis-bar-code">
     <div id="bcid"></div>
-    <!-- <div class="footer">
+    <div class="footer">
       <van-button type="danger"
         size="small"
         round
         @click="closePopup">取消</van-button>
-    </div> -->
+    </div>
   </div>
 </van-popup>
 </template>
@@ -68,7 +68,7 @@ export default {
       scan.onmarked = this.onMarked
       scan.start()
       // 检测权限
-      this.checkAuth()
+      // this.checkAuth()
     },
     checkAuth() {
       alert('检查权限')
