@@ -87,11 +87,11 @@
                 <span class="row-value">{{shopData.success_time | dateFmt}}</span>
             </div>
             <div class="card-row row-button">
-                <div class="button-item">
+                <router-link tags="div" v-if="this.$route.query.sts!=0" class="button-item" :to="{path:'/mine/message/getsm',query:{store_id:orderData.store_id}}">
                     <img class="image-button" src="@/assets/orders/message@2x.png" alt="联系商家">
                     联系商家
-                </div>
-                <div class="button-item">
+                </router-link>
+                <div class="button-item"  @click="callPhone(contactWay.phone)">
                     <img class="image-button" src="@/assets/orders/telephone@2x.png" alt="联系平台">
                     联系平台
                 </div>
@@ -194,6 +194,7 @@
                         
                     ]
                 ],
+                contactWay:{},
                 balance_sum: 0,
                 currentOrderId: '',
                 currentOrderNumber: '',
@@ -207,6 +208,10 @@
             }
         },
         methods: {
+            //拨打电话
+            callPhone(tel) {
+               window.location.href = 'tel://' + tel
+            },
             closePasswordModal() {
                 this.password = ''
             },
@@ -429,6 +434,14 @@
                         this.$toast(data.msg);
                     }
                 })
+
+             this.$axios
+                .post('/mine/contactWay')
+                .then(({ data }) => {
+                    if(data.data){
+                        this.contactWay=data.data
+                    }
+                })
         }
     }
 </script>
@@ -523,6 +536,9 @@
                     width: 16px;
                     height: 16px;
                     margin-right: 8px;
+                }
+                a{
+                    color: #666666
                 }
             }
             .row-key {
