@@ -1,8 +1,6 @@
 <template lang="html">
-  <div>
+  <div class="d-getsm">
       <van-pull-refresh v-model="isLoading" @refresh="onRefresh" :disabled='isDis'>
-
-
         <div id="d-content-scroll">
           <div style="padding-bottom:50px">
          <div v-for="item in messageList">
@@ -20,10 +18,10 @@
                     </div>
                  </div>
              </div>
-             
+
              <div v-if="item.pid==null" style="margin-top:14px;float:right">
                  <div style="display:flex;font-size:12px;color:#333;">
-                    
+
                     <div style="flex:1;padding-left:45px;">
                          <div style="background:#fff;display:inline-block;padding:3px 11px 3px 9px;border-radius:4px;">
                              <span style="line-height:24px;float:right">
@@ -40,7 +38,7 @@
              </div>
          </div>
       </div>
-      
+
 </van-pull-refresh>
 <div style="position:fixed;bottom:0;width:100%">
           <div style="display:flex;padding:6px 15px 4px 0;background:#fff ">
@@ -71,10 +69,10 @@
                     </div>
                  </div>
              </div>
-             
+
              <div v-if="item.pid==null" style="margin-top:14px;float:right">
                  <div style="display:flex;font-size:12px;color:#333;">
-                    
+
                     <div style="flex:1;padding-left:45px;">
                          <div style="background:#fff;display:inline-block;padding:3px 11px 3px 9px;border-radius:4px;">
                              <span style="line-height:24px;float:right">
@@ -107,7 +105,9 @@
 
 <script>
 import Vue from 'vue'
-import { Toast } from 'vant';
+import {
+  Toast
+} from 'vant';
 Vue.use(Toast);
 export default {
   data() {
@@ -169,7 +169,11 @@ export default {
       }).then(res => {
         Toast(res.data.msg);
         var div = document.getElementById('d-content-scroll')
-        var con = { content: this.sendMessage, uuid: uuid, pid: null }
+        var con = {
+          content: this.sendMessage,
+          uuid: uuid,
+          pid: null
+        }
         this.messageList.push(con)
         sessionStorage.setItem("message", JSON.stringify(this.messageList));
         this.sendMessage = ''
@@ -184,8 +188,12 @@ export default {
           this.store_logo = res.data.data.store_logo
           this.user_photo = res.data.data.user_photo
           var list = JSON.parse(sessionStorage.getItem("message"))
-          var listArr = list.map(function (user) { return user.uuid; })
-          var msgArr = res.data.data.msg.map(function (user) { return user.uuid; })
+          var listArr = list.map(function(user) {
+            return user.uuid;
+          })
+          var msgArr = res.data.data.msg.map(function(user) {
+            return user.uuid;
+          })
           var arr = []
           for (let i in msgArr) {
             var item = msgArr[i]
@@ -214,11 +222,9 @@ export default {
     }
   },
   mounted() {
-    document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5')
     this.setInter = setInterval(() => {
       this.getMessage()
     }, 2000);
-
   },
   destroyed() {
     clearInterval(this.setInter);
@@ -228,6 +234,9 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.d-getsm{
+  background-color:#f5f5f5
+}
 #d-content-scroll {
   height: 100vh;
   overflow: scroll;
