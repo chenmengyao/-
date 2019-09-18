@@ -127,6 +127,11 @@ export default {
       w.close();
       w = null;
 
+      // test
+      // res = await this.$axios.get('http://demo.dcloud.net.cn/helloh5/payment/wxpay.php?total=')
+      // alert('v')
+      // alert(JSON.stringify(res.data))
+
       let params
       // 支付宝
       if (id == 'alipay') params = res.data
@@ -141,8 +146,9 @@ export default {
           timestamp: Math.round(new Date().getTime() / 1000).toString(),
           sign: res.data.sign
         }
+        alert(JSON.stringify(params))
       }
-      // alert(JSON.stringify(this.pays[id]))
+      alert(JSON.stringify(this.pays[id]))
       plus.payment.request(this.pays[id], params, (result) => {
         console.log('----- 支付成功 -----');
         console.log(JSON.stringify(result));

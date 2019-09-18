@@ -81,7 +81,7 @@
       <van-tabs class="good-tabs" v-model="goodTabIdx">
         <van-tab title="商品介绍">
           <div v-if="details.details" class="good-info interval content">
-            <video x5-video-player-type="h5" x5-video-player-fullscreen="true" x-webkit-airplay="allow" webkit-playsinline playsinline v-if="details.details[0].content.video" :src="details.details[0].content.video" autoplay controls></video>
+            <video x5-video-player-type="h5" x5-video-player-fullscreen="true" x-webkit-airplay="allow" webkit-playsinline playsinline v-if="details.details[0].content.video" :src="details.details[0].content.video" controls></video>
             <img :src="details.details[0].content.img" alt="">
             <div v-html="details.details[0].content.editor"></div>
             <span class="no-data">已经没有更多啦～</span>
