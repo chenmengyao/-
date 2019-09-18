@@ -66,7 +66,7 @@ export const routes = [{
   name: '商品评价',
   component: () => import('./pages/goods/comment-list.vue'),
   meta: {
-    keepAlive: true
+    keepAlive: false
   }
 }, {
   path: '/goods/search',
