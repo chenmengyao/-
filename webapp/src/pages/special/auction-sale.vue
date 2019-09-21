@@ -3,35 +3,28 @@
     <div class="suwis-news-ban" style="height:27vw;overflow:hidden">
       <van-swipe :autoplay="3000" indicator-color="#E83F44" style="width:100vw;text-align:center">
         <van-swipe-item v-for="item in banner">
-           <div  v-lazy-container="{ selector: 'img' }">
-              <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'auction'}}">
-                <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%">
-              </router-link>
+          <div v-lazy-container="{ selector: 'img' }">
+            <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'auction'}}">
+              <img :data-src="item.img" :data-error="require('../../assets/more.jpg')" :data-loading="require('../../assets/loading_alpha.png')" style="width:100%">
+            </router-link>
           </div>
         </van-swipe-item>
       </van-swipe>
     </div>
     <div style="padding-bottom:60px;">
-     <van-list
-  v-model="loading"
-  :finished="finished"
-  finished-text="没有更多了"
-  error-text="请求失败，点击重新加载"
-  :error.sync="error"
-  @load="loadlist"
->
-   <div class="suwis-news-list" v-for="(item,index) in list">
-         <div class="suwis-news-right">
-           <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'auction'}}">
+      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" error-text="请求失败，点击重新加载" :error.sync="error" @load="loadlist">
+        <div class="suwis-news-list" v-for="(item,index) in list">
+          <div class="suwis-news-right">
+            <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'auction'}}">
               <img :src="item.img" width="100%">
-           </router-link>
-         </div>
-         <div class="suwis-news-left">
-             <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'auction'}}">
-            <div>{{item.title}}</div>
-            <div class='suwis-news-tips'>
-               <div><span class="suwis-current-price">当前价 : </span><span class="suwis-current-pri">￥{{item.price_max}}</span></div>
-               <div>
+            </router-link>
+          </div>
+          <div class="suwis-news-left">
+            <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'auction'}}">
+              <div>{{item.title}}</div>
+              <div class='suwis-news-tips'>
+                <div><span class="suwis-current-price">当前价 : </span><span class="suwis-current-pri">￥{{item.price_max}}</span></div>
+                <div>
                   <span class="suwis-current-price">距离结束仅剩下 </span>
                   <span v-if="item.endTime=='结束'">{{item.endTime}}</span>
                   <span v-else class="suwis-auction-date">
@@ -44,13 +37,13 @@
                     <span class="suwis-auction-date"> {{item.endTime[5]}}</span> -->
                   </span>
                 </div>
-               <div style="text-align:right;font-size:12px"><span style="color:#E83F44 ">{{item.price_count}}</span><span class="suwis-current-price">次出价</span></div>
-            </div>
-           </router-link>
-         </div>
-      </div>
-</van-list>
-</div>
+                <div style="text-align:right;font-size:12px"><span style="color:#E83F44 ">{{item.price_count}}</span><span class="suwis-current-price">次出价</span></div>
+              </div>
+            </router-link>
+          </div>
+        </div>
+      </van-list>
+    </div>
   </div>
 </template>
 
@@ -72,13 +65,13 @@ function InitTime(endtime) {
     mm = Math.floor((time / 60) % 60);
     ss = Math.floor(time % 60);
     if (mm < 10 && ss < 10) {
-      var str = dd+'0' + mm + '0' + ss;
+      var str = dd + '0' + mm + '0' + ss;
     } else if (mm < 10) {
-      var str = dd+'0' + mm + ss;
+      var str = dd + '0' + mm + ss;
     } else if (ss < 10) {
-      var str = dd+mm + '0' + ss;
+      var str = dd + mm + '0' + ss;
     } else {
-      var str = dd+mm + '' + ss
+      var str = dd + mm + '' + ss
     }
 
     return str;
@@ -189,13 +182,13 @@ export default {
           var mm = Math.floor((rightTime / 1000 / 60) % 60);
           var ss = Math.floor((rightTime / 1000) % 60);
           if (mm < 10 && ss < 10) {
-            this.list[key]["endTime"] =dd+'天 '+hh+'时:0'+mm+'分:0'+ss+'秒'
+            this.list[key]["endTime"] = dd + '天 ' + hh + '时:0' + mm + '分:0' + ss + '秒'
           } else if (mm < 10) {
-            this.list[key]["endTime"] =dd+'天 '+hh+'时:0'+mm+'分:'+ss+'秒'
+            this.list[key]["endTime"] = dd + '天 ' + hh + '时:0' + mm + '分:' + ss + '秒'
           } else if (ss < 10) {
-            this.list[key]["endTime"] =dd+'天 '+hh+'时:'+mm+'分:0'+ss+'秒'
+            this.list[key]["endTime"] = dd + '天 ' + hh + '时:' + mm + '分:0' + ss + '秒'
           } else {
-            this.list[key]["endTime"] =dd+'天 '+hh+'时:'+mm+'分:'+ss+'秒'
+            this.list[key]["endTime"] = dd + '天 ' + hh + '时:' + mm + '分:' + ss + '秒'
           }
         } else {
           this.list[key]["endTime"] = '结束'
@@ -203,123 +196,146 @@ export default {
 
       }
     }, 1000);
-   
+
   }
 }
 </script>
 <style lang="css">
-#auction .van-swipe__indicator {
-  background: #fff;
-  opacity: 1;
-}
-#auction .van-swipe {
-  border-radius: 4px;
-}
-#auction .van-swipe__indicators {
-  left: 85vw;
-}
+  #auction .van-swipe__indicator {
+    background: #fff;
+    opacity: 1;
+  }
+
+  #auction .van-swipe {
+    border-radius: 4px;
+  }
+
+  #auction .van-swipe__indicators {
+    left: 85vw;
+  }
 </style>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
 .suwis-news-ban {
-  display: flex;
-  padding: 15px;
-  padding-bottom: 20px;
+    display: flex;
+    padding: 15px 15px 20px;
 }
+
 .suwis-news-ban img {
-  flex: 1;
-  width: 100%;
-  height: 100%;
+    flex: 1;
+    width: 100%;
+    height: 100%;
 }
+
 .suwis-news-list {
-  display: flex;
-  padding: 0 15px 15px 15px;
-  /* border: 1px solid red; */
+    display: flex;
+    padding: 0 15px 15px;
+    /* border: 1px solid red; */
 }
+
 .suwis-news-left,
 .suwis-news-right {
-  text-align: left;
-  flex: 1;
+    text-align: left;
+    flex: 1;
 }
+
 .suwis-news-left {
-  padding-left: 15px;
-  font-size: 14px;
+    padding-left: 15px;
+    font-size: 14px;
 }
+
 .suwis-news-right {
-  max-width: 80px;
-  /* min-width: 140px; */
-  height: 80px;
-  border-radius: 6px;
-  overflow: hidden;
+    max-width: 80px;
+    /* min-width: 140px; */
+    height: 80px;
+    border-radius: 6px;
+    overflow: hidden;
+
+    > div,
+    img {
+        height: 100%;
+        object-fit: cover;
+    }
 }
+
 .suwis-news-left > span {
-  font-size: 14px;
-  line-height: 20px;
-  color: #333;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 }
+
 .suwis-news-date {
-  float: left;
-  font-size: 12px;
-  color: #999999;
-  line-height: 48px;
+    float: left;
+    font-size: 12px;
+    color: #999999;
+    line-height: 48px;
 }
+
 .suwis-news-num {
-  float: right;
-  font-size: 12px;
-  color: #999999;
+    float: right;
+    font-size: 12px;
+    color: #999999;
 }
+
 .suwis-news-tips {
-  height: 30px;
-  /* margin-top: 3px; */
+    height: 30px;
+    /* margin-top: 3px; */
 }
+
 .d-yuan-price {
-  text-decoration: line-through;
-  border-right: 1px solid #e6e6e6;
-  padding-right: 5px;
+    text-decoration: line-through;
+    border-right: 1px solid #e6e6e6;
+    padding-right: 5px;
 }
+
 .d-basis-price {
-  font-size: 15px;
-  color: #e83f44;
-  padding: 0 5px 0 3px;
+    font-size: 15px;
+    color: #e83f44;
+    padding: 0 5px 0 3px;
 }
+
 .d-sale-btn {
-  padding: 0 5px;
-  height: 30px;
-  line-height: 30px;
-  font-size: 14px;
-  display: block;
-  /* border: 1px solid #e83f44;
+    padding: 0 5px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    display: block;
+    /* border: 1px solid #e83f44;
   border-radius: 15px;
   color: #e83f44; */
-  border: 1px solid #E83F44;
-  border-radius:15px;
-  color: #E83F44
+    border: 1px solid #E83F44;
+    border-radius: 15px;
+    color: #E83F44;
 }
+
 .d-tags {
-  color: #f0914b;
-  border: 1px solid #f0914b;
-  font-size: 6px;
-  padding: 2px 3px;
-  border-top-right-radius: 6px;
-  border-bottom-left-radius: 6px;
+    color: #f0914b;
+    border: 1px solid #f0914b;
+    font-size: 6px;
+    padding: 2px 3px;
+    border-top-right-radius: 6px;
+    border-bottom-left-radius: 6px;
 }
+
 .suwis-current-price {
-  font-size: 12px;
-  line-height: 13px;
-  color: #666;
+    font-size: 12px;
+    line-height: 13px;
+    color: #666;
 }
+
 .suwis-current-pri {
-  color: #e83f44;
-  font-size: 15px !important;
+    color: #e83f44;
+    font-size: 15px !important;
 }
+
 .suwis-auction-date {
-  font-size: 12px;
-  line-height: 12px;
-  /* background-image: linear-gradient(to right, #faa537, #f06b25);
+    font-size: 12px;
+    line-height: 12px;
+    /* background-image: linear-gradient(to right, #faa537, #f06b25);
   color: #fff;
   display: inline-block;
   width: 12px;
@@ -327,9 +343,11 @@ export default {
   text-align: center;
   border-radius: 1px; */
 }
+
 .suwis-auction-date:nth-child(2n) {
-  margin-left: 3px;
+    margin-left: 3px;
 }
+
 /* .suwis-news-tips > div:nth-child(1) {
   margin-top: 15px;
 }
@@ -338,17 +356,20 @@ export default {
 }
 .suwis-news-tips > div:nth-child(3) {
   margin-top: 25px; */
-.suwis-news-tips>div:nth-child(1){
-  /* margin-top:15px; */
+.suwis-news-tips > div:nth-child(1) {
+    /* margin-top:15px; */
 }
-.suwis-news-tips>div:nth-child(2){
-  /* margin-top:10px; */
+
+.suwis-news-tips > div:nth-child(2) {
+    /* margin-top:10px; */
 }
-.suwis-news-tips>div:nth-child(3){
-  margin-top:5px;
+
+.suwis-news-tips > div:nth-child(3) {
+    margin-top: 5px;
 }
+
 .van-swipe__indicators {
-  left: none;
-  right: 10px !important;
+    left: none;
+    right: 10px !important;
 }
 </style>

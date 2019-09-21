@@ -506,15 +506,26 @@ export default {
 }
 </script>
 <style lang="scss">
-.good-tabs {
-    .van-tabs__line {
-        display: none;
+.suwis-good-details {
+    .good-tabs {
+        .van-tabs__line {
+            display: none;
+        }
+        .van-tab {
+            color: $gray;
+        }
+        .van-tab--active {
+            color: $red;
+        }
     }
-    .van-tab {
-        color: $gray;
-    }
-    .van-tab--active {
-        color: $red;
+
+    .van-sku-header__img-wrap {
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
 }
 </style>
