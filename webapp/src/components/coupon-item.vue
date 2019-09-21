@@ -1,6 +1,6 @@
 <template lang="html">
-  <div class="suwis-coupon-item" :class="{invalid:type!=1}" @click="click">
-    <dl class="bg" :class="{invalid:type!=1}">
+  <div class="suwis-coupon-item" :class="{invalid:type!=1||item.get_sta==1}" @click="click">
+    <dl class="bg" :class="{invalid:type!=1||item.get_sta==1}">
       <dt>
         <img class="money" src="@/assets/coupons/money@3x.png" alt="">
         <div>
@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  props: ['title', 'desc', 'price', 'time', 'btnText', 'type', 'day'],
+  props: ['title', 'desc', 'price', 'time', 'btnText', 'type', 'day', 'item'],
   methods: {
     click() {
       // 单击
@@ -58,6 +58,12 @@ export default {
 
     &.invalid {
         pointer-events: none;
+
+        dl {
+            .btn {
+                color: #ccc;
+            }
+        }
     }
 
     .bg {
@@ -69,6 +75,7 @@ export default {
         &.invalid {
             background: #fff url("./../assets/coupons/gray.png") no-repeat center bottom/cover;
         }
+
     }
 
     dl {

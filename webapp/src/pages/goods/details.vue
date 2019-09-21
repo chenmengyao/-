@@ -37,7 +37,7 @@
       </van-row>
       <van-row class="coupon">
         <van-col span="24">
-          优惠券&nbsp;&nbsp;<span @click="couponsVisible=true" v-for="item in coupons" v-if="item.number_can>0&&item.sta==1">{{item.title}}</span>
+          优惠券&nbsp;&nbsp;<span @click="couponsVisible=true" v-for="item in coupons" v-if="item.number_can>0&&item.sta==1">{{`满${item.total}减${item.sum}`}}</span>
           <i v-if="coupons.length==0">暂无可用优惠券</i>
         </van-col>
       </van-row>
@@ -182,7 +182,7 @@
         <span slot="btn-text" v-if="item.type==0">
           <template v-if="item.number_can<=0">已领取完</template>
           <template v-else>
-            领取
+            {{item.get_sta==0?'领取':'已领取'}}
           </template>
         </span>
         <span slot="btn-text" v-else>
@@ -190,7 +190,9 @@
           <template v-else>
             <template v-if="Date.now()>item.end_time*1000">已到期</template>
           </template>
-          <template v-if="item.number_can>0&&Date.now()<item.end_time*1000">领取</template>
+          <template v-if="item.number_can>0&&Date.now()<item.end_time*1000">
+            {{item.get_sta==0?'领取':'已领取'}}
+          </template>
         </span>
         <span slot="time" v-if="item.type==0">
           领取后{{item.day}}天内有效
@@ -427,6 +429,8 @@ export default {
       })
       if (res.data.code == 1) {
         Toast('领取成功')
+        // 刷新领取状态
+        this.getCoupons()
       } else {
         Toast(res.data.msg)
       }
@@ -679,6 +683,7 @@ export default {
                 color: $primary;
                 margin: 0;
                 padding-bottom: 5px;
+                font-size: 12px;
             }
 
             span {
