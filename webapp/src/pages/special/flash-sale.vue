@@ -1,89 +1,70 @@
 <template>
-  <div>
-    <div id="flash">
-      <!-- <van-tabs background="#FAA537" title-inactive-color="red" :line-height="0" title-active-color="#fff" v-model="active" swipeable> -->
-      <!-- <div style="background-image: linear-gradient(to right , #F35A5A, #DD0B11);">-->
-      <!-- <van-tabs background="none" line-height="0" animated title-inactive-color="red" title-active-color="#fff" v-model="active" swipeable>  -->
-      <div class="d-bg"></div>
-      <!-- <div> -->
-      <div style="height:10px;"></div>
-      <van-tabs
-        background="none"
-        animated
-        :line-height='0'
-        title-inactive-color="#ef7f7c"
-        title-active-color="#fff"
-        v-model="active"
-        swipeable
-      >
-        <van-tab>
-          <div
-            slot="title"
-            @click="getNumber('0')"
-          >
-            <div class="suwis-tab-title">14:00</div>
-            <div class="suwis-tab-title1">
-              <span v-if="flashList[0].goods.length">抢购中</span>
-              <span v-else>等待中</span>
+<div>
+  <div id="flash">
+    <!-- <van-tabs background="#FAA537" title-inactive-color="red" :line-height="0" title-active-color="#fff" v-model="active" swipeable> -->
+    <!-- <div style="background-image: linear-gradient(to right , #F35A5A, #DD0B11);">-->
+    <!-- <van-tabs background="none" line-height="0" animated title-inactive-color="red" title-active-color="#fff" v-model="active" swipeable>  -->
+    <div class="d-bg"></div>
+    <!-- <div> -->
+    <div style="height:10px;"></div>
+    <van-tabs background="none"
+      animated
+      :line-height='0'
+      title-inactive-color="#ef7f7c"
+      title-active-color="#fff"
+      v-model="active"
+      swipeable>
+      <van-tab>
+        <div slot="title"
+          @click="getNumber('0')">
+          <div class="suwis-tab-title">14:00</div>
+          <div class="suwis-tab-title1">
+            <span v-if="flashList[0].goods.length">抢购中</span>
+            <span v-else>等待中</span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <div class="suwis-news-ban"
+              style="height:27vw;overflow:hidden">
+              <van-swipe :autoplay="3000"
+                indicator-color="#E83F44"
+                style="width:100vw;text-align:center">
+                <van-swipe-item v-for="item in banner">
+                  <div v-lazy-container="{ selector: 'img' }">
+                    <router-link tag="div"
+                      :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
+                      <img :data-src="item.img"
+                        :data-error="require('../../assets/more.jpg')"
+                        :data-loading="require('../../assets/loading_alpha.png')"
+                        style="width:100%;height:27vw;">
+                    </router-link>
+                  </div>
+                </van-swipe-item>
+              </van-swipe>
             </div>
           </div>
           <div>
-            <div>
-              <div
-                class="suwis-news-ban"
-                style="height:27vw;overflow:hidden"
-              >
-                <van-swipe
-                  :autoplay="3000"
-                  indicator-color="#E83F44"
-                  style="width:100vw;text-align:center"
-                >
-                  <van-swipe-item v-for="item in banner">
-                    <div v-lazy-container="{ selector: 'img' }">
-                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
-                       <img
-                        :data-src="item.img"
-                        :data-error="require('../../assets/more.jpg')"
-                        :data-loading="require('../../assets/loading_alpha.png')"
-                        style="width:100%;height:27vw;"
-                       >
-                      </router-link>
-                    </div>
-                  </van-swipe-item>
-                </van-swipe>
-              </div>
-            </div>
-            <div>
-              <!-- <div class="d-more" v-if="flashList[0].goods.length==0">暂无数据</div> -->
-              <div style="padding-bottom:60px;">
-              <van-list
-                v-model="loading"
+            <!-- <div class="d-more" v-if="flashList[0].goods.length==0">暂无数据</div> -->
+            <div style="padding-bottom:60px;">
+              <van-list v-model="loading"
                 :finished="finished"
                 finished-text="没有更多了"
                 error-text="请求失败，点击重新加载"
                 :error.sync="error"
-                @load="loadlist"
-              >
-                <div
-                  class="suwis-con"
-                  v-for="(item,index) in flashList[0].goods"
-                >
+                @load="loadlist">
+                <div class="suwis-con"
+                  v-for="(item,index) in flashList[0].goods">
                   <div class="suwis-con-left">
-                    <router-link
-                      tag="div"
-                      :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}"
-                    >
-                      <img
-                        :src="item.img"
-                        width="100%"
-                      >
+                    <router-link tag="div"
+                      :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
+                      <img :src="item.img"
+                        width="100%">
                     </router-link>
                   </div>
                   <div class="suwis-con-right">
-                    <router-link
-                      tag="div"
-                      :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}"
-                    >
+                    <router-link tag="div"
+                      :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
                       <div>
                         {{item.title}}
                       </div>
@@ -91,126 +72,102 @@
                         <div class="suwis-right-con">
                           <div style="padding:6px 0;">
                             <!-- 100件好货等您来抢～ -->
-                            <van-progress
-                              :show-pivot="false"
+                            <van-progress :show-pivot="false"
                               color="linear-gradient(270deg,rgba(247,174,79,1) 0%,rgba(247,146,49,1) 33%,rgba(240,107,37,1) 100%)"
-                              :percentage="(item.percentage)"
-                            />
+                              :percentage="(item.percentage)" />
                           </div>
                           <div style="">
                             <span class="d-yuan-price">￥{{item.price_max}}</span>
                             <span class="d-basis-price">￥{{item.price_min}}</span>
-                            <span class="d-tags"><img
-                                src="../../assets/qg.png"
-                                style="width:25px;margin-top:-3px;vertical-align: middle;"
-                              ></span>
+                            <span class="d-tags"><img src="../../assets/qg.png"
+                                style="width:25px;margin-top:-3px;vertical-align: middle;"></span>
                           </div>
                         </div>
                         <div style="float:right">
-                          <img
-                            src="../../assets/masq.png"
-                            style="width:66px;"
-                          >
+                          <img src="../../assets/masq.png"
+                            style="width:66px;">
                         </div>
                       </div>
                     </router-link>
                   </div>
                 </div>
               </van-list>
-              </div>
-            </div>
-
-          </div>
-
-        </van-tab>
-        <van-tab>
-          <div
-            slot="title"
-            @click="getNumber('1')"
-          >
-            <div class="suwis-tab-title">16:00</div>
-            <div class="suwis-tab-title1">等待中
-
             </div>
           </div>
+
+        </div>
+
+      </van-tab>
+      <van-tab>
+        <div slot="title"
+          @click="getNumber('1')">
+          <div class="suwis-tab-title">16:00</div>
+          <div class="suwis-tab-title1">等待中
+
+          </div>
+        </div>
+        <div>
           <div>
-            <div>
-              <div
-                class="suwis-news-ban"
-                style="height:27vw;overflow:hidden"
-              >
-                <van-swipe
-                  :autoplay="3000"
-                  indicator-color="#E83F44"
-                  style="width:100vw;text-align:center"
-                >
-                  <van-swipe-item v-for="item in banner">
-                    <div v-lazy-container="{ selector: 'img' }">
-                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
-                       <img
-                        :data-src="item.img"
+            <div class="suwis-news-ban"
+              style="height:27vw;overflow:hidden">
+              <van-swipe :autoplay="3000"
+                indicator-color="#E83F44"
+                style="width:100vw;text-align:center">
+                <van-swipe-item v-for="item in banner">
+                  <div v-lazy-container="{ selector: 'img' }">
+                    <router-link tag="div"
+                      :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
+                      <img :data-src="item.img"
                         :data-error="require('../../assets/more.jpg')"
                         :data-loading="require('../../assets/loading_alpha.png')"
-                        style="width:100%;height:27vw;"
-                       >
-                      </router-link>
-                    </div>
-                  </van-swipe-item>
-                </van-swipe>
-              </div>
+                        style="width:100%;height:27vw;">
+                    </router-link>
+                  </div>
+                </van-swipe-item>
+              </van-swipe>
             </div>
           </div>
-          <div>
-            <!-- <div v-if="flashList[1].goods.length==0" class="d-more">暂无数据</div> -->
-            <div style="padding-bottom:60px;">
-            <van-list
-              v-model="loading"
+        </div>
+        <div>
+          <!-- <div v-if="flashList[1].goods.length==0" class="d-more">暂无数据</div> -->
+          <div style="padding-bottom:60px;">
+            <van-list v-model="loading"
               :finished="finished"
               finished-text="没有更多了"
               error-text="请求失败，点击重新加载"
               :error.sync="error"
-              @load="loadlist"
-            >
-              <div
-                class="suwis-con"
-                v-for="(item,index) in flashList[1].goods"
-              >
+              @load="loadlist">
+              <div class="suwis-con"
+                v-for="(item,index) in flashList[1].goods">
                 <div class="suwis-con-left">
-                  <router-link
-                    tag="div"
-                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}"
-                  >
-                    <img
-                      :src="item.img"
-                      width="100%"
-                    >
+                  <router-link tag="div"
+                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
+                    <img :src="item.img"
+                      width="100%">
                   </router-link>
                 </div>
                 <div class="suwis-con-right">
-                  <router-link
-                    tag="div"
-                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}"
-                  >
+                  <router-link tag="div"
+                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
                     <div>{{item.title}}</div>
                     <div style="margin-top:5px;">
                       <div class="suwis-right-con">
                         <div style="padding-top:5px;font-size:10px;">
-                          100件好货等您来抢～
+                          <!-- 100件好货等您来抢～ -->
+                          <van-progress :show-pivot="false"
+                            color="linear-gradient(270deg,rgba(247,174,79,1) 0%,rgba(247,146,49,1) 33%,rgba(240,107,37,1) 100%)"
+                            :percentage="(item.percentage)" />
                         </div>
                         <div style="">
                           <span class="d-yuan-price">￥{{item.price_max}}</span>
                           <span class="d-basis-price">￥{{item.price_min}}</span>
-                          <span class="d-tags"><img
-                              src="../../assets/qg.png"
-                              style="width:25px;margin-top:-3px;vertical-align: middle;"
-                            ></span>
+                          <span class="d-tags"><img src="../../assets/qg.png"
+                              style="width:25px;margin-top:-3px;vertical-align: middle;"></span>
                         </div>
                       </div>
                       <div style="float:right">
-                        <img
-                          src="../../assets/wait.png"
-                          style="width:66px;"
-                        >
+                        <img src="../../assets/wait.png"
+                          style="width:66px;">
                       </div>
                     </div>
                   </router-link>
@@ -218,97 +175,79 @@
 
               </div>
             </van-list>
-            </div>
           </div>
-        </van-tab>
-        <van-tab>
+        </div>
+      </van-tab>
+      <van-tab>
+        <div slot="title">
           <div slot="title">
-            <div slot="title">
-              <div
-                class="suwis-tab-title"
-                @click="getNumber('2')"
-              >20:00</div>
-              <div class="suwis-tab-title1">等待中</div>
-            </div>
+            <div class="suwis-tab-title"
+              @click="getNumber('2')">20:00</div>
+            <div class="suwis-tab-title1">等待中</div>
           </div>
+        </div>
+        <div>
           <div>
-            <div>
-              <div
-                class="suwis-news-ban"
-                style="height:27vw;overflow:hidden"
-              >
-                <van-swipe
-                  :autoplay="3000"
-                  indicator-color="#E83F44"
-                  style="width:100vw;text-align:center"
-                >
-                  <van-swipe-item v-for="item in banner">
-                    <div v-lazy-container="{ selector: 'img' }">
-                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
-                       <img
-                        :data-src="item.img"
+            <div class="suwis-news-ban"
+              style="height:27vw;overflow:hidden">
+              <van-swipe :autoplay="3000"
+                indicator-color="#E83F44"
+                style="width:100vw;text-align:center">
+                <van-swipe-item v-for="item in banner">
+                  <div v-lazy-container="{ selector: 'img' }">
+                    <router-link tag="div"
+                      :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
+                      <img :data-src="item.img"
                         :data-error="require('../../assets/more.jpg')"
                         :data-loading="require('../../assets/loading_alpha.png')"
-                        style="width:100%;height:27vw;"
-                       >
-                      </router-link>
-                    </div>
-                  </van-swipe-item>
-                </van-swipe>
-              </div>
+                        style="width:100%;height:27vw;">
+                    </router-link>
+                  </div>
+                </van-swipe-item>
+              </van-swipe>
             </div>
           </div>
-          <div>
-            <!-- <div v-if="flashList[2].goods.length==0" class="d-more">暂无数据</div> -->
-            <div style="padding-bottom:60px;">
-            <van-list
-              v-model="loading"
+        </div>
+        <div>
+          <!-- <div v-if="flashList[2].goods.length==0" class="d-more">暂无数据</div> -->
+          <div style="padding-bottom:60px;">
+            <van-list v-model="loading"
               :finished="finished"
               finished-text="没有更多了"
               error-text="请求失败，点击重新加载"
               :error.sync="error"
-              @load="loadlist"
-            >
-              <div
-                class="suwis-con"
-                v-for="(item,index) in flashList[2].goods"
-              >
+              @load="loadlist">
+              <div class="suwis-con"
+                v-for="(item,index) in flashList[2].goods">
                 <div class="suwis-con-left">
-                  <router-link
-                    tag="div"
-                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}"
-                  >
-                    <img
-                      :src="item.img"
-                      width="100%"
-                    >
+                  <router-link tag="div"
+                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
+                    <img :src="item.img"
+                      width="100%">
                   </router-link>
                 </div>
                 <div class="suwis-con-right">
-                  <router-link
-                    tag="div"
-                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}"
-                  >
+                  <router-link tag="div"
+                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
                     <div>{{item.title}}</div>
                     <div style="margin-top:5px;">
                       <div class="suwis-right-con">
                         <div style="padding-top:5px;font-size:10px;">
-                          100件好货等您来抢～
+                          <!-- 100件好货等您来抢～ -->
+                          <van-progress :show-pivot="false"
+                            color="linear-gradient(270deg,rgba(247,174,79,1) 0%,rgba(247,146,49,1) 33%,rgba(240,107,37,1) 100%)"
+                            :percentage="(item.percentage)" />
                         </div>
                         <div style="">
                           <span class="d-yuan-price">￥{{item.price_max}}</span>
                           <span class="d-basis-price">￥{{item.price_min}}</span>
-                          <span class="d-tags"><img
-                              src="../../assets/qg.png"
-                              style="width:25px;margin-top:-3px;vertical-align: middle;"
-                            ></span>
+                          <span class="d-tags"><img src="../../assets/qg.png"
+                              style="width:25px;margin-top:-3px;vertical-align: middle;"></span>
                         </div>
                       </div>
                       <div style="float:right">
-                        <img
-                          src="../../assets/wait.png"
-                          style="width:66px;"
-                        >
+                        <img src="../../assets/wait.png"
+                          style="width:66px;">
                       </div>
                     </div>
                   </router-link>
@@ -316,207 +255,171 @@
 
               </div>
             </van-list>
-            </div>
           </div>
-        </van-tab>
-        <van-tab>
+        </div>
+      </van-tab>
+      <van-tab>
+        <div slot="title">
           <div slot="title">
-            <div slot="title">
-              <div
-                class="suwis-tab-title"
-                @click="getNumber('3')"
-              >18:00</div>
-              <div class="suwis-tab-title1">等待中</div>
-            </div>
+            <div class="suwis-tab-title"
+              @click="getNumber('3')">18:00</div>
+            <div class="suwis-tab-title1">等待中</div>
           </div>
+        </div>
+        <div>
           <div>
-            <div>
-              <div
-                class="suwis-news-ban"
-                style="height:27vw;overflow:hidden"
-              >
-                <van-swipe
-                  :autoplay="3000"
-                  indicator-color="#E83F44"
-                  style="width:100vw;text-align:center"
-                >
-                  <van-swipe-item v-for="item in banner">
-                    <div v-lazy-container="{ selector: 'img' }">
-                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
-                       <img
-                        :data-src="item.img"
+            <div class="suwis-news-ban"
+              style="height:27vw;overflow:hidden">
+              <van-swipe :autoplay="3000"
+                indicator-color="#E83F44"
+                style="width:100vw;text-align:center">
+                <van-swipe-item v-for="item in banner">
+                  <div v-lazy-container="{ selector: 'img' }">
+                    <router-link tag="div"
+                      :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
+                      <img :data-src="item.img"
                         :data-error="require('../../assets/more.jpg')"
                         :data-loading="require('../../assets/loading_alpha.png')"
-                        style="width:100%;height:27vw;"
-                       >
-                      </router-link>
-                    </div>
-                  </van-swipe-item>
-                </van-swipe>
-              </div>
+                        style="width:100%;height:27vw;">
+                    </router-link>
+                  </div>
+                </van-swipe-item>
+              </van-swipe>
             </div>
           </div>
-          <div>
-            <!-- <div v-if="flashList[3].goods.length==0" class="d-more">暂无数据</div> -->
-            <div style="padding-bottom:60px;">
-            <van-list
-              v-model="loading"
+        </div>
+        <div>
+          <!-- <div v-if="flashList[3].goods.length==0" class="d-more">暂无数据</div> -->
+          <div style="padding-bottom:60px;">
+            <van-list v-model="loading"
               :finished="finished"
               finished-text="没有更多了"
               error-text="请求失败，点击重新加载"
               :error.sync="error"
-              @load="loadlist"
-            >
-              <div
-                class="suwis-con"
-                v-for="(item,index) in flashList[3].goods"
-              >
+              @load="loadlist">
+              <div class="suwis-con"
+                v-for="(item,index) in flashList[3].goods">
                 <div class="suwis-con-left">
-                  <router-link
-                    tag="div"
-                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}"
-                  >
-                    <img
-                      :src="item.img"
-                      width="100%"
-                    >
+                  <router-link tag="div"
+                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
+                    <img :src="item.img"
+                      width="100%">
                   </router-link>
                 </div>
                 <div class="suwis-con-right">
-                  <router-link
-                    tag="div"
-                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}"
-                  >
+                  <router-link tag="div"
+                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
                     <div>{{item.title}}</div>
                     <div style="margin-top:5px;">
                       <div class="suwis-right-con">
                         <div style="padding-top:5px;font-size:10px;">
-                          100件好货等您来抢～
+                          <!-- 100件好货等您来抢～ -->
+                          <van-progress :show-pivot="false"
+                            color="linear-gradient(270deg,rgba(247,174,79,1) 0%,rgba(247,146,49,1) 33%,rgba(240,107,37,1) 100%)"
+                            :percentage="(item.percentage)" />
                         </div>
                         <div style="">
                           <span class="d-yuan-price">￥{{item.price_max}}</span>
                           <span class="d-basis-price">￥{{item.price_min}}</span>
-                          <span class="d-tags"><img
-                              src="../../assets/qg.png"
-                              style="width:25px;margin-top:-3px;vertical-align: middle;"
-                            ></span>
+                          <span class="d-tags"><img src="../../assets/qg.png"
+                              style="width:25px;margin-top:-3px;vertical-align: middle;"></span>
                         </div>
                       </div>
                       <div style="float:right">
-                        <img
-                          src="../../assets/wait.png"
-                          style="width:66px;"
-                        >
+                        <img src="../../assets/wait.png"
+                          style="width:66px;">
                       </div>
                     </div>
                   </router-link>
                 </div>
               </div>
             </van-list>
-            </div>
           </div>
-        </van-tab>
-        <van-tab>
+        </div>
+      </van-tab>
+      <van-tab>
+        <div slot="title">
           <div slot="title">
-            <div slot="title">
-              <div
-                class="suwis-tab-title"
-                @click="getNumber('4')"
-              >22:00</div>
-              <div class="suwis-tab-title1">等待中</div>
-            </div>
+            <div class="suwis-tab-title"
+              @click="getNumber('4')">22:00</div>
+            <div class="suwis-tab-title1">等待中</div>
           </div>
+        </div>
+        <div>
           <div>
-            <div>
-              <div
-                class="suwis-news-ban"
-                style="height:27vw;overflow:hidden"
-              >
-                <van-swipe
-                  :autoplay="3000"
-                  indicator-color="#E83F44"
-                  style="width:100vw;text-align:center"
-                >
-                  <van-swipe-item v-for="item in banner">
-                    <div v-lazy-container="{ selector: 'img' }">
-                      <router-link tag="div" :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
-                       <img
-                        :data-src="item.img"
+            <div class="suwis-news-ban"
+              style="height:27vw;overflow:hidden">
+              <van-swipe :autoplay="3000"
+                indicator-color="#E83F44"
+                style="width:100vw;text-align:center">
+                <van-swipe-item v-for="item in banner">
+                  <div v-lazy-container="{ selector: 'img' }">
+                    <router-link tag="div"
+                      :to="{path: '/goods/details', query: {id: item.goods_id,type:'flash'}}">
+                      <img :data-src="item.img"
                         :data-error="require('../../assets/more.jpg')"
                         :data-loading="require('../../assets/loading_alpha.png')"
-                        style="width:100%;height:27vw;"
-                       >
-                      </router-link>
-                    </div>
-                  </van-swipe-item>
-                </van-swipe>
-              </div>
+                        style="width:100%;height:27vw;">
+                    </router-link>
+                  </div>
+                </van-swipe-item>
+              </van-swipe>
             </div>
           </div>
-          <div>
-            <!-- <div v-if="flashList[4].goods.length==0" class="d-more">暂无数据</div> -->
-            <div style="padding-bottom:60px;">
-            <van-list
-              v-model="loading"
+        </div>
+        <div>
+          <!-- <div v-if="flashList[4].goods.length==0" class="d-more">暂无数据</div> -->
+          <div style="padding-bottom:60px;">
+            <van-list v-model="loading"
               :finished="finished"
               finished-text="没有更多了"
               error-text="请求失败，点击重新加载"
               :error.sync="error"
-              @load="loadlist"
-            >
-              <div
-                class="suwis-con"
-                v-for="(item,index) in flashList[4].goods"
-              >
+              @load="loadlist">
+              <div class="suwis-con"
+                v-for="(item,index) in flashList[4].goods">
                 <div class="suwis-con-left">
-                  <router-link
-                    tag="div"
-                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}"
-                  >
-                    <img
-                      :src="item.img"
-                      width="100%"
-                    >
+                  <router-link tag="div"
+                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
+                    <img :src="item.img"
+                      width="100%">
                   </router-link>
                 </div>
                 <div class="suwis-con-right">
-                  <router-link
-                    tag="div"
-                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}"
-                  >
+                  <router-link tag="div"
+                    :to="{path: '/goods/details', query: {id: item.id,type:'flash'}}">
                     <div>{{item.title}}</div>
                     <div style="margin-top:5px;">
                       <div class="suwis-right-con">
                         <div style="padding-top:5px;font-size:10px;">
-                          100件好货等您来抢～
+                          <!-- 100件好货等您来抢～ -->
+                          <van-progress :show-pivot="false"
+                            color="linear-gradient(270deg,rgba(247,174,79,1) 0%,rgba(247,146,49,1) 33%,rgba(240,107,37,1) 100%)"
+                            :percentage="(item.percentage)" />
                         </div>
                         <div style="">
                           <span class="d-yuan-price">￥{{item.price_max}}</span>
                           <span class="d-basis-price">￥{{item.price_min}}</span>
-                          <span class="d-tags"><img
-                              src="../../assets/qg.png"
-                              style="width:25px;margin-top:-3px;vertical-align: middle;"
-                            ></span>
+                          <span class="d-tags"><img src="../../assets/qg.png"
+                              style="width:25px;margin-top:-3px;vertical-align: middle;"></span>
                         </div>
                       </div>
                       <div style="float:right">
-                        <img
-                          src="../../assets/wait.png"
-                          style="width:66px;"
-                        >
+                        <img src="../../assets/wait.png"
+                          style="width:66px;">
                       </div>
                     </div>
                   </router-link>
                 </div>
               </div>
             </van-list>
-            </div>
           </div>
-        </van-tab>
-      </van-tabs>
-    </div>
+        </div>
+      </van-tab>
+    </van-tabs>
   </div>
-  <!-- </div> -->
+</div>
+<!-- </div> -->
 </template>
 
 <script>
@@ -524,12 +427,21 @@ export default {
   data() {
     return {
       active: '',
-      flashList: [
-        { goods: [] },
-        { goods: [] },
-        { goods: [] },
-        { goods: [] },
-        { goods: [] }
+      flashList: [{
+          goods: []
+        },
+        {
+          goods: []
+        },
+        {
+          goods: []
+        },
+        {
+          goods: []
+        },
+        {
+          goods: []
+        }
       ],
       loading: false,
       finished: false,
@@ -589,24 +501,24 @@ export default {
   }
 }
 </script>
-<style lang="css">
+<style lang="scss">
 #flash .van-hairline--top-bottom::after {
-  border: 0;
+    border: 0;
 }
 #flash .van-tab {
-  line-height: 20px;
-  flex-basis: 20% !important;
-  -webkit-flex-basis: 20% !important;
+    line-height: 20px;
+    flex-basis: 20% !important;
+    -webkit-flex-basis: 20% !important;
 }
 #flash .van-swipe__indicator {
-  background: #fff;
-  opacity: 1;
+    background: #fff;
+    opacity: 1;
 }
 #flash .van-swipe {
-  border-radius: 4px;
+    border-radius: 4px;
 }
 #flash .van-swipe__indicators {
-  left: 85vw;
+    left: 85vw;
 }
 </style>
 
@@ -693,6 +605,12 @@ export default {
   overflow: hidden;
   border-radius: 4px;
   -webkit-border-radius: 4px;
+
+  img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 .suwis-con-right {
   flex: 1;

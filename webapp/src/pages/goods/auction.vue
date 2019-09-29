@@ -46,6 +46,11 @@
       text="客服"
       @click.native="$router.push({path: '/mine/message/getsm', query: {store_id: $route.query.id}})"
     />
+    <van-goods-action-mini-btn
+      icon="shop-o"
+      text="店铺"
+      @click.native="$router.push({path: '/shop', query: {id: details.store.id }})"
+    />
     <van-goods-action-big-btn
       primary
       :text="details.isauction==1?'立即出价': `支付定金 (￥${details.stand[0].auction_price * 0.1 || 0} )`"
