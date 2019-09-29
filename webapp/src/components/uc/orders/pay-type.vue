@@ -1,20 +1,29 @@
 <template>
-<van-actionsheet v-model="popupShow" title="确认付款" class="suwis-pay-type" :close-on-click-overlay="false" @cancel="cancel">
+<van-actionsheet v-model="popupShow"
+  title="确认付款"
+  class="suwis-pay-type"
+  :close-on-click-overlay="false"
+  @cancel="cancel">
   <van-cell-group>
     <van-cell title="请选择付款方式"></van-cell>
     <van-radio-group v-model="payType">
-      <van-radio v-for="pay in typeList" :name="pay.id" :key="pay.id">
+      <van-radio v-for="pay in typeList"
+        :name="pay.id"
+        :key="pay.id">
         <div class="check-line">
           <span class="option">
-            <img :src="pay.icon" class="pay-image">
+            <img :src="pay.icon"
+              class="pay-image">
             {{pay.description}}支付
           </span>
-          <span class="balance-sum" v-show="pay.id === 'balancepay'">可用佣金{{balanceSum}}</span>
+          <span class="balance-sum"
+            v-show="pay.id === 'balancepay'">可用佣金{{balanceSum}}</span>
         </div>
       </van-radio>
     </van-radio-group>
     <div class="button-line">
-      <div class="deploy" @click="pay">立即付款</div>
+      <div class="deploy"
+        @click="pay">立即付款</div>
     </div>
   </van-cell-group>
 </van-actionsheet>
@@ -111,9 +120,19 @@ export default {
       if (id == 'yunpay') {
         // 银联支付
         let token = app.$vm.$store.getters['core/token']
-        location.href = `${this.$config.apihost}pay/pay/order/${this.orderId}/token/${token}/pay_type/yunpay/yunpay_notify/http://10.16.40.49:8080/#/uc/orders/yunpaycallbak`
+        let url = `${this.$config.apihost}pay/pay/order/${this.orderId}/token/${token}/pay_type/yunpay/yunpay_notify/http://10.16.40.49:8080/#/uc/orders/yunpaycallbak`
+        w = plus.nativeUI.showWaiting();
+        // 新开一个webview
+        let paywin = plus.webview.create(url, 'pay_win', {}, {})
+        paywin.show()
+        paywin.addEventListener('rendered', () => {
+          // 关闭支付弹窗
+          this.$emit('close')
+          // 关闭loading
+          w.close()
+          w = null
+        })
         return
-        // todo
       }
       var appid = plus.runtime.appid;
       if (navigator.userAgent.indexOf('StreamApp') >= 0) {
@@ -154,9 +173,7 @@ export default {
       }, (e) => {
         console.log('----- 支付失败 -----');
         console.log('[' + e.code + ']：' + e.message);
-        alert(e.message)
         this.$emit('fail', true)
-        alert(e.message)
         plus.nativeUI.alert('更多错误信息请参考支付(Payment)规范文档：http://www.html5plus.org/#specification#/specification/Payment.html', null, '支付失败：' + e.code);
       })
     },

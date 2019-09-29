@@ -12,9 +12,23 @@ document.addEventListener('plusready', () => {
     })
     next()
   })
+
+  // 检测是否处于支付状态
+  let hasPayWindow = () => {
+    let paywin = plus.webview.getWebviewById('pay_win')
+    if (paywin) {
+      paywin.close()
+      paywin = null
+      return true
+    } else {
+      return false
+    }
+  }
+
   plus.key.addEventListener('backbutton', function() {
+    if (hasPayWindow()) return
     let path = window.app.$vm.$route.path
-    if (prevPath == path) {
+    if (prevPath == path || path == '/') {
       window.app.$vm.$toast('再按一次退出应用')
       // 首次按键，提示‘再按一次退出应用’
       if (!first) {
@@ -37,4 +51,5 @@ document.addEventListener('plusready', () => {
       })
     }
   }, false)
+
 })
