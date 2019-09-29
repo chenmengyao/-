@@ -228,6 +228,7 @@
         @click.native="showSku('addcar')"
       />
       <van-goods-action-big-btn
+        :disabled="disabledSubmit"
         primary
         text="立即购买"
         @click.native="!current.selectedSkuComb.id?showSku('buy'):buy(current)"
@@ -319,7 +320,9 @@ export default {
         }
       },
       couponsVisible: false,
-      shareVisible: false
+      shareVisible: false,
+      // 是否禁止购买按钮提交
+      disabledSubmit: false
     }
   },
   created() {
@@ -349,6 +352,8 @@ export default {
   watch: {
     // 监听详情变化
     details(val) {
+      // 检测竞拍类型，是否超时
+      this.checkTimeout()
       // 'header_two_label', 'header_three_label'
       let keys = ['header_one_label']
       for (let key of keys) {
@@ -407,6 +412,18 @@ export default {
         }, 680)
       }
       this.navlist[idx].selected = true
+    },
+    // 检查时间是否超时
+    checkTimeout() {
+      // 限时抢购 && 竞拍捡漏
+      if (this.details.type == 1 || this.details.type == 2) {
+        this.disabledSubmit = (this.details.activity_end_time || 0) * 1000 - Date.now() < 0
+        if (!this.disabledSubmit) {
+          setTimeout(() => {
+            this.checkTimeout()
+          }, 1000)
+        }
+      }
     },
     // 获取详情
     async getDetails() {
@@ -789,6 +806,11 @@ export default {
         .van-button--danger {
             background: linear-gradient(54deg,rgba(245,92,60,1) 0%,rgba(246,96,62,1) 17%,rgba(221,11,17,1) 100%);
             border: none;
+
+            &[disabled] {
+                background: #b4b4b4;
+                opacity: 1;
+            }
         }
         &::before {
             content: '';

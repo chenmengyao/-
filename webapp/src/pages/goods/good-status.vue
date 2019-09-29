@@ -8,7 +8,7 @@
         </dt>
         <dd>
           距离活动开启还剩&nbsp;&nbsp;
-          <countdown :time="details.activity_end_time * 1000 - Date.now()">
+          <countdown class="countdown" :time="details.activity_end_time  * 1000 - Date.now()">
             <template slot-scope="props">
               <i>{{ props.hours < 10 ? `0${props.hours}`: props.hours }}</i> :
               <i>{{ props.minutes < 10 ? `0${props.minutes}`: props.minutes }}</i> :
@@ -236,20 +236,26 @@ export default {
                 font-size: 14px;
                 white-space: nowrap;
 
+                .countdown {
+                    display: flex;
+                }
+
                 i {
                     background: rgba(255,255,255,1);
                     border-radius: 2px;
                     font-style: normal;
                     margin: 0 5px;
+                    padding: 0;
+                    font-size: 14px;
                     width: 21px;
                     height: 21px;
+                    line-height: 21px;
                     color: #F9A236;
                     text-align: center;
-                    display: flex;
+                    display: inline-flex;
                     align-items: center;
                     justify-content: center;
                     align-content: center;
-                    font-size: 14px;
                 }
             }
         }
