@@ -471,10 +471,10 @@
                     "ifly" : {}
                 },
                 "payment" : {
-                    "alipay" : {},
                     "weixin" : {
                         "appid" : "wx6c32abcd65d1413c"
-                    }
+                    },
+                    "alipay" : {}
                 },
                 "share" : {
                     "weixin" : {

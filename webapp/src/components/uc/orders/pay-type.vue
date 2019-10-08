@@ -53,16 +53,14 @@ export default {
       payType: 'balancepay',
       popupShow: false,
       typeList: [{
-          id: 'balancepay',
-          description: '佣金余额',
-          icon: require('../../../assets/orders/score-pay@2x.png')
-        },
-        {
-          id: 'yunpay',
-          description: '银联支付',
-          icon: require('../../../assets/orders/union-pay@2x.png')
-        }
-      ]
+        id: 'balancepay',
+        description: '佣金余额',
+        icon: require('../../../assets/orders/score-pay@2x.png')
+      }, {
+        id: 'yunpay',
+        description: '银联支付',
+        icon: require('../../../assets/orders/union-pay@2x.png')
+      }]
     }
   },
   watch: {
@@ -151,17 +149,18 @@ export default {
       if (id == 'alipay') params = res.data
       // 微信
       if (id == 'wxpay') {
-        params = {
-          appid: res.data.appid,
-          noncestr: res.data.nonce_str,
-          package: 'Sign=WXPay',
-          partnerid: res.data.mch_id,
-          prepayid: res.data.prepay_id,
-          timestamp: Math.round(new Date().getTime() / 1000).toString(),
-          sign: res.data.sign
-        }
+        let data = res.data || {}
+        // params = {
+        //   appid: data.appid,
+        //   noncestr: data.nonce_str,
+        //   package: 'Sign=WXPay',
+        //   partnerid: data.mch_id,
+        //   prepayid: data.prepay_id,
+        //   timestamp: Math.round(new Date().getTime() / 1000).toString(),
+        //   sign: data.sign
+        // }
+        params = data
       }
-      // alert(JSON.stringify(this.pays[id]))
       plus.payment.request(this.pays[id], params, (result) => {
         console.log('----- 支付成功 -----');
         console.log(JSON.stringify(result));
@@ -172,7 +171,7 @@ export default {
         })
       }, (e) => {
         console.log('----- 支付失败 -----');
-        console.log('[' + e.code + ']：' + e.message);
+        alert('[' + e.code + ']：' + e.message);
         this.$emit('fail', true)
         // plus.nativeUI.alert('更多错误信息请参考支付(Payment)规范文档：http://www.html5plus.org/#specification#/specification/Payment.html', null, '支付失败：' + e.code);
       })
