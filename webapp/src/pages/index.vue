@@ -112,6 +112,17 @@ export default {
     this.getGoods()
     this.getNews()
     this.onPlusReady(() => {
+      this.resetNav()
+    })
+  },
+  watch: {
+    $route(val, oldVal) {
+      if (val.path == '/') this.resetNav()
+    }
+  },
+  methods: {
+    // 重置导航
+    resetNav() {
       this.$store.commit('core/header', {
         title: '惠回来',
         // 清空按钮
@@ -147,9 +158,7 @@ export default {
           }
         }
       })
-    })
-  },
-  methods: {
+    },
     // 获取banner
     async getBanner() {
       let res = await this.$axios.get('index/index')
