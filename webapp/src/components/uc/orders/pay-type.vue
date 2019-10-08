@@ -146,7 +146,9 @@ export default {
 
       let params
       // 支付宝
-      if (id == 'alipay') params = res.data
+      if (id == 'alipay') {
+        params = res.data
+      }
       // 微信
       if (id == 'wxpay') {
         let data = res.data || {}
@@ -171,7 +173,7 @@ export default {
         })
       }, (e) => {
         console.log('----- 支付失败 -----');
-        alert('[' + e.code + ']：' + e.message);
+        this.$toast(e.message);
         this.$emit('fail', true)
         // plus.nativeUI.alert('更多错误信息请参考支付(Payment)规范文档：http://www.html5plus.org/#specification#/specification/Payment.html', null, '支付失败：' + e.code);
       })

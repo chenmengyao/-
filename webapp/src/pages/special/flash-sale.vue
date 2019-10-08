@@ -17,7 +17,7 @@
       <van-tab>
         <div slot="title"
           @click="getNumber('0')">
-          <div class="suwis-tab-title">14:00</div>
+          <div class="suwis-tab-title">{{flashList[0].now_time}}:00</div>
           <div class="suwis-tab-title1">
             <span v-if="flashList[0].goods.length">抢购中</span>
             <span v-else>等待中</span>
@@ -101,7 +101,7 @@
       <van-tab>
         <div slot="title"
           @click="getNumber('1')">
-          <div class="suwis-tab-title">16:00</div>
+          <div class="suwis-tab-title">{{flashList[1].now_time}}:00</div>
           <div class="suwis-tab-title1">等待中
 
           </div>
@@ -182,7 +182,7 @@
         <div slot="title">
           <div slot="title">
             <div class="suwis-tab-title"
-              @click="getNumber('2')">20:00</div>
+              @click="getNumber('2')">{{flashList[2].now_time}}:00</div>
             <div class="suwis-tab-title1">等待中</div>
           </div>
         </div>
@@ -262,7 +262,7 @@
         <div slot="title">
           <div slot="title">
             <div class="suwis-tab-title"
-              @click="getNumber('3')">18:00</div>
+              @click="getNumber('3')">{{flashList[3].now_time}}:00</div>
             <div class="suwis-tab-title1">等待中</div>
           </div>
         </div>
@@ -341,7 +341,7 @@
         <div slot="title">
           <div slot="title">
             <div class="suwis-tab-title"
-              @click="getNumber('4')">22:00</div>
+              @click="getNumber('4')">{{flashList[4].now_time}}:00</div>
             <div class="suwis-tab-title1">等待中</div>
           </div>
         </div>
@@ -475,6 +475,7 @@ export default {
           if (res.data && res.data.data) {
             for (let i in res.data.data) {
               this.flashList[i].goods = this.flashList[i].goods.concat(res.data.data[i].goods || [])
+              this.flashList[i].now_time = res.data.data[i].now_time
             }
             if (this.page * 5 > res.data.data[this.num].total) this.finished = true
           }
