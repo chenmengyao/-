@@ -6,8 +6,18 @@
         <dt>
           限时<br>抢购
         </dt>
-        <dd>
+        <dd v-if="Date.now()< details.activity_start_time  * 1000">
           距离活动开启还剩&nbsp;&nbsp;
+          <countdown class="countdown" :time="details.activity_start_time  * 1000 - Date.now()">
+            <template slot-scope="props">
+              <i>{{ props.hours < 10 ? `0${props.hours}`: props.hours }}</i> :
+              <i>{{ props.minutes < 10 ? `0${props.minutes}`: props.minutes }}</i> :
+              <i>{{ props.seconds < 10 ? `0${props.seconds}`: props.seconds }}</i>
+            </template>
+          </countdown>
+        </dd>
+        <dd v-else>
+          距离活动结束还剩&nbsp;&nbsp;
           <countdown class="countdown" :time="details.activity_end_time  * 1000 - Date.now()">
             <template slot-scope="props">
               <i>{{ props.hours < 10 ? `0${props.hours}`: props.hours }}</i> :

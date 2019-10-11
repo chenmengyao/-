@@ -53,7 +53,7 @@
     />
     <van-goods-action-big-btn
       primary
-      :text="details.isauction==1?'立即出价': `支付定金 (￥${details.stand[0].auction_price * 0.1 || 0} )`"
+      :text="details.isauction==1?'立即出价': `支付定金 (￥${(details.stand[0].auction_price * 0.1 || 0).toFixed(2)} )`"
       @click.native="!current.selectedSkuComb.id?$parent.showSku('showKeyboard'):showKeyboard()"
     />
    </van-goods-action>
@@ -68,7 +68,7 @@
     <van-cell-group>
       <van-cell title="请选择付款方式"></van-cell>
       <van-radio-group v-model="payType">
-        <van-radio v-for="pay in typeList"
+        <van-radio style="padding-left:15px;" v-for="pay in typeList"
           :name="pay.id"
           :key="pay.id">
           <div class="paytype-check-line">

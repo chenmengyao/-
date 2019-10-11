@@ -523,7 +523,7 @@ export default {
 }
 </style>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
 .van-hairline--top-bottom::after {
   border: 0;
 }
@@ -606,6 +606,11 @@ export default {
   overflow: hidden;
   border-radius: 4px;
   -webkit-border-radius: 4px;
+
+  >div {
+    width: 100%;
+    height: 100%;
+  }
 
   img{
     width: 100%;
