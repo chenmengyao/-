@@ -129,6 +129,8 @@
 
 <script>
 import md5 from 'md5'
+// 支付等待
+let payw = null
 export default {
   props: ['details', 'current'],
   data() {
@@ -140,6 +142,10 @@ export default {
         id: 'balancepay',
         description: '佣金余额',
         icon: require('./../../assets/orders/score-pay@2x.png')
+      }, {
+        id: 'yunpay',
+        description: '银联支付',
+        icon: require('./../../assets/orders/union-pay@2x.png')
       }],
       agreeAgreement: false,
       // 加价金额
@@ -200,6 +206,28 @@ export default {
     this.timer = setInterval(() => {
       this.disable = this.details.activity_end_time * 1000 < Date.now()
     }, 1000)
+    // 获取支付通道
+    this.onPlusReady(() => {
+      // 获取支付通道
+      plus.payment.getChannels((channels) => {
+        for (var i in channels) {
+          var channel = channels[i]
+          if (channel.id == 'qhpay' || channel.id == 'qihoo') { // 过滤掉不支持的支付通道：暂不支持360相关支付
+            continue;
+          }
+          this.typeList.push({
+            id: channel.id,
+            description: channel.description,
+            serviceReady: channel.serviceReady,
+            icon: require(`@/assets/orders/${channel.id}@2x.png`)
+          })
+          this.pays[channel.id] = channel
+          this.checkServices(channel)
+        }
+      }, function(e) {
+        outLine('获取支付通道失败：' + e.message)
+      })
+    })
   },
   beforeDestroy() {
     // 清理定时器
@@ -339,6 +367,93 @@ export default {
         this.$toast(res.data.msg)
       }
       window.test = this
+    },
+    async pay() {
+      const id = this.payType
+      if (payw) {
+        return;
+      }
+      //检查是否请求订单中
+      if (id === 'appleiap') {
+        clicked('payment_iap.html');
+        return;
+      }
+      if (!id) {
+        plus.nativeUI.alert('请选择支付渠道', null, '提示');
+        return;
+      }
+      console.log('----- 请求支付 -----');
+      if (id == 'yunpay') {
+        // 银联支付
+        let token = app.$vm.$store.getters['core/token']
+        let url = `${this.$config.apihost}pay/pay/order/${this.orderId}/token/${token}/pay_type/yunpay/yunpay_notify/http://10.16.40.49:8080/#/uc/orders/yunpaycallbak`
+        payw = plus.nativeUI.showWaiting();
+        // 新开一个webview
+        let paywin = plus.webview.create(url, 'pay_win', {}, {})
+        paywin.show()
+        paywin.addEventListener('rendered', () => {
+          // 关闭支付弹窗
+          this.$emit('close')
+          // 关闭loading
+          w.close()
+          payw = null
+        })
+        return
+      }
+      var appid = plus.runtime.appid;
+      if (navigator.userAgent.indexOf('StreamApp') >= 0) {
+        appid = 'Stream';
+      }
+      w = plus.nativeUI.showWaiting();
+      let res = await this.$axios.post('/pay/pay', {
+        pay_type: id,
+        order: this.orderId
+      })
+      w.close();
+      w = null;
+      let params
+      // 支付宝
+      if (id == 'alipay') {
+        params = res.data
+      }
+      // 微信
+      if (id == 'wxpay') {
+        let data = res.data || {}
+        params = data
+      }
+      plus.payment.request(this.pays[id], params, (result) => {
+        console.log('----- 支付成功 -----');
+        console.log(JSON.stringify(result));
+        plus.nativeUI.alert('支付成功', () => {
+          // 支付成功
+          this.popupShow = false
+          this.$emit('success', true)
+        })
+      }, (e) => {
+        console.log('----- 支付失败 -----');
+        let msg = e.message
+        this.$toast(msg.substr(msg.indexOf(']') || 0, msg.length));
+        this.$emit('fail', true)
+        // plus.nativeUI.alert('更多错误信息请参考支付(Payment)规范文档：http://www.html5plus.org/#specification#/specification/Payment.html', null, '支付失败：' + e.code);
+      })
+    },
+    checkServices(pc) {
+      if (!pc.serviceReady) {
+        var txt = null;
+        switch (pc.id) {
+          case 'alipay':
+            txt = '检测到系统未安装“支付宝快捷支付服务”，无法完成支付操作，是否立即安装？';
+            break;
+          default:
+            txt = '系统未安装“' + pc.description + '”服务，无法完成支付，是否立即安装？';
+            break;
+        }
+        plus.nativeUI.confirm(txt, function(e) {
+          if (e.index == 0) {
+            pc.installService();
+          }
+        }, pc.description);
+      }
     }
   }
 }
