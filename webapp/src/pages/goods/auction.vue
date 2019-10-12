@@ -310,9 +310,9 @@ export default {
       if (res.data.code == 1) {
         this.$toast('押金支付成功')
         this.auctionShow = false
-        setTimeout(() => {
-          window.location.reload()
-        }, 1200)
+        try {
+          this.$parent.getDetails()
+        } catch (e) {}
       } else {
         this.$toast(res.data.msg)
       }
@@ -332,9 +332,13 @@ export default {
       })
       if (res.data.code == 1) {
         this.$toast('加价成功')
+        try {
+          this.$parent.getDetails()
+        } catch (e) {}
       } else {
         this.$toast(res.data.msg)
       }
+      window.test = this
     }
   }
 }
