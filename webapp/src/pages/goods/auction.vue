@@ -303,7 +303,7 @@ export default {
       let res = await this.$axios.post('goods/auction', {
         goods_id: this.current.goodsId,
         stand_id: this.current.selectedSkuComb.s1,
-        pay_tpye: 'balancepay',
+        pay_type: 'balancepay',
         address_id: 5,
         paypass: md5(this.paypass)
       })
