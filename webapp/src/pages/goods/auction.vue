@@ -81,7 +81,8 @@
         </van-radio>
       </van-radio-group>
       <div class="paytype-button-line">
-        <div class="deploy" @click="showPayboard">立即付款</div>
+        <div class="deploy" v-if="payType=='balancepay'" @click="showPayboard">立即付款</div>
+        <div class="deploy" v-else @click="pay">立即付款</div>
       </div>
     </van-cell-group>
   </van-actionsheet>
@@ -147,6 +148,7 @@ export default {
         description: '银联支付',
         icon: require('./../../assets/orders/union-pay@2x.png')
       }],
+      pays: {},
       agreeAgreement: false,
       // 加价金额
       keyboardText: '',
@@ -212,9 +214,8 @@ export default {
       plus.payment.getChannels((channels) => {
         for (var i in channels) {
           var channel = channels[i]
-          if (channel.id == 'qhpay' || channel.id == 'qihoo') { // 过滤掉不支持的支付通道：暂不支持360相关支付
-            continue;
-          }
+          // 过滤掉不支持的支付通道：暂不支持360相关支付
+          if (channel.id == 'qhpay' || channel.id == 'qihoo') continue
           this.typeList.push({
             id: channel.id,
             description: channel.description,
@@ -332,7 +333,7 @@ export default {
         goods_id: this.current.goodsId,
         stand_id: this.current.selectedSkuComb.s1,
         pay_type: 'balancepay',
-        address_id: 5,
+        address_id: this.adres.id,
         paypass: md5(this.paypass)
       })
       if (res.data.code == 1) {
@@ -369,21 +370,27 @@ export default {
       window.test = this
     },
     async pay() {
-      const id = this.payType
-      if (payw) {
-        return;
-      }
-      //检查是否请求订单中
-      if (id === 'appleiap') {
+      if (payw) return
+      // 检查是否请求订单中
+      if (this.payType === 'appleiap') {
         clicked('payment_iap.html');
+        return
+      }
+      if (!this.payType) {
+        this.$toast('请选择支付渠道')
         return;
       }
-      if (!id) {
-        plus.nativeUI.alert('请选择支付渠道', null, '提示');
-        return;
-      }
+      payw = plus.nativeUI.showWaiting();
+      let res = await this.$axios.post('goods/auction', {
+        goods_id: this.current.goodsId,
+        stand_id: this.current.selectedSkuComb.s1,
+        pay_type: this.payType,
+        address_id: this.adres.id,
+        paypass: ''
+      })
+      console.log(res, 'res')
       console.log('----- 请求支付 -----');
-      if (id == 'yunpay') {
+      if (this.payType == 'yunpay') {
         // 银联支付
         let token = app.$vm.$store.getters['core/token']
         let url = `${this.$config.apihost}pay/pay/order/${this.orderId}/token/${token}/pay_type/yunpay/yunpay_notify/http://10.16.40.49:8080/#/uc/orders/yunpaycallbak`
@@ -392,36 +399,29 @@ export default {
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
         paywin.show()
         paywin.addEventListener('rendered', () => {
-          // 关闭支付弹窗
-          this.$emit('close')
           // 关闭loading
-          w.close()
+          payw.close()
           payw = null
         })
         return
       }
+      payw.close();
       var appid = plus.runtime.appid;
       if (navigator.userAgent.indexOf('StreamApp') >= 0) {
         appid = 'Stream';
       }
-      w = plus.nativeUI.showWaiting();
-      let res = await this.$axios.post('/pay/pay', {
-        pay_type: id,
-        order: this.orderId
-      })
-      w.close();
-      w = null;
+      payw = null;
       let params
       // 支付宝
-      if (id == 'alipay') {
+      if (this.payType == 'alipay') {
         params = res.data
       }
       // 微信
-      if (id == 'wxpay') {
+      if (this.payType == 'wxpay') {
         let data = res.data || {}
         params = data
       }
-      plus.payment.request(this.pays[id], params, (result) => {
+      plus.payment.request(this.pays[this.payType], params, (result) => {
         console.log('----- 支付成功 -----');
         console.log(JSON.stringify(result));
         plus.nativeUI.alert('支付成功', () => {
@@ -432,7 +432,7 @@ export default {
       }, (e) => {
         console.log('----- 支付失败 -----');
         let msg = e.message
-        this.$toast(msg.substr(msg.indexOf(']') || 0, msg.length));
+        this.$toast(msg.substr(msg.indexOf(']') + 1 || 0, msg.length));
         this.$emit('fail', true)
         // plus.nativeUI.alert('更多错误信息请参考支付(Payment)规范文档：http://www.html5plus.org/#specification#/specification/Payment.html', null, '支付失败：' + e.code);
       })

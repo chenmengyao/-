@@ -174,7 +174,7 @@ export default {
       }, (e) => {
         console.log('----- 支付失败 -----');
         let msg = e.message
-        this.$toast(msg.substr(msg.indexOf(']') || 0, msg.length));
+        this.$toast(msg.substr(msg.indexOf(']') + 1 || 0, msg.length));
         this.$emit('fail', true)
         // plus.nativeUI.alert('更多错误信息请参考支付(Payment)规范文档：http://www.html5plus.org/#specification#/specification/Payment.html', null, '支付失败：' + e.code);
       })
