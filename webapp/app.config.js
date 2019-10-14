@@ -1,4 +1,6 @@
-import { routes } from '../webapp/src/router'
+import {
+  routes
+} from '../webapp/src/router'
 
 // 生成以hidePath中的路径开头的隐藏底部导航路由数组
 const hidePath = ['/uc/', '/mine/']
@@ -9,6 +11,8 @@ export default {
   apihost: 'http://huihuilai.ambcon.cn/index.php/index/',
   // 请求超时
   timeout: 10000,
+  // 银联支付回调
+  yunpaycburl: 'http://10.16.40.49:8080/#/uc/orders/yunpaycallbak',
   // 免登录地址
   licenseExemptUrls: [
     '/',

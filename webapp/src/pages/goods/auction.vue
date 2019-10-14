@@ -386,6 +386,7 @@ export default {
         stand_id: this.current.selectedSkuComb.s1,
         pay_type: this.payType,
         address_id: this.adres.id,
+        notify_url: this.$config.yunpaycburl,
         paypass: ''
       })
       console.log(res, 'res')
@@ -393,7 +394,7 @@ export default {
       if (this.payType == 'yunpay') {
         // 银联支付
         let token = app.$vm.$store.getters['core/token']
-        let url = `${this.$config.apihost}pay/pay/order/${this.orderId}/token/${token}/pay_type/yunpay/yunpay_notify/http://10.16.40.49:8080/#/uc/orders/yunpaycallbak`
+        let url = res
         payw = plus.nativeUI.showWaiting();
         // 新开一个webview
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
