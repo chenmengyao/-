@@ -10,6 +10,10 @@ module.exports = {
         path.resolve(__dirname, './src/styles/variables.scss'),
         path.resolve(__dirname, './src/styles/index.scss')
       ]
+    },
+    'app-config': {
+      file: './app.config.js',
+      default: 'dev'
     }
   }
 }
