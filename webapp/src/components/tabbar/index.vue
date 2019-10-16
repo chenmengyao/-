@@ -70,7 +70,7 @@ export default {
           input.addEventListener('focus', this.resetWebview)
           input.addEventListener('focus', this.resetWebview)
         })
-      }, 198)
+      }, 698)
     }
   },
   methods: {

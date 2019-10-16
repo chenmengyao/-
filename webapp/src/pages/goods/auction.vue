@@ -380,21 +380,16 @@ export default {
         this.$toast('请选择支付渠道')
         return;
       }
-      payw = plus.nativeUI.showWaiting();
-      let res = await this.$axios.post('goods/auction', {
-        goods_id: this.current.goodsId,
-        stand_id: this.current.selectedSkuComb.s1,
-        pay_type: this.payType,
-        address_id: this.adres.id,
-        notify_url: this.$config.yunpaycburl,
-        paypass: ''
-      })
-      console.log(res, 'res')
       console.log('----- 请求支付 -----');
       if (this.payType == 'yunpay') {
         // 银联支付
         let token = app.$vm.$store.getters['core/token']
-        let url = res
+        let url = this.$config.apihost + `goods/auction?token=${this.$store.getters['core/token']}&`
+        url += `goods_id=${this.current.goodsId}&`
+        url += `stand_id=${this.current.selectedSkuComb.s1}&`
+        url += `pay_type=${this.payType}&`
+        url += `address_id=${this.adres.id}&`
+        url += `notify_url=this.$config.yunpaycburl`
         payw = plus.nativeUI.showWaiting();
         // 新开一个webview
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
@@ -406,6 +401,18 @@ export default {
         })
         return
       }
+      payw = plus.nativeUI.showWaiting();
+      let res = await this.$axios.get('goods/auction', {
+        params: {
+          goods_id: this.current.goodsId,
+          stand_id: this.current.selectedSkuComb.s1,
+          pay_type: this.payType,
+          address_id: this.adres.id,
+          notify_url: this.$config.yunpaycburl,
+          paypass: ''
+        }
+      })
+      console.log(res, 'res')
       payw.close();
       var appid = plus.runtime.appid;
       if (navigator.userAgent.indexOf('StreamApp') >= 0) {
