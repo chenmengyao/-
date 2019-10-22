@@ -55,22 +55,22 @@ export default {
       }
     },
     $route(val) {
+      setTimeout(() => {
+        // 修复页面聚焦时底部tab高度失效问题
+        let inputs = document.querySelectorAll('input')
+        inputs.forEach((input, idx) => {
+          input.removeEventListener('blur', this.resetWebview)
+          input.addEventListener('blur', this.resetWebview)
+          input.removeEventListener('focus', this.resetWebview)
+          input.addEventListener('focus', this.resetWebview)
+        })
+      }, 698)
       // 切换状态
       let idx = val.meta.idx || -1
       if (val.path == '/') idx = 0
       if (idx < 0) return
       let current = this.navlist[idx]
       this.toggleTab(current)
-      setTimeout(() => {
-        // 修复页面聚焦时底部tab高度失效问题
-        let inputs = document.querySelectorAll('input')
-        inputs.forEach((input, idx) => {
-          input.addEventListener('blur', this.resetWebview)
-          input.addEventListener('blur', this.resetWebview)
-          input.addEventListener('focus', this.resetWebview)
-          input.addEventListener('focus', this.resetWebview)
-        })
-      }, 698)
     }
   },
   methods: {

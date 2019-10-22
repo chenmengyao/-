@@ -53,10 +53,10 @@ export default {
       // 登陆方式
       loginType: 1,
       formData: {
-        tel: '18687512006',
+        tel: '',
         code: '',
-        nickname: 'Ivorzk',
-        password: '123456',
+        nickname: '',
+        password: '',
         type: 1
       },
       formMsg: {
