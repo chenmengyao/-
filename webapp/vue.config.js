@@ -11,5 +11,9 @@ module.exports = {
         path.resolve(__dirname, './src/styles/index.scss')
       ]
     }
-  }
+  },
+  transpileDependencies: [
+    '/node_modules/vue-echarts-v3/',
+    '/node_modules/suwis-vuex-sync/'
+  ]
 }
