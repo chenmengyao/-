@@ -13,7 +13,7 @@ module.exports = {
     }
   },
   transpileDependencies: [
-    '/node_modules/vue-echarts-v3/',
-    '/node_modules/suwis-vuex-sync/'
+    'vue-echarts-v3',
+    'suwis-vuex-sync'
   ]
 }
