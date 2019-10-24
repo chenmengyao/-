@@ -58,7 +58,7 @@ export default {
       setTimeout(() => {
         alert('xx')
         // 修复页面聚焦时底部tab高度失效问题
-        let inputs = document.querySelectorAll('input')
+        let inputs = document.querySelectorAll('input') || document.getElementByTagName('input')
         inputs.forEach((input, idx) => {
           input.removeEventListener('blur', this.resetWebview)
           input.addEventListener('blur', this.resetWebview)
