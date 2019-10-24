@@ -56,15 +56,15 @@ export default {
     },
     $route(val) {
       setTimeout(() => {
-        alert('xx')
         // 修复页面聚焦时底部tab高度失效问题
-        let inputs = document.querySelectorAll('input') || document.getElementsByTagName('input')
-        inputs.forEach((input, idx) => {
+        let inputs = document.getElementsByTagName('input')
+        console.log(inputs, 'inputs')
+        for (let input of inputs) {
           input.removeEventListener('blur', this.resetWebview)
           input.addEventListener('blur', this.resetWebview)
           input.removeEventListener('focus', this.resetWebview)
           input.addEventListener('focus', this.resetWebview)
-        })
+        }
       }, 698)
       // 切换状态
       let idx = val.meta.idx || -1
