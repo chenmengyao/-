@@ -132,6 +132,7 @@ export default {
     },
     // 重置webview高度
     resetWebview() {
+      this.$toast('聚焦')
       let webview = plus.webview.currentWebview()
       webview.setStyle({
         height: '100%'
