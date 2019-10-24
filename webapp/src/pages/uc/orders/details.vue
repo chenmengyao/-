@@ -7,8 +7,8 @@
             :order-data="order"
             :show-price="false"
             @click="onClickStore">
-            <GoodsItem 
-                :goods-list="order" 
+            <GoodsItem
+                :goods-list="order"
                 @click="onClickGoods"></GoodsItem>
         </OrderCard>
         <!-- 商品卡片 //-->
@@ -110,10 +110,10 @@
         <!-- 按钮卡片 //-->
 
         <!-- 支付类型弹框 -->
-        <PayType 
-            :show="payTypeShow" 
+        <PayType
+            :show="payTypeShow"
             :balance-sum="balance_sum"
-            @close="payTypeShow = false" 
+            @close="payTypeShow = false"
             @pay="confirmPay"></PayType>
         <!-- 支付类型弹框 //-->
 
@@ -191,7 +191,7 @@
             return {
                 tempList: [
                     [
-                        
+
                     ]
                 ],
                 contactWay:{},
@@ -405,11 +405,13 @@
                 return orderList.reduce((result, order) => {
                     if (Array.isArray(order)) {
                         const temp = {}
-                        order.forEach(goods => {
-                            // 根据店铺id对商品进行分组
-                            temp[goods.store_id] ? temp[goods.store_id].push(goods) : temp[goods.store_id] = [goods]
-                        })
-                        Object.values(temp).forEach(value => result.push(value))
+                        for (let goods of order) {
+                          // 根据店铺id对商品进行分组
+                          temp[goods.store_id] ? temp[goods.store_id].push(goods) : temp[goods.store_id] = [goods]
+                        }
+                        for (let value of Object.values(temp)) {
+                          result.push(value)
+                        }
                     } else {
                         result.push([order])
                     }

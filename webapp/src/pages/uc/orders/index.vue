@@ -185,11 +185,13 @@ export default {
       return orderList.reduce((result, order) => {
         if (Array.isArray(order)) {
           const temp = {}
-          order.forEach(goods => {
+          for (let goods of order) {
             // 根据店铺id对商品进行分组
             temp[goods.store_id] ? temp[goods.store_id].push(goods) : temp[goods.store_id] = [goods]
-          })
-          Object.values(temp).forEach(value => result.push(value))
+          }
+          for (let value of Object.values(temp)) {
+            result.push(value)
+          }
         } else {
           result.push([order])
         }

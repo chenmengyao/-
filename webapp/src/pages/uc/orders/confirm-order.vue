@@ -206,7 +206,9 @@ export default {
   computed: {
     postage() {
       return this.shopList.reduce((result, shop) => {
-        shop.forEach(goods => result += Number(goods.postage))
+        for (let goods of shop) {
+          result += Number(goods.postage)
+        }
         return result
       }, 0)
     }
