@@ -58,13 +58,14 @@ export default {
       setTimeout(() => {
         // 修复页面聚焦时底部tab高度失效问题
         let inputs = document.getElementsByTagName('input')
-        console.log(inputs, 'inputs')
-        for (let input of inputs) {
-          input.removeEventListener('blur', this.resetWebview)
-          input.addEventListener('blur', this.resetWebview)
-          input.removeEventListener('focus', this.resetWebview)
-          input.addEventListener('focus', this.resetWebview)
-        }
+        try {
+          for (let input of inputs) {
+            input.removeEventListener('blur', this.resetWebview)
+            input.addEventListener('blur', this.resetWebview)
+            input.removeEventListener('focus', this.resetWebview)
+            input.addEventListener('focus', this.resetWebview)
+          }
+        } catch (e) {}
       }, 698)
       // 切换状态
       let idx = val.meta.idx || -1
@@ -133,7 +134,6 @@ export default {
     },
     // 重置webview高度
     resetWebview() {
-      this.$toast('聚焦')
       let webview = plus.webview.currentWebview()
       webview.setStyle({
         height: '100%'
