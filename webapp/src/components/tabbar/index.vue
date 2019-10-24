@@ -56,6 +56,7 @@ export default {
     },
     $route(val) {
       setTimeout(() => {
+        alert('xx')
         // 修复页面聚焦时底部tab高度失效问题
         let inputs = document.querySelectorAll('input')
         inputs.forEach((input, idx) => {
