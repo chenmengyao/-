@@ -1,5 +1,5 @@
 <template lang="html">
-  <div>
+  <div class="suwis-wrapper">
     <div>
         <router-link :to="{path:'/mine/message/logistics'}">
           <div class="suwis-infor-list">
@@ -42,55 +42,57 @@
 export default {
   data() {
     return {
-      content: '',
+      content: ''
     }
   },
   mounted() {
-    document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5')
-    this.$axios.post('message/mymsg', {
-    }).then(res => {
+    this.$axios.post('message/mymsg', {}).then(res => {
       if (res.data && res.data.data) {
-        this.content = res.data.data
+        this.content = res.data.data || {}
       }
     })
   }
 }
 </script>
 
-<style lang="css" scoped>
-body {
-  background-color: red !important;
+<style lang="scss" scoped>
+.suwis-wrapper {
+    background-color: #f5f5f5;
+    min-height: 100vh;
 }
 .suwis-infor-tags {
-  line-height: 12px;
-  padding: 1px 4px;
-  font-size: 10px;
-  color: #fff;
-  border-radius: 6px;
-  background: #ff6468;
+    line-height: 12px;
+    padding: 3px;
+    min-width: 12px;
+    font-size: 10px;
+    color: #fff;
+    border-radius: 8px;
+    background: #ff6468;
+    display: inline-block;
+    text-align: center;
 }
 .suwis-infor-list {
-  border-bottom: 1px solid #efefef;
-  display: flex;
-  font-size: 16px;
-  color: #333;
-  background: #fff !important;
-  padding: 0 35px 0 15px;
-  line-height: 53px;
+    border-bottom: 1px solid #efefef;
+    display: flex;
+    font-size: 16px;
+    color: #333;
+    background: #fff !important;
+    padding: 0 35px 0 15px;
+    line-height: 53px;
 }
 .suwis-infor-list > div {
-  flex: 1;
-  background: #fff !important;
+    flex: 1;
+    background: #fff !important;
 }
 .suwis-infor-list > div img {
-  vertical-align: middle;
-  margin-top: -2px;
-  margin-right: 8px;
+    vertical-align: middle;
+    margin-top: -2px;
+    margin-right: 8px;
 }
 .suwis-infor-list > div:nth-child(1) {
-  text-align: left;
+    text-align: left;
 }
 .suwis-infor-list > div:nth-child(2) {
-  text-align: right;
+    text-align: right;
 }
 </style>

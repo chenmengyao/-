@@ -1,7 +1,7 @@
 <template lang="html">
-  <div>
+  <div class="suwis-wrapper">
     <div class="suwis-kefu-list" v-for="item in list">
-      <div><img :src="item.store_logo"></div>
+      <div><img :src="item.store_logo || require('@/assets/infor3.png')"></div>
       <div style="margin-left:13px;">
         <div>
           <router-link :to="{path:'/mine/message/getsm',query:{store_id:item.message.store_id}}">
@@ -34,13 +34,15 @@ export default {
   },
   mounted() {
     this.getList()
-    document.querySelector('body').setAttribute('style', 'background-color:#f5f5f5')
-
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.suwis-wrapper {
+    background-color: #f5f5f5;
+    min-height: 100%;
+}
 .suwis-kefu-list {
     display: flex;
     padding: 15px;

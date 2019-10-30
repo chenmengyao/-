@@ -87,7 +87,7 @@ export default {
     }
   },
   getters: {
-    // 是否登陆
+    // 是否登录
     logined(state) {
       return JSON.stringify(state.user) != '{}'
     },

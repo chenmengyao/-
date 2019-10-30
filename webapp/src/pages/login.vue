@@ -4,7 +4,7 @@
       <img class="avatar" src="@/assets/login/avatar@3x.png" alt="">
       <div class="tabs">
         <van-tabs v-model="loginType">
-          <van-tab title="手机验证码登陆">
+          <van-tab title="手机验证码登录">
             <van-field v-model="formData.tel" @focus="formMsg.tel=''" :error-message="formMsg.tel"  type="tel" placeholder="请输入您的11位手机号">
               <img class="field-icon" slot="left-icon"  src="@/assets/login/phone@3x.png" alt="">
             </van-field>
@@ -14,11 +14,11 @@
             </van-field>
             <van-button class="btn-submit" type="primary" @click="loginBefore">登录</van-button>
           </van-tab>
-          <van-tab title="账号登陆">
+          <van-tab title="账号登录">
             <van-field v-model="formData.nickname" @focus="formMsg.nickname=''" :error-message="formMsg.nickname" placeholder="请输入登录名">
               <img class="field-icon" slot="left-icon"  src="@/assets/login/phone@3x.png" alt="">
             </van-field>
-            <van-field v-model="formData.password" @focus="formMsg.password=''" :error-message="formMsg.password" type="password" placeholder="请输入验证码">
+            <van-field v-model="formData.password" @focus="formMsg.password=''" :error-message="formMsg.password" type="password" placeholder="请输入密码">
               <img class="field-icon" slot="left-icon"  src="@/assets/login/paypwd@3x.png" alt="">
             </van-field>
             <van-button :disabled="disabled" class="btn-submit" type="primary" @click="loginBefore">登录</van-button>
@@ -33,7 +33,7 @@
           </router-link>
           <br>
           <span class="ua">
-            登陆即代表已同意<router-link to="/user-agreement"><em>《用户服务协议》</em></router-link>
+            登录即代表已同意<router-link to="/user-agreement"><em>《用户服务协议》</em></router-link>
           </span>
         </div>
       </div>
@@ -50,7 +50,7 @@ export default {
   components: {},
   data() {
     return {
-      // 登陆方式
+      // 登录方式
       loginType: 1,
       formData: {
         tel: '',
@@ -105,9 +105,9 @@ export default {
         }
       })
     },
-    // 登陆前校验
+    // 登录前校验
     loginBefore() {
-      // 验证码登陆
+      // 验证码登录
       if (this.loginType == 0) {
         if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
           this.formMsg.tel = '请输入正确的号码'
@@ -118,7 +118,7 @@ export default {
           return
         }
       }
-      // 账号登陆
+      // 账号登录
       if (this.loginType == 1) {
         if (!this.formData.nickname) {
           this.formMsg.nickname = '请输入用户名'
@@ -131,7 +131,7 @@ export default {
       }
       this.login()
     },
-    // 登陆
+    // 登录
     async login() {
       let params = {
         ...this.formData

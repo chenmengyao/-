@@ -255,7 +255,7 @@ export const routes = [{
   component: () => import('./pages/mine/message/logistics.vue')
 }, {
   path: '/mine/message/kefu',
-  name: '消息列表',
+  name: '客服消息',
   component: () => import('./pages/mine/message/kefu.vue')
 }, {
   path: '/mine/message/getsm',

@@ -33,7 +33,7 @@ export default {
       type: actions.update
     },
     '/app/admin/login': {
-      module: '管理员登陆系统',
+      module: '管理员登录系统',
       type: actions.query
     },
     '/app/admin/logout': {

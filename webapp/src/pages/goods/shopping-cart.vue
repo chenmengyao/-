@@ -15,7 +15,7 @@
           :thumb="good.img"
         >
         <div slot="footer" style="margin-top:-30px;" @click.stop>
-          <van-stepper @plus="numChange(good,1)" @minus="numChange(good,-1)" async-change :min="1" :value="good.num" />
+          <van-stepper class="van-stepper" @plus="numChange(good,1)" @minus="numChange(good,-1)" async-change :min="1" :value="good.num" />
         </div>
       </van-card>
     </van-checkbox>
@@ -170,6 +170,11 @@ export default {
             margin: 15px 0;
             .icon {
                 max-width: 20px;
+                height: 20px;
+                min-width: 20px;
+                object-fit: fill;
+                border-radius: 100%;
+                overflow: hidden;
                 display: block;
                 margin-right: 5px;
             }
@@ -191,6 +196,20 @@ export default {
                     height: 90px;
                     object-fit: cover;
                 }
+            }
+        }
+
+        .van-stepper {
+            position: relative;
+
+            &:before {
+                width: 36vw;
+                height: 36vw;
+                position: absolute;
+                content: '';
+                display: block;
+                right: -5vw;
+                top: -6vw;
             }
         }
     }
