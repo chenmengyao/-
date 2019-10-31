@@ -526,17 +526,18 @@
                 &.row-button {
                     justify-content: space-around;
                     margin-top: 16px;
-                    padding-top: 10px;
+                    padding-top: 13px;
                     border-top: 1px solid #f5f5f5;
                 }
                 .button-item {
                     display: flex;
                     align-content: center;
                     cursor: pointer;
+                    font-size: 14px;
                 }
                 .image-button {
-                    width: 16px;
-                    height: 16px;
+                    width: 20px;
+                    height: 20px;
                     margin-right: 8px;
                 }
                 a{

@@ -34,7 +34,7 @@
 | /uc/orders                   | 我的订单                |
 | /uc/orders/apply             | 订单-申请退款/退换货         |
 | /uc/orders/comment           | 订单-评价               |
-| /uc/orders/confirm-order     | 订单-提交订单             |
+| /uc/orders/confirm-order     | 确认订单             |
 | /uc/orders/score-discount    | 订单-积分折扣             |
 | /uc/orders/details           | 订单-订单详情             |
 | /uc/orders/logistics-details | 订单-物流详情             |

@@ -24,7 +24,7 @@
     <template v-if="details.type!=2">
       <van-row class="price" v-if="details.type!=4">
         <van-col>
-          <em class="gray">¥{{details.price_max}}</em><em>¥{{details.price_min}}</em>
+          <em class="gray" v-if="details.type==1">¥{{details.price_max}}</em><em>¥{{details.price_min}}</em> <img v-if="details.type==1" class="qg" src="@/assets/details/qg.png" alt=""></span>
         </van-col>
         <van-col>
           <span v-if="details.type==2">
@@ -142,12 +142,25 @@
         <div class="van-sku__goods-price">
           <span class="van-sku__price-symbol">￥</span><span class="van-sku__price-num">{{ props.price }}</span>
         </div>
+        <div class="van-sku__stock">
+          <span class="van-sku__price-symbol">库存{{props.selectedSkuComb&&props.selectedSkuComb.count ?props.selectedSkuComb.count: details.inventory }}{{details.unit}}</span>
+        </div>
+        <div class="van-sku__goods-name1 van-sku__goods-name van-ellipsis" v-if="props.selectedSkuComb&&props.selectedSkuComb.name">
+           已选择 {{ props.selectedSkuComb.name }}
+        </div>
       </template>
       <!-- 数量 -->
-      <template slot="sku-stepper" v-if="details.type==2" slot-scope="props">
-        <van-row type="flex" justify="space-between" align="center">
+      <!-- <template slot="sku-stepper" v-if="details.type==2" slot-scope="props">
+        <van-row type="flex" align="center">
           <van-col>数量：</van-col>
           <van-col><van-stepper v-model="current.selectedNum" disabled /></van-col>
+        </van-row>
+      </template> -->
+      <!-- 数量 -->
+      <template slot="sku-stepper" v-if="details.type==2" slot-scope="props">
+        <van-row type="flex" align="center">
+          <van-col>数量</van-col>
+          <van-col><van-stepper v-model="current.selectedNum"  /></van-col>
         </van-row>
       </template>
       <!--  -->
@@ -389,8 +402,9 @@ export default {
       }
       // 设置价格
       this.sku.price = this.details.price_min
-      this.sku.stock_num = this.details.inventory
-      this.skugoods.title = this.details.title
+      this.sku.stock_num = this.details.inventory;
+      this.skugoods = this.details
+      this.skugoods.title = ''
       this.skugoods.picture = this.details.img
     }
   },
@@ -475,9 +489,16 @@ export default {
     },
     // 购买前
     async skuConfirm(evt) {
+      
       this[this.actionType](evt)
       // 设置当前型号
       this.current = evt
+    },
+    // 购买前
+    async onAddCartClicked(evt) {
+      
+      console.log(evt);
+      
     },
     // 购买
     async buy(evt) {
@@ -529,6 +550,16 @@ export default {
 </script>
 <style lang="scss">
 .suwis-good-details {
+    .van-sku-header__goods-info {
+      padding-top: 0;
+      .van-sku__goods-name1 {
+        font-size: 14px;
+        margin-top: 5px;
+      }
+      .van-sku__goods-price {
+        margin-top: 2px;
+      }
+    }
     .good-tabs {
         .van-tabs__line {
             display: none;
@@ -557,6 +588,7 @@ export default {
     padding-bottom: calc(50px + 86px);
     padding-top: 50px;
     font-size: 12px;
+    
     .nav {
         height: 50px;
         align-items: center;
@@ -670,6 +702,14 @@ export default {
         display: inline-block;
         margin-right: 5px;
         margin-top: -2px;
+    }
+    .qg {
+        max-width: 24px;
+        vertical-align: middle;
+        display: inline-block;
+        /* margin-right: 1px; */
+        margin-left: 5px;
+        margin-top: -12px;
     }
     .interval {
         border-top: 6px solid $border;

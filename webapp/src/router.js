@@ -175,7 +175,7 @@ export const routes = [{
   component: () => import('./pages/uc/orders/comment.vue')
 }, {
   path: '/uc/orders/confirm-order',
-  name: '订单-提交订单',
+  name: '确认订单',
   component: () => import('./pages/uc/orders/confirm-order.vue')
 }, {
   path: '/uc/orders/score-discount',
