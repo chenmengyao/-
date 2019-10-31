@@ -3,7 +3,8 @@
     <van-row class="info">
       <van-col span="16">
         <slot name="avatar">
-          <img class="avatar" :src="avatar" alt="">
+          <img class="avatar" :src="avatar" alt=""  v-if="avatar">
+          <img class="avatar" v-else src='@/assets/login/avatar@3x.png' alt="">
         </slot>
         <span>
           <slot name="name">{{name}}</slot><br>
@@ -74,7 +75,9 @@ export default {
     }
     .avatar {
         width: 30px;
+        height: 30px;
         border-radius: 30px;
+        overflow: hidden;
         display: block;
         margin: 3px 8px auto 0;
     }

@@ -1,7 +1,7 @@
 <template lang="html">
   <div ref="good" class="suwis-good-details">
     <van-row justify="center" align="center" class="nav">
-      <van-col v-for="nav in navlist" span="8" :class="{active:nav.selected}" v-scroll-to="`#${nav.key}`">{{nav.name}}</van-col>
+      <van-col v-for="nav in navlist" span="8" :key="nav.key" @click.native="changeClor(nav.key)" :class="{active:nav.key===faly}" v-scroll-to="`#${nav.key}`">{{nav.name}}</van-col>
     </van-row>
     <!--  -->
     <van-swipe :id="navlist[0].key" class="banner" ref="banner" :autoplay="3000" indicator-color="#E83F44">
@@ -272,6 +272,7 @@ export default {
         selected: false
       }],
       timer: {},
+      faly:'good',
       lockscroll: false,
       // 打开规格方式
       actionType: '',
@@ -452,6 +453,10 @@ export default {
         Toast(res.data.msg)
       }
       this.couponsVisible = false
+    },
+    // 切换导航
+    changeClor(type){
+      this.faly=type;
     },
     // 显示商品规格
     showSku(type) {

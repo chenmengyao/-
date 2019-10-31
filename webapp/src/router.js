@@ -171,7 +171,7 @@ export const routes = [{
   component: () => import('./pages/uc/orders/apply-refund.vue')
 }, {
   path: '/uc/orders/comment',
-  name: '订单-评价',
+  name: '发表评价',
   component: () => import('./pages/uc/orders/comment.vue')
 }, {
   path: '/uc/orders/confirm-order',
