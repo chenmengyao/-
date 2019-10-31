@@ -4,14 +4,15 @@ const vfilter = {
     if (time == '' || time == null) {
       return ''
     } else {
-      return moment(time*1000).format('YYYY-MM-DD hh:mm')
+      console.log(time*1000,moment(1572506902000).format('YYYY-MM-DD HH:mm'))
+      return moment(time*1000).format('YYYY-MM-DD HH:mm')
     }
   },
   dateFmt1: (time) => {
     if (time == '' || time == null) {
       return ''
     } else {
-      return moment(time*1000).format('YYYY-MM-DD hh:mm:ss')
+      return moment(time*1000).format('YYYY-MM-DD HH:mm:ss')
     }
   },
   dateFmt2: (time) => {

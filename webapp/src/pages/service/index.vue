@@ -146,7 +146,7 @@
                 value="110000"
                 :area-list="areaList"
                 @change="onChange"
-                @confirm="show = false"
+                @confirm="onConfirm"
                 @cancel="show = false"
               />
             </van-popup>
@@ -278,11 +278,11 @@ export default {
       this.isArea = false
     },
     //确认选择的地址
-    confirmArea() {
-      console.log(this.areaValue, 'areaValue')
-    },
+    // confirmArea() {
+    //   console.log(this.areaValue, 'areaValue')
+    // },
     onChange(picker, value, index) {
-
+      console.log(this.active,555)
       let areaName = ''
       for (var i = 1; i < value.length; i++) {
         areaName = areaName + value[i].name + ' '
@@ -301,6 +301,15 @@ export default {
       this.getLat(areaName).then(data => {
         this.lng = data.split(',')[1];
         this.lat = data.split(',')[0];
+      })
+    },
+    onConfirm(picker, value, index){
+      this.carmodelBus=picker[1].name+picker[2].name;
+      this.show=false;
+       this.valueList = picker
+      this.getLat(this.carmodelBus).then(data => {
+        this.lngBus = data.split(',')[1];
+        this.latBus = data.split(',')[0];
       })
     },
     goSearch() {

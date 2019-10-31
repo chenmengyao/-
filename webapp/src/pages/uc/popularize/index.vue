@@ -30,12 +30,12 @@
                                             <span class="name">{{item.nickname}}</span>
                                             <img src="@/assets/myvip.png" class="vip">
                                         </div>
-                                        <div class="info">{{item.city || '---'}} / {{item.tel}}</div>
+                                        <div class="info">{{item.province||''}}{{item.city || '---'}} / {{item.tel}}</div>
                                         <div class="date">{{item.time | dateFmt}}</div>
                                     </div>
                                     <div class="right" :style="{'justify-content': tabStatus === 'new' ? 'center' : 'flex-end'}">
-                                        <!-- <button v-if="tabStatus === 'new'" class="button" @click="grant(item.id)">发放额度</button>
-                                        <span v-else-if="tabStatus === 'all'" class="sum">{{item.sum || 0}}</span> -->
+                                        <button v-if="tabStatus === 'new'" class="button" @click="grant(item.id)">发放额度</button>
+                                        <span v-else-if="tabStatus === 'all'" class="sum">{{item.sum || 0}}</span>
                                     </div>
                                 </div>
                             </template>
@@ -107,7 +107,7 @@
                 numSort: 'up',
                 sortActive: 'time',
                 status: 'list',
-                tabStatus: 'new',
+                tabStatus: 'all',
                 tabList: [
                     // {
                     //     key: 'new',
