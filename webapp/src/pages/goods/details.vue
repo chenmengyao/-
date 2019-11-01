@@ -50,7 +50,7 @@
     <van-cell class="interval" title="型号" is-link :value="current.selectedSkuComb.name" @click="showSku('hideSku')"/>
     <van-cell class="interval" title="店铺地址" :value="details.store&&details.store.site" />
     <van-cell title="运费"  :value="details.postage==0?'免邮':details.postage+'元'" />
-    <van-cell>
+    <van-cell v-if="details.is7=='true'">
       <span slot="title"><img class="security" src="@/assets/details/security@3x.png" alt="">该商品支持7天无理由退款</span>
     </van-cell>
     <!-- 评论 -->

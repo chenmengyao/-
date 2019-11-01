@@ -162,6 +162,7 @@
             // 商品总价
             goodsSum() {
                 const { orderData } = this
+                console.log(orderData,'orderData')
                 if (Array.isArray(orderData)) {
                     return this.orderData.reduce((result, goods) => result + goods.num * goods.goods_price, 0)
                 } else {

@@ -425,9 +425,11 @@ export default {
       })
     }
   },
+
   activated() {
     this.activeTabIndex = this.$route.query.activeTabIndex || 0
-    this.sta = this.tabList[this.activeTabIndex].sta
+    this.sta = this.tabList[this.activeTabIndex].sta;
+    this.getList();
   }
 }
 </script>
