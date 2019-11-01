@@ -489,16 +489,13 @@ export default {
     },
     // 购买前
     async skuConfirm(evt) {
-      
+      if (!evt.selectedSkuComb||!evt.selectedSkuComb.id) {
+        Toast('请先选择商品规格！')
+        return
+      }
       this[this.actionType](evt)
       // 设置当前型号
       this.current = evt
-    },
-    // 购买前
-    async onAddCartClicked(evt) {
-      
-      console.log(evt);
-      
     },
     // 购买
     async buy(evt) {
