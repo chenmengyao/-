@@ -208,7 +208,6 @@ export default {
       })
     },
     onClickStore(store) {
-      alert(JSON.stringify(store))
       this.$router.push({
         path: '/shop',
         query: {

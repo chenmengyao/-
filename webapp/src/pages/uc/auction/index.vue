@@ -71,6 +71,7 @@
       @click.stop>
       <van-field v-model="keyboardText"
         input-align="center"
+        :placeholder="`当前出价${currentOrderStandData.price_max||0}元起`"
         readonly />
     </div>
     <van-number-keyboard :show="true"
@@ -116,6 +117,7 @@ export default {
       currentOrderId: '',
       currentOrderNumber: '',
       currentOrderStandId: '',
+      currentOrderStandData: {},
       error: false,
       finished: false,
       loading: false,
@@ -164,8 +166,9 @@ export default {
       }
     },
     // 显示出价键盘
-    bidOrder(stand_id) {
+    bidOrder(stand_id,data) {
       this.keyboardShow = true
+      this.currentOrderStandData = data
       this.currentOrderStandId = stand_id
     },
     closeNumberKeyword() {
@@ -305,7 +308,7 @@ export default {
     onButtonClick(key, orderId, orderNumer, orderData) {
       switch (key) {
         case 'bid':
-          this.bidOrder(orderData.stand_id)
+          this.bidOrder(orderData.stand_id,orderData)
           break
         case 'delete':
           this.deleteOrder(orderId)

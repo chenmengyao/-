@@ -487,7 +487,7 @@ export default {
     hideSku(evt) {
       this.skuVisible = false
     },
-    // 购买前
+    // 
     async skuConfirm(evt) {
       if (!evt.selectedSkuComb||!evt.selectedSkuComb.id) {
         Toast('请先选择商品规格！')

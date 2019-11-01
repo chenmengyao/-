@@ -94,7 +94,7 @@
     :close-on-click-overlay="false"
     @cancel="keyboardShow = false">
     <div class="keyboard-text" @click.stop>
-      <van-field v-model="keyboardText" input-align="center" :placeholder="`当前出价${details.price_max+current.selectedSkuComb.lowest_price||0}元起`" readonly />
+      <van-field v-model="keyboardText" input-align="center" :placeholder="`当前出价${sumPrice(details.price_max,current.selectedSkuComb.lowest_price)}元起`" readonly />
     </div>
     <van-number-keyboard
       :show="true"
@@ -170,6 +170,7 @@ export default {
     }
   },
   watch: {
+    
     keyboardArray(val) {
       this.keyboardText = val.join('')
     },
@@ -235,6 +236,19 @@ export default {
     window.clearInterval(this.timer)
   },
   methods: {
+    sumPrice(price_max,lowest_price) {
+      if (!price_max&&!lowest_price) {
+        return 0
+      }
+      if (!price_max) {
+        return lowest_price
+      }
+      if (!lowest_price) {
+        return price_max
+      }
+      var maxNum = 10000000000;
+      return Math.abs((price_max*maxNum+lowest_price*maxNum)/maxNum)
+    },
     async getAdresList() {
       let res = await this.$axios.post('/user/alladdress')
       let list = res.data.data || []

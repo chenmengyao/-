@@ -21,7 +21,7 @@
           </div>
           <div class="suwis-news-left">
             <router-link tag="div" :to="{path: '/goods/details', query: {id: item.id,type:'auction'}}">
-              <div>{{item.title}}</div>
+              <div class="listTitle">{{item.title}}</div>
               <div class='suwis-news-tips'>
                 <div><span class="suwis-current-price">当前价 : </span><span class="suwis-current-pri">￥{{item.price_max}}</span></div>
                 <div>
@@ -266,6 +266,15 @@ export default {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
+}
+.suwis-news-left .listTitle {
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .suwis-news-date {

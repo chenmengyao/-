@@ -1,15 +1,15 @@
 <template lang="html">
-  <div>
+  <div id="service">
     <el-amap vid="amap" :plugin="plugin" class="amap-demo" :center="center">
       </el-amap>
       <van-tabs v-model="active" title-active-color="#E83F44">
-  <van-tab title="VIP服务">
+    <van-tab title="VIP服务">
     
      <div class="suwis-service-search">
       <!-- 便民服务搜索 -->
       <div >
          <van-cell-group>
-            <div style="color:#333;font-size:14px;" @click="show = true">城市:{{carmodelBus||'省市区'}}
+            <div style="color:#333;font-size:14px;" @click="show = true">城市:{{carmodel||'省市区'}}
               <img src="../../assets/address.png" style="width:12px;">
             </div>
         </van-cell-group>
@@ -37,7 +37,7 @@
   finished-text="没有更多了"
   error-text="请求失败，点击重新加载"
   :error.sync="error"
-  @load="businessList"
+  @load="loadList"
 >
       <div class="suwis-con" v-for="(item,index) in busList">
        <div class="suwis-con-left">
@@ -100,13 +100,13 @@
     <div>
       <div style="padding-bottom:60px;">
        <van-list
-  v-model="loading"
-  :finished="finished"
-  finished-text="没有更多了"
-  error-text="请求失败，点击重新加载"
-  :error.sync="error"
-  @load="loadList"
->
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      error-text="请求失败，点击重新加载"
+      :error.sync="error"
+      @load="loadList"
+    >
       <div class="suwis-con" v-for="(item,index) in convenient">
        <div class="suwis-con-left">
           <img :src="item.img" width="100%" height="100%" style="object-fit:cover;">
@@ -179,8 +179,8 @@ export default {
       center: [121.59996, 31.197646],
       lng: '',
       lat: '',
-      latBus: '',
-      lngBus: '',
+      lat: '',
+      lng: '',
       loaded: false,
       plugin: [{
         pName: 'Geolocation',
@@ -191,7 +191,7 @@ export default {
               console.log(result)
               if (result && result.position) {
                 self.carmodel = result.addressComponent.city + '' + result.addressComponent.district
-                self.carmodelBus = result.addressComponent.city + '' + result.addressComponent.district
+                self.carmodel = result.addressComponent.city + '' + result.addressComponent.district
                 self.valueList = [{
                   name: result.addressComponent.province
                 }, {
@@ -199,7 +199,7 @@ export default {
                 }, {
                   name: result.addressComponent.district
                 }]
-                self.valueListBus = [{
+                self.valueList = [{
                   name: result.addressComponent.province
                 }, {
                   name: result.addressComponent.city
@@ -208,15 +208,15 @@ export default {
                 }]
                 self.lng = result.position.lng;
                 self.lat = result.position.lat;
-                self.latBus = result.position.lat;
-                self.lngBus = result.position.lng;
+                self.lat = result.position.lat;
+                self.lng = result.position.lng;
               } else {
                 self.carmodel = '武汉市' + '' + '江夏区'
-                self.carmodelBus = '武汉市' + '' + '江夏区'
+                self.carmodel = '武汉市' + '' + '江夏区'
                 self.lng = '30.60';
                 self.lat = '114.30';
-                self.lngBus = '30.60';
-                self.latBus = '114.30';
+                self.lng = '30.60';
+                self.lat = '114.30';
               }
             });
           }
@@ -228,7 +228,7 @@ export default {
       isArea: true,
       areaValue: '',
       carmodel: '',
-      carmodelBus: '',
+      carmodel: '',
       show: false,
       cagetory: [],
       Buscagetory: [],
@@ -239,7 +239,6 @@ export default {
       keyword: '',
       keywordBus: '',
       valueList: [],
-      valueListBus: []
     }
   },
   watch: {
@@ -247,7 +246,7 @@ export default {
       this.finished = false
 
     },
-    latBus(val) {
+    lat(val) {
       this.finishedBus = false
     }
   },
@@ -287,15 +286,13 @@ export default {
       for (var i = 1; i < value.length; i++) {
         areaName = areaName + value[i].name + ' '
       }
-      if (this.active == 0) {
-        this.valueListBus = value
-        this.carmodelBus = areaName
-        this.getLat(areaName).then(data => {
-          this.lngBus = data.split(',')[1];
-          this.latBus = data.split(',')[0];
-        })
-        return
-      }
+      
+      this.valueList = value
+      this.carmodel = areaName
+      this.getLat(areaName).then(data => {
+        this.lng = data.split(',')[1];
+        this.lat = data.split(',')[0];
+      })
       this.valueList = value
       this.carmodel = areaName
       this.getLat(areaName).then(data => {
@@ -304,21 +301,16 @@ export default {
       })
     },
     onConfirm(picker, value, index){
-      this.carmodelBus=picker[1].name+picker[2].name;
+      this.carmodel=picker[1].name+picker[2].name;
       this.show=false;
-       this.valueList = picker
-      this.getLat(this.carmodelBus).then(data => {
-        this.lngBus = data.split(',')[1];
-        this.latBus = data.split(',')[0];
+      this.valueList = picker
+      this.getLat(this.carmodel).then(data => {
+        this.lng = data.split(',')[1];
+        this.lat = data.split(',')[0];
       })
     },
     goSearch() {
-      if (this.active == 0) {
-        this.businessList()
-      } else {
         this.loadList()
-      }
-
     },
     loadList() {
       let pro = '湖北省'
@@ -354,15 +346,16 @@ export default {
       }).catch(() => {
         this.error = true
       })
+      this.businessList()
     },
     businessList() {
       let pro = '湖北省'
       let city = '武汉市'
       let town = '江夏区'
-      if (this.valueListBus.length) {
-        pro = this.valueListBus[0].name
-        city = this.valueListBus[1].name
-        town = this.valueListBus[2].name
+      if (this.valueList.length) {
+        pro = this.valueList[0].name
+        city = this.valueList[1].name
+        town = this.valueList[2].name
       }
       this.$axios.post('/goods/businessPartner', {
         category: this.switchTabIdBus,
@@ -372,8 +365,8 @@ export default {
         city: city,
         area: town,
         num: 10,
-        pointx: this.latBus,
-        pointy: this.lngBus
+        pointx: this.lat,
+        pointy: this.lng
       }).then(res => {
         if (res.data.code == 1) {
           if (this.switchTabIdBus == null) {
@@ -427,7 +420,6 @@ export default {
   line-height: 40px;
   height: 40px;
   padding: 0 15px;
-  margin-bottom: 10px;
   border-bottom: 1px solid #efefef;
 }
 .van-hairline--top-bottom::after {
@@ -488,17 +480,24 @@ export default {
   padding-left: 15px;
 }
 .suwis-service-btn {
-  list-style: none;
-}
-.suwis-service-btn {
   padding: 0 0 15px 15px;
 }
+.suwis-service-btn {
+  list-style: none;
+  overflow: auto;
+  padding-top: 10px;
+}
+.suwis-service-btn ul {
+  display: flex;
+}
+
 .suwis-service-btn ul li {
   float: left;
   margin-top: 5px;
   padding: 0 9px;
   line-height: 26px;
   font-size: 16px;
+  white-space: nowrap;
 }
 .d-btn-active {
   background-image: linear-gradient(to right, #f06b25, #faa537);
@@ -507,3 +506,12 @@ export default {
   -webkit-border-radius: 13px;
 }
 </style>
+
+<style lang="scss">
+#service {
+  .van-cell-group , .d-keyword{
+    background-color: rgba(0,0,0,0);
+  }
+}
+</style>
+
