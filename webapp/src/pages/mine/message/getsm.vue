@@ -104,6 +104,8 @@
 </template>
 
 <script>
+import male from '@/assets/uc/male.png'
+import store_logo from '@/assets/infor3.png'
 import Vue from 'vue'
 import {
   Toast
@@ -185,8 +187,8 @@ export default {
         this.$axios.post('message/getsm', {
           store_id: this.$route.query.store_id
         }).then(res => {
-          this.store_logo = res.data.data.store_logo
-          this.user_photo = res.data.data.user_photo
+          this.store_logo = res.data.data.store_logo || store_logo
+          this.user_photo = res.data.data.user_photo || male
           var list = JSON.parse(sessionStorage.getItem("message"))
           var listArr = list.map(function(user) {
             return user.uuid;

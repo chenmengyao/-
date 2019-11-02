@@ -17,7 +17,7 @@
                 clearable
                 label="本次使用："
                 placeholder="请输入本次使用的积分数" />
-            <div class="bottom-tip">*积分兑换公式：100积分=1元</div>
+            <div class="bottom-tip">*积分兑换公式：{{scoreRoule.score_use}}积分=1元</div>
         </van-cell-group>
 
         <div class="button-line">
@@ -32,6 +32,7 @@
             return {
                 query: {},
                 score: '',
+                scoreRoule: {score_get:0,score_use:0},
                 score_need: 0,  // 该订单最大可用积分
                 score_balance: ''   // 积分余额
             }
@@ -57,6 +58,16 @@
             }
         },
         created() {
+            
+            this.$axios
+                .post('/mine/score_rule')
+                .then(({ data }) => {
+                    if (data.code === 1&&data.data) {
+                        this.scoreRoule = data.data;
+                    } else {
+                        this.$toast(data.msg);
+                    }
+                })
             Object.assign(this.query, this.$route.query)
             this.score_need = this.query.score_need
             this.$axios

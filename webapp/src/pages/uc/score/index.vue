@@ -36,8 +36,8 @@
 
         <van-popup v-model="ruleShow" :close-on-click-overlay="false">
             <div class="title">积分规则</div>
-            <p class="para">① 每消费满100元（实际付款）可以获得1积分；</p>
-            <p class="para">② 购物时，100积分可以抵扣现金1元；</p>
+            <p class="para">① 每消费满{{scoreRoule.score_get}}元（实际付款）可以获得1积分；</p>
+            <p class="para">② 购物时，{{scoreRoule.score_use}}积分可以抵扣现金1元；</p>
             <p class="para">③ 从注册日起，每满一年积分自动清零。</p>
             <div class="close" @click="ruleShow = false">×</div>
         </van-popup>
@@ -64,7 +64,8 @@
                 score_balance: 0,
                 score_lastday: 0,
                 score_log: [],
-                score_sum: 0
+                score_sum: 0,
+                scoreRoule: {score_get:0,score_use:0}
             }
         },
         methods: {
@@ -91,8 +92,8 @@
             this.$axios
                 .post('/mine/score_rule')
                 .then(({ data }) => {
-                    if (data.code === 1) {
-                        console.log(data)
+                    if (data.code === 1&&data.data) {
+                        this.scoreRoule = data.data;
                     } else {
                         this.$toast(data.msg);
                     }

@@ -221,7 +221,7 @@
       <van-goods-action-mini-btn
         icon="chat-o"
         text="客服"
-        @click.native="$router.push({path: '/mine/message/getsm', query: {store_id: $route.query.id}})"
+        @click.native="$router.push({path: '/mine/message/getsm', query: {store_id: details.store.id}})"
       />
        <van-goods-action-mini-btn
         v-if="carNum>0"

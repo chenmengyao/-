@@ -87,7 +87,21 @@
     @close="scanShow=false"
     @success="scanSuccess"></bar-code>
   <!-- 扫码 //-->
+  <van-dialog
+  v-model="isShow"
+  show-cancel-button
+  title="成为VIP"
+  @confirm="successSubmit"
+  :beforeClose="beforeClose"
+  >
+  <van-field
+      class="ldfield"
+      v-model="buildingNum"
+      placeholder="请输入您的楼栋号"
+  />
+  </van-dialog>
 </div>
+
 </template>
 
 <script>
@@ -100,10 +114,13 @@ export default {
       // 已查列表的id
       goodsIds: [],
       // 滚动结束
+      isShow: false,
       finished: false,
       loading: false,
       news: [],
-      scanShow: false
+      scanShow: false,
+      codeUrl: '',
+      buildingNum: '',
     }
   },
   components: {},
@@ -113,7 +130,7 @@ export default {
     this.getNews()
     this.onPlusReady(() => {
       this.resetNav()
-    })
+    });
   },
   watch: {
     $route(val, oldVal) {
@@ -197,9 +214,47 @@ export default {
       this.news = res.data || []
     },
     // 处理扫描结果
-    scanSuccess(evt) {
-      this.$toast(evt)
-    }
+    scanSuccess(codeUrl) {
+      this.scanShow = false;
+      if (!codeUrl||codeUrl.indexOf('index/user/addmember')===-1) {
+          this.$toast('请扫描正确团长二维码！');
+          return
+      }
+      this.codeUrl = codeUrl;
+      this.isShow = true;
+    },
+    beforeClose(action, done) {
+        if(action === 'cancel') {
+            done() //关闭
+        }
+      if(action === 'confirm'&&!this.buildingNum) {
+         this.$toast('请输入楼栋号')
+         done(false) //不关闭弹框
+      }
+    },
+    successSubmit() {
+        if (!this.buildingNum) {
+            return
+        }
+        let token = app.$vm.$store.getters['core/token'];
+        let url = `${this.codeUrl}/token/${token}/region_detail/${this.buildingNum}`;
+        this.$axios
+            .post(url, {
+            region_id: url
+            })
+            .then(({
+            data
+            }) => {
+            if (data.code === 1) {
+                this.isShow = false;
+                this.$toast('绑定成功')
+                
+            } else {
+                this.isShow = false;
+                this.$toast(data.msg);
+            }
+        })
+    },
   }
 }
 </script>
