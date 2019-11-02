@@ -101,7 +101,7 @@ export const routes = [{
   component: () => import('./pages/uc/auction/index.vue')
 }, {
   path: '/special/clearance',
-  name: '低价清仓',
+  name: '底价清仓',
   component: () => import('./pages/special/clearance-sale.vue')
 }, {
   path: '/special/flash',

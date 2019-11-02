@@ -18,7 +18,7 @@
 | /shop                        | 店铺                  |
 | /service                     | 便民服务                |
 | /special/auction             | 竞拍捡漏                |
-| /special/clearance           | 低价清仓                |
+| /special/clearance           | 底价清仓                |
 | /special/flash               | 限时抢购                |
 | /special/recommend           | 好物推荐                |
 | /uc                          | 个人中心                |
