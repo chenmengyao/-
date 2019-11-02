@@ -187,7 +187,9 @@ import CouponItem from '@//components/coupon-item'
 import payTypeMap from '@/constants/order/payType'
 
 import md5 from 'md5'
-
+import {
+  Toast
+} from 'vant'
 export default {
   components: {
     CouponList,
@@ -296,8 +298,12 @@ export default {
             this.discount = data.data.use_vipdiscount
             this.couponList = data.data.coupon
             this.score_need = data.data.score_need || 0
-            this.user_type = data.data.user_type
-            this.address = data.data.address.find(item => this.address_id ? item.id === +this.address_id : item.sta === 1)
+            this.user_type = data.data.user_type;
+            if(this.address_id){
+              this.address = data.data.address.find(item => this.address_id ? item.id === +this.address_id : item.sta === 1);
+            }else{
+              this.address= data.data.address[0];
+            };
             if (!this.address_id) {
               this.address_id = this.address.id
             }
@@ -433,6 +439,10 @@ export default {
     async toPay() {
       this.payTypeShow = true
       let url, params;
+      if(!this.address_id){
+        Toast('请填写地址！');
+        return
+      }
       if (this.orderFrom === 'single') {
         url = '/goods/topay'
         params = {
@@ -454,7 +464,8 @@ export default {
           address_id: this.address_id,
           express_remark: this.express_remark || ''
         }
-      }
+      };
+      
       let res = await this.$axios.post(url, params)
       // 记录订单号
       this.orderId = res.data.data

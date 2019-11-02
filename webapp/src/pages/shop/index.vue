@@ -133,6 +133,7 @@ export default {
 
             img {
                 max-width: 44px;
+                height: 44px;
                 border-radius: 4px;
                 display: block;
             }

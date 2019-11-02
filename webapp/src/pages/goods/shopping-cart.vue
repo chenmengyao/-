@@ -10,7 +10,7 @@
         <van-card
           @click.native.stop="$router.push({path:'/goods/details', query:{id:good.goods_id}})"
           :price="good.price"
-          :desc="good.header_one + ' ' + good.header_two"
+          :desc="(good.header_one||'') + ' ' + (good.header_two||'')"
           :title="good.title"
           :thumb="good.img"
         >

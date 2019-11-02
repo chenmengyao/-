@@ -3,7 +3,7 @@
     <div class="d-bg"></div>
     <div class="suwis-com-echarts">
         <div>
-            <div style="text-align:left;font-size:12px;margin:20px 0 5px 20px"><img src="../../assets/pri.png" style="width:13px; vertical-align: middle;margin-top:-2px;margin-right:8px">当前佣金</div>
+            <div style="text-align:left;font-size:12px;margin:20px 0 5px 20px"><img src="../../assets/pri.png" style="width:13px; vertical-align: middle;margin-top:-2px;margin-right:8px">当前佣金（元）</div>
             <div>
                 <div style="float:left;margin-left:23px;line-height:62px;color:#E83F44;font-size:24px;">{{sum}}</div>
                  <div style="float:right;margin-right:23px;">
@@ -24,15 +24,15 @@
             <div style="font-size:14px;">
                 <div style="float:left;">
                     <div style="float:left">
-                        <img :src="photo" style="width:20px;height:20px;margin-top:-2px;border-radius:50%">
+                        <img :src="photo|| require('@/assets/login/avatar@3x.png')" style="width:20px;height:20px;margin-top:-2px;border-radius:50%">
                     </div>
                     <div style="float:left;text-align:left;margin-left:6px;">
                         <div>
                             {{item.user_nickname}}
-                            <img v-if="userType==1" src="../../assets/myvip.png" style="width:18px; vertical-align: middle;margin:0 5px;margin-top:-2px;">
+                            <!-- <img v-if="userType==1" src="../../assets/myvip.png" style="width:18px; vertical-align: middle;margin:0 5px;margin-top:-2px;">
                             <span v-if="userType==1" style="font-size:12px;font-weight:bold;color:#E3B156">VIP</span>
                             <span  v-if="userType==0" style="color:#E3B156">普通用户</span>
-                            <span  v-if="userType==2" style="color:#E3B156">团长</span>
+                            <span  v-if="userType==2" style="color:#E3B156">团长</span> -->
                         </div>
                         <div style="padding-top:8px;font-size:12px">{{item.time|dateFmt}}</div>
                     </div>
@@ -119,7 +119,7 @@ export default {
         yAxis: [{//y轴的相关设置
           type: 'value',//y轴数据类型为连续的数据
           min: 0,//y轴上的刻度最小值
-          max: 10000,//y轴上的刻度最大值
+          // max: 10000,//y轴上的刻度最大值
           splitNumber: 6,//y轴上的刻度段数
           splitLine: {//y轴上的y轴线条相关设置
             show: false,
