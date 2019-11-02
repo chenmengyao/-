@@ -1,6 +1,6 @@
 <template lang="html">
-  <div class="suwis-coupon-item" :class="{invalid:type!=1||item.get_sta==1}" @click="click">
-    <dl class="bg" :class="{invalid:type!=1||item.get_sta==1}">
+  <div class="suwis-coupon-item" :class="{invalid:type!=1||(item&&item.get_sta&&item.get_sta==1)}" @click="click">
+    <dl class="bg" :class="{invalid:type!=1||(item&&item.get_sta&&item.get_sta==1)}">
       <dt>
         <img class="money" src="@/assets/coupons/money@3x.png" alt="">
         <div>

@@ -136,12 +136,27 @@ export default {
         Toast('请选择结算商品')
         return
       }
-      this.$router.push({
-        path: '/uc/orders/confirm-order',
-        query: {
-          car_id: this.selecteds.join(',')
+      let url, params
+      url = '/car/makesureorder'
+      params = {
+        car_id: this.selecteds.join(','),
+        is_vip:  1,
+      }
+      this.$axios.post(url, params).then(({
+        data
+      }) => {
+        if (data.code === 1) {
+          this.$router.push({
+            path: '/uc/orders/confirm-order',
+            query: {
+              car_id: this.selecteds.join(',')
+            }
+          })
+        } else {
+          this.$toast(data.msg);
         }
       })
+      
     }
   }
 }

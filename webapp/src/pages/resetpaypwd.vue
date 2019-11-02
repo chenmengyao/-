@@ -61,7 +61,8 @@ export default {
 			}
 			this.countDownText = 60
 			this.$axios.post('login/getcode', {
-				tel: this.formData.tel
+				tel: this.formData.tel,
+				type: 2
 			}).then(res => {
 				if (res.data.code == 1) {
 					Toast('验证码已发送，请注意查收')

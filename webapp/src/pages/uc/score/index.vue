@@ -49,7 +49,7 @@
 
     export default {
         filters: {
-            date: v => moment(v).format('YYYY-MM-DD hh:mm:ss'),
+            date: v => moment(v*1000).format('YYYY-MM-DD HH:mm:ss'),
             score: v => {
                 const symbol = v.sta === 1 ? '+' : '-'
                 return symbol + v.score
