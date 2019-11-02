@@ -6,15 +6,20 @@
       <dt>
         <span>定金</span>
         <span>
-          ￥<em>{{(current.selectedSkuComb.price*0.001).toFixed(2)}}</em>
+          ￥<em>{{(details.price_max*0.1).toFixed(2)}}</em>
         </span>
       </dt>
       <dd>
         <img src="@/assets/details/hnit@2x.png" alt="">竞拍不成功时，缴纳的保证金将退回到原支付渠道
       </dd>
     </dl>
-    <van-cell value="该拍品需缴纳保证金15.0。建议您使用支付宝、微信、余额，确保账户有足够的钱款哦" />
-    <van-cell-group v-if="adres.id">
+    <p>
+      该拍品需缴纳保证金￥{{(details.price_max*0.1).toFixed(2)}}。
+    </p>
+    <p>
+      建议您使用<em class="emred">支付宝、微信、余额</em>，确保账户有足够的钱款哦
+    </p>
+    <van-cell-group v-if="adres&&adres.id">
       <van-cell :value="`收货人：${adres.name||''}(${adres.tel||''})`" />
       <van-cell :value="`收地址：${adres.city||''}${adres.area||''}${adres.address||''}`" @click="chooseAdres" is-link />
     </van-cell-group>
@@ -34,7 +39,7 @@
     <van-goods-action>
       <van-goods-action-big-btn
         primary
-        text="立即出价"
+        :text="!auctionShow?'立即出价': `支付定金`"
         @click.native="showPayTypeShow"
       />
      </van-goods-action>
@@ -189,6 +194,35 @@ export default {
     },
     auctionShow(val) {
       //
+      // 添加分享按钮
+      if (this.auctionShow) {
+        this.$store.commit('core/header', {
+          title: '定金支付',
+          buttons: {
+            right: {
+              fontSize: '27px',
+              text: '\ue655',
+              onclick: () => {
+                this.shareVisible = false
+              }
+            }
+          }
+        })
+      }else {
+        this.$store.commit('core/header', {
+          title: '商品详情',
+          buttons: {
+            right: {
+              fontSize: '27px',
+              text: '\ue655',
+              onclick: () => {
+                this.shareVisible = true
+              }
+            }
+          }
+        })
+      }
+      
     },
     current(val) {
       // 存储到sessionStorage
@@ -321,7 +355,7 @@ export default {
     },
     // 显示支付方式
     showPayTypeShow() {
-      if (!this.adres.id) {
+      if (!this.adres||!this.adres.id) {
         this.$toast('请选择收货地址')
         return
       }
@@ -329,7 +363,7 @@ export default {
         this.$toast('请同意竞拍协议')
         return
       }
-      this.payTypeShow = true
+      this.payTypeShow = true;
     },
     // 显示密码弹窗
     showPayboard() {
@@ -343,6 +377,7 @@ export default {
     },
     // 出价
     async auction(evt) {
+      
       let res = await this.$axios.post('goods/auction', {
         goods_id: this.current.goodsId,
         stand_id: this.current.selectedSkuComb.s1,
@@ -487,7 +522,9 @@ export default {
     position: absolute;
     z-index: 999;
     left: 0;
-
+    .emred {
+      color: red;
+    }
     .deposit-info {
         position: fixed;
         background: #fff;

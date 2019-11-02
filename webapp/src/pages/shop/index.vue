@@ -20,17 +20,17 @@
         <img class="icon" src="@/assets/shop/list@2x.png" alt="">列表
       </van-col>
       <van-row>
-        <van-col class="btn" @click.native="params.zh=='down'?params.zh='up':params.zh='down'">
+        <van-col class="btn" @click.native="changeParams('zh')">
           综合
           <img v-if="params.zh=='down'" class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
           <img v-else class="icon" src="@/assets/shop/arrow_top.png" alt="">
         </van-col>
-        <van-col class="btn" @click.native="params.sell=='down'?params.sell='up':params.sell='down'">
+        <van-col class="btn" @click.native="changeParams('sell')">
           销量
           <img v-if="params.sell=='down'" class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
           <img v-else class="icon" src="@/assets/shop/arrow_top.png" alt="">
         </van-col>
-        <van-col class="btn" @click.native="params.price=='down'?params.price='up':params.price='down'">
+        <van-col class="btn" @click.native="changeParams('price')">
           价格
           <img v-if="params.price=='down'" class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
           <img v-else class="icon" src="@/assets/shop/arrow_top.png" alt="">
@@ -74,14 +74,21 @@ export default {
     this.getList()
   },
   watch: {
-    params: {
-      deep: true,
-      handler() {
-        this.getList()
-      }
-    }
+    // params: {
+    //   deep: true,
+    //   handler() {
+    //     this.getList()
+    //   }
+    // }
   },
   methods: {
+    changeParams(prop) {
+      if (!prop) {
+        return
+      }
+      this.params[prop] = this.params[prop] == 'up' ? 'down' : 'up';
+      this.getList(prop)
+    },
     async getStore() {
       let res = await this.$axios.post('goods/getstore', {
         id: this.$route.query.id
@@ -89,9 +96,25 @@ export default {
       let data = res.data.data || {}
       this.store = data
     },
-    async getList() {
-      this.params.store_id = this.$route.query.id
-      let res = await this.$axios.post('goods/storelist', this.params)
+    async getList(prop) {
+      let {sell,price,zh,page,num,search} = this.params;
+      let paramObj ;
+      if (!prop) {
+        paramObj = {
+          zh,
+          page,num,search,
+          store_id:  this.$route.query.id
+        }
+      }else {
+        paramObj = {
+          page,num,search,
+          store_id:  this.$route.query.id
+        }
+        paramObj[prop] = this.params[prop];
+      }
+      
+      this.params.store_id = this.$route.query.id;
+      let res = await this.$axios.post('goods/storelist', paramObj)
       let data = res.data.data || {}
       this.goods = data.goods || []
       this.total = data.total || 0
