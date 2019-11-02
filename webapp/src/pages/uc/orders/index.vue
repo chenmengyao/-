@@ -2,7 +2,7 @@
 <div class="suwis-order-list">
   <van-tabs animated
     v-model="activeTabIndex"
-    @change="onClickTab">
+    @click="onClickTab">
     <van-tab v-for="tab in tabList"
       :title="tab.name"
       :key="tab.key">
@@ -167,7 +167,8 @@ export default {
               this.list = this.list.concat(orderData)
               if (page * num > data.data.total) this.finished = true
             } else {
-              this.finished = true
+              this.finished = true;
+              return
             }
           } else {
             this.error = true
@@ -256,6 +257,9 @@ export default {
         case 'delete':
           this.deleteOrder(orderId)
           break
+        case 'viewProgress':
+          this.viewProgress(orderId)
+          break
       }
     },
     onPasswordInput(key) {
@@ -292,12 +296,15 @@ export default {
               data
             }) => {
               if (data.code === 1) {
-                this.password = ''
-                this.currentOrderNumber = ''
-                this.passwordModalShow = false
-                this.payTypeShow = false
+                this.password = '';
+                this.currentOrderNumber = '';
+                this.passwordModalShow = false;
+                this.payTypeShow = false;
                 this.$toast('支付成功');
-                this.getList()
+                this.$router.push({
+                    path: '/uc/orders',
+                    query: {activeTabIndex: 3,type:'0000'}
+                })
               } else {
                 this.password = ''
                 this.$toast(data.msg);
@@ -305,6 +312,12 @@ export default {
             })
         }
       }
+    },
+    viewProgress(orderId){
+      this.$router.push({
+          path: '/uc/orders/refund-details',
+          query: {id: orderId}
+      })
     },
     onPasswordDelete() {
       this.password = this.password.slice(0, this.password.length - 1);
@@ -426,10 +439,16 @@ export default {
   },
 
   activated() {
-    this.activeTabIndex = this.$route.query.activeTabIndex || 0
+    this.activeTabIndex = this.$route.query.activeTabIndex || 0;
     this.sta = this.tabList[this.activeTabIndex].sta;
-    this.getList();
-  }
+    if(this.$route.query&&this.$route.query.type&&this.$route.query.type=='0000'){
+      this.getList();
+    }
+  },
+  // mounted(){
+  //   console.log(222)
+  //   this.getList();
+  // }
 }
 </script>
 

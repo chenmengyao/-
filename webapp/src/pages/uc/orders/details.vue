@@ -162,18 +162,20 @@
             // 商品总价
             goodsSum() {
                 const { orderData } = this
-                console.log(orderData,'orderData')
                 if (Array.isArray(orderData)) {
-                    return this.orderData.reduce((result, goods) => result + goods.num * goods.goods_price, 0)
+                    return this.orderData.reduce(function(result, goods){
+                        return (result + goods.num * goods.goods_price).toFixed(2)
+                    }, 0)
                 } else {
-                    return orderData.num * orderData.goods_price
+                    console.log(222)
+                    return (orderData.num * orderData.goods_price).toFixed(2)
                 }
             },
             // 订单总价
             orderSum() {
                 const { orderData } = this
                 if (Array.isArray(orderData)) {
-                    return this.orderData.reduce((result, goods) => result += +goods.old_price, 0)
+                    return (this.orderData.reduce((result, goods) => result += +goods.old_price, 0)).toFixed(2)
                 } else {
                     return orderData.old_price
                 }
@@ -182,7 +184,7 @@
             startSum() {
                 const { orderData } = this
                 if (Array.isArray(orderData)) {
-                    return this.orderData.reduce((result, goods) => result += +goods.start_sum, 0)
+                    return (this.orderData.reduce((result, goods) => result += +goods.start_sum, 0)).toFixed(2)
                 } else {
                     return orderData.start_sum
                 }

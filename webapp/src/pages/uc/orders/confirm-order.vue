@@ -367,7 +367,8 @@ export default {
               this.$router.replace({
                 path: '/uc/orders',
                 query: {
-                  activeTabIndex: 2
+                  activeTabIndex: 2,
+                  type:'0000'
                 }
               })
             }, 699)
@@ -408,7 +409,8 @@ export default {
       this.$router.replace({
         path: '/uc/orders',
         query: {
-          activeTabIndex: 2
+          activeTabIndex: 2,
+          type:'0000'
         }
       })
     },
@@ -419,7 +421,8 @@ export default {
       this.$router.replace({
         path: '/uc/orders',
         query: {
-          activeTabIndex: 1
+          activeTabIndex: 1,
+          type:'0000'
         }
       })
     },

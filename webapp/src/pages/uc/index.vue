@@ -33,29 +33,29 @@
         <div class="my-order">
             <div class="title">
                 <span>我的订单</span>
-                <router-link to="/uc/orders" class="link">
+                <router-link to="/uc/orders?type=0000" class="link">
                     全部订单
                     <van-icon name="arrow" size="10px" color="rgb(153,153,153)" style="margin-left: 6px"/>
                 </router-link>
             </div>
 
             <div class="order-list">
-                <router-link to="/uc/orders?activeTabIndex=1" class="order-item">
+                <router-link to="/uc/orders?activeTabIndex=1&type=0000" class="order-item">
                     <img src="@/assets/uc/pay@2x.png" alt="代付款" class="order-image">
                     <span class="item-name">待付款</span>
                     <span class="item-num">{{ sta_0 }}</span>
                 </router-link>
-                <router-link to="/uc/orders?activeTabIndex=2" class="order-item">
+                <router-link to="/uc/orders?activeTabIndex=2&type=0000" class="order-item">
                     <img src="@/assets/uc/send@2x.png" alt="代发货" class="order-image">
                     <span class="item-name">待发货</span>
                     <span class="item-num">{{ sta_1 }}</span>
                 </router-link>
-                <router-link to="/uc/orders?activeTabIndex=3" class="order-item">
+                <router-link to="/uc/orders?activeTabIndex=3&type=0000" class="order-item">
                     <img src="@/assets/uc/receive@2x.png" alt="代收货" class="order-image">
                     <span class="item-name">待收货</span>
                     <span class="item-num">{{ sta_2 }}</span>
                 </router-link>
-                <router-link to="/uc/orders?activeTabIndex=4" class="order-item">
+                <router-link to="/uc/orders?activeTabIndex=4&type=0000" class="order-item">
                     <img src="@/assets/uc/evaluate@2x.png" alt="代评价" class="order-image">
                     <span class="item-name">待评价</span>
                     <span class="item-num">{{ sta_4 }}</span>

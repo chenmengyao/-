@@ -240,7 +240,11 @@
                     })
                     .then(({ data }) => {
                         if (data.code === 1) {
-                            this.$router.push('/uc/orders')
+                            
+                            this.$router.push({
+                                path: '/uc/orders',
+                                query: { type:'0000' }
+                            })
                             this.$toast('已提交售后申请');
                         } else {
                             this.$toast(data.msg);

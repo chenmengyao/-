@@ -93,8 +93,15 @@ export default {
   },
   methods: {
     cancel() {
-      this.payType = ''
-      this.$emit('close')
+      this.payType = '';
+      this.$router.replace({
+        path: '/uc/orders',
+        query: {
+          activeTabIndex: 1,
+          type:'0000'
+        }
+      })
+      // this.$emit('close')
     },
     async pay() {
       const id = this.payType
