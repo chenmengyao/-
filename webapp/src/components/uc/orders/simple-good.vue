@@ -1,60 +1,76 @@
 <template>
-    <div class="suwis-simple-good">
-        <ul class="list">
-            <li class="item" @click="toggleCheck">
-                <img class="image" :src="storeLogo" v-lazy="storeLogo" alt="商品">
-                <div class="info" :style="infoStyle">
-                    <div class="name">{{name}}</div>
-                    <template v-if="desc && desc.length">
-                        <div class="desc">
-                            <span v-for="item in desc" :key="item" class="desc-item">{{item}}</span>
-                        </div>
-                    </template>
+<div class="suwis-simple-good">
+  <ul class="list">
+    <li class="item"
+      @click="toggleCheck">
+      <img class="image"
+        :src="storeLogo"
+        v-lazy="storeLogo"
+        alt="商品">
+      <div class="info"
+        :style="infoStyle">
+        <div class="name">{{name}}</div>
+        <template v-if="desc && desc.length">
+          <div class="desc">
+            <span v-for="item in desc"
+              :key="item"
+              class="desc-item">{{item}}</span>
+          </div>
+        </template>
 
-                </div>
-                <div class="checkbox" v-if="hasCheckbox">
-                    <van-checkbox v-model="checked" checked-color="#e83f44"/>
-                </div>
-            </li>
-        </ul>
-    </div>
+      </div>
+      <div class="checkbox"
+        v-if="hasCheckbox">
+        <van-checkbox v-model="checked"
+          checked-color="#e83f44" />
+      </div>
+    </li>
+  </ul>
+</div>
 </template>
 
 <script>
-    export default {
-        props: {
-            name,
-            desc: {
-                type: Array,
-                default: _ => [''],
-            },
-            storeLogo: {
-                type: String,
-            },
-            hasCheckbox: {
-                type: Boolean,
-                default: false
-            }
-        },
-        data() {
-            return {
-                checked: true,
-                infoStyle: this.hasCheckbox ? { width: 'calc(100% - 88px)' } : { width: 'calc(100% - 48px)' }
-            }
-        },
-        methods: {
-            toggleCheck() {
-                if (!this.hasCheckbox) return
-                this.checked = !this.checked
-            }
-        }
+export default {
+  props: {
+    name: {
+      type: String
+    },
+    desc: {
+      type: Array,
+      default: () => [''],
+    },
+    storeLogo: {
+      type: String
+    },
+    hasCheckbox: {
+      type: Boolean,
+      default: false
     }
+  },
+  data() {
+    return {
+      checked: true,
+      infoStyle: this.hasCheckbox ? {
+        width: 'calc(100% - 88px)'
+      } : {
+        width: 'calc(100% - 48px)'
+      }
+    }
+  },
+  methods: {
+    toggleCheck() {
+      if (!this.hasCheckbox) return
+      this.checked = !this.checked
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">
 .suwis-simple-good {
     position: relative;
     margin: 0 15px;
+    z-index: 999;
     .list {
         transform: translateY(-50%);
         padding: 12px;
