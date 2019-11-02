@@ -361,10 +361,11 @@ export default {
         }) => {
           if (data.code === 1) {
             this.$toast('支付成功');
-            this.passwordModalShow = false
+            this.passwordModalShow = false;
+            var that =this;
             setTimeout(() => {
               // 跳转代发货
-              this.$router.replace({
+              that.$router.replace({
                 path: '/uc/orders',
                 query: {
                   activeTabIndex: 2,

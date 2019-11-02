@@ -101,7 +101,7 @@ export default {
           type:'0000'
         }
       })
-      // this.$emit('close')
+      this.$parent.payTypeShow = false
     },
     async pay() {
       const id = this.payType
@@ -173,10 +173,11 @@ export default {
       plus.payment.request(this.pays[id], params, (result) => {
         console.log('----- 支付成功 -----');
         console.log(JSON.stringify(result));
+        var _that=this
         plus.nativeUI.alert('支付成功', () => {
           // 支付成功
-          this.popupShow = false
-          this.$emit('success', true)
+          _that.popupShow = false
+          _that.$emit('success', true)
         })
       }, (e) => {
         console.log('----- 支付失败 -----');

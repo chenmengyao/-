@@ -383,6 +383,7 @@ export default {
       }
       window.test = this
     },
+    
     async pay() {
       if (payw) return
       // 检查是否请求订单中

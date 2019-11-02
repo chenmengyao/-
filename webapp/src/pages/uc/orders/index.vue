@@ -232,6 +232,7 @@ export default {
       })
     },
     onButtonClick(key, orderId, orderNumer) {
+      console.log(key,555)
       switch (key) {
         case 'cancel':
           this.cancelOrder(orderNumer)
@@ -301,10 +302,9 @@ export default {
                 this.passwordModalShow = false;
                 this.payTypeShow = false;
                 this.$toast('支付成功');
-                this.$router.push({
-                    path: '/uc/orders',
-                    query: {activeTabIndex: 3,type:'0000'}
-                })
+                this.activeTabIndex=2;
+                this.sta = this.tabList[this.activeTabIndex].sta;
+                this.getList();
               } else {
                 this.password = ''
                 this.$toast(data.msg);
@@ -360,7 +360,7 @@ export default {
       })
       // 设置当前订单id
       this.currentOrderId = orderNumer
-
+      console.log(data.data,3333)
       if (data.data === 1) { // 是组合订单
         this.$dialog
           .confirm({
