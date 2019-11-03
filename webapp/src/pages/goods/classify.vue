@@ -79,6 +79,7 @@ export default {
     }
   },
   created() {
+    alert(1)
     this.getClassify()
   },
   activated(){
