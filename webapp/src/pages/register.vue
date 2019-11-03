@@ -20,7 +20,7 @@
         <van-field type="password" v-model="formData.passwordConfirm" @focus="formMsg.passwordConfirm=''" :error-message="formMsg.passwordConfirm" placeholder="请再次确认您的登录密码">
           <img class="field-icon" slot="left-icon"  src="@/assets/login/pwd@3x.png" alt="">
         </van-field>
-        <van-field type="password" v-model="formData.paypass" @focus="formMsg.paypass=''" :error-message="formMsg.paypass" placeholder="请输入6位支付密码">
+        <van-field type="password" v-model="formData.paypass" @focus="formMsg.paypass=''" :error-message="formMsg.paypass" placeholder="请输入6位数字支付密码">
           <img class="field-icon" slot="left-icon"  src="@/assets/login/paypwd@3x.png" alt="">
         </van-field>
         <van-field type="password" v-model="formData.paypassConfirm" @focus="formMsg.paypassConfirm=''" :error-message="formMsg.paypassConfirm" placeholder="请再次确认支付密码">
@@ -124,7 +124,7 @@ export default {
         return
       }
       if (!/^[a-zA-Z0-9]\w{5,17}$/.test(this.formData.paypass)) {
-        this.formMsg.paypass = '请输入6-18位字母+数字的支付密码'
+        this.formMsg.paypass = '请输入6位数字支付密码'
         return
       }
       if (this.formData.paypassConfirm !== this.formData.paypassConfirm) {

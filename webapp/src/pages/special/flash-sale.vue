@@ -83,8 +83,12 @@
                                 style="width:25px;margin-top:-3px;vertical-align: middle;"></span>
                           </div>
                         </div>
-                        <div style="float:right">
+                        <div style="float:right" v-if="item.count>0">
                           <img src="../../assets/masq.png"
+                            style="width:66px;">
+                        </div> 
+                        <div style="float:right" v-else>
+                          <img src="../../assets/yqg.png"
                             style="width:66px;">
                         </div>
                       </div>

@@ -13,7 +13,7 @@
                             <span class="tel">{{item.tel}}</span>
                             <span class="default" v-if="item.sta === 1">默认</span>
                         </div>
-                        <div class="edit" @click="edit(item.id)">编辑</div>
+                        <div class="edit" @click.stop="edit(item.id)">编辑</div>
                     </div>
                     <div class="info-address">
                         {{item | address}}
@@ -44,9 +44,21 @@
         },
         methods: {
             edit(id) {
+                if (this.query.from) {
+                    this.$router.push({
+                        path: '/uc/setting/handleAddress',
+                        query: { 
+                            id,
+                            ...this.query
+                        }
+                    })
+                    return
+                }
                 this.$router.push({
                     path: '/uc/setting/handleAddress',
-                    query: { id }
+                    query: { 
+                        id,
+                    }
                 })
             },
             getAddresses() {

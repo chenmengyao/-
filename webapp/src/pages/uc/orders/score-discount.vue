@@ -39,6 +39,11 @@
         },
         methods: {
             confirm() {
+                
+                if (+this.score > +this.score_balance) {
+                    this.$toast('您的积分不足！');
+                    return
+                }
                 if (+this.score > +this.score_need) {
                     this.$toast('输入的积分不能大于可用积分');
                     return

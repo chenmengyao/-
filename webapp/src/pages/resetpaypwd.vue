@@ -8,7 +8,7 @@
         <img class="field-icon" style="margin-top:2.2px;" slot="left-icon"  src="@/assets/login/code@3x.png" alt="">
          <van-button class="send-code" slot="button" size="small" type="primary" :disabled="countDownText>0" @click="sendCode">{{countDownText>0?`${countDownText}s后可重新发送`:'发送验证码'}}</van-button>
       </van-field>
-      <van-field type="password" v-model="formData.paypass" @focus="formMsg.paypass=''" :error-message="formMsg.paypass" placeholder="请输入8-16位支付密码">
+      <van-field :password="true" type="number" v-model="formData.paypass" @focus="formMsg.paypass=''" :error-message="formMsg.paypass" placeholder="请输入6位数字支付密码">
         <img class="field-icon" slot="left-icon"  src="@/assets/login/paypwd@3x.png" alt="">
       </van-field>
       <van-field type="password" v-model="formData.paypassConfirm" @focus="formMsg.paypassConfirm=''" :error-message="formMsg.paypassConfirm" placeholder="请再次确认您的支付密码">
@@ -83,7 +83,7 @@ export default {
 				return
 			}
 			if (!/^[a-zA-Z0-9]\w{5,17}$/.test(this.formData.paypass)) {
-				this.formMsg.paypass = '请输入6-18位字母+数字的支付密码'
+				this.formMsg.paypass = '请输入6位数字支付密码'
 				return
 			}
 			if (this.formData.paypassConfirm !== this.formData.paypass) {

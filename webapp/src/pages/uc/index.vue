@@ -258,6 +258,11 @@ export default {
   },
   created() {
     this.getUserInfo();
+  },
+  beforeRouteLeave (to, from, next) {
+      this.qrCodeShow = false;
+      next()
+      // ...
   }
 }
 </script>

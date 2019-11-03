@@ -29,6 +29,7 @@
                     isDefault: true  // 0 非默认，1 默认
                 },
                 id: '',
+                query: {}
             }
         },
         methods: {
@@ -50,7 +51,17 @@
                         if (data.code === 1) {
                             const tip = this.id ? '创建成功' : '修改成功'
                             this.$toast(tip);
-                            this.$router.push('/uc/setting/address')
+                            if (this.query.from) {
+                                this.$router.replace({
+                                    path: '/uc/setting/address',
+                                    query: { 
+                                        ...this.query
+                                    }
+                                })
+                            }else {
+                                this.$router.replace('/uc/setting/address')
+                            }
+                            
                         } else {
                             this.$toast(data.msg);
                         }
@@ -61,6 +72,7 @@
             }
         },
         created() {
+            Object.assign(this.query, this.$route.query)
             this.id = this.$route.query.id
             if (this.id) {
                 this.$axios.

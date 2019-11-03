@@ -107,7 +107,8 @@
                 nameShow: false,
                 locationShow: false,
                 qrCodeShow: false,
-                user: {}
+                user: {},
+                user_type: 0
             }
         },
         methods: {
@@ -258,6 +259,11 @@
         },
         created() {
             this.getUserInfo()
+        },
+        beforeRouteLeave (to, from, next) {
+            this.qrCodeShow = false;
+            next()
+            // ...
         }
     }
 </script>

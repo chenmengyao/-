@@ -429,11 +429,11 @@ export default {
       }
       this.navlist[idx].selected = true
     },
-    // 检查时间是否超时
+    // 检查时间是否超时或事件未到
     checkTimeout() {
       // 限时抢购 && 竞拍捡漏
       if (this.details.type == 1 || this.details.type == 2) {
-        this.disabledSubmit = (this.details.activity_end_time || 0) * 1000 - Date.now() < 0
+        this.disabledSubmit = (this.details.activity_end_time || 0) * 1000 - Date.now() < 0||(this.details.activity_start_time || 0) * 1000 - Date.now() > 0;
         if (!this.disabledSubmit) {
           setTimeout(() => {
             this.checkTimeout()
@@ -446,7 +446,7 @@ export default {
       let res = await this.$axios.post('goods/find', {
         id: this.$route.query.id
       })
-      this.details = res.data.data || {}
+      this.details = res.data.data || {};
     },
     // 获取优惠券详情
     async getCoupons() {
