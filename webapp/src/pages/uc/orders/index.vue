@@ -82,7 +82,7 @@ export default {
       finished: false,
       loading: false,
       list: [],
-      num: 20, // 每页的数量
+      num: 5, // 每页的数量
       page: 1, // 页码
       sta: undefined, // 不传sta为全部订单 0 待付款 1 待发货 2 待收货 3 退款/售后 4 待评价 5 已完成 6 已关闭
       payTypeShow: false,
@@ -232,7 +232,6 @@ export default {
       })
     },
     onButtonClick(key, orderId, orderNumer) {
-      console.log(key,555)
       switch (key) {
         case 'cancel':
           this.cancelOrder(orderNumer)
@@ -360,7 +359,6 @@ export default {
       })
       // 设置当前订单id
       this.currentOrderId = orderNumer
-      console.log(data.data,3333)
       if (data.data === 1) { // 是组合订单
         this.$dialog
           .confirm({
@@ -442,13 +440,11 @@ export default {
     this.activeTabIndex = this.$route.query.activeTabIndex || 0;
     this.sta = this.tabList[this.activeTabIndex].sta;
     if(this.$route.query&&this.$route.query.type&&this.$route.query.type=='0000'){
+      this.loading = true
+      this.finished = false
       this.getList();
     }
   },
-  // mounted(){
-  //   console.log(222)
-  //   this.getList();
-  // }
 }
 </script>
 

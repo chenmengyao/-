@@ -132,7 +132,7 @@ export default {
         paywin.show()
         paywin.addEventListener('rendered', () => {
           // 关闭支付弹窗
-          this.$emit('close')
+          this.$emit('fail')
           // 关闭loading
           w.close()
           w = null
@@ -170,10 +170,11 @@ export default {
         // }
         params = data
       }
+      var _that=this
       plus.payment.request(this.pays[id], params, (result) => {
         console.log('----- 支付成功 -----');
         console.log(JSON.stringify(result));
-        var _that=this
+        
         plus.nativeUI.alert('支付成功', () => {
           // 支付成功
           _that.popupShow = false

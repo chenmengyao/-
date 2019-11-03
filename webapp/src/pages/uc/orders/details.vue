@@ -161,13 +161,16 @@
         computed: {
             // 商品总价
             goodsSum() {
-                const { orderData } = this
+                const { orderData } = this;
+                
                 if (Array.isArray(orderData)) {
                     return this.orderData.reduce(function(result, goods){
-                        return (result + goods.num * goods.goods_price).toFixed(2)
-                    }, 0)
+                        return result + goods.num * goods.goods_price
+                    }, 0).toFixed(2)
                 } else {
-                    console.log(222)
+                    if(!this.orderData.num||!this.orderData.goods_price){
+                        return
+                    }
                     return (orderData.num * orderData.goods_price).toFixed(2)
                 }
             },
@@ -348,7 +351,6 @@
                 this.getBalance()
                 this.payTypeShow = true
                 this.passwordModalType = 'pay'
-                console.log(orderNumer,'orderNumer')
                 this.currentOrderNumber = orderNumer
             },
             checkLogistics(orderId) {
@@ -438,7 +440,7 @@
                 .then(({ data }) => {
                     if (data.code === 1) {
                         if (data.data) {
-                            this.orderData = data.data
+                            this.orderData = data.data;
                             this.shopData = Array.isArray(data.data) ? data.data[0] : data.data
                             this.orderlist = this.handleOrderData(Array.isArray(data.data) ? data.data : [data.data])
                         }
