@@ -49,71 +49,22 @@ export default {
       }
 
     },
-    // 重置导航
-    resetNav() {
-      this.$store.commit('core/header', {
-        title: '惠回来',
-        // 清空按钮
-        buttons: {
-          // 左边按钮配置
-          left: {
-            float: 'left',
-            // 字号
-            fontSize: '27px',
-            // 字体路径
-            fontSrc: '_www/fonts/iconfont.ttf',
-            // 按钮文字
-            text: '\ue673',
-            // 监听点击
-            onclick: () => {
-              this.scanShow = true
-            }
-          },
-          // 右边图标
-          right: {
-            float: 'right',
-            // 字号
-            fontSize: '27px',
-            // 字体路径
-            fontSrc: '_www/fonts/iconfont.ttf',
-            // 按钮文字
-            text: '\ue608',
-            // 监听点击
-            onclick: () => {
-              if (this.scanShow) return
-              this.$router.push('/mine/information')
-            }
-          }
-        }
-      })
-    },
-  },
-  watch: {
-    $route(val, oldVal) {
-      if (val.path == '/mine/details') this.resetNav()
-    }
   },
   created(){
-    this.onPlusReady(() => {
-      this.resetNav()
-    });
     this.$store.commit('core/header', {
       // 标题
-      title: '竞拍捡漏',
+      title: '意见反馈',
       // 按钮组
       buttons: {
         // 右边图标
         right: {
           // 按钮文字
-          text: '竞拍规则',
+          text: '历史纪录',
           width: '96',
           // 监听点击
-          // onclick() {
-          //   this.$router.push({ path: '/special/auctionrlue' })
-
           onclick: () => {
             this.$router.push({
-              path: '/special/auctionrlue'
+              path: '/mine/details'
             })
           }
         }
