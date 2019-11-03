@@ -487,7 +487,8 @@ export default {
         console.log(JSON.stringify(result));
         plus.nativeUI.alert('支付成功', () => {
           // 支付成功
-          _that.auctionShow = false
+          _that.auctionShow = false;
+          _that.payTypeShow = false;
           try {
             _that.$parent.getDetails()
           } catch (e) {}
