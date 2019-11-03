@@ -49,6 +49,41 @@ export default {
       }
 
     }
+  },
+  created(){
+    this.$store.commit('core/header', {
+      // 标题
+      title: '意见反馈',
+      // 按钮组
+      buttons: {
+        // 左边按钮配置
+        left: {
+          // 字号
+          fontSize: '27px',
+          // 字体路径
+          fontSrc: '_www/fonts/iconfont.ttf',
+          // 按钮文字
+          text: '分享',
+          // 监听点击
+          onclick(){
+
+          }
+        },
+        // 右边图标
+        right: {
+          // 字号
+          fontSize: '27px',
+          // 字体路径
+          fontSrc: '_www/fonts/iconfont.ttf',
+          // 按钮文字
+          text: '历史纪录',
+          // 监听点击
+          onclick(){
+
+          }
+        }
+      }
+    })
   }
 }
 </script>
