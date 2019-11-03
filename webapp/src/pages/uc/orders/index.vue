@@ -89,6 +89,7 @@ export default {
       password: '', // 支付密码
       passwordModalShow: false, // 输入弹框显示
       passwordModalType: 'receive', // 密码弹框类型
+      flay:false,
       tabList: [{
           key: 'all',
           name: '全部订单',
@@ -143,6 +144,7 @@ export default {
     },
     getList(type = 'reset') {
       // 重置页码参数
+      this.flay=true;
       if (type === 'reset') {
         this.list = []
         this.page = 1
@@ -232,7 +234,6 @@ export default {
       })
     },
     onButtonClick(key, orderId, orderNumer) {
-      console.log(key,555)
       switch (key) {
         case 'cancel':
           this.cancelOrder(orderNumer)
@@ -436,12 +437,14 @@ export default {
       })
     }
   },
-  
+  created(){
+
+  },
   activated() {
     this.activeTabIndex = this.$route.query.activeTabIndex || 0;
     this.sta = this.tabList[this.activeTabIndex].sta;
     console.log(this.$route.path,'55')
-    if(this.$route.query&&this.$route.query.type&&this.$route.query.type=='0000'){
+    if(this.$route.query&&this.$route.query.type&&this.$route.query.type=='0000'&&this.flay){
       this.loading = true
       this.finished = false
       this.getList();

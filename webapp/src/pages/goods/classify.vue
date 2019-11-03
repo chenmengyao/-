@@ -79,12 +79,10 @@ export default {
     }
   },
   created() {
-    alert(1)
     this.getClassify()
   },
   activated(){
-    alert(2)
-    this.keyWord=''
+    this.keyWord='';
   }
 }
 </script>
