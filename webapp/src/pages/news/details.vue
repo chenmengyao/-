@@ -48,6 +48,7 @@ export default {
   created() {
     var id = this.$route.query.id
     this.getDetail(id)
+    this.$store.commit('core/hideTabbar')
   }
 }
 </script>

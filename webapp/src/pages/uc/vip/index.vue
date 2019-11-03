@@ -157,7 +157,7 @@ export default {
                 flex: 1;
                 flex-direction: column;
                 justify-content: space-between;
-                height: 40px;
+                // height: 40px;
                 color: #fff;
             }
             .name {

@@ -64,6 +64,7 @@
         v-if="idx<3"
         :name="item.nickname"
         :avatar="item.photo"
+        :date='item.evaluate_time'
         :score="((item.evaluate_express + item.evaluate_serve + item.evaluate_quality) / 15) * 5"
         :content="item.evaluate"
         :medias="JSON.parse(item.evaluate_img)||[]">

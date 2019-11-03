@@ -1,13 +1,13 @@
 <template lang="html">
   <div class="suwis-comment-item">
     <van-row class="info">
-      <van-col span="16">
+      <van-col span="15">
         <slot name="avatar">
           <img class="avatar" :src="avatar" alt=""  v-if="avatar">
           <img class="avatar" v-else src='@/assets/login/avatar@3x.png' alt="">
         </slot>
         <span>
-          <slot name="name">{{name}}</slot><br>
+          <slot name="name">{{name|formatName}}</slot><br>
           <van-rate
             v-model="score"
             readonly
@@ -18,7 +18,7 @@
           />
         </span>
       </van-col>
-      <van-col class="date" span="8"><slot name="date">{{date}}</slot></van-col>
+      <van-col class="date" span="9"><slot name="date">{{date |dateFmt }}</slot></van-col>
     </van-row>
     <van-row class="content">
       <van-col span="24">

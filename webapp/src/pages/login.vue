@@ -229,7 +229,7 @@ export default {
         }
 
         .footer-link {
-            top: 20vw;
+            bottom: -23vw;
             position: relative;
             text-align: center;
             font-style: normal;
