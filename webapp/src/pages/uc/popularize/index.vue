@@ -156,8 +156,13 @@
                                 this.finished = true
                             }
                         } else {
-                            this.error = true
-                            this.$toast(data.msg);
+                            if(data.msg=='暂无权限!'){
+                                this.status='noRight'
+                            }else{
+                                this.error = true
+                                this.$toast(data.msg);
+                            }
+                            
                         }
                         this.page++
                         this.loading = false
