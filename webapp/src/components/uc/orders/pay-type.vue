@@ -104,7 +104,8 @@ export default {
       this.$parent.payTypeShow = false
     },
     async pay() {
-      const id = this.payType
+      const id = this.payType;
+      var _that=this
       if (id === 'balancepay') {
         this.$emit('pay', id)
         return
@@ -132,7 +133,14 @@ export default {
         paywin.show()
         paywin.addEventListener('rendered', () => {
           // 关闭支付弹窗
-          this.$emit('fail')
+          this.$router.replace({
+            path: '/uc/orders',
+            query: {
+              activeTabIndex: 1,
+              type:'0000'
+            }
+          })
+          this.$parent.payTypeShow = false
           // 关闭loading
           w.close()
           w = null
@@ -170,7 +178,7 @@ export default {
         // }
         params = data
       }
-      var _that=this
+      
       plus.payment.request(this.pays[id], params, (result) => {
         console.log('----- 支付成功 -----');
         console.log(JSON.stringify(result));
