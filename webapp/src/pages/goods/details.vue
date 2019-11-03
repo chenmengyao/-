@@ -167,7 +167,7 @@
       <template slot="sku-stepper" v-if="details.type==2" slot-scope="props">
         <van-row type="flex" align="center">
           <van-col> 数量</van-col>
-          <van-col><van-stepper v-model="current.selectedNum"  /></van-col>
+          <van-col><van-stepper v-model="current.selectedNum"  disabled/></van-col>
         </van-row>
         <van-row type="flex" align="center"  v-if="details.isauction==1">
           <van-col> 出价</van-col>
