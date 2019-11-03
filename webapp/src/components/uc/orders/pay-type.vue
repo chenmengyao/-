@@ -166,6 +166,7 @@ export default {
       }
       // 微信
       alert(res.data[0])
+      alert(res.data[1])
       if (id == 'wxpay') {
         let data = res.data || {}
         // params = {
