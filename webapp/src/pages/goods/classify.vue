@@ -79,8 +79,10 @@ export default {
     }
   },
   created() {
-    this.keyWord=''
     this.getClassify()
+  },
+  activated(){
+    this.keyWord=''
   }
 }
 </script>
