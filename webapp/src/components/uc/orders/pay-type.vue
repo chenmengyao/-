@@ -166,7 +166,7 @@ export default {
       }
       // 微信
        
-
+alert(this.payType)
       if (id == 'wxpay') {
         alert(res.data)
       res.data.forEach(element => {
