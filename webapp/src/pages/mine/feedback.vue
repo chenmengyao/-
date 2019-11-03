@@ -7,7 +7,7 @@
 	    <input id="dianhua" class="suwis-feedback-inp" type="text" placeholder="请输入您的联系电话／邮箱"  v-model="contact_way"/>
 	  </div>
 	  <div class="suwis-feedback-con" >
-	  	<van-button round type="danger" @click="submit()">提交</van-button>
+	  	<van-button round type="danger" @click="submit()">提交222</van-button>
 	  </div>
   </div>
 </template>
@@ -97,6 +97,28 @@ export default {
     this.onPlusReady(() => {
       this.resetNav()
     });
+    this.$store.commit('core/header', {
+      // 标题
+      title: '竞拍捡漏',
+      // 按钮组
+      buttons: {
+        // 右边图标
+        right: {
+          // 按钮文字
+          text: '竞拍规则',
+          width: '96',
+          // 监听点击
+          // onclick() {
+          //   this.$router.push({ path: '/special/auctionrlue' })
+
+          onclick: () => {
+            this.$router.push({
+              path: '/special/auctionrlue'
+            })
+          }
+        }
+      }
+    })
   }
 }
 </script>
