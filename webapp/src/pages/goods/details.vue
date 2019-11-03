@@ -44,7 +44,7 @@
     </template>
     <template v-else>
       <van-row>
-        <van-col style="color:#E83F44;">*该商品最低出价{{details.lowest_price}}元</van-col>
+        <van-col style="color:#E83F44;">*该商品最低出价{{details.price_min}}元</van-col>
       </van-row>
     </template>
     <van-cell class="interval" title="型号" is-link :value="current.selectedSkuComb.name" @click="showSku('hideSku')"/>
@@ -140,7 +140,13 @@
     >
       <!-- 自定义 sku-header-price -->
       <template slot="sku-header-price" slot-scope="props">
-        <div class="van-sku__goods-price">
+        <div class="van-sku__goods-price" v-if="details.type==2&&details.isauction==1">
+          <span class="van-sku__price-symbol">当前价格：</span>
+        </div>
+        <div class="van-sku__goods-price" v-if="details.type==2&&details.isauction==1">
+          <span class="van-sku__price-symbol">￥</span><span class="van-sku__price-num">{{ details.price_max }}</span>
+        </div>
+        <div class="van-sku__goods-price" v-if="!(details.type==2&&details.isauction==1)">
           <span class="van-sku__price-symbol">￥</span><span class="van-sku__price-num">{{ props.price }}</span>
         </div>
         <div class="van-sku__stock">
@@ -160,8 +166,16 @@
       <!-- 数量 -->
       <template slot="sku-stepper" v-if="details.type==2" slot-scope="props">
         <van-row type="flex" align="center">
-          <van-col>数量</van-col>
+          <van-col> 数量</van-col>
           <van-col><van-stepper v-model="current.selectedNum"  /></van-col>
+        </van-row>
+        <van-row type="flex" align="center"  v-if="details.isauction==1">
+          <van-col> 出价</van-col>
+          <van-col><van-stepper v-model="currentMarkup"  :min="details.price_max+details.lowest_price"/></van-col>
+          <van-col> 每次加价不低于￥{{details.lowest_price}}</van-col>
+        </van-row>
+        <van-row type="flex" align="center"  v-if="details.isauction==1">
+          <van-col> <span class="redSpan">*</span>最低出价<span class="redSpan">{{details.price_min}}</span>元</van-col>
         </van-row>
       </template>
       <!--  -->
@@ -248,7 +262,7 @@
         @click.native="!current.selectedSkuComb.id?showSku('buy'):buy(current)"
       />
     </van-goods-action>
-    <auction ref="auction" v-else :details="details" :current="current"></auction>
+    <auction ref="auction" v-else :details="details" :currentMarkup="currentMarkup" :current="current"></auction>
    <!--  -->
   </div>
 </template>
@@ -337,7 +351,9 @@ export default {
       couponsVisible: false,
       shareVisible: false,
       // 是否禁止购买按钮提交
-      disabledSubmit: false
+      disabledSubmit: false,
+      // 当前加价
+      currentMarkup: 0,
     }
   },
   created() {
@@ -447,6 +463,9 @@ export default {
         id: this.$route.query.id
       })
       this.details = res.data.data || {};
+      if (this.details.type==2&&this.details.isauction==1) {
+        this.currentMarkup = this.details.price_max+this.details.lowest_price
+      }
     },
     // 获取优惠券详情
     async getCoupons() {
@@ -475,6 +494,7 @@ export default {
     },
     // 显示商品规格
     showSku(type) {
+      
       // 检查登录状态
       if (!this.$store.getters['core/logined']) {
         Toast('请您先登录')
@@ -494,9 +514,17 @@ export default {
         Toast('请先选择商品规格！')
         return
       }
-      this[this.actionType](evt)
+
       // 设置当前型号
       this.current = evt
+      if (this.details.type==2&&this.details.isauction==1) {
+        this.$refs.auction.addprice(this.current);
+        this.hideSku();
+      }else {
+        this[this.actionType](evt)
+      }
+      
+      
     },
     // 购买
     async buy(evt) {
@@ -586,7 +614,9 @@ export default {
     padding-bottom: calc(50px + 86px);
     padding-top: 50px;
     font-size: 12px;
-    
+    .redSpan {
+      color: red;
+    }
     .nav {
         height: 50px;
         align-items: center;

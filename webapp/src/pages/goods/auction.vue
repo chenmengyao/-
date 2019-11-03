@@ -59,7 +59,7 @@
     <van-goods-action-big-btn
       primary
       :text="details.isauction==1?'立即出价': `支付定金 (￥${(details.stand[0].auction_price * 0.1 || 0).toFixed(2)} )`"
-      @click.native="!current.selectedSkuComb.id?$parent.showSku('showKeyboard'):showKeyboard()"
+      @click.native="$parent.showSku('showKeyboard')"
     />
    </van-goods-action>
   <!--  -->
@@ -138,7 +138,7 @@ import md5 from 'md5'
 // 支付等待
 let payw = null
 export default {
-  props: ['details', 'current'],
+  props: ['details', 'current','currentMarkup'],
   data() {
     return {
       disable: false,
@@ -397,16 +397,19 @@ export default {
       }
     },
     // 加价
-    async addprice() {
-      if (this.keyboardText < this.current.selectedSkuComb.lowest_price) {
-        this.$toast(`当前商品最低出价不得低于${this.current.selectedSkuComb.lowest_price}元`)
+    async addprice(current) {
+      
+      let currentData = current || this.current;
+      if (this.currentMarkup < details.price_max+details.lowest_price) {
+        this.$toast(`当前商品最低出价不得低于${details.price_max+details.lowest_price}元`)
         return false
       }
+      this.keyboardShow = false;
       let res = await this.$axios.post('goods/auction_addprice', {
-        goods_id: this.current.goodsId,
-        stand_id: this.current.selectedSkuComb.s1,
+        goods_id: currentData.goodsId,
+        stand_id: currentData.selectedSkuComb.s1,
         // pay_tpye: 'balancepay',
-        price: this.keyboardText,
+        price: this.currentMarkup,
         // paypass: md5(this.paypass)
       })
       if (res.data.code == 1) {
