@@ -7,7 +7,7 @@
 	    <input id="dianhua" class="suwis-feedback-inp" type="text" placeholder="请输入您的联系电话／邮箱"  v-model="contact_way"/>
 	  </div>
 	  <div class="suwis-feedback-con" >
-	  	<van-button round type="danger" @click="submit()">提交222</van-button>
+	  	<van-button round type="danger" @click="submit()">提交</van-button>
 	  </div>
   </div>
 </template>

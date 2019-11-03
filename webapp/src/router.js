@@ -289,7 +289,7 @@ export const routes = [
          },
          {
            path: "/mine/details",
-           name: "意见反馈-详情",
+           name: "历史反馈",
            component: () => import("./pages/mine/details.vue")
          },
          {
