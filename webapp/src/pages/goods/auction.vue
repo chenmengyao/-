@@ -363,6 +363,7 @@ export default {
         this.$toast('请同意竞拍协议')
         return
       }
+      console.log(this.details)
       this.payTypeShow = true;
     },
     // 显示密码弹窗
@@ -420,6 +421,7 @@ export default {
     },
     
     async pay() {
+      var _that=this
       if (payw) return
       // 检查是否请求订单中
       if (this.payType === 'appleiap') {
@@ -479,19 +481,22 @@ export default {
         let data = res.data || {}
         params = data
       }
+      
       plus.payment.request(this.pays[this.payType], params, (result) => {
         console.log('----- 支付成功 -----');
         console.log(JSON.stringify(result));
         plus.nativeUI.alert('支付成功', () => {
           // 支付成功
-          this.popupShow = false
-          this.$emit('success', true)
+          _that.auctionShow = false
+          try {
+            _that.$parent.getDetails()
+          } catch (e) {}
         })
       }, (e) => {
         console.log('----- 支付失败 -----');
         let msg = e.message
-        this.$toast(msg.substr(msg.indexOf(']') + 1 || 0, msg.length));
-        this.$emit('fail', true)
+        _that.$toast(msg.substr(msg.indexOf(']') + 1 || 0, msg.length));
+        _that.$emit('fail', true)
         // plus.nativeUI.alert('更多错误信息请参考支付(Payment)规范文档：http://www.html5plus.org/#specification#/specification/Payment.html', null, '支付失败：' + e.code);
       })
     },
