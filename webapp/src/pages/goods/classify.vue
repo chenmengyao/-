@@ -79,6 +79,7 @@ export default {
     }
   },
   created() {
+    this.keyWord=''
     this.getClassify()
   }
 }
