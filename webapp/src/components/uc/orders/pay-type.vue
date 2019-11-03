@@ -165,13 +165,7 @@ export default {
         params = res.data
       }
       // 微信
-       
-alert(this.payType)
       if (id == 'wxpay') {
-        alert(res.data)
-      res.data.forEach(element => {
-              alert(element)
-      });
         let data = res.data || {}
         // params = {
         //   appid: data.appid,
