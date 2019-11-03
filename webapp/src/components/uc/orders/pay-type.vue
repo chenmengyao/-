@@ -185,8 +185,19 @@ export default {
         
         plus.nativeUI.alert('支付成功', () => {
           // 支付成功
-          _that.popupShow = false
-          _that.$emit('close', true)
+          if(_that.$route.path==='/uc/orders'){
+            _that.$parent.payTypeShow = false
+            _that.$parent.password = '';
+            _that.$parent.currentOrderNumber = '';
+            _that.$parent.passwordModalShow = false;
+            _that.$parent.payTypeShow = false;
+            _that.$parent.activeTabIndex=2;
+            _that.$parent.sta = _that.$parent.tabList[_that.$parent.activeTabIndex].sta;
+          }else{
+            _that.popupShow = false
+            _that.$emit('close', true)
+          }
+          
         })
       }, (e) => {
         console.log('----- 支付失败 -----');

@@ -232,6 +232,7 @@ export default {
       })
     },
     onButtonClick(key, orderId, orderNumer) {
+      console.log(key,555)
       switch (key) {
         case 'cancel':
           this.cancelOrder(orderNumer)
@@ -439,6 +440,7 @@ export default {
   activated() {
     this.activeTabIndex = this.$route.query.activeTabIndex || 0;
     this.sta = this.tabList[this.activeTabIndex].sta;
+    console.log(this.$route.path,'55')
     if(this.$route.query&&this.$route.query.type&&this.$route.query.type=='0000'){
       this.loading = true
       this.finished = false
