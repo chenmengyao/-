@@ -186,7 +186,7 @@ export default {
         plus.nativeUI.alert('支付成功', () => {
           // 支付成功
           _that.popupShow = false
-          _that.$emit('success', true)
+          _that.$emit('close', true)
         })
       }, (e) => {
         console.log('----- 支付失败 -----');
