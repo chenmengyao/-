@@ -83,6 +83,7 @@ export default {
     this.getClassify()
   },
   activated(){
+    alert(2)
     this.keyWord=''
   }
 }
