@@ -12,8 +12,8 @@
         <div class="name">{{name}}</div>
         <template v-if="desc && desc.length">
           <div class="desc">
-            <span v-for="item in desc"
-              :key="item"
+            <span v-for="(item,idx) in desc"
+              :key="idx"
               class="desc-item">{{item}}</span>
           </div>
         </template>

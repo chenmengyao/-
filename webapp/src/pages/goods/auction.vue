@@ -51,7 +51,7 @@
       text="客服"
       @click.native="$router.push({path: '/mine/message/getsm', query: {store_id: details.store_id}})"
     />
-    
+
     <van-goods-action-mini-btn
       icon="shop-o"
       text="店铺"
@@ -176,7 +176,7 @@ export default {
     }
   },
   watch: {
-    
+
     keyboardArray(val) {
       this.keyboardText = val.join('')
     },
@@ -223,7 +223,7 @@ export default {
           }
         })
       }
-      
+
     },
     current(val) {
       // 存储到sessionStorage
@@ -379,7 +379,7 @@ export default {
     },
     // 出价
     async auction(evt) {
-      
+
       let res = await this.$axios.post('goods/auction', {
         goods_id: this.current.goodsId,
         stand_id: this.current.selectedSkuComb.s1,
@@ -422,7 +422,7 @@ export default {
       }
       window.test = this
     },
-    
+
     async pay() {
       var _that=this
       if (payw) return
@@ -444,7 +444,7 @@ export default {
         url += `stand_id=${this.current.selectedSkuComb.s1}&`
         url += `pay_type=${this.payType}&`
         url += `address_id=${this.adres.id}&`
-        url += `notify_url=this.$config.yunpaycburl`
+        url += `notify_url=${this.$config.yunpaycburl}`
         payw = plus.nativeUI.showWaiting();
         // 新开一个webview
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
@@ -484,7 +484,7 @@ export default {
         let data = res.data || {}
         params = data
       }
-      
+
       plus.payment.request(this.pays[this.payType], params, (result) => {
         console.log('----- 支付成功 -----');
         console.log(JSON.stringify(result));

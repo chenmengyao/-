@@ -12,7 +12,7 @@ export default {
   // 请求超时
   timeout: 10000,
   // 银联支付回调
-  yunpaycburl: 'http://10.16.40.49:8080/#/uc/orders/yunpaycallbak',
+  yunpaycburl: 'http://test.suwis.com/1905_tideway_shop/webapp/dist/paycb.html',
   // 免登录地址
   licenseExemptUrls: [
     '/',

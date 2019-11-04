@@ -98,14 +98,14 @@ export default {
         path: '/uc/orders',
         query: {
           activeTabIndex: 1,
-          type:'0000'
+          type: '0000'
         }
       })
       this.$parent.payTypeShow = false
     },
     async pay() {
       const id = this.payType;
-      var _that=this
+      var _that = this
       if (id === 'balancepay') {
         this.$emit('pay', id)
         return
@@ -126,7 +126,7 @@ export default {
       if (id == 'yunpay') {
         // 银联支付
         let token = app.$vm.$store.getters['core/token']
-        let url = `${this.$config.apihost}pay/pay/order/${this.orderId}/token/${token}/pay_type/yunpay/yunpay_notify/http://10.16.40.49:8080/#/uc/orders/yunpaycallbak`
+        let url = `${this.$config.apihost}pay/pay/order/${this.orderId}/token/${token}/pay_type/yunpay/yunpay_notify/${this.$config.yunpaycburl}`
         w = plus.nativeUI.showWaiting();
         // 新开一个webview
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
@@ -137,7 +137,7 @@ export default {
             path: '/uc/orders',
             query: {
               activeTabIndex: 1,
-              type:'0000'
+              type: '0000'
             }
           })
           this.$parent.payTypeShow = false
@@ -178,27 +178,28 @@ export default {
         // }
         params = data
       }
-      
+
       plus.payment.request(this.pays[id], params, (result) => {
         console.log('----- 支付成功 -----');
         console.log(JSON.stringify(result));
-        
+
         plus.nativeUI.alert('支付成功', () => {
           // 支付成功
-          if(_that.$route.path==='/uc/orders'){
+          if (_that.$route.path === '/uc/orders') {
             _that.$parent.payTypeShow = false
             _that.$parent.password = '';
             _that.$parent.currentOrderNumber = '';
             _that.$parent.passwordModalShow = false;
             _that.$parent.payTypeShow = false;
-            _that.$parent.activeTabIndex=2;
+            _that.$parent.activeTabIndex = 2;
             _that.$parent.sta = _that.$parent.tabList[_that.$parent.activeTabIndex].sta;
             _that.$parent.getList();
-          }else{
+          } else {
             _that.popupShow = false
             _that.$emit('close', true)
+            _that.$router.push('/uc/orders')
           }
-          
+
         })
       }, (e) => {
         console.log('----- 支付失败 -----');

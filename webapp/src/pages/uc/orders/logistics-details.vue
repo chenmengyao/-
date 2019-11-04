@@ -1,9 +1,9 @@
 <template lang="html">
-  <div class="suwis-logistics-details">
+  <div class="suwis-logistics-details"style="padding-top:45px;">
     <!--  -->
-    <div class="map-box">
+    <!-- <div class="map-box">
       <el-amap :amap-manager="am" :center="center" v-if="maploaed" vid="amap" :zoom="zoom"></el-amap>
-    </div>
+    </div> -->
     <!--  -->
     <SimpleGood :name="goodInfo.title" :desc="[goodInfo.header_one, goodInfo.header_two, goodInfo.header_three]" :store-logo="goodInfo.img"></SimpleGood>
     <div class="logistics-box">
@@ -71,7 +71,7 @@ export default {
       this.getTraces().then(() => {
         setTimeout(() => {
           this.getLines().then(() => {
-            this.drawLines()
+            // this.drawLines()
           })
         }, 2000)
       })
