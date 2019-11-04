@@ -222,6 +222,7 @@
         .button-line {
             // position: fixed;
             position: relative;
+            bottom: 0px;
             width: 100%;
             margin-bottom: 25px;
             text-align: center;
