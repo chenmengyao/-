@@ -23,6 +23,7 @@
         },
         methods: {
             onClick(key) {
+                console.log(key,'key')
                 this.$emit('on-click', key, this.orderId, this.orderNumer, this.orderData)
             }
         }

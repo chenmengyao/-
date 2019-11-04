@@ -257,7 +257,7 @@ export default {
           this.evaluateOrder(orderId)
           break
         case 'delete':
-          this.deleteOrder(orderId)
+          this.deleteOrder(orderId,orderNumer)
           break
         case 'viewProgress':
           this.viewProgress(orderId)
@@ -278,9 +278,11 @@ export default {
             }) => {
               if (data.code === 1) {
                 this.$toast('确认收货成功');
-                this.password = ''
-                this.currentOrderId = ''
-                this.passwordModalShow = false
+                this.password = '';
+                this.currentOrderId = '';
+                this.passwordModalShow = false;
+                this.activeTabIndex=4;
+                this.sta = this.tabList[this.activeTabIndex].sta;
                 this.getList()
               } else {
                 this.password = ''
@@ -354,6 +356,7 @@ export default {
       })
     },
     async payOrder(orderId, orderNumer) {
+      console.log(orderNumer,orderId,555)
       const {
         data
       } = await this.$axios.post('/order/combination', {
@@ -415,10 +418,15 @@ export default {
         }
       })
     },
-    deleteOrder(orderId) {
+    async deleteOrder(orderId, orderNumer) {
+      const {
+        data
+      } = await this.$axios.post('/order/combination', {
+        order: orderNumer
+      })
       this.$dialog.confirm({
         title: '删除订单',
-        message: '您确定要删除该订单吗？'
+        message: data.data=='2'?'您确定要删除该订单吗？':'该订单为组合订单，你确定要删除该订单吗？'
       }).then(() => {
         this.$axios
           .post('/order/delete', {
