@@ -4,9 +4,12 @@
     <van-search @search="goList"
       placeholder="请输入搜索关键词"
       v-model="keyWord"
+      @cancel="onCancel"
+      @focus="onfocus"
+      :show-action="showAction"
       style="text-align:center" />
   </div>
-  <div v-for="(items,index) in tabList">
+  <div v-show="!showAction" v-for="(items,index) in tabList">
     <div class="suwis-classify-con">
       <div class="suwis-classify-btn">
         <div v-for="(item,idxs) in items">
@@ -50,6 +53,30 @@
       </div>
     </div>
   </div>
+  <div class="seachHistoly">
+    <van-row type="flex" align="spaceBetween" class="tip" style="justify-content: space-between;">
+      <van-col > 搜索历史</van-col>
+      <van-col>
+        <van-icon name="delete" v-if="!showDel" style="font-size:16px" @click="showDel=true"/>
+        <div v-else class="delBox">
+          <span @click="clearHis('all')">全部清除</span>
+          <span @click="showDel=false">完成</span>
+        </div>
+      </van-col>
+    </van-row>
+    <div class="d-title" v-if="histolyList.length>0">
+      <span class="d-tips"
+        v-for="(it,ids) in histolyList" :key="ids" @click="goList(it)">
+        <span >
+          {{it}}
+        </span>
+        <van-icon v-if="showDel" name="cross" @click.stop="clearHis('11',ids)"/>
+      </span>
+    </div>
+    <div class="nohis" v-else>
+       暂无历史记录...
+    </div>
+  </div>
 </div>
 </template>
 <script>
@@ -60,10 +87,22 @@ export default {
       classifyBan: '',
       tabList: [],
       num: 0,
-      banner: []
+      banner: [],
+      showAction: false,
+      histolyList: [],
+      showDel: false
     }
   },
   methods: {
+    onCancel() {
+      this.showAction = false;
+    },
+    onfocus() {
+      this.showAction = true;
+    },
+    onfocus() {
+      this.showAction = true;
+    },
     classifyBtn(index) {
       this.num = index
     },
@@ -74,23 +113,82 @@ export default {
         this.tabList.push(res.data.data)
       })
     },
-    goList() {
+    goList(keyWord) {
+      if (this.showDel&&keyWord) {
+        return
+      }
+      var keyw = keyWord || this.keyWord;
+      this.histolyList.push(keyw);
+      this.histolyList = [...new Set(this.histolyList)];
+      sessionStorage.setItem('histolyList',JSON.stringify(this.histolyList))
+      
       this.$router.push({
         path: '/goods/list',
         query: {
-          search: this.keyWord
+          search: keyw
         }
       })
+    },
+    clearHis(type,inx) {
+      if (type==='all') {
+        this.histolyList = [];
+        this.showDel = false;
+      }else {
+        this.histolyList.splice(inx,1)
+      }
+      sessionStorage.setItem('histolyList',JSON.stringify(this.histolyList))
+    },
+  },
+  watch: {
+    showAction() {
+      if (this.showAction) {
+        this.$store.commit('core/hideTabbar')
+      }else {
+        this.$store.commit('core/showTabbar')
+      }
     }
   },
   created() {
-    this.getClassify()
+    this.getClassify();
+    if (sessionStorage.getItem('histolyList')) {
+      this.histolyList = JSON.parse(sessionStorage.getItem('histolyList'))
+    }else {
+      this.histolyList = [];
+    }
   },
   activated(){
     this.keyWord='';
   }
 }
 </script>
+<style  lang="css">
+.seachHistoly .d-tips {
+  background-color: #eee;
+  position: relative;
+}
+.seachHistoly .delBox>span:first-child {
+  padding-right: 5px;
+  margin-right: 5px;
+  border-right: 1px solid #aaa;
+}
+.seachHistoly .delBox>span:last-child {
+  color: red;
+}
+.seachHistoly .d-tips .van-icon{
+  background-color: red;
+  position: absolute;
+  height: 13px;
+  width: 13px;
+  line-height: 13px;
+  text-align: center;
+  color: #fff;
+  font-size: 10px;
+  border-radius: 50%;
+  right: -6px;
+  top: -10px;
+}
+</style>
+
 <style lang="css" scoped>
 .suwis-classify-con{
   display: flex;
@@ -99,6 +197,25 @@ export default {
   text-align: left;
   font-size: 12px;
   color: #333;
+}
+.seachHistoly {
+  font-size: 12px;
+}
+.seachHistoly .tip {
+  color: #666;
+  padding: 20px 20px 20px;
+}
+.seachHistoly .d-titles {
+  background-color: #eee;
+}
+.seachHistoly .nohis {
+  color: #ccc;
+  padding: 20p;
+  text-align: center;
+}
+.seachHistoly .tip .van-icon {
+  color: #333;
+  font-size: 16px;
 }
 .suwis-classify-btn,
 .suwis-classify-list {
