@@ -193,6 +193,7 @@ export default {
             _that.$parent.payTypeShow = false;
             _that.$parent.activeTabIndex=2;
             _that.$parent.sta = _that.$parent.tabList[_that.$parent.activeTabIndex].sta;
+            _that.$parent.getList();
           }else{
             _that.popupShow = false
             _that.$emit('close', true)

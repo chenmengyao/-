@@ -146,7 +146,7 @@ export default {
       // 重置页码参数
       this.flay=true;
       if (type === 'reset') {
-        this.list = []
+        this.list = [];
         this.page = 1
       }
       const {
@@ -283,7 +283,8 @@ export default {
                 this.passwordModalShow = false;
                 this.activeTabIndex=4;
                 this.sta = this.tabList[this.activeTabIndex].sta;
-                this.getList()
+
+                this.getList();
               } else {
                 this.password = ''
                 this.$toast(data.msg);
@@ -307,6 +308,7 @@ export default {
                 this.$toast('支付成功');
                 this.activeTabIndex=2;
                 this.sta = this.tabList[this.activeTabIndex].sta;
+                this.list=[];
                 this.getList();
               } else {
                 this.password = ''
@@ -356,7 +358,6 @@ export default {
       })
     },
     async payOrder(orderId, orderNumer) {
-      console.log(orderNumer,orderId,555)
       const {
         data
       } = await this.$axios.post('/order/combination', {
@@ -451,7 +452,6 @@ export default {
   activated() {
     this.activeTabIndex = this.$route.query.activeTabIndex || 0;
     this.sta = this.tabList[this.activeTabIndex].sta;
-    console.log(this.$route.path,'55')
     if(this.$route.query&&this.$route.query.type&&this.$route.query.type=='0000'&&this.flay){
       this.loading = true
       this.finished = false
