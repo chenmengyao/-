@@ -123,7 +123,7 @@ export default {
         this.formMsg.passwordConfirm = '两次输入的密码不一致'
         return
       }
-      if (!/^[a-zA-Z0-9]\w{5,17}$/.test(this.formData.paypass)) {
+      if (!/^\d{6}$/.test(this.formData.paypass)) {
         this.formMsg.paypass = '请输入6位数字支付密码'
         return
       }

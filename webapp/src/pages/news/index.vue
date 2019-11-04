@@ -99,6 +99,7 @@ export default {
     // }
   },
   created() {
+    this.$store.commit('core/hideTabbar')
     // this.getNewsList(1,10)
   }
 }

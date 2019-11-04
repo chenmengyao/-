@@ -18,7 +18,7 @@
     <!--  -->
     <van-row>
       <van-col span="24" class="title">
-        {{details.title}}
+        {{details.hdtitle}}
       </van-col>
     </van-row>
     <template v-if="details.type!=2">
@@ -423,8 +423,10 @@ export default {
       // 设置价格
       this.sku.price = this.details.price_min
       this.sku.stock_num = this.details.inventory;
-      this.skugoods = this.details
-      this.skugoods.title = ''
+      this.skugoods = this.details;
+      this.details.hdtitle = this.details.title;
+      this.details.title = '';
+      // this.skugoods.title = this.details.title
       this.skugoods.picture = this.details.img
     }
   },

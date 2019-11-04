@@ -18,7 +18,7 @@
     <comment-list v-if="list">
       <comment-item v-for="(item,idx) in list"
         :name="item.nickname"
-        :date="$moment(item.evaluate_time).format('YYYY-mm-DD HH:MM:SS')"
+        :date="item.evaluate_time"
         :avatar="item.photo"
         :score="((item.evaluate_express + item.evaluate_serve + item.evaluate_quality) / 15) * 5"
         :content="item.evaluate"

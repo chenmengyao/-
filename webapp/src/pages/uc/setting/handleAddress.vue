@@ -52,14 +52,10 @@
                             const tip = this.id ? '创建成功' : '修改成功'
                             this.$toast(tip);
                             if (this.query.from) {
-                                this.$router.replace({
-                                    path: '/uc/setting/address',
-                                    query: { 
-                                        ...this.query
-                                    }
-                                })
+                                this.$router.go(-1)
                             }else {
-                                this.$router.replace('/uc/setting/address')
+                                 this.$router.go(-1)
+                                // this.$router.replace('/uc/setting/address')
                             }
                             
                         } else {

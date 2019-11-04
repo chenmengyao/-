@@ -48,8 +48,8 @@
                     this.$router.push({
                         path: '/uc/setting/handleAddress',
                         query: { 
+                            ...this.query,
                             id,
-                            ...this.query
                         }
                     })
                     return
@@ -109,7 +109,7 @@
         },
         created() {
             this.getAddresses()
-            Object.assign(this.query, this.$route.query)
+            Object.assign(this.query, {...this.$route.query,gooid: this.$route.query.id})
         },
     }
 </script>
