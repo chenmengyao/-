@@ -295,7 +295,8 @@
                                 this.$toast('确认收货成功');
                                 this.password = ''
                                 this.currentOrderId = ''
-                                this.passwordModalShow = false
+                                this.passwordModalShow = false;
+                                this.getDate()
                             } else {
                                 this.password = ''
                                 this.$toast(data.msg);
@@ -430,11 +431,9 @@
                     }
                     return result
                 }, [])
-            }
-        },
-        created() {
-            this.id = this.$route.query.id
-            this.$axios
+            },
+            getDate(){
+                this.$axios
                 .post('/order/detail', {
                     id: this.id
                 })
@@ -457,6 +456,12 @@
                         this.contactWay=data.data
                     }
                 })
+            }
+        },
+        created() {
+            this.id = this.$route.query.id;
+            this.getDate();
+            
         }
     }
 </script>

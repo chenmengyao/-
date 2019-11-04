@@ -173,6 +173,7 @@
         box-sizing: border-box;
         .content-div{
             height: calc(100% - 70px);
+            position: relative;
         }
         .content {
             background-color: #fff;
@@ -220,6 +221,7 @@
         }
         .button-line {
             // position: fixed;
+            position: relative;
             width: 100%;
             margin-bottom: 25px;
             text-align: center;
