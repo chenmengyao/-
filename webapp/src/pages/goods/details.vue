@@ -48,7 +48,15 @@
       </van-row>
     </template>
     <van-cell class="interval" title="型号" is-link :value="current.selectedSkuComb.name" @click="showSku('hideSku')"/>
-    <van-cell class="interval" title="店铺地址" :value="details.store&&details.store.site" />
+    
+    <van-row>
+        <van-col span="6">店铺地址</van-col>
+        <van-col span="18" style="color:#969799;text-align:right;">{{details.store&&details.store.site}}</van-col>
+    </van-row>
+    <van-cell class=" style" style="padding:0;">
+        <!-- <span slot="title">店铺地址</span>
+        <span >{{details.store&&details.store.site}}</span> -->
+    </van-cell>
     <van-cell title="运费"  :value="details.postage==0?'免邮':details.postage+'元'" />
     <van-cell v-if="details.is7=='true'">
       <span slot="title"><img class="security" src="@/assets/details/security@3x.png" alt="">该商品支持7天无理由退款</span>
@@ -615,6 +623,9 @@ export default {
             object-fit: cover;
         }
     }
+    .style .van-cell__title{
+      min-width: 10%;
+    }
 }
 </style>
 <style lang="scss" scoped>
@@ -750,6 +761,7 @@ export default {
     }
     .interval {
         border-top: 6px solid $border;
+        align-items: center;
     }
     .shop {
         position: fixed;
