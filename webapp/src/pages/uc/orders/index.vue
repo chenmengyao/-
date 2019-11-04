@@ -381,6 +381,7 @@ export default {
           })
       } else if (data.data === 2) { // 不是组合订单
         this.getBalance()
+        console.log(this.payTypeShow ,'this.payTypeShow ')
         this.payTypeShow = true
         this.passwordModalType = 'pay'
         this.currentOrderNumber = orderNumer
@@ -452,9 +453,10 @@ export default {
   activated() {
     this.activeTabIndex = this.$route.query.activeTabIndex || 0;
     this.sta = this.tabList[this.activeTabIndex].sta;
+    this.payTypeShow=false;
     if(this.$route.query&&this.$route.query.type&&this.$route.query.type=='0000'&&this.flay){
-      this.loading = true
-      this.finished = false
+      this.loading = true;
+      this.finished = false;
       this.getList();
     }
   },
