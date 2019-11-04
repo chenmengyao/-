@@ -143,10 +143,10 @@
         <div class="van-sku__goods-price" v-if="details.type==2&&details.isauction==1">
           <span class="van-sku__price-symbol">当前价格：</span>
         </div>
-        <div class="van-sku__goods-price" v-if="details.type==2&&details.isauction==1">
+        <div class="van-sku__goods-price" v-if="details.type==2">
           <span class="van-sku__price-symbol">￥</span><span class="van-sku__price-num">{{ details.price_max }}</span>
         </div>
-        <div class="van-sku__goods-price" v-if="!(details.type==2&&details.isauction==1)">
+        <div class="van-sku__goods-price" v-if="!(details.type==2)">
           <span class="van-sku__price-symbol">￥</span><span class="van-sku__price-num">{{ props.price }}</span>
         </div>
         <div class="van-sku__stock">
@@ -157,26 +157,29 @@
         </div>
       </template>
       <!-- 数量 -->
-      <!-- <template slot="sku-stepper" v-if="details.type==2" slot-scope="props">
-        <van-row type="flex" align="center">
-          <van-col>数量：</van-col>
-          <van-col><van-stepper v-model="current.selectedNum" disabled /></van-col>
-        </van-row>
-      </template> -->
       <!-- 数量 -->
-      <template slot="sku-stepper" v-if="details.type==2" slot-scope="props">
-        <van-row type="flex" align="center">
-          <van-col> 数量</van-col>
-          <van-col><van-stepper v-model="current.selectedNum"  disabled/></van-col>
-        </van-row>
-        <van-row type="flex" align="center"  v-if="details.isauction==1">
-          <van-col> 出价</van-col>
-          <van-col><van-stepper v-model="currentMarkup"  :min="details.price_max+details.lowest_price"/></van-col>
-          <van-col> 每次加价不低于￥{{details.lowest_price}}</van-col>
-        </van-row>
-        <van-row type="flex" align="center"  v-if="details.isauction==1">
-          <van-col> <span class="redSpan">*</span>最低出价<span class="redSpan">{{details.price_min}}</span>元</van-col>
-        </van-row>
+      <template slot="sku-stepper"  slot-scope="props">
+        <div v-if="details.type!==2">
+          <van-row type="flex" align="center">
+            <van-col> 数量</van-col>
+            <van-col><van-stepper v-model="current.selectedNum"  /></van-col>
+          </van-row>
+        </div>
+        <div v-else>
+          <van-row type="flex" align="center">
+            <van-col> 数量</van-col>
+            <van-col><van-stepper v-model="current.selectedNum"  disabled/></van-col>
+          </van-row>
+          <van-row type="flex" align="center"  v-if="details.isauction==1">
+            <van-col> 出价</van-col>
+            <van-col><van-stepper v-model="currentMarkup"  :min="details.price_max+details.lowest_price"/></van-col>
+            <van-col> 每次加价不低于￥{{details.lowest_price}}</van-col>
+          </van-row>
+          <van-row type="flex" align="center"  v-if="details.isauction==1">
+            <van-col> <span class="redSpan">*</span>最低出价<span class="redSpan">{{details.price_min}}</span>元</van-col>
+          </van-row>
+        </div>
+        
       </template>
       <!--  -->
       <div slot="sku-messages"></div>
@@ -576,6 +579,10 @@ export default {
 </script>
 <style lang="scss">
 .suwis-good-details {
+    .van-sku-body .van-stepper__input {
+      width: 60px;
+      margin: 0 1px;
+    }
     .van-sku-header__goods-info {
       padding-top: 0;
       .van-sku__goods-name1 {

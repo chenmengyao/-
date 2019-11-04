@@ -49,16 +49,17 @@
     <van-goods-action-mini-btn
       icon="chat-o"
       text="客服"
-      @click.native="$router.push({path: '/mine/message/getsm', query: {store_id: $route.query.id}})"
+      @click.native="$router.push({path: '/mine/message/getsm', query: {store_id: details.store_id}})"
     />
+    
     <van-goods-action-mini-btn
       icon="shop-o"
       text="店铺"
-      @click.native="$router.push({path: '/shop', query: {id: details.store.id }})"
+      @click.native="$router.push({path: '/shop', query: {id: details.store_id }})"
     />
     <van-goods-action-big-btn
       primary
-      :text="details.isauction==1?'立即出价': `支付定金 (￥${(details.stand[0].auction_price * 0.1 || 0).toFixed(2)} )`"
+      :text="details.isauction==1?'立即出价': `支付定金 (￥${( details.price_max*0.1 || 0).toFixed(2)} )`"
       @click.native="$parent.showSku('showKeyboard')"
     />
    </van-goods-action>
@@ -199,13 +200,13 @@ export default {
         this.$store.commit('core/header', {
           title: '定金支付',
           buttons: {
-            right: {
-              fontSize: '27px',
-              text: '\ue655',
-              onclick: () => {
-                this.shareVisible = false
-              }
-            }
+            // right: {
+            //   fontSize: '27px',
+            //   text: '\ue655',
+            //   onclick: () => {
+            //     this.shareVisible = false
+            //   }
+            // }
           }
         })
       }else {

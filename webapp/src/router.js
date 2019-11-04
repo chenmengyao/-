@@ -221,7 +221,7 @@ export const routes = [
          },
          {
            path: "/uc/orders/details",
-           name: "订单-订单详情",
+           name: "我的订单",
            component: () => import("./pages/uc/orders/details.vue")
          },
          {

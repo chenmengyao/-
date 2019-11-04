@@ -37,7 +37,7 @@
                     <span class="suwis-auction-date"> {{item.endTime[5]}}</span> -->
                   </span>
                 </div>
-                <div style="text-align:right;font-size:12px"><span style="color:#E83F44 ">{{item.price_count}}</span><span class="suwis-current-price">次出价</span></div>
+                <div style="text-align: right;font-size: 12px;position: absolute;right: 0;bottom: 0px;"><span style="color:#E83F44 ">{{item.price_count}}</span><span class="suwis-current-price">次出价</span></div>
               </div>
             </router-link>
           </div>
@@ -237,6 +237,7 @@ export default {
 .suwis-news-right {
     text-align: left;
     flex: 1;
+    position: relative;
 }
 
 .suwis-news-left {
@@ -245,9 +246,9 @@ export default {
 }
 
 .suwis-news-right {
-    max-width: 80px;
+    max-width: 85px;
     /* min-width: 140px; */
-    height: 80px;
+    height: 85px;
     border-radius: 6px;
     overflow: hidden;
 
@@ -291,7 +292,7 @@ export default {
 }
 
 .suwis-news-tips {
-    height: 30px;
+    // height: 30px;
     /* margin-top: 3px; */
 }
 
@@ -374,7 +375,7 @@ export default {
 }
 
 .suwis-news-tips > div:nth-child(3) {
-    margin-top: 5px;
+    // margin-top: 5px;
 }
 
 .van-swipe__indicators {

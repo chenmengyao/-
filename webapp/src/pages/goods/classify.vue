@@ -22,8 +22,13 @@
           <van-swipe :autoplay="3000"
             indicator-color="white">
             <van-swipe-item v-for="item in banner">
-              <img :src="item.img"
-                width="100%">
+               <router-link tag="div"
+                :to="{path: '/goods/details', query: {id: item.goods_id}}">
+                <img :src="item.img"
+                  :data-error="require('../../assets/more.jpg')"
+                  :data-loading="require('../../assets/loading_alpha.png')"
+                  >
+              </router-link>
             </van-swipe-item>
           </van-swipe>
         </div>
