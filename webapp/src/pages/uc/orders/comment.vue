@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="suwis-comment">
+    <div class="suwis-comment" ref=''>
         <div class='content-div'>
             <main class="content">
                 <SimpleGood
@@ -64,9 +64,9 @@
                 
             </main>
         </div>
-        <div class="button-line">
+        <footer class="button-line">
             <div class="deploy" @click="submit">发布</div>
-        </div>
+        </footer>
     </div>
 </template>
 
@@ -86,9 +86,13 @@
                 evaluate_express: 5,
                 maxSize: 5 * 1024 * 1024,    // 上传图片的最大kb
                 imgList: [],
-                orderId: ''
+                orderId: '',
+                clientHeight: '0px'
             }
         },
+        // mounted(){
+        //     // this.clientHeight = `${document.body.clientHeight}px`
+        // },
         methods: {
             onRead(file) {
                 if (this.imgList >= 5) {
@@ -147,7 +151,8 @@
             }
         },
         created() {
-            this.orderId = this.$route.query.id
+            this.orderId = this.$route.query.id;
+            this.clientHeight = `${document.body.clientHeight}px`
             this.$axios
                 .post('/order/detail', {
                     id: this.orderId
