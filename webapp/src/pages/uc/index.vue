@@ -258,6 +258,18 @@ export default {
   },
   created() {
     this.getUserInfo();
+    this.$store.commit('core/header', {
+        title: '个人中心',
+        buttons: {
+            right: {
+            fontSize: '27px',
+            text: '\ue655',
+            onclick: () => {
+                this.qrCodeShow = false
+            }
+            }
+        }
+    })
   },
   beforeRouteLeave (to, from, next) {
       this.qrCodeShow = false;

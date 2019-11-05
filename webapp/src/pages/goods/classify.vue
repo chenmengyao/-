@@ -120,7 +120,8 @@ export default {
       var keyw = keyWord || this.keyWord;
       this.histolyList.push(keyw);
       this.histolyList = [...new Set(this.histolyList)];
-      sessionStorage.setItem('histolyList',JSON.stringify(this.histolyList))
+      
+      localStorage.setItem('histolyList',JSON.stringify(this.histolyList))
       
       this.$router.push({
         path: '/goods/list',
@@ -136,7 +137,7 @@ export default {
       }else {
         this.histolyList.splice(inx,1)
       }
-      sessionStorage.setItem('histolyList',JSON.stringify(this.histolyList))
+      localStorage.setItem('histolyList',JSON.stringify(this.histolyList))
     },
   },
   watch: {
@@ -150,11 +151,23 @@ export default {
   },
   created() {
     this.getClassify();
-    if (sessionStorage.getItem('histolyList')) {
-      this.histolyList = JSON.parse(sessionStorage.getItem('histolyList'))
+    if (localStorage.getItem('histolyList')) {
+      this.histolyList = JSON.parse(localStorage.getItem('histolyList'))
     }else {
       this.histolyList = [];
     }
+    this.$store.commit('core/header', {
+      title: '商品分类',
+      buttons: {
+        right: {
+          fontSize: '27px',
+          text: '\ue655',
+          onclick: () => {
+            this.showAction = true
+          }
+        }
+      }
+    })
   },
   activated(){
     this.keyWord='';
