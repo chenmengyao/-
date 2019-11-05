@@ -188,7 +188,7 @@ export default {
           var charBox = document.querySelector('#d-content-scroll')
             charBox.scrollTop = charBox.scrollHeight-charBox.clientHeight
           }
-        }, 300);
+        }, 2000);
       })
     },
     getMessage() {
