@@ -261,10 +261,9 @@
             this.getUserInfo()
             
         },
-        
-        destroyed () {
+         beforeRouteLeave (to, from, next) {
             this.qrCodeShow = false;
-            alert('this.qrCodeShow'+this.qrCodeShow);
+            next()
         }
     }
 </script>

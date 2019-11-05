@@ -84,9 +84,9 @@ export default {
       this.$store.commit('core/toggleHeader', !val)
     }
   },
-  destroyed () {
+  beforeDestroy () {
+      alert(888)
       this.closePopup();
-      alert('this.popupShow'+this.popupShow)
   }
 }
 </script>
