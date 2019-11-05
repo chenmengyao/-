@@ -8,8 +8,8 @@
              </div>
           <div v-for="(item,index) in text">
             <p style="line-height:26px;font-size:14px;color:#666">{{item.textContent}}</p>
-            <div style="display:flex;padding:0 12px;">
-              <img :src="good[index].img" width="100%">
+            <div style="display:flex;padding:0 12px;" @click='toGoods(good[index].id)'>
+              <img :src="good[index]?good[index].img:''" width="100%">
             </div>
          </div>
        </div>
@@ -43,6 +43,9 @@ export default {
           })
         } catch (e) { }
       })
+    },
+    toGoods(id){
+      this.$router.push({path:'/goods/details', query: {id: id}})
     }
   },
   created() {

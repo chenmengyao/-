@@ -143,7 +143,13 @@
                     .then(({ data }) => {
                         if (data.code === 1) {
                             this.$toast('发布成功')
-                            this.$router.push('/uc/orders')
+                            this.$router.push({
+                                path: '/uc/orders',
+                                query: {
+                                    activeTabIndex: 2,
+                                    type:'0000'
+                                }
+                            })
                         } else {
                             this.$toast(data.msg);
                         }
