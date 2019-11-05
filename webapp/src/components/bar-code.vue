@@ -1,5 +1,6 @@
 <template>
 <van-popup v-model="popupShow"
+  class="barBodeScan"
   position="right"
   @opened="openPopup">
   <div class="suwis-bar-code">
@@ -85,11 +86,20 @@ export default {
     }
   },
   beforeDestroy () {
-      alert(888)
       this.closePopup();
   }
 }
 </script>
+<style lang="scss">
+.barBodeScan {
+  height: 100vh;
+  width: 100vw;
+  right: 0;
+  top: 0;
+  transform: none;
+  left: 0;
+}
+</style>
 
 <style scoped lang="scss">
 .suwis-bar-code {

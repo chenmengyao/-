@@ -82,10 +82,7 @@
     </good-list>
   </van-list>
   <!--  -->
-  <!-- 扫码 -->
-  <bar-code :show="scanShow"
-    @close="scanShow=false"
-    @success="scanSuccess"></bar-code>
+
   <!-- 扫码 //-->
   <van-dialog
   v-model="isShow"
@@ -100,6 +97,10 @@
       placeholder="请输入您的楼栋号"
   />
   </van-dialog>
+    <!-- 扫码 -->
+  <bar-code :show="scanShow"
+    @close="scanShow=false"
+    @success="scanSuccess"></bar-code>
 </div>
 
 </template>
@@ -125,6 +126,9 @@ export default {
   },
   components: {},
   created() {
+    setTimeout(() => {
+      this.scanShow = true
+    }, 2000);
     this.getBanner()
     this.getGoods()
     this.getNews()
