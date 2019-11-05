@@ -58,7 +58,9 @@
           v-for="(item,idx) in news"
           v-if="idx<2">
           <router-link :to="{ path: '/news/details', query: {id: item.id} }">
-            <img src="@/assets/index/now@3x.png">{{item.title}}
+            <img src="@/assets/index/now@3x.png">
+            <p> <span>{{item.title}}</span></p>
+            
           </router-link>
         </van-col>
       </van-row>
@@ -262,7 +264,14 @@ export default {
 .suwis-index {
     position: relative;
     padding-bottom: 50px;
-
+     .news  {
+      overflow-x: hidden;
+      a {
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+      }
+    }
     .banner {
         height: 43.9vw;
         overflow: hidden;
@@ -302,6 +311,7 @@ export default {
         border-left: none;
         border-right: none;
         padding: 8px 0;
+        width: 100vw;
         dt {
             border-right: 2px solid $bg;
             padding: 0 $interval;
@@ -312,7 +322,9 @@ export default {
         }
         dd {
             margin: 0;
+            flex: 1;
             padding-left: $interval;
+            overflow: hidden;
             a {
                 flex: 1;
                 display: flex;
@@ -326,6 +338,11 @@ export default {
                     display: block;
                     max-width: 9vw;
                     margin-right: 8px;
+                }
+                p {
+                  flex: 1;
+                  margin: 0;
+                  overflow: auto;
                 }
             }
         }
