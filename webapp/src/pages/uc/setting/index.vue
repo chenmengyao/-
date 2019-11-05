@@ -259,18 +259,7 @@
         },
         created() {
             this.getUserInfo()
-            this.$store.commit('core/header', {
-                title: '设置',
-                buttons: {
-                    left: {
-                    fontSize: '27px',
-                    text: '\ue6b6',
-                    onclick: () => {
-                        this.qrCodeShow = false
-                    }
-                    }
-                }
-            }) 
+            
         },
         beforeRouteLeave (to, from, next) {
             alert('66666666')
