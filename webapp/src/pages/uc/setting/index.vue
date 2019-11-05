@@ -273,6 +273,7 @@
             }) 
         },
         beforeRouteLeave (to, from, next) {
+            alert('66666666')
             this.qrCodeShow = false;
             next()
             // ...

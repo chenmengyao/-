@@ -156,18 +156,18 @@ export default {
     }else {
       this.histolyList = [];
     }
-    this.$store.commit('core/header', {
-      title: '商品分类',
-      buttons: {
-        right: {
-          fontSize: '27px',
-          text: '\ue655',
-          onclick: () => {
-            this.showAction = true
-          }
-        }
-      }
-    })
+    // this.$store.commit('core/header', {
+    //   title: '商品分类',
+    //   buttons: {
+    //     right: {
+    //       fontSize: '27px',
+    //       text: '\ue655',
+    //       onclick: () => {
+    //         this.showAction = true
+    //       }
+    //     }
+    //   }
+    // })
   },
   activated(){
     this.keyWord='';
