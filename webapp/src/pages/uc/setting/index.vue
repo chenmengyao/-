@@ -114,7 +114,7 @@
         methods: {
             barCodeScan() {
                 const { user_type } = this
-                if (user_type === 2) {
+                if (user_type === 0) {
                     this.qrCodeShow = true
 
                 } else if (user_type === 2) {
@@ -262,9 +262,9 @@
             this.$store.commit('core/header', {
                 title: '设置',
                 buttons: {
-                    right: {
+                    left: {
                     fontSize: '27px',
-                    text: '\ue655',
+                    text: '\ue6b6',
                     onclick: () => {
                         this.qrCodeShow = false
                     }

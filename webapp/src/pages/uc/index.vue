@@ -261,9 +261,9 @@ export default {
     this.$store.commit('core/header', {
         title: '个人中心',
         buttons: {
-            right: {
+            left: {
             fontSize: '27px',
-            text: '\ue655',
+            text: '\ue6b6',
             onclick: () => {
                 this.qrCodeShow = false
             }
