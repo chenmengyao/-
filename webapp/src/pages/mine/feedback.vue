@@ -59,7 +59,7 @@ export default {
         // 右边图标
         right: {
           // 按钮文字
-          text: '历史纪录',
+          text: '历史记录',
           width: '96',
           // 监听点击
           onclick: () => {

@@ -158,6 +158,11 @@ export default {
   },
   activated(){
     this.keyWord='';
+  },
+  beforeRouteLeave (to, from, next) {
+    // ...
+    this.showAction = false;
+    next()
   }
 }
 </script>

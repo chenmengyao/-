@@ -114,7 +114,7 @@
         methods: {
             barCodeScan() {
                 const { user_type } = this
-                if (user_type === 0) {
+                if (user_type === 2) {
                     this.qrCodeShow = true
 
                 } else if (user_type === 2) {

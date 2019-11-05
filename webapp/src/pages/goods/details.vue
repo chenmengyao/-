@@ -179,9 +179,9 @@
             <van-col><van-stepper v-model="current.selectedNum"  disabled/></van-col>
           </van-row>
           <van-row type="flex" align="center"  v-if="details.isauction==1">
-            <van-col> 出价</van-col>
-            <van-col><van-stepper v-model="currentMarkup"  :min="details.price_max+details.lowest_price"/></van-col>
-            <van-col> 每次加价不低于￥{{details.lowest_price}}</van-col>
+            <van-col  style="white-space: nowrap;" > 出价</van-col>
+            <van-col style="min-width: 156px;"><van-stepper v-model="currentMarkup"  :min="details.price_max+details.lowest_price"/></van-col>
+            <sapn style="font-size:11px"> 每次加价不低于￥{{details.lowest_price}}</sapn>
           </van-row>
           <van-row type="flex" align="center"  v-if="details.isauction==1">
             <van-col> <span class="redSpan">*</span>最低出价<span class="redSpan">{{details.price_min}}</span>元</van-col>
