@@ -261,9 +261,7 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
       this.qrCodeShow = false;
-      var BarCode = document.querySelector('#ucBarCode');
-      BarCode&&BarCode.remove();
-      debugger
+      alert(this.qrCodeShow,'this.qrCodeShow')
       next();
       // ...
   }

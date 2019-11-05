@@ -263,8 +263,7 @@
         },
         beforeRouteLeave (to, from, next) {
             this.qrCodeShow = false;
-            this.$refs['ucBarCode']&&this.$refs['ucBarCode'].closePopup()
-            alert(this.$ref['ucBarCode'])
+            alert('this.qrCodeShow')
             next()
             // ...
         }

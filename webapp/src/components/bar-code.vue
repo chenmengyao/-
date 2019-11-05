@@ -83,6 +83,12 @@ export default {
       this.$store.commit('core/toggleTabbar', !val)
       this.$store.commit('core/toggleHeader', !val)
     }
+  },
+  beforeRouteLeave (to, from, next) {
+      this.closePopup();
+      alert('this.popupShow',this.popupShow)
+      next();
+      // ...
   }
 }
 </script>
