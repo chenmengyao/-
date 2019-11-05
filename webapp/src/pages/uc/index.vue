@@ -119,7 +119,7 @@
                 </router-link>
             </li>
         </ul>
-        <BarCode :show="qrCodeShow" @close="closeBarCode" @success='scanSuccess'></BarCode>
+        <BarCode id="ucBarCode" :show="qrCodeShow" @close="closeBarCode" @success='scanSuccess'></BarCode>
         <van-dialog
             v-model="isShow"
             show-cancel-button
@@ -258,22 +258,12 @@ export default {
   },
   created() {
     this.getUserInfo();
-    this.$store.commit('core/header', {
-        title: '个人中心',
-        buttons: {
-            left: {
-            fontSize: '27px',
-            text: '\ue6b6',
-            onclick: () => {
-                this.qrCodeShow = false
-            }
-            }
-        }
-    })
   },
   beforeRouteLeave (to, from, next) {
       this.qrCodeShow = false;
-      next()
+      var BarCode = document.querySelector('#ucBarCode');
+      BarCode.remove()
+      next();
       // ...
   }
 }
