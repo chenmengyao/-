@@ -261,7 +261,7 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
       this.qrCodeShow = false;
-      alert(this.qrCodeShow,'this.qrCodeShow')
+      alert(this.qrCodeShow+'this.qrCodeShow')
       next();
       // ...
   }

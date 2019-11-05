@@ -84,11 +84,9 @@ export default {
       this.$store.commit('core/toggleHeader', !val)
     }
   },
-  beforeRouteLeave (to, from, next) {
+  destroyed () {
       this.closePopup();
-      alert('this.popupShow',this.popupShow)
-      next();
-      // ...
+      alert('this.popupShow'+this.popupShow)
   }
 }
 </script>
