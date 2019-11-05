@@ -45,5 +45,6 @@ export default {
 <style lang="scss">
 #app {
     width: 100vw;
+	z-index: 99999999;
 }
 </style>

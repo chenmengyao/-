@@ -1,7 +1,12 @@
 <template>
 <div class="suwis-confirm-order">
   <van-cell-group class="address">
-    <van-cell :title="`收货人：${address.name}（${address.tel}）`" />
+    <div></div>
+  <van-cell>
+    <div slot="title">收货人：{{address&&address.name||''}} {{address&&address.tel?'（'+address.tel+'）':''}}</div>
+    <!-- <div></div> -->
+  </van-cell>
+    <!-- <van-cell :title="`收货人：${address.name||''} ${address.tel?'（'+address.tel+'）':''} `" /> -->
     <van-cell title-class="cell-flex"
       clickable
       @click="selectAddress">
@@ -14,7 +19,6 @@
       </template>
     </van-cell>
   </van-cell-group>
-
   <template v-if="shopList && shopList.length">
     <div class="goods-box"
       v-for="shop in shopList"
@@ -198,11 +202,15 @@ export default {
   },
   filters: {
     location(v) {
-      const province = v.province || ''
-      const city = v.city || ''
-      const area = v.area || ''
-      const address = v.address || ''
-      return (province + city + area + address) || '---'
+      if(v){
+        const province = v.province || ''
+        const city = v.city || ''
+        const area = v.area || ''
+        const address = v.address || ''
+        return (province + city + area + address) || '---'
+      }
+      return '---'
+      
     }
   },
   computed: {
@@ -315,6 +323,7 @@ export default {
     },
     // 将商品数据格式化为一个数组，该数组的项是以店铺为单元的商品数组
     handleData(data) {
+      console.log(data,'shuju')
       // 先生成按照店铺id作为key的对象
       const shopData = data.reduce((result, item) => {
         if (result[item.id]) {
@@ -325,6 +334,7 @@ export default {
         return result
       }, {})
       this.shopList = Object.values(shopData)
+      console.log(this.shopList,'this.shopList')
     },
     onClick(goods) {
       this.$router.push({
@@ -513,7 +523,7 @@ export default {
     this.getBalance()
 
     this.score = this.$route.query.score
-    this.address_id = this.$route.query.address_id
+    this.address_id = this.$route.query.address_id ||''
     this.express_remark = this.$route.query.express_remark
     this.getData()
   }
