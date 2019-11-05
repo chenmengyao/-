@@ -184,11 +184,11 @@ export default {
         sessionStorage.setItem("message", JSON.stringify(this.messageList));
         this.sendMessage = ''
         setTimeout(() => {
-          if (charBox) {
           var charBox = document.querySelector('#d-content-scroll')
+          if (charBox) {
             charBox.scrollTop = charBox.scrollHeight-charBox.clientHeight
           }
-        }, 2000);
+        }, 1000);
       })
     },
     getMessage() {
