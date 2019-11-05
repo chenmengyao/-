@@ -119,7 +119,7 @@
                 </router-link>
             </li>
         </ul>
-        <BarCode id="ucBarCode" :show="qrCodeShow" @close="closeBarCode" @success='scanSuccess'></BarCode>
+        <BarCode ref="ucBarCode" :show="qrCodeShow" @close="closeBarCode" @success='scanSuccess'></BarCode>
         <van-dialog
             v-model="isShow"
             show-cancel-button
@@ -262,7 +262,8 @@ export default {
   beforeRouteLeave (to, from, next) {
       this.qrCodeShow = false;
       var BarCode = document.querySelector('#ucBarCode');
-      BarCode.remove()
+      BarCode&&BarCode.remove();
+      debugger
       next();
       // ...
   }
