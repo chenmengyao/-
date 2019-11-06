@@ -15,15 +15,19 @@
   </noscript>
   <div id="app"></div>
   <!-- built files will be auto injected -->
-  <script type="text/javascript" src="http://wechatfe.github.io/vconsole/lib/vconsole.min.js?v=3.3.0"></script>
+  <!-- <script type="text/javascript" src="http://wechatfe.github.io/vconsole/lib/vconsole.min.js?v=3.3.0"></script> -->
   <script type="text/javascript">
     // 初始化vConsole
-    window.vConsole = new window.VConsole();
+    // window.vConsole = new window.VConsole();
   </script>
   <style media="screen">
+    #__vconsole {
+      z-index: 99999;
+      position: fixed;
+    }
+
     #__vconsole .vc-switch {
       bottom: 50vw;
-      z-index: 99999;
     }
   </style>
 </body>
