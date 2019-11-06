@@ -104,7 +104,6 @@ export default {
       this.$parent.payTypeShow = false
     },
     async pay() {
-      debugger
       const id = this.payType;
       var _that = this
       if (id === 'balancepay') {
@@ -124,34 +123,28 @@ export default {
         return;
       }
       console.log('----- 请求支付 -----');
-      alert(333)
       if (id == 'yunpay') {
         // 银联支付
         let token = app.$vm.$store.getters['core/token']
         let url = `${this.$config.apihost}pay/pay/order/${this.orderId}/token/${token}/pay_type/yunpay/yunpay_notify/${this.$config.yunpaycburl}`
-        // w = plus.nativeUI.showWaiting();
+        w = plus.nativeUI.showWaiting();
         // 新开一个webview
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
         paywin.show()
-        paywin.addEventListener('rendered', () => {
-          
-          alert('444'+!!plus.webview.getWebviewById('pay_win'))
-          if (!plus.webview.getWebviewById('pay_win')) {
-            // 关闭支付弹窗
-            this.$router.replace({
-              path: '/uc/orders',
-              query: {
-                activeTabIndex: 1,
-                type: '0000'
-              }
-            })
-          }
-          
-          this.$parent.payTypeShow = false
-          // 关闭loading
-          // w.close()
-          // w = null
-        })
+        // paywin.addEventListener('rendered', () => {
+        //   // 关闭支付弹窗
+        //   this.$router.replace({
+        //     path: '/uc/orders',
+        //     query: {
+        //       activeTabIndex: 1,
+        //       type: '0000'
+        //     }
+        //   })
+        //   this.$parent.payTypeShow = false
+        //   // 关闭loading
+        //   w.close()
+        //   w = null
+        // })
         return
       }
       var appid = plus.runtime.appid;
@@ -163,8 +156,8 @@ export default {
         pay_type: id,
         order: this.orderId
       })
-      // w.close();
-      // w = null;
+      w.close();
+      w = null;
 
       let params
       // 支付宝
