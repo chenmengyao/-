@@ -103,6 +103,35 @@ export default {
       })
       this.$parent.payTypeShow = false
     },
+    ylPayHandle() {
+      setTimeout(() => {
+        var tiemId = setInterval(()=>{
+          var paywin = plus.webview.getWebviewById('pay_win');
+          if (!paywin) {
+            clearInterval(tiemId)
+            var ylpayStast = plus.storage.getItem("ylpayStast");
+            if (ylpayStast!= 'error') {
+              this.$router.replace({
+                path: '/uc/orders',
+                query: {
+                  activeTabIndex: 2,
+                  type: '0000'
+                }
+              })
+            }else {
+              this.$router.replace({
+                path: '/uc/orders',
+                query: {
+                  activeTabIndex: 1,
+                  type: '0000'
+                }
+              })
+            }
+          }
+          paywin = null;
+        },200)
+      }, 500);
+    },
     async pay() {
       const id = this.payType;
       var _that = this
@@ -131,15 +160,14 @@ export default {
         // 新开一个webview
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
         paywin.show();
-        this.$router.replace({
-          path: '/uc/orders',
-          query: {
-            activeTabIndex: 1,
-            type: '0000'
-          }
-        })
-        plus.storage.setItem("flag","yes");
-        plus.storage.getItem("ffff","yes1");
+        // this.$router.replace({
+        //   path: '/uc/orders',
+        //   query: {
+        //     activeTabIndex: 1,
+        //     type: '0000'
+        //   }
+        // })
+        this.ylPayHandle();
         this.$parent.payTypeShow = false;
         // paywin.addEventListener('rendered', () => {
           // 关闭支付弹窗
