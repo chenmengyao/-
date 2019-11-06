@@ -131,20 +131,23 @@ export default {
         // 新开一个webview
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
         paywin.show()
-        // paywin.addEventListener('rendered', () => {
-        //   // 关闭支付弹窗
-        //   this.$router.replace({
-        //     path: '/uc/orders',
-        //     query: {
-        //       activeTabIndex: 1,
-        //       type: '0000'
-        //     }
-        //   })
-        //   this.$parent.payTypeShow = false
-        //   // 关闭loading
-        //   w.close()
-        //   w = null
-        // })
+        paywin.addEventListener('rendered', () => {
+          // 关闭支付弹窗
+          // this.$router.replace({
+          //   path: '/uc/orders',
+          //   query: {
+          //     activeTabIndex: 1,
+          //     type: '0000'
+          //   }
+          // })
+          if (this.$parent&&this.$parent.payTypeShow) {
+            this.$parent.payTypeShow = false
+          }
+          
+          // 关闭loading
+          // w.close()
+          // w = null
+        })
         return
       }
       var appid = plus.runtime.appid;
