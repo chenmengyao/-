@@ -130,7 +130,14 @@ export default {
         // w = plus.nativeUI.showWaiting();
         // 新开一个webview
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
-        paywin.show()
+        paywin.show();
+        paywin.palySuc = function (params) {
+          alter('palySuc')
+        }
+        paywin.palyerr = function (params) {
+          alter('palyerr')
+        }
+        paywin.kkk = '99999'
         this.$router.replace({
           path: '/uc/orders',
           query: {
@@ -139,7 +146,7 @@ export default {
           }
         })
         this.$parent.payTypeShow = false;
-        paywin.addEventListener('rendered', () => {
+        // paywin.addEventListener('rendered', () => {
           // 关闭支付弹窗
           // this.$router.replace({
           //   path: '/uc/orders',
@@ -152,7 +159,7 @@ export default {
           // // 关闭loading
           // w.close()
           // w = null
-        })
+        // })
         return
       }
       var appid = plus.runtime.appid;
