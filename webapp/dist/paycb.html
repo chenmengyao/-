@@ -12,6 +12,7 @@
   <script type="text/javascript">
     document.addEventListener('plusready', function() {
       var paywin = plus.webview.getWebviewById('pay_win')
+      sessionStorage.setItem('pay','success')
       if (paywin) {
         paywin.close()
         paywin = null

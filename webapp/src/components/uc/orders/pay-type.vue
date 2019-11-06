@@ -131,13 +131,9 @@ export default {
         // 新开一个webview
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
         paywin.show();
-        plus.palySuc = function (params) {
-          alter('palySuc')
-        }
-        plus.palyerr = function (params) {
-          alter('palyerr')
-        }
-        plus.kkk = '99999'
+        window.addEventListener("storage", function (e){
+          alert(sessionStorage.getItem('pay'))
+        })
         this.$router.replace({
           path: '/uc/orders',
           query: {
