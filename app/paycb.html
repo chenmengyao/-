@@ -11,9 +11,7 @@
 <body>
   <script type="text/javascript">
     document.addEventListener('plusready', function() {
-      alert(9999)
       var paywin = plus.webview.getWebviewById('pay_win')
-      
       if (paywin) {
         paywin.close()
         paywin = null
