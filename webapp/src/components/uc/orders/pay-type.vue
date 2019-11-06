@@ -238,7 +238,14 @@ export default {
           } else {
             _that.popupShow = false
             _that.$emit('close', true)
-            _that.$router.push('/uc/orders')
+            // _that.$router.push('/uc/orders')
+            // this.$router.replace({
+            //   path: '/uc/orders',
+            //   query: {
+            //     activeTabIndex: 0,
+            //     type:'0000'
+            //   }
+            // })
           }
 
         })
