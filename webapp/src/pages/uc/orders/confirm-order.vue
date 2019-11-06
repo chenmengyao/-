@@ -408,7 +408,6 @@ export default {
       this.couponList.length ? this.couponShow = true : this.$toast('抱歉，暂无可用优惠券')
     },
     confirmPay(key) {
-      // debugger
       this.passwordModalShow = true
       this.currentPayType = payTypeMap.find(type => type.key === key)
     },

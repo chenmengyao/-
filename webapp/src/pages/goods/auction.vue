@@ -445,10 +445,10 @@ export default {
         url += `pay_type=${this.payType}&`
         url += `address_id=${this.adres.id}&`
         url += `notify_url=${this.$config.yunpaycburl}`
-        payw = plus.nativeUI.showWaiting();
+        // payw = plus.nativeUI.showWaiting();
         // 新开一个webview
-        // let paywin = plus.webview.create(url, 'pay_win', {}, {})
-        // paywin.show()
+        let paywin = plus.webview.create(url, 'pay_win', {}, {})
+        paywin.show()
         // paywin.addEventListener('rendered', () => {
         //   // 关闭loading
         //   payw.close()

@@ -131,9 +131,6 @@ export default {
         // 新开一个webview
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
         paywin.show();
-        paywin.addEventListener("storage", function (e){
-          alert(sessionStorage.getItem('pay'))
-        })
         this.$router.replace({
           path: '/uc/orders',
           query: {
