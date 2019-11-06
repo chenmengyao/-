@@ -12,6 +12,7 @@
   <script type="text/javascript">
     document.addEventListener('plusready', function() {
       var paywin = plus.webview.getWebviewById('pay_win')
+      alert(plus.storage.getItem("flag"))
       if (paywin) {
         paywin.close()
         paywin = null

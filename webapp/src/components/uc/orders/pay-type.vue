@@ -138,6 +138,8 @@ export default {
             type: '0000'
           }
         })
+        plus.storage.setItem("flag","yes");
+        plus.storage.getItem("ffff","yes1");
         this.$parent.payTypeShow = false;
         // paywin.addEventListener('rendered', () => {
           // 关闭支付弹窗
