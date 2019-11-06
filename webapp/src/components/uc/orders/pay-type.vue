@@ -139,20 +139,20 @@ export default {
           }
         })
         this.$parent.payTypeShow = false;
-        // paywin.addEventListener('rendered', () => {
-        //   // 关闭支付弹窗
-        //   this.$router.replace({
-        //     path: '/uc/orders',
-        //     query: {
-        //       activeTabIndex: 1,
-        //       type: '0000'
-        //     }
-        //   })
-        //   this.$parent.payTypeShow = false
-        //   // 关闭loading
-        //   w.close()
-        //   w = null
-        // })
+        paywin.addEventListener('rendered', () => {
+          // 关闭支付弹窗
+          // this.$router.replace({
+          //   path: '/uc/orders',
+          //   query: {
+          //     activeTabIndex: 1,
+          //     type: '0000'
+          //   }
+          // })
+          // this.$parent.payTypeShow = false
+          // // 关闭loading
+          // w.close()
+          // w = null
+        })
         return
       }
       var appid = plus.runtime.appid;
