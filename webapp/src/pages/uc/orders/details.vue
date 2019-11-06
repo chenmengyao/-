@@ -240,7 +240,6 @@
                 })
             },
             onButtonClick(key, orderId, orderNumer) {
-                console.log(key,'key')
                 switch (key) {
                     case 'cancel':
                         this.cancelOrder(orderNumer)

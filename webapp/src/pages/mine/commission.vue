@@ -79,7 +79,6 @@ export default {
   methods: {
     // 左上角柱状图
     myChart(data) {
-      console.log(data)
       let myChart = this.$echarts.init(document.getElementById('myChart'));
       myChart.setOption({
         // backgroundColor:'#050d19',

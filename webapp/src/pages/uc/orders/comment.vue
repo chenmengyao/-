@@ -158,7 +158,6 @@
         },
         created() {
             this.orderId = this.$route.query.id;
-            console.log(this.$refs)
             // this.$refs.heig.style.height=`${document.body.clientHeight}px`
             // this.clientHeight = `${document.body.clientHeight}px`
             this.$axios

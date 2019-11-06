@@ -137,7 +137,6 @@ export default {
           this.isLoading = false
           var arr = []
           if (!res.data.data.msg.length) {
-            console.log('0000')
             this.isDis = true
           }
           if (res.data.data.msg&&res.data.data.msg.length>0) {

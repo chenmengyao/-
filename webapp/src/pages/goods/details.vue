@@ -169,8 +169,8 @@
       <template slot="sku-stepper"  slot-scope="props">
         <div v-if="details.type!==2">
           <van-row type="flex" align="center">
-            <van-col> 数量</van-col>
-            <van-col><van-stepper v-model="current.selectedNum"  /></van-col>
+            <van-col> 数量1{{current.selectedNum}}</van-col>
+            <van-col><van-stepper v-model="current.selectedNum"/></van-col>
           </van-row>
         </div>
         <div v-else>
@@ -507,7 +507,7 @@ export default {
     },
     // 显示商品规格
     showSku(type) {
-      
+      this.current.selectedNum=1;
       // 检查登录状态
       if (!this.$store.getters['core/logined']) {
         Toast('请您先登录')
@@ -523,24 +523,29 @@ export default {
     },
     // 
     async skuConfirm(evt) {
+      console.log(this.actionType,'evt',this.current.selectedNum)
+      let num = this.current.selectedNum;
       if (!evt.selectedSkuComb||!evt.selectedSkuComb.id) {
         Toast('请先选择商品规格！')
         return
       }
 
       // 设置当前型号
-      this.current = evt
+      this.current = evt;
+      this.current.selectedNum=num;
       if (this.details.type==2&&this.details.isauction==1) {
         this.$refs.auction.addprice(this.current);
         this.hideSku();
       }else {
-        this[this.actionType](evt)
+        console.log(this.current,'555')
+        this[this.actionType](this.current)
       }
       
       
     },
     // 购买
     async buy(evt) {
+      console.log(evt,'购买')
       this.$router.push({
         path: '/uc/orders/confirm-order',
         query: {
@@ -551,9 +556,10 @@ export default {
     },
     // 添加购物车
     async addcar(evt) {
+      console.log(evt,'加入购物车',this.current.selectedNum)
       let res = await this.$axios.post('car/add', {
         stand_id: evt.selectedSkuComb.s1,
-        num: evt.selectedNum,
+        num: this.current.selectedNum,
         goods_id: this.$route.query.id,
         store_id: this.details.store.id
       })

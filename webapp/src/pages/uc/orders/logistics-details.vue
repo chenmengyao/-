@@ -129,7 +129,6 @@ export default {
               if (i < this.points.length - 1) {
                 loopfun(i + 1)
               } else {
-                console.log(points, 'points')
                 this.$set(this, 'points', points)
                 resolve(this.points)
               }

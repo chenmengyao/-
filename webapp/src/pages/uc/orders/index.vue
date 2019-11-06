@@ -381,7 +381,6 @@ export default {
           })
       } else if (data.data === 2) { // 不是组合订单
         this.getBalance()
-        console.log(this.payTypeShow ,'this.payTypeShow ')
         this.payTypeShow = true
         this.passwordModalType = 'pay'
         this.currentOrderNumber = orderNumer

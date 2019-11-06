@@ -179,7 +179,6 @@
                     this.area = data[2].name
                 }
                 this.confirmPopup('location')
-                console.log({data})
             },
             getUserInfo() {
                 this.$axios

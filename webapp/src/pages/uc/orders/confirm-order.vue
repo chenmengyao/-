@@ -304,7 +304,7 @@ export default {
             this.handleData(this.orderFrom === 'single' ? [data.data.goods] : data.data.car)
             this.total = data.data.total
             this.discount = data.data.use_vipdiscount
-            this.couponList = data.data.coupon
+            this.couponList = data.data.coupon;
             this.score_need = data.data.score_need || 0
             this.user_type = data.data.user_type;
             if(this.address_id){
@@ -323,7 +323,6 @@ export default {
     },
     // 将商品数据格式化为一个数组，该数组的项是以店铺为单元的商品数组
     handleData(data) {
-      console.log(data,'shuju')
       // 先生成按照店铺id作为key的对象
       const shopData = data.reduce((result, item) => {
         if (result[item.id]) {
@@ -334,7 +333,6 @@ export default {
         return result
       }, {})
       this.shopList = Object.values(shopData)
-      console.log(this.shopList,'this.shopList')
     },
     onClick(goods) {
       this.$router.push({

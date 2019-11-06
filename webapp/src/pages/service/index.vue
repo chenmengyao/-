@@ -188,7 +188,6 @@ export default {
           init(o) {
             // o 是高德地图定位插件实例
             o.getCurrentPosition((status, result) => {
-              console.log(result)
               if (result && result.position) {
                 self.carmodel = result.addressComponent.city + '' + result.addressComponent.district
                 self.carmodel = result.addressComponent.city + '' + result.addressComponent.district
@@ -281,7 +280,6 @@ export default {
     //   console.log(this.areaValue, 'areaValue')
     // },
     onChange(picker, value, index) {
-      console.log(this.active,555)
       let areaName = ''
       for (var i = 1; i < value.length; i++) {
         areaName = areaName + value[i].name + ' '
