@@ -424,7 +424,7 @@ export default {
     },
 
     async pay() {
-      debugger
+      // debugger
       var _that=this
       if (payw) return
       // 检查是否请求订单中
@@ -437,6 +437,7 @@ export default {
         return;
       }
       console.log('----- 请求支付 -----');
+      alert(111)
       if (this.payType == 'yunpay') {
         // 银联支付
         let token = app.$vm.$store.getters['core/token']
@@ -451,6 +452,7 @@ export default {
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
         paywin.show()
         paywin.addEventListener('rendered', () => {
+          alert(222)
           // 关闭loading
           // payw.close()
           // payw = null

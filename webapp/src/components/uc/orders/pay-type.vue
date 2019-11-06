@@ -124,6 +124,7 @@ export default {
         return;
       }
       console.log('----- 请求支付 -----');
+      alert(333)
       if (id == 'yunpay') {
         // 银联支付
         let token = app.$vm.$store.getters['core/token']
@@ -133,6 +134,7 @@ export default {
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
         paywin.show()
         paywin.addEventListener('rendered', () => {
+          alert(444)
           // 关闭支付弹窗
           this.$router.replace({
             path: '/uc/orders',
