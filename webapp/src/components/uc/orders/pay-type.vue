@@ -134,7 +134,7 @@ export default {
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
         paywin.show()
         paywin.addEventListener('rendered', () => {
-          history
+          
           alert('444'+!!plus.webview.getWebviewById('pay_win'))
           if (!plus.webview.getWebviewById('pay_win')) {
             // 关闭支付弹窗
