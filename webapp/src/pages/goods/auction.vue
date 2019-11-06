@@ -422,7 +422,7 @@ export default {
       }
       window.test = this
     },
-
+    
     async pay() {
       var _that=this
       if (payw) return
@@ -448,7 +448,7 @@ export default {
         // payw = plus.nativeUI.showWaiting();
         // 新开一个webview
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
-        paywin.show()
+        this.payTypeShow = false;
         // paywin.addEventListener('rendered', () => {
         //   // 关闭loading
         //   payw.close()
