@@ -113,6 +113,7 @@
         <PayType
             :show="payTypeShow"
             :balance-sum="balance_sum"
+            :order-id="currentOrderNumber"
             @close="payTypeShow = false"
             @fail="payFail"
             @pay="confirmPay"></PayType>
@@ -266,7 +267,7 @@ export default {
           this.cancelOrder(orderNumer)
           break
         case 'pay':
-          this.payOrder(orderId, orderNumer)
+          this.payOrder(orderNumer)
           break
         case 'logistics':
           this.checkLogistics(orderId)
