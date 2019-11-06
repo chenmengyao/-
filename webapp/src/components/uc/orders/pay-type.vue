@@ -110,7 +110,7 @@ export default {
           if (!paywin) {
             clearInterval(tiemId)
             var ylpayStast = plus.storage.getItem("ylpayStast");
-            if (ylpayStast!= 'error') {
+            if (ylpayStast== 'success') {
               this.$router.replace({
                 path: '/uc/orders',
                 query: {
@@ -127,6 +127,7 @@ export default {
                 }
               })
             }
+            plus.storage.setItem("ylpayStast","")
           }
           paywin = null;
         },200)
