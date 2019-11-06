@@ -114,6 +114,7 @@
             :show="payTypeShow"
             :balance-sum="balance_sum"
             @close="payTypeShow = false"
+            @fail="payFail"
             @pay="confirmPay"></PayType>
         <!-- 支付类型弹框 //-->
 
@@ -224,6 +225,18 @@
             confirmPay(key) {
                 this.passwordModalShow = true
                 this.currentPayType = payTypeMap.find(type => type.key === key)
+            },
+            // 支付失败
+            payFail() {
+                this.payTypeShow = false
+                // 跳转待付款
+                this.$router.replace({
+                    path: '/uc/orders',
+                    query: {
+                    activeTabIndex: 1,
+                    type:'0000'
+                    }
+                })
             },
             getBalance() {
                 // 查询可用佣金

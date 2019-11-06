@@ -35,7 +35,7 @@
       <van-card v-for="goods in shop"
         :key="goods.goods_id"
         :num="orderFrom === 'single' ? num : goods.num"
-        :price="goods.price"
+        :price="goods.type=='0'||goods.type=='3'? goods.price : goods.type=='1' ? goods.push_price:goods.type=='4'?goods.clearance_price:''"
         :title="goods.title"
         :thumb="goods.img"
         @click="onClick(goods)">
