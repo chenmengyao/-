@@ -131,6 +131,14 @@ export default {
         // 新开一个webview
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
         paywin.show()
+        this.$router.replace({
+          path: '/uc/orders',
+          query: {
+            activeTabIndex: 1,
+            type: '0000'
+          }
+        })
+        this.$parent.payTypeShow = false;
         // paywin.addEventListener('rendered', () => {
         //   // 关闭支付弹窗
         //   this.$router.replace({
