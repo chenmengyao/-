@@ -109,7 +109,9 @@ export default {
           var paywin = plus.webview.getWebviewById('pay_win');
           if (!paywin) {
             clearInterval(tiemId)
+            
             var ylpayStast = plus.storage.getItem("ylpayStast");
+            alert(ylpayStast+'ylpayStast')
             if (ylpayStast== 'success') {
               this.$router.replace({
                 path: '/uc/orders',
