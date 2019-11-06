@@ -134,16 +134,20 @@ export default {
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
         paywin.show()
         paywin.addEventListener('rendered', () => {
-          alert(444)
-          // 关闭支付弹窗
-          // this.$router.replace({
-          //   path: '/uc/orders',
-          //   query: {
-          //     activeTabIndex: 1,
-          //     type: '0000'
-          //   }
-          // })
-          // this.$parent.payTypeShow = false
+          history
+          alert('444'+!!plus.webview.getWebviewById('pay_win'))
+          if (!plus.webview.getWebviewById('pay_win')) {
+            // 关闭支付弹窗
+            this.$router.replace({
+              path: '/uc/orders',
+              query: {
+                activeTabIndex: 1,
+                type: '0000'
+              }
+            })
+          }
+          
+          this.$parent.payTypeShow = false
           // 关闭loading
           // w.close()
           // w = null
