@@ -424,6 +424,7 @@ export default {
     },
 
     async pay() {
+      debugger
       var _that=this
       if (payw) return
       // 检查是否请求订单中
@@ -451,8 +452,8 @@ export default {
         paywin.show()
         paywin.addEventListener('rendered', () => {
           // 关闭loading
-          payw.close()
-          payw = null
+          // payw.close()
+          // payw = null
         })
         return
       }
@@ -468,7 +469,7 @@ export default {
         }
       })
       console.log(res, 'res')
-      payw.close();
+      // payw.close();
       var appid = plus.runtime.appid;
       if (navigator.userAgent.indexOf('StreamApp') >= 0) {
         appid = 'Stream';
