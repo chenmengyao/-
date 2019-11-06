@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>正在跳转</title>
+</head>
+
+<body>
+  <script type="text/javascript">
+    document.addEventListener('plusready', function() {
+      var paywin = plus.webview.getWebviewById('pay_win')
+      plus.storage.setItem("ylpayStast","success")
+      if (paywin) {
+        paywin.close()
+        paywin = null
+      }
+    })
+  </script>
+</body>
+
+</html>
