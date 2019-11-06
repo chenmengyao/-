@@ -448,7 +448,7 @@ export default {
     }
   },
   created(){
-
+    alert(7777)
   },
   activated() {
     this.activeTabIndex = this.$route.query.activeTabIndex || 0;

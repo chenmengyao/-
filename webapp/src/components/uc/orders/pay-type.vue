@@ -136,14 +136,14 @@ export default {
         paywin.addEventListener('rendered', () => {
           alert(444)
           // 关闭支付弹窗
-          this.$router.replace({
-            path: '/uc/orders',
-            query: {
-              activeTabIndex: 1,
-              type: '0000'
-            }
-          })
-          this.$parent.payTypeShow = false
+          // this.$router.replace({
+          //   path: '/uc/orders',
+          //   query: {
+          //     activeTabIndex: 1,
+          //     type: '0000'
+          //   }
+          // })
+          // this.$parent.payTypeShow = false
           // 关闭loading
           // w.close()
           // w = null
