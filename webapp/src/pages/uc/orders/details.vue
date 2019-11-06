@@ -266,7 +266,7 @@ export default {
           this.cancelOrder(orderNumer)
           break
         case 'pay':
-          this.payOrder(orderId)
+          this.payOrder(orderId, orderNumer)
           break
         case 'logistics':
           this.checkLogistics(orderId)
