@@ -113,6 +113,9 @@ export default {
             var ylpayStast = plus.storage.getItem("ylpayStast");
             alert(ylpayStast+'ylpayStast')
             if (ylpayStast== 'success') {
+              if (this.$parent.activeTabIndex) {
+                this.$parent.activeTabIndex = 2;
+              }
               this.$router.replace({
                 path: '/uc/orders',
                 query: {
