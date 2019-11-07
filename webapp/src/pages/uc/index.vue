@@ -232,11 +232,12 @@ export default {
             return
         }
         let token = app.$vm.$store.getters['core/token'];
+        alert(this.codeUrl)
         if (this.codeUrl.indexOf('://')==-1) {
             this.codeUrl = `${window.location.protocol}//${this.codeUrl}`;
         }
-        alert(codeUrl)
-        let url = `${codeUrl}/token/${token}/region_detail/${this.buildingNum}`;
+        alert(this.codeUrl)
+        let url = `${this.codeUrl}/token/${token}/region_detail/${this.buildingNum}`;
         alert(url)
         this.$axios
             .post(url, {
