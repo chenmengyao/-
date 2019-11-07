@@ -72,7 +72,7 @@
 
 <script>
     import SimpleGood from '@/components/uc/orders/simple-good'
-
+    var vConsole =new vConsole();
     export default {
         components: {
             SimpleGood
