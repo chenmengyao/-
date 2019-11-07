@@ -169,7 +169,7 @@
       <template slot="sku-stepper"  slot-scope="props">
         <div v-if="details.type!==2">
           <van-row type="flex" align="center">
-            <van-col> 数量1{{current.selectedNum}}</van-col>
+            <van-col> 数量</van-col>
             <van-col><van-stepper v-model="current.selectedNum"/></van-col>
           </van-row>
         </div>
