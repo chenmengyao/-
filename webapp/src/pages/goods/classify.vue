@@ -53,7 +53,7 @@
       </div>
     </div>
   </div>
-  <div class="seachHistoly">
+  <div v-show="showAction" class="seachHistoly">
     <van-row type="flex" align="spaceBetween" class="tip" style="justify-content: space-between;">
       <van-col > 搜索历史</van-col>
       <van-col>

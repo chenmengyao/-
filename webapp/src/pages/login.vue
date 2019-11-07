@@ -138,11 +138,12 @@ export default {
         ...this.formData
       }
       params.password = md5(params.password)
-      this.disabled = true
-      let res = await this.$axios.post(this.loginType == 0 ? 'login/tellogin' : 'login/acclogin', params)
+      this.disabled = true;
       setTimeout(() => {
         this.disabled = false
       }, 600)
+      let res = await this.$axios.post(this.loginType == 0 ? 'login/tellogin' : 'login/acclogin', params)
+      
       let data = res.data
       if (data.code == 1) {
         let user = await this.getUserInfo(data.data)

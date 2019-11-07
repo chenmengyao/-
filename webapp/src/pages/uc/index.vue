@@ -220,10 +220,12 @@ export default {
         if(action === 'cancel') {
             done() //关闭
         }
-      if(action === 'confirm'&&!this.buildingNum) {
-         this.$toast('请输入楼栋号')
-         done(false) //不关闭弹框
-      }
+        if(action === 'confirm'&&!this.buildingNum) {
+            this.$toast('请输入楼栋号')
+            done(false) //不关闭弹框
+        }else {
+            done()
+        }
     },
     successSubmit() {
         if (!this.buildingNum) {
