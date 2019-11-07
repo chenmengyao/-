@@ -7,7 +7,7 @@
           <OrderCard v-for="order in list" :key="order[0].id" :order-data="order" @click="onClickStore">
             <GoodsItem :goods-list="order" @click="onClickGoods"></GoodsItem>
             <template #footer>
-              <ButtonLine :button-list="order[0].sta | buttonList" :order-id="order[0].id" :order-numer="order[0].number" @on-click="onButtonClick"></ButtonLine>
+              <ButtonLine :button-list="order[0].sta | buttonList" :orderData="order" :order-id="order[0].id" :order-numer="order[0].number" @on-click="onButtonClick"></ButtonLine>
             </template>
           </OrderCard>
         </template>
@@ -52,6 +52,7 @@ export default {
       balance_sum: 0, // 可用佣金
       currentOrderId: '',
       currentOrderNumber: '',
+      currentOrderSumPice: '',
       error: false,
       finished: false,
       loading: false,
@@ -97,8 +98,12 @@ export default {
       this.password = ''
     },
     confirmPay(key) {
-      this.passwordModalShow = true
-      this.currentPayType = payTypeMap.find(type => type.key === key)
+      this.currentPayType = payTypeMap.find(type => type.key === key);
+      if (this.currentPayType.key=="balancepay"&&this.currentOrderSumPice>this.balance_sum) {
+        this.$toast('可用佣金不足！');
+        return
+      }
+      this.passwordModalShow = true;
     },
     getBalance() {
       // 查询可用佣金
@@ -207,13 +212,13 @@ export default {
         }
       })
     },
-    onButtonClick(key, orderId, orderNumer) {
+    onButtonClick(key, orderId, orderNumer,orderData) {
       switch (key) {
         case 'cancel':
           this.cancelOrder(orderNumer)
           break
         case 'pay':
-          this.payOrder(orderId, orderNumer)
+          this.payOrder(orderId, orderNumer,orderData)
           break
         case 'logistics':
           this.checkLogistics(orderId)
@@ -333,7 +338,15 @@ export default {
         }
       })
     },
-    async payOrder(orderId, orderNumer) {
+    async payOrder(orderId, orderNumer,orderData) {
+      let currentOrderSumPice = 0;
+      if (orderData&&orderData.length>0) {
+        orderData.forEach(item => {
+          if (item&&item.goods_price&&item.num) {
+            currentOrderSumPice = currentOrderSumPice + Math.abs(item.start_sum)
+          }
+        });
+      }
       const {
         data
       } = await this.$axios.post('/order/combination', {
@@ -360,6 +373,9 @@ export default {
         this.payTypeShow = true
         this.passwordModalType = 'pay'
         this.currentOrderNumber = orderNumer
+        this.currentOrderSumPice = currentOrderSumPice
+      }else if (data.data === 3) { // 无效订单
+        this.$toast(data.msg);
       }
     },
     refundOrder(orderId) {

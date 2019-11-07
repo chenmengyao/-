@@ -17,7 +17,7 @@
     export default {
         props: {
             buttonList: Array,
-            orderData: Object,
+            orderData: [Object,Array],
             orderId: Number,
             orderNumer: [String, Number],
         },

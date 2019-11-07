@@ -83,8 +83,9 @@
             // 计算总价
             totalSum() {
                 const { orderData } = this
+                let nn = 10000000
                 if (Array.isArray(orderData)) {
-                    return this.orderData.reduce((result, goods) => result + Number(goods.start_sum), 0)
+                    return this.orderData.reduce((result, goods) => ((result)*nn + (Number(goods.start_sum))*nn)/nn, 0)
                 } else {
                     return Number(orderData.start_sum)
                 }

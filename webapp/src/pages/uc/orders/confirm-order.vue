@@ -253,6 +253,7 @@ export default {
       useScore: true, // 积分
       orderFrom: '', // 订单来源：single: 直接购买    car：购物车
       payTypeShow: false,
+      currentOrderSumPice: 0,
       // 订单id
       orderId: '',
       user_type: 0
@@ -408,8 +409,12 @@ export default {
       this.couponList.length ? this.couponShow = true : this.$toast('抱歉，暂无可用优惠券')
     },
     confirmPay(key) {
-      this.passwordModalShow = true
       this.currentPayType = payTypeMap.find(type => type.key === key)
+      if (this.currentPayType.key=="balancepay"&&this.total>this.balance_sum) {
+        this.$toast('可用佣金不足！');
+        return
+      }
+      this.passwordModalShow = true
     },
     // 支付成功
     paySuccess() {
@@ -449,12 +454,13 @@ export default {
       })
     },
     async toPay() {
-      this.payTypeShow = true
+      
       let url, params;
       if(!this.address_id){
         Toast('请填写地址！');
         return
       }
+      this.payTypeShow = true;
       if (this.orderFrom === 'single') {
         url = '/goods/topay'
         params = {

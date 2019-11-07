@@ -264,7 +264,7 @@
       />
       <van-goods-action-big-btn
         text="加入购物车"
-        @click.native="showSku('addcar')"
+        @click.native="!current.selectedSkuComb.id?showSku('addcar'):addcar(current)"
       />
       <van-goods-action-big-btn
         :disabled="disabledSubmit"
