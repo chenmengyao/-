@@ -159,7 +159,7 @@ export default {
     return {
       buildingNum: '',
       codeUrl: '',
-      isShow: true,
+      isShow: false,
       barCodeActivity: '',
       qrCodeShow: false,
       sta_0: 0,
@@ -233,7 +233,7 @@ export default {
         }
         let token = app.$vm.$store.getters['core/token'];
         if (this.codeUrl.indexOf('://')==-1) {
-            this.codeUrl = `${location.protocol}//${this.codeUrl}`;
+            this.codeUrl = `${window.location.protocol}//${this.codeUrl}`;
         }
         alert(codeUrl)
         let url = `${codeUrl}/token/${token}/region_detail/${this.buildingNum}`;
