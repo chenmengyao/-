@@ -72,7 +72,6 @@
 
 <script>
     import SimpleGood from '@/components/uc/orders/simple-good'
-    
     export default {
         components: {
             SimpleGood
