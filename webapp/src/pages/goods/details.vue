@@ -244,7 +244,7 @@
     <share v-model="shareVisible"></share>
     <!-- 分享 //-->
     <!-- 底部操作条 -->
-    <van-goods-action v-if="details.type!=2">
+    <van-goods-action v-if="details.type!=2" >
       <van-goods-action-mini-btn
         icon="chat-o"
         text="客服"
@@ -263,16 +263,21 @@
         text="购物车"
         @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
       />
-      <van-goods-action-big-btn
+      <div @click="showTotleSta" class="van-button van-button--danger van-button--large  van-button--square van-goods-action-big-btn">
+        <van-goods-action-big-btn
         text="加入购物车"
         @click.native="!current.selectedSkuComb.id?showSku('addcar'):addcar(current)"
+        :disabled="details.sta===0"
       />
+      </div>
+       <div @click="showTotleSta" class="van-button van-button--danger van-button--large  van-button--square van-goods-action-big-btn">
       <van-goods-action-big-btn
-        :disabled="disabledSubmit"
+        :disabled="disabledSubmit||details.sta===0"
         primary
         text="立即购买"
         @click.native="!current.selectedSkuComb.id?showSku('buy'):buy(current)"
       />
+      </div>
     </van-goods-action>
     <auction ref="auction" v-else :details="details" :currentMarkup="currentMarkup" :current="current"></auction>
    <!--  -->
@@ -442,6 +447,11 @@ export default {
 
   },
   methods: {
+    showTotleSta() {
+      if (this.details.sta===0) {
+        Toast('该商品已下架')
+      }
+    },
     async numChange( val,tem) {
       console.log(22,val,tem)
       // if (this.changing) return
