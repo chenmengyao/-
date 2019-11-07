@@ -283,6 +283,9 @@
                     return
                 }
                 let token = app.$vm.$store.getters['core/token'];
+                if (this.codeUrl.indexOf('://')==-1) {
+                    this.codeUrl = `${window.location.protocol}//${this.codeUrl}`;
+                }
                 let url = `${this.codeUrl}/token/${token}/region_detail/${this.buildingNum}`;
                 this.$axios
                     .post(url, {
