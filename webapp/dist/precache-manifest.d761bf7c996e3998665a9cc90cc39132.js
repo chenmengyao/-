@@ -12,16 +12,8 @@ self.__precacheManifest = [
     "url": "css/chunk-71499f8c.d7fc4da6.css"
   },
   {
-    "revision": "3df5e6e5dd55b3500258",
-    "url": "css/chunk-0ed4103d.a69f7538.css"
-  },
-  {
     "revision": "e80d7e336adc1a2776d7",
     "url": "css/chunk-1283b234.58726298.css"
-  },
-  {
-    "revision": "e80d7e336adc1a2776d7",
-    "url": "js/chunk-1283b234.a6c4a01f.js"
   },
   {
     "revision": "4cd819877b2a088eedbb",
@@ -288,6 +280,14 @@ self.__precacheManifest = [
     "url": "js/chunk-695beacf.13cf8b89.js"
   },
   {
+    "revision": "daf6d360550fe533b401",
+    "url": "css/chunk-69867bf5.82ad9f6f.css"
+  },
+  {
+    "revision": "daf6d360550fe533b401",
+    "url": "js/chunk-69867bf5.3f115ac9.js"
+  },
+  {
     "revision": "1d33b37aba253d29a10a",
     "url": "css/chunk-6a44eec8.83513d7f.css"
   },
@@ -300,12 +300,12 @@ self.__precacheManifest = [
     "url": "css/chunk-6e2b9da4.96815ed3.css"
   },
   {
-    "revision": "20b633b272f6b305984b",
-    "url": "js/app.88bd3e45.js"
+    "revision": "6216db795daf75095819",
+    "url": "js/app.5e4bf454.js"
   },
   {
-    "revision": "3df5e6e5dd55b3500258",
-    "url": "js/chunk-0ed4103d.bed6c1c8.js"
+    "revision": "e80d7e336adc1a2776d7",
+    "url": "js/chunk-1283b234.a6c4a01f.js"
   },
   {
     "revision": "ebd17c7e8810698cbf32",
@@ -484,6 +484,10 @@ self.__precacheManifest = [
     "url": "img/money@3x.cbbceafb.png"
   },
   {
+    "revision": "2cc501998142d0249ebfa1d59c48b95a",
+    "url": "img/uc-bg@2x.2cc50199.png"
+  },
+  {
     "revision": "7081841a779d84203c27d61873bf90e3",
     "url": "img/uc-bg-gold@2x.7081841a.png"
   },
@@ -588,19 +592,15 @@ self.__precacheManifest = [
     "url": "img/bg@3x.2b64715b.png"
   },
   {
-    "revision": "2cc501998142d0249ebfa1d59c48b95a",
-    "url": "img/uc-bg@2x.2cc50199.png"
-  },
-  {
     "revision": "8c5a9ba75dbab6a3c83b38f832a99bc5",
     "url": "img/vip-bc.8c5a9ba7.png"
   },
   {
-    "revision": "8ac14df35b7286d0edc509661e1effe1",
+    "revision": "5a5e39af31d4fd6171ec673e8abb9dd2",
     "url": "index.html"
   },
   {
-    "revision": "20b633b272f6b305984b",
+    "revision": "6216db795daf75095819",
     "url": "css/app.8bdd1ead.css"
   }
 ];
