@@ -318,6 +318,10 @@ export default {
             }
           }
         } else {
+          
+          if(this.orderFrom === 'single'){
+            this.num--;
+          }
           this.$toast(data.msg);
         }
       })
