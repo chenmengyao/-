@@ -46,6 +46,7 @@ instance.interceptors.response.use(
     return response;
   },
   error => {
+    alert(error);
     Toast("网络异常，请稍后重试...");
     return Promise.reject(error);
   }
