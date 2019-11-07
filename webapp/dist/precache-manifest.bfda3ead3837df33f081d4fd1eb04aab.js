@@ -172,6 +172,14 @@ self.__precacheManifest = [
     "url": "js/chunk-3fc43d14.3ed96019.js"
   },
   {
+    "revision": "ee278905b09a3f1a59a8",
+    "url": "css/chunk-40dda1ea.ae625e34.css"
+  },
+  {
+    "revision": "ee278905b09a3f1a59a8",
+    "url": "js/chunk-40dda1ea.891f7abf.js"
+  },
+  {
     "revision": "5c4065ea2c34854c8bba",
     "url": "css/chunk-416880fa.54d35357.css"
   },
@@ -280,14 +288,6 @@ self.__precacheManifest = [
     "url": "js/chunk-695beacf.13cf8b89.js"
   },
   {
-    "revision": "daf6d360550fe533b401",
-    "url": "css/chunk-69867bf5.82ad9f6f.css"
-  },
-  {
-    "revision": "daf6d360550fe533b401",
-    "url": "js/chunk-69867bf5.3f115ac9.js"
-  },
-  {
     "revision": "1d33b37aba253d29a10a",
     "url": "css/chunk-6a44eec8.83513d7f.css"
   },
@@ -300,8 +300,8 @@ self.__precacheManifest = [
     "url": "css/chunk-6e2b9da4.96815ed3.css"
   },
   {
-    "revision": "6216db795daf75095819",
-    "url": "js/app.5e4bf454.js"
+    "revision": "768465e3803369a958e3",
+    "url": "js/app.daf9aa81.js"
   },
   {
     "revision": "e80d7e336adc1a2776d7",
@@ -484,10 +484,6 @@ self.__precacheManifest = [
     "url": "img/money@3x.cbbceafb.png"
   },
   {
-    "revision": "2cc501998142d0249ebfa1d59c48b95a",
-    "url": "img/uc-bg@2x.2cc50199.png"
-  },
-  {
     "revision": "7081841a779d84203c27d61873bf90e3",
     "url": "img/uc-bg-gold@2x.7081841a.png"
   },
@@ -556,6 +552,10 @@ self.__precacheManifest = [
     "url": "img/close.b45f9c04.png"
   },
   {
+    "revision": "2cc501998142d0249ebfa1d59c48b95a",
+    "url": "img/uc-bg@2x.2cc50199.png"
+  },
+  {
     "revision": "67f68c782272b01d81d2f9e9d72bc087",
     "url": "img/recommend@3x.67f68c78.png"
   },
@@ -596,11 +596,11 @@ self.__precacheManifest = [
     "url": "img/vip-bc.8c5a9ba7.png"
   },
   {
-    "revision": "5a5e39af31d4fd6171ec673e8abb9dd2",
+    "revision": "117536c5d12df84eeda24f218ac72358",
     "url": "index.html"
   },
   {
-    "revision": "6216db795daf75095819",
+    "revision": "768465e3803369a958e3",
     "url": "css/app.8bdd1ead.css"
   }
 ];
