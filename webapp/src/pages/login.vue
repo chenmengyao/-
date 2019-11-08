@@ -206,7 +206,13 @@ export default {
         //   }
         // }
       }
-    })
+    });
+    plus.key.addEventListener('backbutton', function() {
+    let path = window.app.$vm.$route.path
+    console.log(prevPath,'prevPath')
+    console.log(window.app.$vm.$route,'path')
+ 
+  }, false)
   }
   
 }
