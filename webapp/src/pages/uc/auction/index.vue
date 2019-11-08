@@ -62,6 +62,7 @@
   </van-actionsheet>
 
   <!--  出价价格 -->
+  {{currentOrderStandData}}
   <van-actionsheet title="请输入出价价格"
     class="number-keyword"
     v-model="keyboardShow"
@@ -71,7 +72,7 @@
       @click.stop>
       <van-field v-model="keyboardText"
         input-align="center"
-        :placeholder="`当前出价${currentOrderStandData.price_max||0}元起`"
+        :placeholder="`当前出价${sumPrice(currentOrderStandData.price_max,currentOrderStandData.lowest_price)}元起`"
         readonly />
     </div>
     <van-number-keyboard :show="true"
@@ -151,6 +152,20 @@ export default {
     }
   },
   methods: {
+    sumPrice(price_max,lowest_price) {
+      if (!price_max&&!lowest_price) {
+        return 0
+      }
+      if (!price_max) {
+        return lowest_price
+      }
+      if (!lowest_price) {
+        return price_max
+      }
+      var maxNum = 10000000000;
+      
+      return Math.abs((price_max*maxNum+lowest_price*maxNum)/maxNum)
+    },
     // 加价
     async addprice() {
       let res = await this.$axios.post('goods/auction_addprice', {
