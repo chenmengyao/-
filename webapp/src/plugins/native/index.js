@@ -24,12 +24,9 @@ document.addEventListener('plusready', () => {
       return false
     }
   }
-console.log(window.app.$vm.$route.path,'window.app.$vm.$route.path')
   plus.key.addEventListener('backbutton', function() {
     if (hasPayWindow()) return
     let path = window.app.$vm.$route.path
-    console.log(path,'prevPath')
-    console.log(window.app.$vm.$route,'path')
     if(path=='/login'){
       return;
     }

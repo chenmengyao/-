@@ -158,7 +158,7 @@ export default {
         //
         if (this.$route.path == '/login') {
           setTimeout(() => {
-            this.$router.push('/uc')
+            this.$router.replace('/uc')
           }, 600)
         }
       } else {
@@ -174,7 +174,6 @@ export default {
     }
   },
   created(){
-    console.log(1,'this.$store')
     this.$store.commit('core/header', {
       // 标题
       title: '登录',
