@@ -44,14 +44,9 @@ export default {
   watch: {
     medias(val) {}
   },
-  data(){
-    return{
-      imagePreviewDialog:''
-    }
-  },
   methods: {
     preview(idx) {
-      this.imagePreviewDialog=ImagePreview({
+      ImagePreview({
         images: this.medias || [],
         startPosition: idx,
         closeOnPopstate:true,
@@ -60,11 +55,6 @@ export default {
         }
       })
     }
-  },
-  beforeRouteLeave (to, from, next) {
-    console.log(22)
-      this.imagePreviewDialog.close();
-      next()
   }
 }
 </script>
