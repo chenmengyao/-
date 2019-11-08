@@ -175,7 +175,7 @@ export default {
   created(){
     this.$store.commit('core/header', {
       // 标题
-      title: '登陆',
+      title: '登录',
       // 按钮组
       buttons: {
         left: {
