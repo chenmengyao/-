@@ -162,6 +162,19 @@ export default {
 }
 </script>
 
+<style  lang="scss">
+.suwis-shopping-cart{
+  .van-stepper{
+    display: flex;
+    justify-content: flex-end;
+  }
+  .van-stepper__input{
+    height: 18px;
+    padding:5px 1px;
+  }
+}
+</style>
+
 <style lang="scss" scoped>
 .suwis-shopping-cart {
     padding: 15px;

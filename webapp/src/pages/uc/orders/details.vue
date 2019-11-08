@@ -114,7 +114,7 @@
             :show="payTypeShow"
             :balance-sum="balance_sum"
             :order-id="currentOrderNumber"
-            @close="payTypeShow = false"
+            @close="paySuccess"
             @fail="payFail"
             @pay="confirmPay"></PayType>
         <!-- 支付类型弹框 //-->
@@ -242,6 +242,17 @@ export default {
         query: {
           activeTabIndex: 1,
           type: '0000'
+        }
+      })
+    },
+    paySuccess() {
+      this.payTypeShow = false
+      // 跳转代发货
+      this.$router.replace({
+        path: '/uc/orders',
+        query: {
+          activeTabIndex: 2,
+          type:'0000'
         }
       })
     },

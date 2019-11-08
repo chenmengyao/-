@@ -55,7 +55,8 @@ export default {
 	methods: {
 		// 发送验证码
 		sendCode() {
-			if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
+			console.log(this.$store.state.core.user.user.tel,55)
+			if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)||this.$store.state.core.user.user.tel!=this.formData.tel) {
 				this.formMsg.tel = '请输入正确的号码'
 				return
 			}
