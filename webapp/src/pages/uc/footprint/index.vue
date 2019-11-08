@@ -3,7 +3,7 @@
         <ul class="date-list">
             <li class="date-item" v-for="item in week" :key="item.day">
                 <div class="day">{{item.day}}</div>
-                <div class="date" v-scroll-to="`#goo${item.date}`" @click="onChangeDay(item)" :class="{today: item.isToday}">{{item.date}}</div>
+                <div class="date" v-scroll-to="{element:`#goo${item.date}`,offset:-100}" @click="onChangeDay(item)" :class="{today: item.isToday}">{{item.date}}</div>
             </li>
         </ul>
         <template v-for="(item, index) in list">
