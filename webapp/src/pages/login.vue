@@ -178,6 +178,18 @@ export default {
       title: '登陆',
       // 按钮组
       buttons: {
+        left: {
+          // 字号
+          fontSize: '',
+          // 字体路径
+          fontSrc: '',
+          // 按钮文字
+          text: '',
+          // 监听点击
+          onclick(){
+
+          }
+        },
         // 右边图标
         // right: {
         //   // 按钮文字
