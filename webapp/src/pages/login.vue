@@ -172,7 +172,7 @@ export default {
       return res.data.data.user
     }
   },
-  created(){
+  activated(){
     this.$store.commit('core/header', {
       // 标题
       title: '登录',
