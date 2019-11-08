@@ -28,8 +28,11 @@ console.log(window.app.$vm.$route.path,'window.app.$vm.$route.path')
   plus.key.addEventListener('backbutton', function() {
     if (hasPayWindow()) return
     let path = window.app.$vm.$route.path
-    console.log(prevPath,'prevPath')
+    console.log(path,'prevPath')
     console.log(window.app.$vm.$route,'path')
+    if(path=='/login'){
+      return;
+    }
     if (prevPath == path || path == '/') {
       window.app.$vm.$toast('再按一次退出应用')
       // 首次按键，提示‘再按一次退出应用’
