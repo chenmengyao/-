@@ -300,8 +300,8 @@ self.__precacheManifest = [
     "url": "css/chunk-6a44eec8.83513d7f.css"
   },
   {
-    "revision": "e960c9cc6ace9d807d56",
-    "url": "js/app.178a66cd.js"
+    "revision": "08cfcdf149bd5e970d6c",
+    "url": "js/app.b22c9f68.js"
   },
   {
     "revision": "95910d6e66a755a948b8",
@@ -596,11 +596,11 @@ self.__precacheManifest = [
     "url": "img/vip-bc.8c5a9ba7.png"
   },
   {
-    "revision": "aa0fe00cafb5f4853a67dfde34a573a3",
+    "revision": "eed0ce3ed28aa925ecceeb93f6333404",
     "url": "index.html"
   },
   {
-    "revision": "e960c9cc6ace9d807d56",
+    "revision": "08cfcdf149bd5e970d6c",
     "url": "css/app.771ac6f8.css"
   }
 ];
