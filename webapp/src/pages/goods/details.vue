@@ -541,7 +541,8 @@ export default {
       // 检查登录状态
       if (!this.$store.getters['core/logined']) {
         Toast('请您先登录')
-        this.$router.push('/login')
+        // this.$router.push('/login')
+        this.$router.replace({path: '/login'})
         return
       };
       this.current.selectedNum=1;

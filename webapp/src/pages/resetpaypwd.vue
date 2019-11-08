@@ -107,7 +107,8 @@ export default {
 			if (res.data.code == 1) {
 				Toast('修改成功')
 				setTimeout(() => {
-					this.$router.push('/login')
+					// this.$router.push('/login')
+					this.$router.replace({path: '/login'})
 				}, 600)
 			} else {
 				Toast(res.data.msg)

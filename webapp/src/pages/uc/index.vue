@@ -18,7 +18,7 @@
                         </span>
                     </template>
                     <template v-else>
-                        <router-link to="/login" class="link">
+                        <router-link to="/login" replace class="link">
                             请先登录／注册
                             <van-icon name="arrow" size="14px" color="#fff"/>
                         </router-link>

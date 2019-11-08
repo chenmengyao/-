@@ -214,7 +214,8 @@
                         if (data.code === 1) {
                             this.$toast('退出成功');
                             this.$store.commit('core/exit')
-                            this.$router.push('/login')
+                            // this.$router.push('/login')
+                            this.$router.replace({path: '/login'})
                         } else {
                             this.$toast(data.msg);
                         }

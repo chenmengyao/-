@@ -154,7 +154,8 @@ export default {
         if (data.code == 1) {
           Toast('注册成功')
           setTimeout(() => {
-            this.$router.push('/login')
+            // this.$router.push('/login')
+            this.$router.replace({path: '/login'})
           }, 600)
         } else {
           Toast(data.msg)
