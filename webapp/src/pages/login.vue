@@ -42,6 +42,7 @@
 </template>
 
 <script>
+console.log(22,'this.$store')
 import {
   Toast
 } from 'vant'
@@ -172,7 +173,8 @@ export default {
       return res.data.data.user
     }
   },
-  activated(){
+  created(){
+    console.log(1,'this.$store')
     this.$store.commit('core/header', {
       // 标题
       title: '登录',
@@ -190,21 +192,6 @@ export default {
 
           }
         },
-        // 右边图标
-        // right: {
-        //   // 按钮文字
-        //   text: '竞拍规则',
-        //   width: '96',
-        //   // 监听点击
-        //   // onclick() {
-        //   //   this.$router.push({ path: '/special/auctionrlue' })
-
-        //   onclick: () => {
-        //     this.$router.push({
-        //       path: '/special/auctionrlue'
-        //     })
-        //   }
-        // }
       }
     });
   }
