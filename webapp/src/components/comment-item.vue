@@ -49,6 +49,7 @@ export default {
       ImagePreview({
         images: this.medias || [],
         startPosition: idx,
+        closeOnPopstate:true,
         onClose() {
           // do something
         }

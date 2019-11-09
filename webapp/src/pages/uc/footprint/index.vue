@@ -3,18 +3,18 @@
         <ul class="date-list">
             <li class="date-item" v-for="item in week" :key="item.day">
                 <div class="day">{{item.day}}</div>
-                <div class="date" :class="{today: item.isToday}">{{item.date}}</div>
+                <div class="date" v-scroll-to="{element:`#goo${item.date}`,offset:-100}" @click="onChangeDay(item)" :class="{today: item.isToday}">{{item.date}}</div>
             </li>
         </ul>
         <template v-for="(item, index) in list">
-            <div class="footprint-item" v-if="item.length" :key="index">
-                <div class="title">{{item[0].time | date}}</div>
+            <div class="footprint-item" :id="item[0].time | date2" v-if="item.length" :key="index">
+                <div class="title" >{{item[0].time | date}}</div>
                 <ul class="goods-list">
                     <li class="goods-item" v-for="goods in item" :key="goods.time" @click="onClick(goods)">
                         <img :src="goods.img" v-lazy="goods.img" class="img">
                         <div class="bottom-line">
                             <span class="price">￥{{goods.price_min}}</span>
-                            <span class="button">· · ·</span>
+                            <span class="button">···</span>
                         </div>
                     </li>
                 </ul>
@@ -31,7 +31,10 @@
     export default {
         filters: {
             date(v) {
-                return moment(v * 1000).format('M月-D日')
+                return moment(v * 1000).format('M月D日')
+            },
+            date2(v){
+                return 'goo'+moment(v * 1000).format('D')
             }
         },
         data() {
@@ -48,11 +51,14 @@
                 // 计算周天的日期
                 const weekBeginDate = now.add(0 - now.get('day'), 'd')
                 for (let i = 0; i < 7; i++) {
+                    
                     this.week.push({
                         day: dayList[i],
                         date: weekBeginDate.get('date'),
-                        isToday: i === today
+                        isToday: i === today,
+                        index:i
                     })
+                    
                     weekBeginDate.add(1, 'd')
                 }
             },
@@ -68,6 +74,20 @@
                             this.$toast(data.msg);
                         }
                     })
+            },
+            onChangeDay(list){
+                const now = moment()
+                // 今天的星期数
+                const today = now.get('day')
+                if(today<list.index){
+                    return
+                }
+                this.week.forEach(element => {
+                    element.isToday=false;
+                    if(element.date===list.date){
+                        element.isToday=true;
+                    }
+                });
             },
             onClick(goods) {
                 this.$router.push({
@@ -88,12 +108,18 @@
 <style scoped lang="scss">
     .suwis-footprint {
         min-height: 100vh;
+        padding-top: 78px;
         text-align: center;
         background: #efefef;
         .date-list {
             padding: 14px;
             display: flex;
             justify-content: space-between;
+            position: fixed;
+            width: 100%;
+            box-sizing: border-box;
+            background: #efefef;
+            top:0;
             .day {
                 margin-bottom: 10px;
                 color: #999;

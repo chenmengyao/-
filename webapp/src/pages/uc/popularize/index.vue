@@ -43,11 +43,11 @@
                     </van-tab>
                 </van-tabs>
                 <div class="button-line">
-                    <div class="button-item" @click="changeSort('time')">
+                    <div class="button-item" @click="changeSort('time',1)">
                         <span>注册时间</span>
                         <van-icon size="14px" :name="timeSort === 'up' ? 'arrow-up' : 'arrow-down'" :color="sortActive === 'time' ? '#f0914b' : '#999'"></van-icon>
                     </div>
-                    <div class="button-item" v-if="tabStatus === 'all'" @click="changeSort('num')">
+                    <div class="button-item" v-if="tabStatus === 'all'" @click="changeSort('num',2)">
                         <span>消费金额</span>
                         <van-icon size="14px" :name="numSort === 'up' ? 'arrow-up' : 'arrow-down'" :color="sortActive === 'num' ? '#f0914b' : '#999'"></van-icon>
                     </div>
@@ -108,6 +108,7 @@
                 sortActive: 'time',
                 status: 'list',
                 tabStatus: 'all',
+                type: 1,           // 1 为时间  2 为金额
                 tabList: [
                     // {
                     //     key: 'new',
@@ -121,7 +122,8 @@
             }
         },
         methods: {
-            changeSort(type) {
+            changeSort(type,index) {
+                this.type=index
                 this.sortActive === type
                     ? this[`${type}Sort`] = this[`${type}Sort`] === 'up' ? '' : 'up'
                     : this.sortActive = type
@@ -138,14 +140,26 @@
                     this.list = []
                     this.page = 1
                 }
+                
                 const { num, page } = this
                 const url = this.tabStatus === 'new' ? '/mine/generalize_new' : '/mine/generalize_all'
+                var parm={}
+                if(this.type==1){
+                    parm ={
+                        page: page,
+                        num:num,
+                        time:this.timeSort
+                    }
+                }else if(this.type==2){
+                    parm ={
+                        page: page,
+                        num:num,
+                        sum:this.tabStatus === 'new' ? undefined : this.numSort
+                    }
+                }
                 this.$axios
                     .post(url, {
-                        page,
-                        num,
-                        time: this.timeSort,
-                        sum: this.tabStatus === 'new' ? undefined : this.numSort
+                        ...parm
                     })
                     .then(({ data }) => {
                         if (data.code === 1) {

@@ -1,7 +1,12 @@
 <template>
 <div class="suwis-confirm-order">
   <van-cell-group class="address">
-    <van-cell :title="`收货人：${address.name}（${address.tel}）`" />
+    <div></div>
+  <van-cell>
+    <div slot="title">收货人：{{address&&address.name||''}} {{address&&address.tel?'（'+address.tel+'）':''}}</div>
+    <!-- <div></div> -->
+  </van-cell>
+    <!-- <van-cell :title="`收货人：${address.name||''} ${address.tel?'（'+address.tel+'）':''} `" /> -->
     <van-cell title-class="cell-flex"
       clickable
       @click="selectAddress">
@@ -14,7 +19,6 @@
       </template>
     </van-cell>
   </van-cell-group>
-
   <template v-if="shopList && shopList.length">
     <div class="goods-box"
       v-for="shop in shopList"
@@ -31,7 +35,7 @@
       <van-card v-for="goods in shop"
         :key="goods.goods_id"
         :num="orderFrom === 'single' ? num : goods.num"
-        :price="goods.price"
+        :price="goods.type=='0'||goods.type=='3'? goods.price : goods.type=='1' ? goods.push_price:goods.type=='4'?goods.clearance_price:''"
         :title="goods.title"
         :thumb="goods.img"
         @click="onClick(goods)">
@@ -198,11 +202,15 @@ export default {
   },
   filters: {
     location(v) {
-      const province = v.province || ''
-      const city = v.city || ''
-      const area = v.area || ''
-      const address = v.address || ''
-      return (province + city + area + address) || '---'
+      if(v){
+        const province = v.province || ''
+        const city = v.city || ''
+        const area = v.area || ''
+        const address = v.address || ''
+        return (province + city + area + address) || '---'
+      }
+      return '---'
+      
     }
   },
   computed: {
@@ -245,6 +253,7 @@ export default {
       useScore: true, // 积分
       orderFrom: '', // 订单来源：single: 直接购买    car：购物车
       payTypeShow: false,
+      currentOrderSumPice: 0,
       // 订单id
       orderId: '',
       user_type: 0
@@ -296,7 +305,7 @@ export default {
             this.handleData(this.orderFrom === 'single' ? [data.data.goods] : data.data.car)
             this.total = data.data.total
             this.discount = data.data.use_vipdiscount
-            this.couponList = data.data.coupon
+            this.couponList = data.data.coupon;
             this.score_need = data.data.score_need || 0
             this.user_type = data.data.user_type;
             if(this.address_id){
@@ -309,6 +318,10 @@ export default {
             }
           }
         } else {
+          
+          if(this.orderFrom === 'single'){
+            this.num--;
+          }
           this.$toast(data.msg);
         }
       })
@@ -400,8 +413,12 @@ export default {
       this.couponList.length ? this.couponShow = true : this.$toast('抱歉，暂无可用优惠券')
     },
     confirmPay(key) {
-      this.passwordModalShow = true
       this.currentPayType = payTypeMap.find(type => type.key === key)
+      if (this.currentPayType.key=="balancepay"&&this.total>this.balance_sum) {
+        this.$toast('可用佣金不足！');
+        return
+      }
+      this.passwordModalShow = true
     },
     // 支付成功
     paySuccess() {
@@ -441,12 +458,13 @@ export default {
       })
     },
     async toPay() {
-      this.payTypeShow = true
+      
       let url, params;
       if(!this.address_id){
         Toast('请填写地址！');
         return
       }
+      this.payTypeShow = true;
       if (this.orderFrom === 'single') {
         url = '/goods/topay'
         params = {
@@ -513,7 +531,7 @@ export default {
     this.getBalance()
 
     this.score = this.$route.query.score
-    this.address_id = this.$route.query.address_id
+    this.address_id = this.$route.query.address_id ||''
     this.express_remark = this.$route.query.express_remark
     this.getData()
   }

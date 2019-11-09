@@ -369,6 +369,10 @@ export default {
     },
     // 显示密码弹窗
     showPayboard() {
+      if (this.payType=='balancepay'&&this.auctionShow&&this.balanceSum<(this.details.price_max*0.1).toFixed(2)) {  // 支付定金
+        this.$toast('可用佣金不足！')
+        return
+      }
       this.payboardShow = true
     },
     // 查询可用金额
@@ -422,7 +426,27 @@ export default {
       }
       window.test = this
     },
-
+    ylPayHandle() {
+      setTimeout(() => {
+        var tiemId = setInterval(()=>{
+          var paywin = plus.webview.getWebviewById('pay_win');
+          if (!paywin) {
+            clearInterval(tiemId)
+            var ylpayStast = plus.storage.getItem("ylpayStast");
+            if (ylpayStast== 'success') {
+              this.$toast('押金支付成功')
+              this.payTypeShow = false;
+              this.auctionShow = false
+              try {
+                this.$parent.getDetails()
+              } catch (e) {}
+            }
+            plus.storage.setItem("ylpayStast","")
+          }
+          paywin = null;
+        },200)
+      }, 500);
+    },
     async pay() {
       var _that=this
       if (payw) return
@@ -445,15 +469,16 @@ export default {
         url += `pay_type=${this.payType}&`
         url += `address_id=${this.adres.id}&`
         url += `notify_url=${this.$config.yunpaycburl}`
-        payw = plus.nativeUI.showWaiting();
+        // payw = plus.nativeUI.showWaiting();
         // 新开一个webview
-        let paywin = plus.webview.create(url, 'pay_win', {}, {})
-        paywin.show()
-        paywin.addEventListener('rendered', () => {
-          // 关闭loading
-          payw.close()
-          payw = null
-        })
+        let paywin = plus.webview.create(url, 'pay_win', {}, {});
+        paywin.show();
+        this.ylPayHandle();
+        // paywin.addEventListener('rendered', () => {
+        //   // 关闭loading
+        //   payw.close()
+        //   payw = null
+        // })
         return
       }
       payw = plus.nativeUI.showWaiting();

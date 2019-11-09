@@ -72,7 +72,6 @@
 
 <script>
     import SimpleGood from '@/components/uc/orders/simple-good'
-
     export default {
         components: {
             SimpleGood
@@ -143,7 +142,13 @@
                     .then(({ data }) => {
                         if (data.code === 1) {
                             this.$toast('发布成功')
-                            this.$router.push('/uc/orders')
+                            this.$router.push({
+                                path: '/uc/orders',
+                                query: {
+                                    activeTabIndex: 2,
+                                    type:'0000'
+                                }
+                            })
                         } else {
                             this.$toast(data.msg);
                         }
@@ -152,7 +157,6 @@
         },
         created() {
             this.orderId = this.$route.query.id;
-            console.log(this.$refs)
             // this.$refs.heig.style.height=`${document.body.clientHeight}px`
             // this.clientHeight = `${document.body.clientHeight}px`
             this.$axios

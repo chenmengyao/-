@@ -57,7 +57,7 @@
         <!-- <span slot="title">店铺地址</span>
         <span >{{details.store&&details.store.site}}</span> -->
     </van-cell>
-    <van-cell title="运费"  :value="details.postage==0?'免邮':details.postage+'元'" />
+    <van-cell title="运费"  :value="details.postage==0?'免邮':details.postage||''+'元'" />
     <van-cell v-if="details.is7=='true'">
       <span slot="title"><img class="security" src="@/assets/details/security@3x.png" alt="">该商品支持7天无理由退款</span>
     </van-cell>
@@ -139,12 +139,13 @@
       :goods="skugoods"
       :goods-id="details.id"
       :hide-stock="sku.hide_stock"
-      :quota="0"
+      :quota="recordSelectedNum"
       :quota-used="0"
       reset-stepper-on-hide
       :show-soldout-sku="true"
       :initial-sku="initialSku"
       @buy-clicked="skuConfirm"
+      @stepper-change="numChange"
     >
       <!-- 自定义 sku-header-price -->
       <template slot="sku-header-price" slot-scope="props">
@@ -170,7 +171,7 @@
         <div v-if="details.type!==2">
           <van-row type="flex" align="center">
             <van-col> 数量</van-col>
-            <van-col><van-stepper v-model="current.selectedNum"  /></van-col>
+            <van-col><van-stepper @plus="numChange(current.selectedNum,props.selectedSkuComb&&props.selectedSkuComb.count ?props.selectedSkuComb.count: details.inventory)" @minus="numChange(good,-1)" v-model="current.selectedNum" :max="props.selectedSkuComb&&props.selectedSkuComb.count ?props.selectedSkuComb.count: details.inventory"/></van-col>
           </van-row>
         </div>
         <div v-else>
@@ -179,9 +180,9 @@
             <van-col><van-stepper v-model="current.selectedNum"  disabled/></van-col>
           </van-row>
           <van-row type="flex" align="center"  v-if="details.isauction==1">
-            <van-col> 出价</van-col>
-            <van-col><van-stepper v-model="currentMarkup"  :min="details.price_max+details.lowest_price"/></van-col>
-            <van-col> 每次加价不低于￥{{details.lowest_price}}</van-col>
+            <van-col  style="white-space: nowrap;" > 出价</van-col>
+            <van-col style="min-width: 156px;"><van-stepper v-model="currentMarkup"  :min="(details.price_max*1000+details.lowest_price*1000)/1000"/></van-col>
+            <sapn style="font-size:11px"> 每次加价不低于￥{{details.lowest_price}}</sapn>
           </van-row>
           <van-row type="flex" align="center"  v-if="details.isauction==1">
             <van-col> <span class="redSpan">*</span>最低出价<span class="redSpan">{{details.price_min}}</span>元</van-col>
@@ -194,7 +195,7 @@
       <!-- 自定义 sku actions -->
       <template slot="sku-actions" slot-scope="props">
         <div class="van-sku-actions" style="width:86vw;margin:auto;padding:3.9vw 0;">
-          <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
+          <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 :disabled='!details.inventory' -->
           <van-button
             square
             size="large"
@@ -243,7 +244,7 @@
     <share v-model="shareVisible"></share>
     <!-- 分享 //-->
     <!-- 底部操作条 -->
-    <van-goods-action v-if="details.type!=2">
+    <van-goods-action v-if="details.type!=2" >
       <van-goods-action-mini-btn
         icon="chat-o"
         text="客服"
@@ -262,16 +263,21 @@
         text="购物车"
         @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
       />
-      <van-goods-action-big-btn
+      <div @click="showTotleSta" class="van-button van-button--danger van-button--large  van-button--square van-goods-action-big-btn">
+        <van-goods-action-big-btn
         text="加入购物车"
-        @click.native="showSku('addcar')"
+        @click.native="!current.selectedSkuComb.id?showSku('addcar'):addcar(current)"
+        :disabled="details.sta===0"
       />
+      </div>
+       <div @click="showTotleSta" class="van-button van-button--danger van-button--large  van-button--square van-goods-action-big-btn">
       <van-goods-action-big-btn
-        :disabled="disabledSubmit"
+        :disabled="disabledSubmit||details.sta===0"
         primary
         text="立即购买"
         @click.native="!current.selectedSkuComb.id?showSku('buy'):buy(current)"
       />
+      </div>
     </van-goods-action>
     <auction ref="auction" v-else :details="details" :currentMarkup="currentMarkup" :current="current"></auction>
    <!--  -->
@@ -331,6 +337,7 @@ export default {
         // 初始选中数量
         selectedNum: 1
       },
+      recordSelectedNum:0,
       // 规格弹窗图片
       skugoods: {
         title: '',
@@ -436,9 +443,30 @@ export default {
       this.details.title = '';
       // this.skugoods.title = this.details.title
       this.skugoods.picture = this.details.img
-    }
+    },
+
   },
   methods: {
+    showTotleSta() {
+      if (this.details.sta===0) {
+        Toast('该商品已下架')
+      }
+    },
+    async numChange( val,tem) {
+      console.log(22,val,tem)
+      // if (this.changing) return
+      // this.changing = true
+      // good.num += val
+      // let res = await this.$axios.post('car/changenum', {
+      //   id: good.id,
+      //   num: good.num
+      // })
+      // if (res.data.code != 1) {
+      //   good.num--
+      //   Toast(res.data.msg)
+      // }
+      // this.changing = false
+    },
     // 检查滚动
     checkScroll() {
       let sy = window.scrollY
@@ -476,6 +504,9 @@ export default {
         id: this.$route.query.id
       })
       this.details = res.data.data || {};
+      if( res.data.data){
+        this.recordSelectedNum=res.data.data.inventory
+      }
       if (this.details.type==2&&this.details.isauction==1) {
         this.currentMarkup = this.details.price_max+this.details.lowest_price
       }
@@ -507,13 +538,14 @@ export default {
     },
     // 显示商品规格
     showSku(type) {
-      
       // 检查登录状态
       if (!this.$store.getters['core/logined']) {
         Toast('请您先登录')
-        this.$router.push('/login')
+        // this.$router.push('/login')
+        this.$router.replace({path: '/login'})
         return
-      }
+      };
+      this.current.selectedNum=1;
       this.skuVisible = true
       this.actionType = type
     },
@@ -523,24 +555,30 @@ export default {
     },
     // 
     async skuConfirm(evt) {
+      let num = this.current.selectedNum;
+      if(this.recordSelectedNum==0){
+        Toast('库存不足！')
+        return
+      }
       if (!evt.selectedSkuComb||!evt.selectedSkuComb.id) {
         Toast('请先选择商品规格！')
         return
-      }
-
+      };
       // 设置当前型号
-      this.current = evt
+      this.current = evt;
+      this.current.selectedNum=num;
       if (this.details.type==2&&this.details.isauction==1) {
         this.$refs.auction.addprice(this.current);
         this.hideSku();
       }else {
-        this[this.actionType](evt)
+        this[this.actionType](this.current)
       }
       
       
     },
     // 购买
     async buy(evt) {
+      console.log(evt,'购买')
       this.$router.push({
         path: '/uc/orders/confirm-order',
         query: {
@@ -551,9 +589,10 @@ export default {
     },
     // 添加购物车
     async addcar(evt) {
+      console.log(evt,'加入购物车',this.current.selectedNum)
       let res = await this.$axios.post('car/add', {
         stand_id: evt.selectedSkuComb.s1,
-        num: evt.selectedNum,
+        num: this.current.selectedNum,
         goods_id: this.$route.query.id,
         store_id: this.details.store.id
       })

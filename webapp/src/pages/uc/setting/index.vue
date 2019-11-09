@@ -33,7 +33,7 @@
                 <van-icon name="arrow" size="10px" color="#b4b4b4"/>
             </template>
         </van-cell>
-        <van-cell title="支付密码" :center="true" value-class="content" to="/resetpwd">
+        <van-cell title="支付密码" :center="true" value-class="content" to="/resetpaypwd">
             <template>
                 修改
                 <van-icon name="arrow" size="10px" color="#b4b4b4"/>
@@ -77,6 +77,19 @@
             <van-area :area-list="areaList" :value="locationValue" @confirm="confirmLocation" @cancel="closePopup"/>
         </van-popup>
         <!-- 修改位置弹框 // -->
+        <van-dialog
+            v-model="isShow"
+            show-cancel-button
+            title="成为VIP"
+            @confirm="successSubmit"
+            :beforeClose="beforeClose"
+            >
+            <van-field
+                class="ldfield"
+                v-model="buildingNum"
+                placeholder="请输入您的楼栋号"
+            />
+            </van-dialog>
 
     </div>
 </template>
@@ -98,6 +111,9 @@
         },
         data() {
             return {
+                isShow: false,
+                buildingNum: '',
+                codeUrl: '',
                 areaList,
                 name: '',       // 弹框昵称
                 maxSize: 5 * 1024 * 1024,    // 上传图片的最大kb
@@ -179,7 +195,6 @@
                     this.area = data[2].name
                 }
                 this.confirmPopup('location')
-                console.log({data})
             },
             getUserInfo() {
                 this.$axios
@@ -199,7 +214,8 @@
                         if (data.code === 1) {
                             this.$toast('退出成功');
                             this.$store.commit('core/exit')
-                            this.$router.push('/login')
+                            // this.$router.push('/login')
+                            this.$router.replace({path: '/login'})
                         } else {
                             this.$toast(data.msg);
                         }
@@ -243,27 +259,60 @@
                 this.$toast(`上传图片最大不能超过${maxSize}MB`)
             },
             scanSuccess(codeUrl) {
-                this.qrCodeShow = false
+                this.qrCodeShow = false;
+                if (!codeUrl||codeUrl.indexOf('index/user/addmember')===-1) {
+                    this.$toast('请扫描正确团长二维码！');
+                    return
+                }
+                this.codeUrl = codeUrl;
+                this.isShow = true;
+            },
+            
+            beforeClose(action, done) {
+                if(action === 'cancel') {
+                    done() //关闭
+                }
+                if(action === 'confirm'&&!this.buildingNum) {
+                    this.$toast('请输入楼栋号')
+                    done(false) //不关闭弹框
+                }else {
+                    done()
+                }
+            },
+            successSubmit() {
+                if (!this.buildingNum) {
+                    return
+                }
+                let token = app.$vm.$store.getters['core/token'];
+                if (this.codeUrl.indexOf('://')==-1) {
+                    this.codeUrl = `${window.location.protocol}//${this.codeUrl}`;
+                }
+                let url = `${this.codeUrl}/token/${token}/region_detail/${this.buildingNum}`;
                 this.$axios
-                    .post('/user/captainqrcode', {
-                        region_id: codeUrl
+                    .post(url, {
+                    region_id: url
                     })
-                    .then(({ data }) => {
-                        if(data.code === 1) {
-                            this.$toast('绑定成功')
-                        } else {
-                            this.$toast(data.msg);
-                        }
-                    })
-            }
+                    .then(({
+                    data
+                    }) => {
+                    if (data.code === 1) {
+                        this.isShow = false;
+                        this.$toast('绑定成功')
+                        
+                    } else {
+                        this.isShow = false;
+                        this.$toast(data.msg);
+                    }
+                })
+            },
         },
         created() {
             this.getUserInfo()
+            
         },
-        beforeRouteLeave (to, from, next) {
+         beforeRouteLeave (to, from, next) {
             this.qrCodeShow = false;
             next()
-            // ...
         }
     }
 </script>

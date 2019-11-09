@@ -103,6 +103,40 @@ export default {
       })
       this.$parent.payTypeShow = false
     },
+    ylPayHandle() {
+      setTimeout(() => {
+        var tiemId = setInterval(()=>{
+          var paywin = plus.webview.getWebviewById('pay_win');
+          if (!paywin) {
+            clearInterval(tiemId)
+
+            var ylpayStast = plus.storage.getItem("ylpayStast");
+            if (ylpayStast== 'success') {
+              if (this.$parent.activeTabIndex) {
+                this.$parent.activeTabIndex = 2;
+              }
+              this.$router.replace({
+                path: '/uc/orders',
+                query: {
+                  activeTabIndex: 2,
+                  type: '0000'
+                }
+              })
+            }else {
+              this.$router.replace({
+                path: '/uc/orders',
+                query: {
+                  activeTabIndex: 1,
+                  type: '0000'
+                }
+              })
+            }
+            plus.storage.setItem("ylpayStast","")
+          }
+          paywin = null;
+        },200)
+      }, 500);
+    },
     async pay() {
       const id = this.payType;
       var _that = this
@@ -128,24 +162,33 @@ export default {
         let token = app.$vm.$store.getters['core/token']
         let url = `${this.$config.apihost}pay/pay/order/${this.orderId}/token/${token}/pay_type/yunpay/yunpay_notify/${this.$config.yunpaycburl}`
         console.log(url, 'pay url')
-        w = plus.nativeUI.showWaiting();
+        // w = plus.nativeUI.showWaiting();
         // 新开一个webview
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
-        paywin.show()
-        paywin.addEventListener('rendered', () => {
+        paywin.show();
+        // this.$router.replace({
+        //   path: '/uc/orders',
+        //   query: {
+        //     activeTabIndex: 1,
+        //     type: '0000'
+        //   }
+        // })
+        this.ylPayHandle();
+        this.$parent.payTypeShow = false;
+        // paywin.addEventListener('rendered', () => {
           // 关闭支付弹窗
-          this.$router.replace({
-            path: '/uc/orders',
-            query: {
-              activeTabIndex: 1,
-              type: '0000'
-            }
-          })
-          this.$parent.payTypeShow = false
-          // 关闭loading
-          w.close()
-          w = null
-        })
+          // this.$router.replace({
+          //   path: '/uc/orders',
+          //   query: {
+          //     activeTabIndex: 1,
+          //     type: '0000'
+          //   }
+          // })
+          // this.$parent.payTypeShow = false
+          // // 关闭loading
+          // w.close()
+          // w = null
+        // })
         return
       }
       var appid = plus.runtime.appid;
@@ -198,7 +241,14 @@ export default {
           } else {
             _that.popupShow = false
             _that.$emit('close', true)
-            _that.$router.push('/uc/orders')
+            // _that.$router.push('/uc/orders')
+            // this.$router.replace({
+            //   path: '/uc/orders',
+            //   query: {
+            //     activeTabIndex: 0,
+            //     type:'0000'
+            //   }
+            // })
           }
 
         })

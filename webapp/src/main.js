@@ -8,8 +8,10 @@ import '@/components'
 import '@/plugins'
 import echarts from 'echarts'
 import config from './../app.config'
+// import Vconsole from 'vconsole'
+// const vConsole = new Vconsole()
+// Vue.use(vConsole)
 Vue.prototype.$echarts = echarts
-
 import VueAMap from 'vue-amap';
 Vue.use(VueAMap);
 VueAMap.initAMapApiLoader({
@@ -54,6 +56,19 @@ router.afterEach((to, from) => {
   })
   // 切换底部状态栏
   store.commit('core/toggleTabbar', hideTabbar)
+  
+  try {
+    if (plus) {
+      let webview = plus.webview.currentWebview();
+      webview.setStyle({
+        height: "100%",
+        bottom: "0px", 
+        top: "0px", 
+      });
+    }
+  } catch (e) {}
+  
+  
 })
 
 // 挂载到app变量上

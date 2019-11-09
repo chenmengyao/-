@@ -137,12 +137,15 @@ export default {
           this.isLoading = false
           var arr = []
           if (!res.data.data.msg.length) {
-            console.log('0000')
             this.isDis = true
           }
-          for (let i in res.data.data.msg) {
-            this.messageList.unshift(res.data.data.msg[i])
+          if (res.data.data.msg&&res.data.data.msg.length>0) {
+            
+            for (let i in res.data.data.msg) {
+              this.messageList.unshift(res.data.data.msg[i])
+            }
           }
+          
           sessionStorage.setItem("message", JSON.stringify(this.messageList));
 
         })
@@ -179,9 +182,16 @@ export default {
         this.messageList.push(con)
         sessionStorage.setItem("message", JSON.stringify(this.messageList));
         this.sendMessage = ''
+        setTimeout(() => {
+          var charBox = document.querySelector('#d-content-scroll')
+          if (charBox) {
+            charBox.scrollTop = charBox.scrollHeight-charBox.clientHeight
+          }
+        }, 1000);
       })
     },
     getMessage() {
+            
       if (sessionStorage.getItem("message")) {
         this.messageList = JSON.parse(sessionStorage.getItem("message"))
         this.$axios.post('message/getsm', {
@@ -209,6 +219,14 @@ export default {
               // arr.push(res.data.data.msg[msgArr.indexOf(msgArr[i])])
             }
           }
+          if (this.messageList.length<=0||this.messageList[this.messageList.length-1].uuid != res.data.data.msg[0].uuid) {
+            setTimeout(() => {
+              var charBox = document.querySelector('#d-content-scroll')
+              if (charBox) {
+                charBox.scrollTop = charBox.scrollHeight-charBox.clientHeight
+              }
+            }, 2000);
+          }
           // this.messageList=JSON.parse(sessionStorage.getItem("message")).reverse()
           sessionStorage.setItem("message", JSON.stringify(list));
 
@@ -217,7 +235,17 @@ export default {
         this.$axios.post('message/getsm', {
           store_id: this.$route.query.store_id
         }).then(res => {
+          if (this.messageList.length<=0||this.messageList[this.messageList.length-1].uuid != res.data.data.msg[0].uuid) {
+            setTimeout(() => {
+              var charBox = document.querySelector('#d-content-scroll')
+              if (charBox) {
+                charBox.scrollTop = charBox.scrollHeight-charBox.clientHeight
+              }
+              
+            }, 2000);
+          }
           this.messageList = res.data.data.msg.reverse()
+          
           sessionStorage.setItem("message", JSON.stringify(res.data.data.msg));
         })
       }
@@ -227,6 +255,12 @@ export default {
     this.setInter = setInterval(() => {
       this.getMessage()
     }, 2000);
+    var charBox = document.querySelector('#d-content-scroll')
+    if (charBox) {
+      setTimeout(() => {
+        charBox.scrollTop = charBox.scrollHeight-charBox.clientHeight
+      }, 3000);
+    }
   },
   destroyed() {
     clearInterval(this.setInter);

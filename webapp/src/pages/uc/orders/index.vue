@@ -1,52 +1,26 @@
 <template>
 <div class="suwis-order-list">
-  <van-tabs animated
-    v-model="activeTabIndex"
-    @click="onClickTab">
-    <van-tab v-for="tab in tabList"
-      :title="tab.name"
-      :key="tab.key">
-      <van-list v-model="loading"
-        finished-text="没有订单记录了"
-        error-text="请求失败，点击重新加载"
-        :error.sync="error"
-        :finished="finished"
-        @load="getList('add')">
+  <van-tabs animated v-model="activeTabIndex" @click="onClickTab">
+    <van-tab v-for="tab in tabList" :title="tab.name" :key="tab.key">
+      <van-list v-model="loading" finished-text="没有订单记录了" error-text="请求失败，点击重新加载" :error.sync="error" :finished="finished" @load="getList('add')">
         <template v-if="list && list.length">
-          <OrderCard v-for="order in list"
-            :key="order[0].id"
-            :order-data="order"
-            @click="onClickStore">
-            <GoodsItem :goods-list="order"
-              @click="onClickGoods"></GoodsItem>
+          <OrderCard v-for="order in list" :key="order[0].id" :order-data="order" @click="onClickStore">
+            <GoodsItem :goods-list="order" @click="onClickGoods"></GoodsItem>
             <template #footer>
-              <ButtonLine :button-list="order[0].sta | buttonList"
-                :order-id="order[0].id"
-                :order-numer="order[0].number"
-                @on-click="onButtonClick"></ButtonLine>
+              <ButtonLine :button-list="order[0].sta | buttonList" :orderData="order" :order-id="order[0].id" :order-numer="order[0].number" @on-click="onButtonClick"></ButtonLine>
             </template>
           </OrderCard>
         </template>
       </van-list>
     </van-tab>
   </van-tabs>
-  <PayType :show="payTypeShow"
-    :balance-sum="balance_sum"
-    :order-id="currentOrderId"
-    @close="payTypeShow = false"
-    @pay="confirmPay"></PayType>
-  <van-actionsheet title="请输入支付密码"
-    v-model="passwordModalShow"
-    :close-on-click-overlay="false"
-    @cancel="closePasswordModal">
+  <PayType :show="payTypeShow" :balance-sum="balance_sum" :order-id="currentOrderId" @close="payTypeShow = false" @pay="confirmPay"></PayType>
+  <van-actionsheet title="请输入支付密码" v-model="passwordModalShow" :close-on-click-overlay="false" @cancel="closePasswordModal">
     <van-password-input :value="password" />
     <div class="link-line">
-      <router-link to="/resetpaypwd"
-        class="forget-password">忘记支付密码？</router-link>
+      <router-link to="/resetpaypwd" class="forget-password">忘记支付密码？</router-link>
     </div>
-    <van-number-keyboard :show="true"
-      @input="onPasswordInput"
-      @delete="onPasswordDelete" />
+    <van-number-keyboard :show="true" @input="onPasswordInput" @delete="onPasswordDelete" />
   </van-actionsheet>
 </div>
 </template>
@@ -78,6 +52,7 @@ export default {
       balance_sum: 0, // 可用佣金
       currentOrderId: '',
       currentOrderNumber: '',
+      currentOrderSumPice: '',
       error: false,
       finished: false,
       loading: false,
@@ -89,7 +64,7 @@ export default {
       password: '', // 支付密码
       passwordModalShow: false, // 输入弹框显示
       passwordModalType: 'receive', // 密码弹框类型
-      flay:false,
+      flay: false,
       tabList: [{
           key: 'all',
           name: '全部订单',
@@ -123,8 +98,12 @@ export default {
       this.password = ''
     },
     confirmPay(key) {
-      this.passwordModalShow = true
-      this.currentPayType = payTypeMap.find(type => type.key === key)
+      this.currentPayType = payTypeMap.find(type => type.key === key);
+      if (this.currentPayType.key=="balancepay"&&this.currentOrderSumPice>this.balance_sum) {
+        this.$toast('可用佣金不足！');
+        return
+      }
+      this.passwordModalShow = true;
     },
     getBalance() {
       // 查询可用佣金
@@ -144,7 +123,7 @@ export default {
     },
     getList(type = 'reset') {
       // 重置页码参数
-      this.flay=true;
+      this.flay = true;
       if (type === 'reset') {
         this.list = [];
         this.page = 1
@@ -233,13 +212,13 @@ export default {
         }
       })
     },
-    onButtonClick(key, orderId, orderNumer) {
+    onButtonClick(key, orderId, orderNumer,orderData) {
       switch (key) {
         case 'cancel':
           this.cancelOrder(orderNumer)
           break
         case 'pay':
-          this.payOrder(orderId, orderNumer)
+          this.payOrder(orderId, orderNumer,orderData)
           break
         case 'logistics':
           this.checkLogistics(orderId)
@@ -257,7 +236,7 @@ export default {
           this.evaluateOrder(orderId)
           break
         case 'delete':
-          this.deleteOrder(orderId,orderNumer)
+          this.deleteOrder(orderId, orderNumer)
           break
         case 'viewProgress':
           this.viewProgress(orderId)
@@ -281,7 +260,7 @@ export default {
                 this.password = '';
                 this.currentOrderId = '';
                 this.passwordModalShow = false;
-                this.activeTabIndex=4;
+                this.activeTabIndex = 4;
                 this.sta = this.tabList[this.activeTabIndex].sta;
 
                 this.getList();
@@ -306,9 +285,9 @@ export default {
                 this.passwordModalShow = false;
                 this.payTypeShow = false;
                 this.$toast('支付成功');
-                this.activeTabIndex=2;
+                this.activeTabIndex = 2;
                 this.sta = this.tabList[this.activeTabIndex].sta;
-                this.list=[];
+                this.list = [];
                 this.getList();
               } else {
                 this.password = ''
@@ -318,10 +297,12 @@ export default {
         }
       }
     },
-    viewProgress(orderId){
+    viewProgress(orderId) {
       this.$router.push({
-          path: '/uc/orders/refund-details',
-          query: {id: orderId}
+        path: '/uc/orders/refund-details',
+        query: {
+          id: orderId
+        }
       })
     },
     onPasswordDelete() {
@@ -357,7 +338,15 @@ export default {
         }
       })
     },
-    async payOrder(orderId, orderNumer) {
+    async payOrder(orderId, orderNumer,orderData) {
+      let currentOrderSumPice = 0;
+      if (orderData&&orderData.length>0) {
+        orderData.forEach(item => {
+          if (item&&item.goods_price&&item.num) {
+            currentOrderSumPice = currentOrderSumPice + Math.abs(item.start_sum)
+          }
+        });
+      }
       const {
         data
       } = await this.$axios.post('/order/combination', {
@@ -381,10 +370,12 @@ export default {
           })
       } else if (data.data === 2) { // 不是组合订单
         this.getBalance()
-        console.log(this.payTypeShow ,'this.payTypeShow ')
         this.payTypeShow = true
         this.passwordModalType = 'pay'
         this.currentOrderNumber = orderNumer
+        this.currentOrderSumPice = currentOrderSumPice
+      }else if (data.data === 3) { // 无效订单
+        this.$toast(data.msg);
       }
     },
     refundOrder(orderId) {
@@ -428,7 +419,7 @@ export default {
       })
       this.$dialog.confirm({
         title: '删除订单',
-        message: data.data=='2'?'您确定要删除该订单吗？':'该订单为组合订单，你确定要删除该订单吗？'
+        message: data.data == '2' ? '您确定要删除该订单吗？' : '该订单为组合订单，你确定要删除该订单吗？'
       }).then(() => {
         this.$axios
           .post('/order/delete', {
@@ -447,14 +438,12 @@ export default {
       })
     }
   },
-  created(){
-
-  },
+  created() {},
   activated() {
     this.activeTabIndex = this.$route.query.activeTabIndex || 0;
     this.sta = this.tabList[this.activeTabIndex].sta;
-    this.payTypeShow=false;
-    if(this.$route.query&&this.$route.query.type&&this.$route.query.type=='0000'&&this.flay){
+    this.payTypeShow = false;
+    if (this.$route.query && this.$route.query.type && this.$route.query.type == '0000' && this.flay) {
       this.loading = true;
       this.finished = false;
       this.getList();

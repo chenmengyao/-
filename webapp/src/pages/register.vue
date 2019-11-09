@@ -127,7 +127,7 @@ export default {
         this.formMsg.paypass = '请输入6位数字支付密码'
         return
       }
-      if (this.formData.paypassConfirm !== this.formData.paypassConfirm) {
+      if (this.formData.paypassConfirm !== this.formData.paypass) {
         this.formMsg.paypassConfirm = '两次输入的支付密码不一致'
         return
       }
@@ -154,7 +154,8 @@ export default {
         if (data.code == 1) {
           Toast('注册成功')
           setTimeout(() => {
-            this.$router.push('/login')
+            // this.$router.push('/login')
+            this.$router.replace({path: '/login'})
           }, 600)
         } else {
           Toast(data.msg)

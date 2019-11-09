@@ -18,7 +18,7 @@
                         </span>
                     </template>
                     <template v-else>
-                        <router-link to="/login" class="link">
+                        <router-link to="/login" replace class="link">
                             请先登录／注册
                             <van-icon name="arrow" size="14px" color="#fff"/>
                         </router-link>
@@ -119,7 +119,7 @@
                 </router-link>
             </li>
         </ul>
-        <BarCode :show="qrCodeShow" @close="closeBarCode" @success='scanSuccess'></BarCode>
+        <BarCode ref="ucBarCode" :show="qrCodeShow" @close="closeBarCode" @success='scanSuccess'></BarCode>
         <van-dialog
             v-model="isShow"
             show-cancel-button
@@ -220,16 +220,21 @@ export default {
         if(action === 'cancel') {
             done() //关闭
         }
-      if(action === 'confirm'&&!this.buildingNum) {
-         this.$toast('请输入楼栋号')
-         done(false) //不关闭弹框
-      }
+        if(action === 'confirm'&&!this.buildingNum) {
+            this.$toast('请输入楼栋号')
+            done(false) //不关闭弹框
+        }else {
+            done()
+        }
     },
     successSubmit() {
         if (!this.buildingNum) {
             return
         }
         let token = app.$vm.$store.getters['core/token'];
+        if (this.codeUrl.indexOf('://')==-1) {
+            this.codeUrl = `${window.location.protocol}//${this.codeUrl}`;
+        }
         let url = `${this.codeUrl}/token/${token}/region_detail/${this.buildingNum}`;
         this.$axios
             .post(url, {
@@ -262,7 +267,6 @@ export default {
   beforeRouteLeave (to, from, next) {
       this.qrCodeShow = false;
       next()
-      // ...
   }
 }
 </script>

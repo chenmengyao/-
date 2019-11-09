@@ -55,7 +55,7 @@ export default {
 	methods: {
 		// 发送验证码
 		sendCode() {
-			if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
+			if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)||this.$store.state.core.user.user.tel!=this.formData.tel) {
 				this.formMsg.tel = '请输入正确的号码'
 				return
 			}
@@ -108,7 +108,8 @@ export default {
 			if (res.data.code == 1) {
 				Toast('修改成功')
 				setTimeout(() => {
-					this.$router.push('/login')
+					// this.$router.push('/login')
+					this.$router.replace({path: '/login'})
 				}, 600)
 			} else {
 				Toast(res.data.msg)

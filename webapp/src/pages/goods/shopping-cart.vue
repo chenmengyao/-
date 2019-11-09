@@ -9,7 +9,7 @@
       <van-checkbox v-model="good.checked" v-for="good in shop.goods" @change="calcCheckNums">
         <van-card
           @click.native.stop="$router.push({path:'/goods/details', query:{id:good.goods_id}})"
-          :price="good.price"
+          :price="good.type=='4'?good.clearance_price:good.price"
           :desc="(good.header_one||'') + ' ' + (good.header_two||'')"
           :title="good.title"
           :thumb="good.img"
@@ -161,6 +161,19 @@ export default {
   }
 }
 </script>
+
+<style  lang="scss">
+.suwis-shopping-cart{
+  .van-stepper{
+    display: flex;
+    justify-content: flex-end;
+  }
+  .van-stepper__input{
+    height: 18px;
+    padding:5px 1px;
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .suwis-shopping-cart {

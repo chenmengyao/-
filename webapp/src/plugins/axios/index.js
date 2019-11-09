@@ -3,7 +3,7 @@ import axios from 'axios'
 import config from './../../../app.config'
 import log from './../log'
 import qs from 'qs'
-
+import { Toast } from "vant";
 var instance = axios.create({
   baseURL: config.apihost,
   withCredentials: true,
@@ -40,4 +40,14 @@ instance.interceptors.request.use(request => {
     return Promise.reject(err)
   })
 
+  // TODO:返回拦截器
+instance.interceptors.response.use(
+  response => {
+    return response;
+  },
+  error => {
+    Toast("网络异常，请稍后重试...");
+    return Promise.reject(error);
+  }
+);
 Vue.prototype.$axios = instance

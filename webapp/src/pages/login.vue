@@ -42,6 +42,7 @@
 </template>
 
 <script>
+console.log(22,'this.$store')
 import {
   Toast
 } from 'vant'
@@ -138,11 +139,12 @@ export default {
         ...this.formData
       }
       params.password = md5(params.password)
-      this.disabled = true
-      let res = await this.$axios.post(this.loginType == 0 ? 'login/tellogin' : 'login/acclogin', params)
+      this.disabled = true;
       setTimeout(() => {
         this.disabled = false
       }, 600)
+      let res = await this.$axios.post(this.loginType == 0 ? 'login/tellogin' : 'login/acclogin', params)
+      
       let data = res.data
       if (data.code == 1) {
         let user = await this.getUserInfo(data.data)
@@ -156,7 +158,7 @@ export default {
         //
         if (this.$route.path == '/login') {
           setTimeout(() => {
-            this.$router.push('/uc')
+            this.$router.replace('/uc')
           }, 600)
         }
       } else {
@@ -170,7 +172,29 @@ export default {
       })
       return res.data.data.user
     }
+  },
+  created(){
+    this.$store.commit('core/header', {
+      // 标题
+      title: '登录',
+      // 按钮组
+      buttons: {
+        left: {
+          // 字号
+          fontSize: '',
+          // 字体路径
+          fontSrc: '',
+          // 按钮文字
+          text: '',
+          // 监听点击
+          onclick(){
+
+          }
+        },
+      }
+    });
   }
+  
 }
 </script>
 
