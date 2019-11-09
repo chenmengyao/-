@@ -376,6 +376,8 @@ export default {
         this.currentOrderSumPice = currentOrderSumPice
       }else if (data.data === 3) { // 无效订单
         this.$toast(data.msg);
+      }else if (data.code != 1) { // 无效订单
+        this.$toast(data.msg);
       }
     },
     refundOrder(orderId) {

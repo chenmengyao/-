@@ -46,7 +46,14 @@ instance.interceptors.response.use(
     return response;
   },
   error => {
-    Toast("网络异常，请稍后重试...");
+    
+    if (!error.response) {
+      Toast("网络异常，请稍后重试...");
+    }
+    if (response.status=='401') {
+      Toast("用户未登录！");
+    }
+    
     return Promise.reject(error);
   }
 );

@@ -232,13 +232,17 @@ export default {
       if(action === 'confirm'&&!this.buildingNum) {
          this.$toast('请输入楼栋号')
          done(false) //不关闭弹框
+      }else {
+        done()
       }
     },
     successSubmit() {
         if (!this.buildingNum) {
             return
         }
-        let token = app.$vm.$store.getters['core/token'];
+        if (this.codeUrl.indexOf('://')==-1) {
+            this.codeUrl = `${window.location.protocol}//${this.codeUrl}`;
+        }
         let url = `${this.codeUrl}/token/${token}/region_detail/${this.buildingNum}`;
         this.$axios
             .post(url, {

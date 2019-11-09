@@ -37,7 +37,7 @@
             </div>
             <van-list
                 v-model="loading"
-                finished-text="没有消费明细了"
+                finished-text="没有更多消费明细了"
                 error-text="请求失败，点击重新加载"
                 :error.sync="error"
                 :finished="finished"
@@ -99,12 +99,14 @@
         methods: {
             changeSort() {
                 this.timeSort = this.timeSort === 'up' ? '' : 'up'
-                this.getList()
+                this.getList('reset')
             },
-            getList(type = 'reset') {
+            getList(type1) {
+                var type = type1 || ''
                 if (type === 'reset') {
                     this.list = []
                     this.page = 1
+                    this.finished  = false
                 }
                 const { num, page } = this
                 this.$axios
