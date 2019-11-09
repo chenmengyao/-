@@ -127,6 +127,7 @@ export default {
         // 银联支付
         let token = app.$vm.$store.getters['core/token']
         let url = `${this.$config.apihost}pay/pay/order/${this.orderId}/token/${token}/pay_type/yunpay/yunpay_notify/${this.$config.yunpaycburl}`
+        console.log(url, 'pay url')
         w = plus.nativeUI.showWaiting();
         // 新开一个webview
         let paywin = plus.webview.create(url, 'pay_win', {}, {})
