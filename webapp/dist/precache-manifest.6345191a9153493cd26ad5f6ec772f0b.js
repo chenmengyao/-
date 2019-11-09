@@ -72,14 +72,6 @@ self.__precacheManifest = [
     "url": "js/chunk-239d4f17.d69c8edc.js"
   },
   {
-    "revision": "7a26b2810db23528bff5",
-    "url": "css/chunk-25787b2a.10c21e1f.css"
-  },
-  {
-    "revision": "7a26b2810db23528bff5",
-    "url": "js/chunk-25787b2a.8608b8fe.js"
-  },
-  {
     "revision": "d0cf6f5d671047507954",
     "url": "css/chunk-2825ffe7.e6c87fcd.css"
   },
@@ -170,6 +162,14 @@ self.__precacheManifest = [
   {
     "revision": "1b4997f13b88adfca221",
     "url": "js/chunk-3fc43d14.3ed96019.js"
+  },
+  {
+    "revision": "d76730f5846d88561398",
+    "url": "css/chunk-44d8f236.59e20d9c.css"
+  },
+  {
+    "revision": "d76730f5846d88561398",
+    "url": "js/chunk-44d8f236.39ff6633.js"
   },
   {
     "revision": "6c0e529796926563caea",
@@ -300,8 +300,8 @@ self.__precacheManifest = [
     "url": "css/chunk-780ff582.2c64ec73.css"
   },
   {
-    "revision": "519b5832d1c14d989703",
-    "url": "js/app.8df7b0ad.js"
+    "revision": "c41792a4522d9776e2ba",
+    "url": "js/app.af3baa46.js"
   },
   {
     "revision": "81d201292203ba26d766",
@@ -460,6 +460,10 @@ self.__precacheManifest = [
     "url": "img/news@3x.10349bcb.png"
   },
   {
+    "revision": "abdb7f1cc987e8dedbb8d43b0cba9ce1",
+    "url": "img/circular@3x.abdb7f1c.png"
+  },
+  {
     "revision": "48c2a1988621beb619fd04234bff86ec",
     "url": "img/no-data@2x.48c2a198.png"
   },
@@ -494,10 +498,6 @@ self.__precacheManifest = [
   {
     "revision": "45af80fd790e154a96ea7a05c9607320",
     "url": "img/bg-score@2x.45af80fd.png"
-  },
-  {
-    "revision": "abdb7f1cc987e8dedbb8d43b0cba9ce1",
-    "url": "img/circular@3x.abdb7f1c.png"
   },
   {
     "revision": "9892201aa31f3462c253e8c728d6498e",
@@ -596,11 +596,11 @@ self.__precacheManifest = [
     "url": "img/bg@3x.2b64715b.png"
   },
   {
-    "revision": "aafd711cccf89f391226e52828168e81",
+    "revision": "1fe19d5a715374cab63c77f23482f12b",
     "url": "index.html"
   },
   {
-    "revision": "519b5832d1c14d989703",
+    "revision": "c41792a4522d9776e2ba",
     "url": "css/app.5a2430d1.css"
   }
 ];

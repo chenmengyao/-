@@ -240,6 +240,7 @@ export default {
         if (!this.buildingNum) {
             return
         }
+        let token = app.$vm.$store.getters['core/token'];
         if (this.codeUrl.indexOf('://')==-1) {
             this.codeUrl = `${window.location.protocol}//${this.codeUrl}`;
         }
