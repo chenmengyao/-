@@ -75,6 +75,7 @@
         :date='item.evaluate_time'
         :score="((item.evaluate_express + item.evaluate_serve + item.evaluate_quality) / 15) * 5"
         :content="item.evaluate"
+         @lookImg="lookImg"
         :medias="JSON.parse(item.evaluate_img)||[]">
       </comment-item>
       <van-row v-if="details.evaluate.length==0" type="flex" align="center" justify="center">
@@ -286,7 +287,7 @@
 
 <script>
 import {
-  Toast
+  Toast,ImagePreview
 } from 'vant'
 import _ from 'lodash'
 // 商品状态条
@@ -372,6 +373,7 @@ export default {
       disabledSubmit: false,
       // 当前加价
       currentMarkup: 0,
+      ImagePreviewDialog:''
     }
   },
   created() {
@@ -642,7 +644,20 @@ export default {
     showKeyboard() {
       this.hideSku()
       this.$refs.auction.showKeyboard()
+    },
+    lookImg(medias,idx){
+      this.ImagePreviewDialog=ImagePreview({
+        images: medias || [],
+        startPosition: idx,
+        onClose() {
+          // do something
+        }
+      });
     }
+  },
+  beforeRouteLeave(to,from,next){
+    this.ImagePreviewDialog.close();
+    next();
   }
 }
 </script>

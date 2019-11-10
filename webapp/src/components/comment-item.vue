@@ -46,14 +46,8 @@ export default {
   },
   methods: {
     preview(idx) {
-      ImagePreview({
-        images: this.medias || [],
-        startPosition: idx,
-        closeOnPopstate:true,
-        onClose() {
-          // do something
-        }
-      })
+      this.$emit('lookImg',this.medias,idx)
+      
     }
   }
 }
