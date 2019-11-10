@@ -28,7 +28,7 @@
     </div>
   </div>
   <!-- 购物车空提示 //-->
-  <div class="btn-group">
+  <div class="btn-group" style="bottom: 50px;position:fixed;">
       <van-checkbox v-model="checkall" @change="allChange">
         全选
       </van-checkbox>
