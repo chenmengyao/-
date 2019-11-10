@@ -447,6 +447,9 @@ export default {
 
   },
   methods: {
+    sswr(number) {
+      return Math.round(number * 100) / 100
+    },
     showTotleSta() {
       if (this.details.sta===0) {
         Toast('该商品已下架')

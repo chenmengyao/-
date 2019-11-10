@@ -89,6 +89,9 @@ export const routes = [
          {
            path: "/goods/shopping-cart",
            name: "购物车",
+           meta: {
+             idx: 2
+           },
            component: () => import("./pages/goods/shopping-cart.vue")
          },
          {

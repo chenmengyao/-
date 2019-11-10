@@ -6,7 +6,7 @@
       <dt>
         <span>定金</span>
         <span>
-          ￥<em>{{(details.price_max*0.1).toFixed(2)}}</em>
+          ￥<em>{{sswr(details.price_max*0.1)}}</em>
         </span>
       </dt>
       <dd>
@@ -14,7 +14,7 @@
       </dd>
     </dl>
     <p>
-      该拍品需缴纳保证金￥{{(details.price_max*0.1).toFixed(2)}}。
+      该拍品需缴纳保证金￥{{sswr(details.price_max*0.1)}}。
     </p>
     <p>
       建议您使用<em class="emred">支付宝、微信、余额</em>，确保账户有足够的钱款哦
@@ -59,7 +59,7 @@
     />
     <van-goods-action-big-btn
       primary
-      :text="details.isauction==1?'立即出价': `支付定金 (￥${( details.price_max*0.1 || 0).toFixed(2)} )`"
+      :text="details.isauction==1?'立即出价': `支付定金 (￥${sswr( details.price_max*0.1 || 0)} )`"
       @click.native="$parent.showSku('showKeyboard')"
     />
    </van-goods-action>
@@ -271,6 +271,9 @@ export default {
     window.clearInterval(this.timer)
   },
   methods: {
+    sswr(number) {
+      return Math.round(number * 100) / 100
+    },
     sumPrice(price_max,lowest_price) {
       if (!price_max&&!lowest_price) {
         return 0
@@ -369,7 +372,7 @@ export default {
     },
     // 显示密码弹窗
     showPayboard() {
-      if (this.payType=='balancepay'&&this.auctionShow&&this.balanceSum<(this.details.price_max*0.1).toFixed(2)) {  // 支付定金
+      if (this.payType=='balancepay'&&this.auctionShow&&this.balanceSum<this.sswr(this.details.price_max*0.1)) {  // 支付定金
         this.$toast('可用佣金不足！')
         return
       }

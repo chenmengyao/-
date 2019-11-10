@@ -8,37 +8,39 @@ const hideNavBarList = routes.filter(route => hidePath.some(path => route.path.s
 
 export default {
   // 接口地址
-  apihost: 'http://huihuilai.ambcon.cn/index.php/index/',
+  apihost: "http://huihuilai.ambcon.cn/index.php/index/",
   // 请求超时
   timeout: 10000,
   // 银联支付回调
-  yunpaycburl: 'http://test.suwis.com/1905_tideway_shop/webapp/dist/paycb.html',
+  yunpaycburl: "http://test.suwis.com/1905_tideway_shop/webapp/dist/paycb.html",
   // 免登录地址
   licenseExemptUrls: [
-    '/',
-    '/goods/details',
-    '/shop',
-    '/register',
-    '/resetpwd',
-    '/resetpaypwd',
-    '/user-agreement',
-    '/news',
-    '/news/details',
-    '/goods/list',
-    '/goods/classify',
-    '/special/clearance',
-    '/special/auction',
-    '/special/flash',
-    '/special/recommend',
-    '/service'
+    "/",
+    "/goods/details",
+    "/shop",
+    "/register",
+    "/resetpwd",
+    "/resetpaypwd",
+    "/user-agreement",
+    "/news",
+    "/news/details",
+    "/goods/list",
+    "/goods/classify",
+    "/special/clearance",
+    "/special/auction",
+    "/special/flash",
+    "/special/recommend",
+    "/service"
   ],
   // 底部导航隐藏地址配置
   noTabbarUrls: [
-    '/register',
-    '/resetpaypwd',
-    '/resetpwd',
-    '/login',
-    '/goods/details',
+    "/register",
+    "/resetpaypwd",
+    "/resetpwd",
+    "/login",
+    "/goods/details",
+    "/shop",
+    "/goods/comment-list",
     ...hideNavBarList
   ]
-}
+};
