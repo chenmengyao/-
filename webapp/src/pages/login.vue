@@ -214,6 +214,7 @@ export default {
     box-sizing: border-box;
     opacity: 0;
     transition: all 0.3s;
+    overflow: hidden;
     &.loaded {
         opacity: 1;
     }
