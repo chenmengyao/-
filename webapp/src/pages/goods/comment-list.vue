@@ -63,7 +63,8 @@ export default {
         id: '',
         good: '',
         show: ''
-      }
+      },
+      ImagePreviewDialog:''
     }
   },
   created() {
@@ -107,7 +108,7 @@ export default {
     }
   },
   beforeRouteLeave(to,from,next){
-    this.ImagePreviewDialog.close();
+    this.ImagePreviewDialog&&this.ImagePreviewDialog.close();
     next();
   }
 }

@@ -656,7 +656,7 @@ export default {
     }
   },
   beforeRouteLeave(to,from,next){
-    this.ImagePreviewDialog.close();
+    this.ImagePreviewDialog&&this.ImagePreviewDialog.close();
     next();
   }
 }
