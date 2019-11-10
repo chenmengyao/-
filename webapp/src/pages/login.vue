@@ -73,9 +73,11 @@ export default {
   },
   mounted() {
     setTimeout(() => {
+      
       this.loaded = true
       // 隐藏导航栏
-      this.$store.commit('core/toggleTabbar', false)
+      this.$store.commit('core/toggleTabbar', false);
+      this.showTAB()
     }, 150)
   },
   watch: {
@@ -171,30 +173,34 @@ export default {
         token
       })
       return res.data.data.user
+    },
+    showTAB(){
+      console.log(666)
+      this.$store.commit('core/header', {
+      // 标题
+        title: '登录',
+        // 按钮组
+        buttons: {
+          left: {
+            // 字号
+            fontSize: '',
+            // 字体路径
+            fontSrc: '',
+            // 按钮文字
+            text: '',
+            // 监听点击
+            onclick(){
+
+            }
+          },
+        }
+      });
     }
   },
   activated(){
     setTimeout(()=>{
-      this.$store.commit('core/header', {
-      // 标题
-      title: '登录',
-      // 按钮组
-      buttons: {
-        left: {
-          // 字号
-          fontSize: '',
-          // 字体路径
-          fontSrc: '',
-          // 按钮文字
-          text: '',
-          // 监听点击
-          onclick(){
-
-          }
-        },
-      }
-    });
-    })
+      this.showTAB()
+    },50)
   }
   
 }
