@@ -2,19 +2,19 @@
   <div class="suwis-goods">
     <van-row class="filter" type="flex" align="center" justify="space-between">
       <van-row>
-        <van-col class="btn" @click.native="params.evaluate=='down'?params.evaluate='up':params.evaluate='down'">
+        <van-col class="btn" @click.native="changeSort('evaluate')">
           综合
-          <img v-if="params.evaluate=='down'" class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
+          <img v-if="evaluate=='down'" class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
           <img v-else class="icon" src="@/assets/shop/arrow_top.png" alt="">
         </van-col>
-        <van-col class="btn" @click.native="params.sell=='down'?params.sell='up':params.sell='down'">
+        <van-col class="btn" @click.native="changeSort('sell')">
           销量
-          <img v-if="params.sell=='down'" class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
+          <img v-if="sell=='down'" class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
           <img v-else class="icon" src="@/assets/shop/arrow_top.png" alt="">
         </van-col>
-        <van-col class="btn" @click.native="params.price=='down'?params.price='up':params.price='down'">
+        <van-col class="btn" @click.native="changeSort('price')">
           价格
-          <img v-if="params.price=='down'" class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
+          <img v-if="price=='down'" class="icon" src="@/assets/shop/arrow_bottom.png" alt="">
           <img v-else class="icon" src="@/assets/shop/arrow_top.png" alt="">
         </van-col>
       </van-row>
@@ -57,48 +57,68 @@ export default {
       store: {},
       goods: [],
       total: 0,
+      evaluate:'down',
+      sell: 'down',
+      price: 'down',
       params: {
-        sell: 'down',
-        price: 'down',
-        evaluate: 'down',
+        // sell: 'down',
+        // price: 'down',
+        // evaluate: 'down',
         page: 0,
         num: 20,
         search: '',
         category: ''
       },
+      sortActive:'evaluate',
+      type:'evaluate',
       loading: false,
       finished: false
     }
   },
   created() {},
-  watch: {
-    'params.sell'() {
-      this.params.page = 1
-      this.goods = []
-      this.getList()
-    },
-    'params.price'() {
-      this.params.page = 1
-      this.goods = []
-      this.getList()
-    },
-    'params.evaluate'() {
-      this.params.page = 1
-      this.goods = []
-      this.getList()
-    }
-  },
+  // watch: {
+  //   'params.sell'() {
+  //     this.params.page = 1
+  //     this.goods = []
+  //     this.getList()
+  //   },
+  //   'params.price'() {
+  //     this.params.page = 1
+  //     this.goods = []
+  //     this.getList()
+  //   },
+  //   'params.evaluate'() {
+  //     this.params.page = 1
+  //     this.goods = []
+  //     this.getList()
+  //   }
+  // },
   methods: {
     loadList: _.debounce(function() {
       // 获取url上的参数
       this.params.page += 1
       this.getList()
     }, 186),
-    async getList() {
-      this.loading = true
+    changeSort(type){
+      this.type=type;
+      this.params.page = 1;
+      this.goods = [];
+      this.sortActive === type ? this[type]=this[type]=this[type] === 'down' ? 'up' : 'down'  : this.sortActive = type
+      this.getList();
+    },
+    async getList(type) {
       this.params.search = this.$route.query.search || ''
       this.params.category = this.$route.query.category || ''
-      let res = await this.$axios.post('goods/lists', this.params)
+      let params= {...this.params};
+      if(this.type=='evaluate'){
+        params.evaluate=this.evaluate;
+      }else if(this.type=='sell'){
+        params.sell=this.sell;
+      }else if(this.type=='price'){
+        params.price=this.price;
+      }
+      this.loading = true
+      let res = await this.$axios.post('goods/lists', params)
       let data = res.data.data || {}
       this.goods = this.goods.concat(data.goods || [])
       this.loading = false
