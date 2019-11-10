@@ -29,15 +29,15 @@
   </div>
   <!-- 购物车空提示 //-->
   <div class="btn-group">
-    <van-checkbox v-model="checkall" @change="allChange">
-      全选
-    </van-checkbox>
-    <div>
-      <span class="sum">合计：<em>￥{{total.toFixed(2)}}</em></span>
-      <van-button class="btn" v-if="selecteds.length>0" type="warning" @click="deleteGoods">删除</van-button>
-      <van-button class="btn" type="primary" @click="makeOrder">结算({{selecteds.length}})</van-button>
+      <van-checkbox v-model="checkall" @change="allChange">
+        全选
+      </van-checkbox>
+      <div>
+        <span class="sum">合计：<em>￥{{total.toFixed(2)}}</em></span>
+        <van-button class="btn" v-if="selecteds.length>0" type="warning" @click="deleteGoods">删除</van-button>
+        <van-button class="btn" type="primary" @click="makeOrder">结算({{selecteds.length}})</van-button>
+      </div>
     </div>
-  </div>
 </div>
 </template>
 
@@ -165,7 +165,7 @@ export default {
 
 <style  lang="scss">
 .suwis-shopping-cart{
-  position: relative;
+  // position: relative;
   .van-stepper{
     display: flex;
     justify-content: flex-end;
@@ -245,8 +245,8 @@ export default {
     }
 
     .btn-group {
-        position: absolute;
-        bottom: 0px;
+        position:fixed;
+        bottom: 50px;
         left: 0;
         width: 100vw;
         height: 55px;
