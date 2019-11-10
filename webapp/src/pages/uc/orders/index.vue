@@ -202,7 +202,7 @@ export default {
       this.loading = true
       this.finished = false
       this.error = false
-      this.$router.push({
+      this.$router.replace({
         path: '/uc/orders',
         query: {
           activeTabIndex: index,
