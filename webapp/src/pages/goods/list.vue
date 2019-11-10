@@ -110,13 +110,7 @@ export default {
       this.params.search = this.$route.query.search || ''
       this.params.category = this.$route.query.category || ''
       let params= {...this.params};
-      if(this.type=='evaluate'){
-        params.evaluate=this.evaluate;
-      }else if(this.type=='sell'){
-        params.sell=this.sell;
-      }else if(this.type=='price'){
-        params.price=this.price;
-      }
+      params[this.type]=this[this.type];
       this.loading = true
       let res = await this.$axios.post('goods/lists', params)
       let data = res.data.data || {}

@@ -202,6 +202,13 @@ export default {
       this.loading = true
       this.finished = false
       this.error = false
+      this.$router.push({
+        path: '/uc/orders',
+        query: {
+          activeTabIndex: index,
+          type:'0000'
+        }
+      })
       this.getList()
     },
     onClickOrder(goods) {
