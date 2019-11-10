@@ -14,7 +14,7 @@ export default {
   created() {
     this.$axios.post('goods/auction_rule').then(res => {
       if (res.data && res.data.data) {
-        this.ritchtext = JSON.parse(res.data.data)
+        this.ritchtext = res.data.data
       }
     })
   }
