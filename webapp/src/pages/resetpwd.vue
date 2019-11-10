@@ -55,7 +55,6 @@ export default {
 	methods: {
 		// 发送验证码
 		sendCode() {
-			console.log(this.$route.query.type,555,this.$route.query)
 			if(this.$route.query.type){
 				if (!/^1(3|4|5|7|8)\d{9}$/.test(this.formData.tel)) {
 					this.formMsg.tel = '请输入正确的号码';
