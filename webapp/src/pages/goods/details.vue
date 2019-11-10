@@ -182,7 +182,7 @@
           </van-row>
           <van-row type="flex" align="center"  v-if="details.isauction==1">
             <van-col  style="white-space: nowrap;" > 出价</van-col>
-            <van-col style="min-width: 156px;"><van-stepper v-model="currentMarkup"  :min="(Math.round(details.price_max*1000+details.lowest_price*1000))/1000"/></van-col>
+            <van-col style="min-width: 156px;"><van-stepper v-model="currentMarkup" :step="details.lowest_price" :min="details.price_max > details.price_min  ? Math.round(details.price_max*1000+details.lowest_price*1000)/1000 : details.price_min"/></van-col>
             <sapn style="font-size:11px"> 每次加价不低于￥{{details.lowest_price}}</sapn>
           </van-row>
           <van-row type="flex" align="center"  v-if="details.isauction==1">
@@ -259,7 +259,7 @@
         @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
       />
       <van-goods-action-mini-btn
-        v-else
+        v-if="carNum<=0"
         icon="cart-o"
         text="购物车"
         @click.native="$router.push({path: '/goods/shopping-cart', query: {store_id: $route.query.id}})"
@@ -530,7 +530,7 @@ export default {
         this.recordSelectedNum=res.data.data.inventory
       }
       if (this.details.type==2&&this.details.isauction==1) {
-        this.currentMarkup = Math.round(this.details.price_max*1000+this.details.lowest_price*1000)/1000
+        this.currentMarkup = this.details.price_max > this.details.price_min  ? Math.round(this.details.price_max*1000+this.details.lowest_price*1000)/1000 : this.details.price_min;
       }
     },
     // 获取优惠券详情

@@ -285,7 +285,7 @@ export default {
         return price_max
       }
       var maxNum = 10000000000;
-      return Math.abs((price_max*maxNum+lowest_price*maxNum)/maxNum)
+      return Math.abs(Math.round(price_max*maxNum+lowest_price*maxNum)/maxNum)
     },
     async getAdresList() {
       let res = await this.$axios.post('/user/alladdress')
