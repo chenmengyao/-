@@ -165,6 +165,7 @@ export default {
 
 <style  lang="scss">
 .suwis-shopping-cart{
+  position: relative;
   .van-stepper{
     display: flex;
     justify-content: flex-end;
@@ -244,8 +245,8 @@ export default {
     }
 
     .btn-group {
-        position: fixed;
-        bottom: 50px;
+        position: absolute;
+        bottom: 0px;
         left: 0;
         width: 100vw;
         height: 55px;
