@@ -145,7 +145,7 @@
                             this.$router.push({
                                 path: '/uc/orders',
                                 query: {
-                                    activeTabIndex: 2,
+                                    activeTabIndex: 0,
                                     type:'0000'
                                 }
                             })

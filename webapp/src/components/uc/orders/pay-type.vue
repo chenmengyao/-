@@ -114,6 +114,7 @@ export default {
             if (ylpayStast== 'success') {
               if (this.$parent.activeTabIndex) {
                 this.$parent.activeTabIndex = 2;
+                this.$parent.onClickTab(2);
               }
               this.$router.replace({
                 path: '/uc/orders',
