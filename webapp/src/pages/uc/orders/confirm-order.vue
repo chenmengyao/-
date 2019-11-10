@@ -60,7 +60,7 @@
       value-class="cell-content">
       <template>
         <van-stepper v-model="num"
-          @change="getData" />
+          @change="singleNumChange" />
       </template>
     </van-cell>
     <van-cell title="配送方式"
@@ -260,6 +260,10 @@ export default {
     }
   },
   methods: {
+    singleNumChange() {
+      // this.coupon = {};
+      this.getData();
+    },
     closePasswordModal() {
       this.password = ''
     },
@@ -306,6 +310,17 @@ export default {
             this.total = data.data.total
             this.discount = data.data.use_vipdiscount
             this.couponList = data.data.coupon;
+            if (this.coupon&&this.coupon.id) {
+              let flg = false;
+              this.couponList.forEach(item => {
+                if (item.id===this.coupon.id) {
+                  flg = true;
+                }
+              });
+              if (!flg) {
+                this.coupon = {}
+              }
+            }
             this.score_need = data.data.score_need || 0
             this.user_type = data.data.user_type;
             if(this.address_id){

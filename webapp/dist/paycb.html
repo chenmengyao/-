@@ -13,7 +13,6 @@
     document.addEventListener('plusready', function() {
       var paywin = plus.webview.getWebviewById('pay_win')
       var url =  paywin ? paywin.getURL()  : '';
-      alert(decodeURIComponent(msg))
       var msg = url ? url.split('?')[1] : '';
       msg = msg ? msg.split('=')[1] : '';
       if (!msg) {
