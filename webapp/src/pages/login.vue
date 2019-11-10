@@ -174,9 +174,10 @@ export default {
     }
   },
   created(){
+    console.log(5555)
     this.$store.commit('core/header', {
       // 标题
-      title: '登录',
+      title: '登录1',
       // 按钮组
       buttons: {
         left: {

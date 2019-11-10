@@ -59,6 +59,7 @@ export default {
 				this.formMsg.tel = '请输入正确的号码'
 				return
 			}
+			console.log(222)
 			this.countDownText = 60
 			this.$axios.post('login/getcode', {
 				tel: this.formData.tel,
