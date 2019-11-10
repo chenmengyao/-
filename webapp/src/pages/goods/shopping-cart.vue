@@ -9,7 +9,7 @@
       <van-checkbox v-model="good.checked" v-for="good in shop.goods" @change="calcCheckNums">
         <van-card
           @click.native.stop="$router.push({path:'/goods/details', query:{id:good.goods_id}})"
-          :price="good.type=='4'?good.clearance_price:good.price"
+          :price="good.type=='0'||good.type=='3'? good.price : good.type=='1' ? good.push_price:good.type=='4'?good.clearance_price:0"
           :desc="(good.header_one||'') + ' ' + (good.header_two||'')"
           :title="good.title"
           :thumb="good.img"
@@ -112,8 +112,9 @@ export default {
         let shop = this.shops[key]
         for (let good of shop.goods) {
           if (good.checked) {
-            this.selecteds.push(good.id)
-            this.total += good.price * good.num
+            this.selecteds.push(good.id);
+            let price=good.type=='0'||good.type=='3'? good.price : good.type=='1' ? good.push_price:good.type=='4'?good.clearance_price:0
+            this.total += price * good.num
           }
         }
       }
