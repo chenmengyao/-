@@ -173,11 +173,11 @@ export default {
       return res.data.data.user
     }
   },
-  created(){
-    console.log(5555)
-    this.$store.commit('core/header', {
+  activated(){
+    setTimeout(()=>{
+      this.$store.commit('core/header', {
       // 标题
-      title: '登录1',
+      title: '登录',
       // 按钮组
       buttons: {
         left: {
@@ -194,6 +194,7 @@ export default {
         },
       }
     });
+    })
   }
   
 }
