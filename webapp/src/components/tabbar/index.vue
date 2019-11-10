@@ -71,6 +71,8 @@ export default {
       let idx = val.meta.idx || -1
       if (val.path == '/') idx = 0
       if (idx < 0) return
+      console.log('this.navlist[idx]',idx);
+      
       let current = this.navlist[idx]
       this.toggleTab(current)
     }

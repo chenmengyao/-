@@ -63,7 +63,8 @@ export default {
     }
   },
   created() {
-    this.current = this.buttons[0]
+    this.current = this.buttons[0];
+    this.$store.commit('core/hideTabbar');
   },
   watch: {
     current(now, old) {

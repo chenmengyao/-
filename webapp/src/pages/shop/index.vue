@@ -72,6 +72,7 @@ export default {
   created() {
     this.getStore()
     this.getList()
+    this.$store.commit('core/hideTabbar')
   },
   watch: {
     // params: {
