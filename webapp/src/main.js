@@ -8,9 +8,9 @@ import '@/components'
 import '@/plugins'
 import echarts from 'echarts'
 import config from './../app.config'
-// import Vconsole from 'vconsole'
-// const vConsole = new Vconsole()
-// Vue.use(vConsole)
+import Vconsole from 'vconsole'
+const vConsole = new Vconsole()
+Vue.use(vConsole)
 Vue.prototype.$echarts = echarts
 import VueAMap from 'vue-amap';
 Vue.use(VueAMap);
