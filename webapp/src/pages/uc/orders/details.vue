@@ -230,6 +230,10 @@ export default {
       this.password = ''
     },
     confirmPay(key) {
+      if (key==='balancepay'&&this.balance_sum<this.startSum) {
+        this.$toast('可用佣金不足！');
+        return
+      }
       this.passwordModalShow = true
       this.currentPayType = payTypeMap.find(type => type.key === key)
     },

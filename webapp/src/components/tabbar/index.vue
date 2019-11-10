@@ -71,8 +71,6 @@ export default {
       let idx = val.meta.idx || -1
       if (val.path == '/') idx = 0
       if (idx < 0) return
-      console.log('this.navlist[idx]',idx);
-      
       let current = this.navlist[idx]
       this.toggleTab(current)
     }
@@ -114,7 +112,9 @@ export default {
           tag.textStyles.color = this.options.ACTIVE_COLOR
         }
       }
-      this.$router.push(current.path)
+      if (this.$route.path!=current.path) {
+        this.$router.push(current.path)
+      }
       // 设置颜色
       try {
         this.ntab.draw(tags)
