@@ -62,7 +62,6 @@
   </van-actionsheet>
 
   <!--  出价价格 -->
-  {{currentOrderStandData}}
   <van-actionsheet title="请输入出价价格"
     class="number-keyword"
     v-model="keyboardShow"

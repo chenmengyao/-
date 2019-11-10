@@ -130,8 +130,14 @@ export default {
                   type: '0000'
                 }
               })
+              
+              if (plus.storage.getItem("ylpaymsg")) {
+                this.$toast(plus.storage.getItem("ylpaymsg"))
+              }
             }
+            
             plus.storage.setItem("ylpayStast","")
+            plus.storage.setItem("ylpaymsg","")
           }
           paywin = null;
         },200)

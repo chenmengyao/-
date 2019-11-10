@@ -245,6 +245,7 @@ export default {
             }) => {
             if (data.code === 1) {
                 this.isShow = false;
+                this.getUserInfo()
                 this.$toast('绑定成功')
                 
             } else {

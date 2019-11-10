@@ -181,7 +181,7 @@
           </van-row>
           <van-row type="flex" align="center"  v-if="details.isauction==1">
             <van-col  style="white-space: nowrap;" > 出价</van-col>
-            <van-col style="min-width: 156px;"><van-stepper v-model="currentMarkup"  :min="(details.price_max*1000+details.lowest_price*1000)/1000"/></van-col>
+            <van-col style="min-width: 156px;"><van-stepper v-model="currentMarkup"  :min="(Math.round(details.price_max*1000+details.lowest_price*1000))/1000"/></van-col>
             <sapn style="font-size:11px"> 每次加价不低于￥{{details.lowest_price}}</sapn>
           </van-row>
           <van-row type="flex" align="center"  v-if="details.isauction==1">
@@ -375,22 +375,7 @@ export default {
     }
   },
   created() {
-    this.getDetails()
-    this.getCoupons()
-    this.getCarList()
-    // 添加分享按钮
-    this.$store.commit('core/header', {
-      title: '商品详情',
-      buttons: {
-        right: {
-          fontSize: '27px',
-          text: '\ue655',
-          onclick: () => {
-            this.shareVisible = true
-          }
-        }
-      }
-    })
+    this.init()
   },
   mounted() {
     window.addEventListener('scroll', this.checkScroll, this)
@@ -447,6 +432,24 @@ export default {
 
   },
   methods: {
+    init() {
+      this.getDetails()
+      this.getCoupons()
+      this.getCarList()
+      // 添加分享按钮
+      this.$store.commit('core/header', {
+        title: '商品详情',
+        buttons: {
+          right: {
+            fontSize: '27px',
+            text: '\ue655',
+            onclick: () => {
+              this.shareVisible = true
+            }
+          }
+        }
+      })
+    },
     sswr(number) {
       return Math.round(number * 100) / 100
     },
@@ -506,12 +509,26 @@ export default {
       let res = await this.$axios.post('goods/find', {
         id: this.$route.query.id
       })
+      this.details = {};
+      this.sku = {
+        // 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
+        // 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
+        tree: [],
+        // 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
+        list: [],
+        price: 0, // 默认价格（单位元）
+        stock_num: 0, // 商品总库存
+        collection_id: 0, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
+        none_sku: false, // 是否无规格商品
+        messages: [],
+        hide_stock: false // 是否隐藏剩余库存
+      };
       this.details = res.data.data || {};
       if( res.data.data){
         this.recordSelectedNum=res.data.data.inventory
       }
       if (this.details.type==2&&this.details.isauction==1) {
-        this.currentMarkup = this.details.price_max+this.details.lowest_price
+        this.currentMarkup = Math.round(this.details.price_max*1000+this.details.lowest_price*1000)/1000
       }
     },
     // 获取优惠券详情

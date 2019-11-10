@@ -405,10 +405,13 @@ export default {
       }
     },
     // 加价
+    rand(a,b) {
+      Math.round(a*1000+b*1000)/1000
+    },
     async addprice(current) {
       let currentData = current || this.current;
-      if (this.currentMarkup < this.details.price_max+this.details.lowest_price) {
-        this.$toast(`当前商品最低出价不得低于${this.details.price_max+this.details.lowest_price}元`)
+      if (this.currentMarkup < this.rand(this.details.price_max,this.details.lowest_price)) {
+        this.$toast(`当前商品最低出价不得低于${this.rand(this.details.price_max,this.details.lowest_price)}元`)
         return false
       }
       this.keyboardShow = false;
@@ -443,6 +446,10 @@ export default {
               try {
                 this.$parent.getDetails()
               } catch (e) {}
+            }else {
+              if (plus.storage.getItem("ylpaymsg")) {
+                this.$toast(plus.storage.getItem("ylpaymsg"))
+              }
             }
             plus.storage.setItem("ylpayStast","")
           }

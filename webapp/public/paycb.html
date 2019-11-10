@@ -12,8 +12,19 @@
   <script type="text/javascript">
     document.addEventListener('plusready', function() {
       var paywin = plus.webview.getWebviewById('pay_win')
-      plus.storage.setItem("ylpayStast","success")
+      var url =  paywin ? paywin.getURL()  : '';
+      alert(url)
+      var msg = url ? url.split('?')[1] : '';
+      msg = msg ? msg.split('=')[1] : '';
+      if (!msg) {
+        plus.storage.setItem("ylpayStast", "success")
+      }else {
+        plus.storage.setItem("ylpayStast", "eror")
+        plus.storage.setItem("ylpaymsg", msg)
+      }
+      
       if (paywin) {
+        
         paywin.close()
         paywin = null
       }
