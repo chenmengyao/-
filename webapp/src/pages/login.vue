@@ -175,7 +175,6 @@ export default {
       return res.data.data.user
     },
     showTAB(){
-      console.log(666)
       this.$store.commit('core/header', {
       // 标题
         title: '登录',
