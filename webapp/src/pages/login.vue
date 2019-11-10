@@ -28,7 +28,7 @@
           <router-link to="/register">
             注册新账号
           </router-link>&nbsp;&nbsp;&nbsp;&nbsp;
-          <router-link to="/resetpwd">
+          <router-link to="/resetpwd?type=1">
             忘记密码？
           </router-link>
           <br>
