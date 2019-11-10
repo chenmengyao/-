@@ -71,7 +71,7 @@
       @click.stop>
       <van-field v-model="keyboardText"
         input-align="center"
-        :placeholder="`当前出价${sumPrice(currentOrderStandData.price_max,currentOrderStandData.lowest_price)}元起`"
+        :placeholder="`当前出价${(currentOrderStandData.price_max > currentOrderStandData.auction_price)||!currentOrderStandData.auction_price  ? sumPrice(currentOrderStandData.price_max,currentOrderStandData.lowest_price):currentOrderStandData.auction_price}元起`"
         readonly />
     </div>
     <van-number-keyboard :show="true"
