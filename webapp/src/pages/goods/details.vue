@@ -154,7 +154,7 @@
           <span class="van-sku__price-symbol">当前价格：</span>
         </div>
         <div class="van-sku__goods-price" v-if="details.type==2">
-          <span class="van-sku__price-symbol">￥</span><span class="van-sku__price-num">{{ details.price_max }}</span>
+          <span class="van-sku__price-symbol">￥</span><span class="van-sku__price-num">{{ details.price_max ||  details.price_min}}</span>
         </div>
         <div class="van-sku__goods-price" v-if="!(details.type==2)">
           <span class="van-sku__price-symbol">￥</span><span class="van-sku__price-num">{{ props.price }}</span>
