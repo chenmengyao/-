@@ -22,6 +22,7 @@
         :avatar="item.photo"
         :score="((item.evaluate_express + item.evaluate_serve + item.evaluate_quality) / 15) * 5"
         :content="item.evaluate"
+        @lookImg="lookImg"
         :medias="getMedias(item)">
       </comment-item>
       <van-row v-if="list.length==0" type="flex" align="center" justify="center">
@@ -34,6 +35,9 @@
 </template>
 
 <script>
+import {
+  ImagePreview
+} from 'vant'
 export default {
   data() {
     return {
@@ -91,7 +95,20 @@ export default {
       if (!item.evaluate_img) return []
       let imgs = JSON.parse(item.evaluate_img) || []
       return imgs
+    },
+    lookImg(medias,idx){
+      this.ImagePreviewDialog=ImagePreview({
+        images: medias || [],
+        startPosition: idx,
+        onClose() {
+          // do something
+        }
+      });
     }
+  },
+  beforeRouteLeave(to,from,next){
+    this.ImagePreviewDialog.close();
+    next();
   }
 }
 </script>

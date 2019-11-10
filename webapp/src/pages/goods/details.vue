@@ -75,7 +75,7 @@
         :date='item.evaluate_time'
         :score="((item.evaluate_express + item.evaluate_serve + item.evaluate_quality) / 15) * 5"
         :content="item.evaluate"
-         @lookImg="lookImg"
+        @lookImg="lookImg"
         :medias="JSON.parse(item.evaluate_img)||[]">
       </comment-item>
       <van-row v-if="details.evaluate.length==0" type="flex" align="center" justify="center">
