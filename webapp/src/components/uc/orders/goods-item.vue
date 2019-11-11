@@ -68,6 +68,7 @@
             }
             .desc-line {
                 display: flex;
+                word-break: break-all;
                 margin-bottom: 8px;
                 color: #999;
                 font-size: 10px;
