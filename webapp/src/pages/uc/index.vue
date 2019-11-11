@@ -235,6 +235,7 @@ export default {
         if (this.codeUrl.indexOf('://')==-1) {
             this.codeUrl = `${window.location.protocol}//${this.codeUrl}`;
         }
+        alert('this.codeUrl:'+this.codeUrl+"window.location.protocol"+window.location.protocol)
         let url = `${this.codeUrl}/token/${token}/region_detail/${this.buildingNum}`;
         this.$axios
             .post(url, {
