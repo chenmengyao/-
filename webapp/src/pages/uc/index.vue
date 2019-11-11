@@ -144,6 +144,7 @@ import BarCode from '@/components/bar-code'
 import {
   mapGetters
 } from 'vuex'
+import config from './../../../app.config'
 
 export default {
   components: {
@@ -233,7 +234,7 @@ export default {
         }
         let token = app.$vm.$store.getters['core/token'];
         if (this.codeUrl.indexOf('://')==-1) {
-            this.codeUrl = `${window.location.protocol}//${this.codeUrl}`;
+            this.codeUrl = `${config.apihost.split('//')[0]}//${this.codeUrl}`;
         }
         alert('this.codeUrl:'+this.codeUrl+"window.location.protocol"+window.location.protocol)
         let url = `${this.codeUrl}/token/${token}/region_detail/${this.buildingNum}`;

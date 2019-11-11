@@ -98,7 +98,7 @@
     import areaList from '@/constants/uc/address'
     import profile from '../../../assets/login/avatar@3x.png'
     import BarCode from '@/components/bar-code'
-
+    import config from './../../../../app.config'
     export default {
         name: "setting",
         components: {
@@ -285,7 +285,7 @@
                 }
                 let token = app.$vm.$store.getters['core/token'];
                 if (this.codeUrl.indexOf('://')==-1) {
-                    this.codeUrl = `${window.location.protocol}//${this.codeUrl}`;
+                    this.codeUrl = `${config.apihost.split('//')[0]}//${this.codeUrl}`;
                 }
                 let url = `${this.codeUrl}/token/${token}/region_detail/${this.buildingNum}`;
                 this.$axios
@@ -309,7 +309,6 @@
         },
         created() {
             this.getUserInfo()
-            
         },
          beforeRouteLeave (to, from, next) {
             this.qrCodeShow = false;
