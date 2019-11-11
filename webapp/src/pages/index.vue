@@ -212,7 +212,8 @@ export default {
     },
     // 新闻资讯
     async getNews() {
-      let res = await this.$axios.get('index/news')
+      let url = `index/news?${new Date().getTime()}`
+      let res = await this.$axios.get(url)
       res = res.data || {}
       this.news = res.data || []
     },

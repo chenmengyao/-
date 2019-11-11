@@ -406,12 +406,13 @@ export default {
     },
     // 加价
     rand(a,b) {
-      Math.round(a*1000+b*1000)/1000
+      return Math.round(a*1000+b*1000)/1000
     },
     async addprice(current) {
       let currentData = current || this.current;
       if (this.currentMarkup < this.rand(this.details.price_max,this.details.lowest_price)) {
         this.$toast(`当前商品最低出价不得低于${this.rand(this.details.price_max,this.details.lowest_price)}元`)
+        // this.$parent.currentMarkup = this.details.auction_first != 1  ? Math.round(this.details.price_max*1000+this.details.lowest_price*1000)/1000 : this.details.price_min;
         return false
       }
       this.keyboardShow = false;

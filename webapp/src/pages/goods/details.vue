@@ -182,7 +182,7 @@
           </van-row>
           <van-row type="flex" align="center"  v-if="details.isauction==1">
             <van-col  style="white-space: nowrap;" > 出价</van-col>
-            <van-col style="min-width: 156px;"><van-stepper v-model="currentMarkup" :step="details.lowest_price" :min="details.auction_first != 1 ? Math.round(details.price_max*1000+details.lowest_price*1000)/1000 : details.price_min"/></van-col>
+            <van-col style="min-width: 156px;"><van-stepper v-model="currentMarkup" /></van-col>
             <sapn style="font-size:11px"> 每次加价不低于￥{{details.lowest_price}}</sapn>
           </van-row>
           <van-row type="flex" align="center"  v-if="details.isauction==1">

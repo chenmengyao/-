@@ -236,7 +236,6 @@ export default {
         if (this.codeUrl.indexOf('://')==-1) {
             this.codeUrl = `${config.apihost.split('//')[0]}//${this.codeUrl}`;
         }
-        alert('this.codeUrl:'+this.codeUrl+"window.location.protocol"+window.location.protocol)
         let url = `${this.codeUrl}/token/${token}/region_detail/${this.buildingNum}`;
         this.$axios
             .post(url, {
