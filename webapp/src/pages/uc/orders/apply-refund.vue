@@ -30,8 +30,8 @@
                     <div class="name">换货地址</div>
                     <div class="address-box">
                         <div class="address-top">
-                            <span class="address-name">{{address.name}}</span>
-                            <span class="address-tel">{{address.tel}}</span>
+                            <span class="address-name">{{address&&address.name||''}}</span>
+                            <span class="address-tel">{{address&&address.tel}}</span>
                         </div>
                         <div class="address">{{address | location}}</div>
                     </div>
@@ -131,11 +131,16 @@
                 return v ? goodsStatus[v] : '请选择'
             },
             location(v) {
-                const province = v.province || ''
-                const city = v.city || ''
-                const area = v.area || ''
-                const address = v.address || ''
-                return (province + city + area + address) || '---'
+                if(v){
+                    const province = v.province || ''
+                    const city = v.city || ''
+                    const area = v.area || ''
+                    const address = v.address || ''
+                    return (province + city + area + address) || '---'
+                }else{
+                    return '---'
+                }
+                
             },
             reason(v) {
                 return v ? reasonMap[v] : '请选择'

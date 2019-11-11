@@ -327,8 +327,8 @@ export default {
         city: city,
         area: town,
         num: 10,
-        pointx: this.lat,
-        pointy: this.lng
+        pointx: this.lng,
+        pointy: this.lat
       }).then(res => {
         if (res.data.code == 1) {
           if (this.switchTabId == null) {
@@ -363,8 +363,8 @@ export default {
         city: city,
         area: town,
         num: 10,
-        pointx: this.lat,
-        pointy: this.lng
+        pointx: this.lng,
+        pointy: this.lat
       }).then(res => {
         if (res.data.code == 1) {
           if (this.switchTabIdBus == null) {
