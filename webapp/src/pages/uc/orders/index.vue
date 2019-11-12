@@ -113,7 +113,7 @@ export default {
           data
         }) => {
           if (data.code === 1) {
-            if (data.data) {
+            if (data.data||data.data===0) {
               this.balance_sum = data.data
             }
           } else {
@@ -218,7 +218,7 @@ export default {
         }
       })
     },
-    onButtonClick(key, orderId, orderNumer,orderData) {
+    onButtonClick(key, orderId, orderNumer) {
       switch (key) {
         case 'cancel':
           this.cancelOrder(orderNumer)

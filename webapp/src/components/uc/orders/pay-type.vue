@@ -58,7 +58,7 @@ export default {
         icon: require('../../../assets/orders/score-pay@2x.png')
       }, {
         id: 'yunpay',
-        description: '银联支付',
+        description: '银联',
         icon: require('../../../assets/orders/union-pay@2x.png')
       }]
     }

@@ -151,7 +151,7 @@ export default {
         icon: require('./../../assets/orders/score-pay@2x.png')
       }, {
         id: 'yunpay',
-        description: '银联支付',
+        description: '银联',
         icon: require('./../../assets/orders/union-pay@2x.png')
       }],
       pays: {},
@@ -410,11 +410,11 @@ export default {
     },
     async addprice(current) {
       let currentData = current || this.current;
-      if (this.currentMarkup < this.rand(this.details.price_max,this.details.lowest_price)) {
-        this.$toast(`当前商品最低出价不得低于${this.rand(this.details.price_max,this.details.lowest_price)}元`)
-        // this.$parent.currentMarkup = this.details.auction_first != 1  ? Math.round(this.details.price_max*1000+this.details.lowest_price*1000)/1000 : this.details.price_min;
-        return false
-      }
+      // if (this.currentMarkup < this.rand(this.details.price_max,this.details.lowest_price)) {
+      //   this.$toast(`当前商品最低出价不得低于${this.rand(this.details.price_max,this.details.lowest_price)}元`)
+      //   // this.$parent.currentMarkup = this.details.auction_first != 1  ? Math.round(this.details.price_max*1000+this.details.lowest_price*1000)/1000 : this.details.price_min;
+      //   return false
+      // }
       this.keyboardShow = false;
       let res = await this.$axios.post('goods/auction_addprice', {
         goods_id: currentData.goodsId,

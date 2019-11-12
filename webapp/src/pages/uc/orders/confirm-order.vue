@@ -273,7 +273,7 @@ export default {
         data
       }) => {
         if (data.code === 1) {
-          if (data.data) {
+          if (data.data||data.data===0) {
             this.balance_sum = data.data
           }
         } else {

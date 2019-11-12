@@ -268,7 +268,7 @@ export default {
           data
         }) => {
           if (data.code === 1) {
-            if (data.data) {
+            if (data.data||data.data===0) {
               this.balance_sum = data.data
             }
           } else {
@@ -302,9 +302,19 @@ export default {
         case 'delete':
           this.deleteOrder(orderId)
           break
+        case 'viewProgress':
+          this.viewProgress(orderId)
+          break
       }
     },
-
+    viewProgress(orderId) {
+      this.$router.push({
+        path: '/uc/orders/refund-details',
+        query: {
+          id: orderId
+        }
+      })
+    },
     onClickGoods(goods) {
       this.$router.push({
         path: '/goods/details',
