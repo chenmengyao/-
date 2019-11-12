@@ -218,7 +218,7 @@ export default {
         }
       })
     },
-    onButtonClick(key, orderId, orderNumer) {
+    onButtonClick(key, orderId, orderNumer,orderData) {
       switch (key) {
         case 'cancel':
           this.cancelOrder(orderNumer)
