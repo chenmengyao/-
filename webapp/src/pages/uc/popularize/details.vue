@@ -99,7 +99,10 @@
         methods: {
             changeSort() {
                 this.timeSort = this.timeSort === 'up' ? '' : 'up'
+                this.loading = true;
+                this.finished = false;
                 this.getList('reset')
+                // this.finished  = false
             },
             getList(type1) {
                 var type = type1 || ''
