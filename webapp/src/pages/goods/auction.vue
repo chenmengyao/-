@@ -68,7 +68,7 @@
   <!-- 请选择付款方式 -->
   <van-actionsheet
     v-model="payTypeShow"
-    title="确认付款"
+    title="确认付款11"
     class="suwis-pay-type"
     :close-on-click-overlay="false">
     <van-cell-group>
