@@ -1,6 +1,6 @@
 <template>
 <van-actionsheet v-model="popupShow"
-  title="确认付款"
+  title="确认付款11"
   class="suwis-pay-type"
   :close-on-click-overlay="false"
   @cancel="cancel">
