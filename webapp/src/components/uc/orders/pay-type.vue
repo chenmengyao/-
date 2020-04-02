@@ -218,7 +218,7 @@ export default {
       // 微信
       if (id == 'wxpay') {
         alert( JSON.stringify(res.data),6)
-        let data = res.data
+        // let data = res.data
         // params = {
         //   appid: data.appid,
         //   noncestr: data.nonce_str,
@@ -262,6 +262,7 @@ export default {
         })
       }, (e) => {
         console.log('----- 支付失败 -----');
+        alert( JSON.stringify(e),6)
         let msg = e.message
         this.$toast(msg.substr(msg.indexOf(']') + 1 || 0, msg.length));
         this.$emit('fail', true)
