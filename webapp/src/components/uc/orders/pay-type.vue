@@ -217,7 +217,7 @@ export default {
       }
       // 微信
       if (id == 'wxpay') {
-        alert( res.data,6)
+        alert( JSON.stringify(res.data),6)
         let data = res.data || {}
         params = {
           appid: data.appid,
