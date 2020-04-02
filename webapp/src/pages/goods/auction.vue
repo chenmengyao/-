@@ -68,7 +68,7 @@
   <!-- 请选择付款方式 -->
   <van-actionsheet
     v-model="payTypeShow"
-    title="确认付款22"
+    title="确认付款"
     class="suwis-pay-type"
     :close-on-click-overlay="false">
     <van-cell-group>
@@ -517,8 +517,8 @@ export default {
       }
       // 微信
       if (this.payType == 'wxpay') {
-        let data = res.data || {}
-        params = data
+        // let data = res.data || {}
+        params = res.data
       }
 
       plus.payment.request(this.pays[this.payType], params, (result) => {

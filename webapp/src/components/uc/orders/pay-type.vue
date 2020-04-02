@@ -1,6 +1,6 @@
 <template>
 <van-actionsheet v-model="popupShow"
-  title="确认付款11"
+  title="确认付款"
   class="suwis-pay-type"
   :close-on-click-overlay="false"
   @cancel="cancel">
@@ -217,7 +217,7 @@ export default {
       }
       // 微信
       if (id == 'wxpay') {
-        alert( JSON.stringify(res.data),6)
+        // alert( JSON.stringify(res.data),6)
         // let data = res.data
         // params = {
         //   appid: data.appid,
@@ -262,7 +262,7 @@ export default {
         })
       }, (e) => {
         console.log('----- 支付失败 -----');
-        alert( JSON.stringify(e),6)
+        // alert( JSON.stringify(e),6)
         let msg = e.message
         this.$toast(msg.substr(msg.indexOf(']') + 1 || 0, msg.length));
         this.$emit('fail', true)
