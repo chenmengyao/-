@@ -218,15 +218,15 @@ export default {
       // 微信
       if (id == 'wxpay') {
         let data = res.data || {}
-        // params = {
-        //   appid: data.appid,
-        //   noncestr: data.nonce_str,
-        //   package: 'Sign=WXPay',
-        //   partnerid: data.mch_id,
-        //   prepayid: data.prepay_id,
-        //   timestamp: Math.round(new Date().getTime() / 1000).toString(),
-        //   sign: data.sign
-        // }
+        params = {
+          appid: data.appid,
+          noncestr: data.nonce_str,
+          package: 'Sign=WXPay',
+          partnerid: data.mch_id,
+          prepayid: data.prepay_id,
+          timestamp: Math.round(new Date().getTime() / 1000).toString(),
+          sign: data.sign
+        }
         params = data
       }
 
