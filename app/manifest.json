@@ -434,7 +434,13 @@
                         /*4.7 英寸设备(iPhone6)启动图片，分辨率：750x1334*/
                         "retina55" : "",
                         /*5.5 英寸设备(iPhone6 Plus)启动图片，分辨率：1242x2208*/
-                        "retina55l" : ""
+                        "retina55l" : "",
+                        "portrait-896h@3x" : "./../res/1242-2688.png",
+                        "landscape-896h@3x" : "./../res/2688-1242.png",
+                        "portrait-896h@2x" : "./../res/828-1792.png",
+                        "landscape-896h@2x" : "./../res/1792-828.png",
+                        "iphonex" : "./../res/1125-2436.png",
+                        "iphonexl" : "./../res/2436-1125.png"
                     },
                     "ipad" : {
                         "portrait" : "",
@@ -472,19 +478,22 @@
                 },
                 "payment" : {
                     "weixin" : {
-                        "appid" : "wx6c32abcd65d1413c"
+                        "appid" : "wx6c32abcd65d1413c",
+                        "UniversalLinks" : "https://huihuilai.ambcon.cn/ulink/"
                     },
                     "alipay" : {}
                 },
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx6c32abcd65d1413c"
+                        "appid" : "wx6c32abcd65d1413c",
+                        "UniversalLinks" : "https://huihuilai.ambcon.cn/ulink/"
                     }
                 },
                 "push" : {}
             }
         },
-        "adid" : "124785270206"
+        "adid" : "124785270206",
+        "screenOrientation" : [ "portrait-primary", "landscape-secondary" ]
     },
     "dependencies" : {
         "pages" : {
