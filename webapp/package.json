@@ -19,7 +19,7 @@
     "lodash": "^4.17.11",
     "md5": "^2.2.1",
     "moment": "^2.24.0",
-    "qs": "^6.7.0",
+    "qs": "^6.9.7",
     "style-resources-loader": "^1.2.1",
     "suwis-vuex-sync": "^1.0.2",
     "vant": "^1.6.17",
